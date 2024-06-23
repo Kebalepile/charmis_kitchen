@@ -89,6 +89,7 @@ padding-left:15px;
 
 .sidebar-list-item {
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .sidebar-link {

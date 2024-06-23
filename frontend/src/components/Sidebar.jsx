@@ -1,18 +1,43 @@
-import React from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
 
+const Sidebar = ({ toggleSidebar }) => {
+  const handleFood = () => {
+    toggleSidebar()
+  }
+  const handleAboutUs = () => {
+    toggleSidebar()
+  }
+  const handleContactUs = () => {
+    toggleSidebar()
+  }
+  const handleLogin = () => {
+    toggleSidebar()
+  }
 
-const Sidebar = () => {
   return (
-    <nav className="sidebar-nav">
-      <h2 className="sidebar-header">Menu</h2>
-      <ul className="sidebar-list">
-        <li className="sidebar-list-item"><a href="#food" className="sidebar-link">Food</a></li>
-        <li className="sidebar-list-item"><a href="#about-us" className="sidebar-link">About Us</a></li>
-        <li className="sidebar-list-item"><a href="#contact-us" className="sidebar-link">Contact Us</a></li>
-        <li className="sidebar-list-item"><a href="#login" className="sidebar-link">Login</a></li>
+    <nav className='sidebar-nav'>
+      <h2 className='sidebar-header'>Menu</h2>
+      <ul className='sidebar-list'>
+        <li onClick={handleFood} className='sidebar-list-item'>
+          Food
+        </li>
+        <li onClick={handleAboutUs} className='sidebar-list-item'>
+          About Us
+        </li>
+        <li onClick={handleContactUs} className='sidebar-list-item'>
+          Contact Us
+        </li>
+        <li onClick={handleLogin} className='sidebar-list-item'>
+          Login
+        </li>
       </ul>
     </nav>
-  );
-};
+  )
+}
 
-export default Sidebar;
+Sidebar.propTypes = {
+  toggleSidebar: PropTypes.func.isRequired
+}
+
+export default Sidebar
