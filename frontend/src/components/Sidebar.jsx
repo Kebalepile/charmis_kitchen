@@ -12,9 +12,9 @@ const Sidebar = ({ toggleSidebar , isSidebarVisible }) => {
   const handleContactUs = () => {
     toggleSidebar()
   }
-  const handleLogin = () => {
-    toggleSidebar()
-  }
+  // const handleLogin = () => {
+  //   toggleSidebar()
+  // }
 
   return (
     <nav className={`sidebar-nav ${isSidebarVisible ? 'show' : 'hide'}`}>
@@ -30,9 +30,9 @@ const Sidebar = ({ toggleSidebar , isSidebarVisible }) => {
         <li onClick={handleContactUs} className='sidebar-list-item'>
           Contact Us
         </li>
-        <li onClick={handleLogin} className='sidebar-list-item'>
+        {/* <li onClick={handleLogin} className='sidebar-list-item'>
           Login
-        </li>
+        </li> */}
       </ul>
       <hr className="bg-hr"/>
       <Footer/>
