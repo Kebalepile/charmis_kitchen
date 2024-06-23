@@ -11,8 +11,8 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --b1:#bd9e1518;
-  --b2:black;
+  --b1: #bd9e1518;
+  --b2: black;
 }
 
 /* a {
@@ -28,13 +28,9 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  /* min-width: 320px; */
-  /* min-height: 100vh; */
-  /* add color to variable */
   background-color: var(--b1);
-  padding:0;
+  padding: 0;
 }
-
 
 /* ====================================== */
 nav {
@@ -44,7 +40,8 @@ nav {
   display: grid;
   grid-template-columns: 1fr 100px 1fr; /* Create three columns */
   align-items: center; /* Center items vertically */
-padding-left:15px;
+  padding-left: 15px;
+  background-color: #3fcefa;
 }
 
 #logo {
@@ -60,26 +57,51 @@ padding-left:15px;
   width: 30px;
   height: 30px;
   cursor: pointer;
+  color: #fdfdfd;
 }
 
 /* side bar */
 .sidebar-nav {
   width: 200px;
-  height:280px;
+  height: 320px;
   padding: 10px;
-  background: #f8f9fa;
+  /* background: #b3b299; */
+  background-color: #26bdf8c0;
+  /* background-color: #9e15bd; */
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  position:absolute;
-  display:flex;
+  position: absolute;
+  display: flex;
   flex-flow: column nowrap;
-  border-radius: 2px;
-  overflow: auto;
+  border-radius: 0px 0px 10px 10px;
+  /* overflow: auto; */
+  color: white;
+  z-index: 5;
+}
+
+.sidebar-nav.show {
+  animation: rollDown 0.3s forwards;
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar-nav.hide {
+  animation: rollUp 0.3s forwards;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .sidebar-header {
   font-size: 1.5em;
   margin-bottom: 10px;
+}
+.bg-hr {
+  width: 80%;
+  border-color: white;
+}
+.sm-hr {
+  width: 40%;
+  border-color: white;
 }
 
 .sidebar-list {
@@ -98,6 +120,35 @@ padding-left:15px;
   font-size: 1.2em;
 }
 
-.sidebar-link:hover {
-  text-decoration: underline;
+.sidebar-list-item:hover {
+  /* text-decoration: underline; */
+  background: #0c8b7656;
+  border-radius: 3px;
+}
+
+footer > p {
+  font-size: small;
+  color: rgb(241, 241, 241);
+}
+
+@keyframes rollDown {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: 320px;
+    opacity: 1;
+  }
+}
+
+@keyframes rollUp {
+  from {
+    height: 320px;
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
 }
