@@ -19,46 +19,49 @@ export default function ReadMenu() {
   };
 
   return (
-    <section id='read-menu'>
-      <p>{menu ? menu.name : 'No menu selected'}</p>
+    <>
+      <div id="overlay" className="show" onClick={handleClick}></div>
+      <section id='read-menu'>
+        <p>{menu ? menu.name : 'No menu selected'}</p>
 
-      {loading ? (
-        <div className="loading-container">
-          <div className="loading-dot" style={{ '--i': 1 }}></div>
-          <div className="loading-dot" style={{ '--i': 2 }}></div>
-          <div className="loading-dot" style={{ '--i': 3 }}></div>
-        </div>
-      ) : (
-        <>
-          {menu && menu.items && menu.items.length > 0 ? (
-            <ul>
-              {menu.items.map((item, index) => (
-                <li key={index}>
-                  <img src={item.image_url} alt={item.alt} className="menu-img" />
-                  <h3>{item.name}</h3>
-                  {item.prices ? (
-                    <ul>
-                      {Object.entries(item.prices).map(([size, price]) => (
-                        <li key={size}>
-                          {size}: {price}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>Price: {item.price}</p>
-                  )}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No items in the menu</p>
-          )}
-        </>
-      )}
+        {loading ? (
+          <div className="loading-container">
+            <div className="loading-dot" style={{ '--i': 1 }}></div>
+            <div className="loading-dot" style={{ '--i': 2 }}></div>
+            <div className="loading-dot" style={{ '--i': 3 }}></div>
+          </div>
+        ) : (
+          <>
+            {menu && menu.items && menu.items.length > 0 ? (
+              <ul>
+                {menu.items.map((item, index) => (
+                  <li key={index}>
+                    <img src={item.image_url} alt={item.alt} className="menu-img" />
+                    <h3>{item.name}</h3>
+                    {item.prices ? (
+                      <ul>
+                        {Object.entries(item.prices).map(([size, price]) => (
+                          <li key={size}>
+                            {size}: {price}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>Price: {item.price}</p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No items in the menu</p>
+            )}
+          </>
+        )}
 
-      <button id='close-menu' onClick={handleClick}>
-        Close menu
-      </button>
-    </section>
+        <button id='close-menu' onClick={handleClick}>
+          Close menu
+        </button>
+      </section>
+    </>
   );
 }

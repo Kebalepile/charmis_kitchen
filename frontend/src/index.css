@@ -225,6 +225,38 @@ footer > p {
 }
 
 /* New CSS for menu blur background */
+/* ... existing CSS ... */
+
+/* New CSS for overlay */
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9;
+  display: none; /* Initially hidden */
+}
+
+#overlay.show {
+  display: block;
+}
+
+/* ... existing CSS ... */
+
+/* New CSS for overlay */
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #0000002d;
+  z-index: 9;
+}
+
+/* New CSS for menu blur background */
 #read-menu {
   position: fixed;
   top: 50%;
@@ -240,6 +272,9 @@ footer > p {
   width: 400px; /* Adjust the width as per your requirement */
   overflow-y: auto; /* Enable vertical scrolling */
 }
+
+/* ... rest of your CSS ... */
+
 
 #read-menu ul {
   list-style: none;
