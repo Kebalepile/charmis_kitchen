@@ -2,20 +2,22 @@ import {
   PIZZA_MENU,
   CHICKEN_MENU,
   COMPLETE_MENU,
+  CHIPS_MENU,
   MENU,
   OPEN_MENU
-} from '../types';
+} from '../types'
 
-export default function Reducer(state, action) {
+export default function Reducer (state, action) {
   switch (action.type) {
     case OPEN_MENU:
     case MENU:
-      return { ...state, ...action.payload };
+      return { ...state, ...action.payload }
 
+    case CHIPS_MENU:
     case PIZZA_MENU:
     case CHICKEN_MENU:
     case COMPLETE_MENU:
     default:
-      return state;
+      return state
   }
 }

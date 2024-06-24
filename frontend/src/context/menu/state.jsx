@@ -3,11 +3,13 @@ import MenuContext from './context'
 import PropTypes from 'prop-types'
 import Reducer from './reducer'
 import { MENU, OPEN_MENU } from '../types'
+import menuInfo from '../../assets/data/menu.json'
 
 export default function MenuProvider ({ children }) {
   const initialState = {
-    PIZZA_MENU: { name: 'Pizza menu' },
-    CHICKEN_MENU: { name: 'Chicken menu' },
+    CHIPS_MENU: menuInfo.chipsMenu,
+    PIZZA_MENU: menuInfo.pizzaMenu,
+    CHICKEN_MENU: menuInfo.wingsMenu,
     COMPLETE_MENU: { name: 'Complete menu' },
     MENU: false,
     OPEN_MENU: null
