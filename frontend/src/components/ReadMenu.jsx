@@ -1,44 +1,61 @@
-import React, { useContext, useState, useEffect } from 'react';
-import MenuContext from '../context/menu/context';
-import { MENU } from '../context/types';
+import React, { useContext, useState, useEffect } from 'react'
+import MenuContext from '../context/menu/context'
+import { MENU } from '../context/types'
+import Loading from './Loading'
+import OrderForm from './OrderForm'
 
-export default function ReadMenu() {
-  const { ReadMenu: RM, CloseMenu } = useContext(MenuContext);
-  const [loading, setLoading] = useState(true);
-  const [selectedImage, setSelectedImage] = useState(null); // State for the selected image
-  const menu = RM();
+export default function ReadMenu () {
+  const { ReadMenu: RM, CloseMenu } = useContext(MenuContext)
+  const [loading, setLoading] = useState(true)
+  const [selectedImage, setSelectedImage] = useState(null)
+  const [selectedItem, setSelectedItem] = useState(null) // State for the selected item
+  const [showOrderForm, setShowOrderForm] = useState(false) // State to show/hide order form
+  const [selectedFoodMenu, setSelectedFoodMenu] = useState(null)
+  const menu = RM()
 
   useEffect(() => {
     // Simulate async fetch
     setTimeout(() => {
-      setLoading(false);
-    }, 2000); // Adjust delay as needed or replace with actual async call
-  }, []);
+      setLoading(false)
+    }, 2000) // Adjust delay as needed or replace with actual async call
+  }, [])
 
   const handleClick = () => {
-    CloseMenu(MENU, false);
-  };
+    CloseMenu(MENU, false)
+  }
 
-  const handleImageClick = (imageUrl) => {
-    setSelectedImage(imageUrl);
-  };
+  const handleImageClick = imageUrl => {
+    setSelectedImage(imageUrl)
+  }
 
   const handleOverlayClick = () => {
-    setSelectedImage(null);
-  };
+    setSelectedImage(null)
+  }
+
+  const handleOrderClick = item => {
+    setSelectedItem(item)
+    setShowOrderForm(true)
+  }
+
+  const closeOrderForm = () => {
+    setShowOrderForm(false)
+  }
 
   return (
     <>
-      <div id="overlay" className="show" onClick={handleClick}></div>
+      <div id='overlay' className='show' onClick={handleClick}></div>
       <section id='read-menu'>
-        <p>{menu ? menu.name : 'No menu selected'}</p>
+        {menu ? (
+          <>
+            <h3> {menu.name} </h3>
+            <hr className='bg-hr' />
+          </>
+        ) : (
+          <p> No menu selected</p>
+        )}
 
         {loading ? (
-          <div className="loading-container">
-            <div className="loading-dot" style={{ '--i': 1 }}></div>
-            <div className="loading-dot" style={{ '--i': 2 }}></div>
-            <div className="loading-dot" style={{ '--i': 3 }}></div>
-          </div>
+          <Loading />
         ) : (
           <>
             {menu && menu.items && menu.items.length > 0 ? (
@@ -48,8 +65,8 @@ export default function ReadMenu() {
                     <img
                       src={item.image_url}
                       alt={item.alt}
-                      className="menu-img"
-                      onClick={() => handleImageClick(item.image_url)} // Add click handler for images
+                      className='menu-img'
+                      onClick={() => handleImageClick(item.image_url)}
                     />
                     <h3>{item.name}</h3>
                     {item.prices ? (
@@ -63,6 +80,16 @@ export default function ReadMenu() {
                     ) : (
                       <p>Price: {item.price}</p>
                     )}
+                    <button
+                      className='menu-btn'
+                      onClick={() => {
+                        setSelectedFoodMenu(menu.name)
+                        handleOrderClick(item)
+                      }}
+                    >
+                      Order
+                    </button>
+                    <hr className='bg-hr' />
                   </li>
                 ))}
               </ul>
@@ -78,12 +105,20 @@ export default function ReadMenu() {
       </section>
 
       {selectedImage && (
-        <div id="image-overlay" onClick={handleOverlayClick}>
-          <div className="image-container">
-            <img src={selectedImage} alt="Enlarged" />
+        <div id='image-overlay' onClick={handleOverlayClick}>
+          <div className='image-container'>
+            <img src={selectedImage} alt='Enlarged' />
           </div>
         </div>
       )}
+
+      {showOrderForm && (
+        <OrderForm
+          item={selectedItem}
+          onClose={closeOrderForm}
+          menuName={selectedFoodMenu}
+        />
+      )}
     </>
-  );
+  )
 }
