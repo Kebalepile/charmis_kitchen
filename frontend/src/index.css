@@ -314,7 +314,9 @@ footer > p {
 }
 
 @keyframes loading {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0);
   }
   40% {
@@ -336,4 +338,84 @@ footer > p {
   margin: 0 5px;
   animation: loading 1.4s infinite ease-in-out both;
   animation-delay: calc(var(--i) * 0.2s);
+}
+
+#popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+#popup {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+#popup button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#popup button:hover {
+  background-color: #0056b3;
+}
+
+.order-form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.order-form .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.order-form input,
+.order-form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.order-form button {
+  /* margin-top: 20px; */
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100px;
+  margin: auto;
+}
+
+.order-form button:hover {
+  background-color: #0056b3;
+}
+
+.order-form button.cancel {
+  background-color: #f71848 !important;
 }

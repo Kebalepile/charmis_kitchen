@@ -25,17 +25,24 @@ const OrderProvider = ({ children }) => {
   };
 
   const [state, dispatch] = useReducer(Reducer, initialState);
-  const { quantity,
+  const {
+    quantity,
     name,
     phone,
     paymentMethod,
     deliveryCharge,
     total,
-    selectedSize} = state;
+    selectedSize
+  } = state;
 
   const handleQuantityChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    dispatch({ type: SET_QUANTITY, payload: isNaN(value) ? 1 : value });
+    let value = parseInt(e.target.value, 10);
+    if (isNaN(value) || value < 1) {
+      value = 1;
+    } else if (value > 25) {
+      value = 25;
+    }
+    dispatch({ type: SET_QUANTITY, payload: value });
   };
 
   const handleNameChange = (e) => {
@@ -80,7 +87,7 @@ const OrderProvider = ({ children }) => {
     dispatch({ type: SET_TOTAL, payload: totalAmount });
   };
 
-  const handleSubmit = (e,foodMenu, item, onClose) => {
+  const handleSubmit = (e, foodMenu, item, onClose) => {
     e.preventDefault();
     console.log({
       foodMenu,
