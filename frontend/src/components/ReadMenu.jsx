@@ -5,6 +5,7 @@ import { MENU } from '../context/types';
 export default function ReadMenu() {
   const { ReadMenu: RM, CloseMenu } = useContext(MenuContext);
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null); // State for the selected image
   const menu = RM();
 
   useEffect(() => {
@@ -16,6 +17,14 @@ export default function ReadMenu() {
 
   const handleClick = () => {
     CloseMenu(MENU, false);
+  };
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+  };
+
+  const handleOverlayClick = () => {
+    setSelectedImage(null);
   };
 
   return (
@@ -36,7 +45,12 @@ export default function ReadMenu() {
               <ul>
                 {menu.items.map((item, index) => (
                   <li key={index}>
-                    <img src={item.image_url} alt={item.alt} className="menu-img" />
+                    <img
+                      src={item.image_url}
+                      alt={item.alt}
+                      className="menu-img"
+                      onClick={() => handleImageClick(item.image_url)} // Add click handler for images
+                    />
                     <h3>{item.name}</h3>
                     {item.prices ? (
                       <ul>
@@ -62,6 +76,14 @@ export default function ReadMenu() {
           Close menu
         </button>
       </section>
+
+      {selectedImage && (
+        <div id="image-overlay" onClick={handleOverlayClick}>
+          <div className="image-container">
+            <img src={selectedImage} alt="Enlarged" />
+          </div>
+        </div>
+      )}
     </>
   );
 }
