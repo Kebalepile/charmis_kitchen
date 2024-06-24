@@ -6,11 +6,12 @@ import {
   SET_PAYMENT_METHOD,
   SET_DELIVERY_CHARGE,
   SET_TOTAL,
-  SET_SELECTED_SIZE
+  SET_SELECTED_SIZE,
+  RESET_STATE
 } from '../types'
 
 // Reducer function
-export default function orderReducer  (state, action)  {
+export default function orderReducer (state, action) {
   switch (action.type) {
     case SET_QUANTITY:
       return {
@@ -47,6 +48,8 @@ export default function orderReducer  (state, action)  {
         ...state,
         selectedSize: action.payload
       }
+    case RESET_STATE:
+      return { ...action.payload }
     default:
       return state
   }

@@ -10,11 +10,12 @@ import {
   SET_DELIVERY_CHARGE,
   SET_TOTAL,
   SET_SELECTED_SIZE,
+  RESET_STATE,
 } from '../types';
 
 const OrderProvider = ({ children }) => {
   const initialState = {
-    quantity: 1,
+    quantity: 0,
     name: '',
     phone: '',
     paymentMethod: 'self-collect',
@@ -87,20 +88,31 @@ const OrderProvider = ({ children }) => {
     dispatch({ type: SET_TOTAL, payload: totalAmount });
   };
 
+  const generateOrderNumber = () => {
+    // Generate a 4-digit random number using crypto API
+    const array = new Uint32Array(1);
+    window.crypto.getRandomValues(array);
+    return array[0] % 10000; // Ensure it's a 4-digit number
+  };
   const handleSubmit = (e, foodMenu, item, onClose) => {
     e.preventDefault();
-    console.log({
-      foodMenu,
-      item,
-      quantity: state.quantity,
-      name: state.name,
-      phone: state.phone,
-      paymentMethod: state.paymentMethod,
-      deliveryCharge: state.deliveryCharge,
-      total: state.total,
-      selectedSize: state.selectedSize,
-    });
+    const orderNumber = generateOrderNumber(); // Generate unique order number
+   const orderDetails = {
+    foodMenu,
+    item,
+    quantity: state.quantity,
+    name: state.name,
+    phone: state.phone,
+    paymentMethod: state.paymentMethod,
+    deliveryCharge: state.deliveryCharge,
+    total: state.total,
+    selectedSize: state.selectedSize,
+    orderNumber
+  } 
+    console.log(orderDetails);
+    localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
     onClose();
+    dispatch({ type: RESET_STATE, payload: initialState });
   };
 
   return (

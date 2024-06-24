@@ -24,7 +24,9 @@ body {
 }
 
 .navbar {
-  width: 97dvw;
+  position: fixed;
+  top: 0;
+  width: 100%;
   height: 100px; /* Ensure it accommodates the height of #logo */
   border-radius: 3px;
   display: grid;
@@ -32,6 +34,7 @@ body {
   align-items: center; /* Center items vertically */
   padding-left: 15px;
   background-color: #3fcefa;
+  z-index: 10; /* Ensure it's above other content */
 }
 
 #logo {
@@ -49,6 +52,7 @@ body {
   cursor: pointer;
   color: #fdfdfd;
 }
+
 
 .sidebar-nav {
   width: 200px;
@@ -151,7 +155,9 @@ footer > p {
   backdrop-filter: blur(3px);
   word-wrap: break-word;
 }
-
+#home{
+  margin:110px auto auto auto;
+}
 #home,
 #menu {
   width: 96dvw;
@@ -159,11 +165,11 @@ footer > p {
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  margin: auto;
+  
 }
 
 #menu {
-  margin-top: 30px;
+  margin:30px auto auto auto;
 }
 
 #contact,
@@ -419,3 +425,4 @@ footer > p {
 .order-form button.cancel {
   background-color: #f71848 !important;
 }
+
