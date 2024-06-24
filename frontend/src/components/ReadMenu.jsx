@@ -34,7 +34,7 @@ export default function ReadMenu() {
             <ul>
               {menu.items.map((item, index) => (
                 <li key={index}>
-                  <img src={item.image_url} alt={item.alt} />
+                  <img src={item.image_url} alt={item.alt} className="menu-img" />
                   <h3>{item.name}</h3>
                   {item.prices ? (
                     <ul>
