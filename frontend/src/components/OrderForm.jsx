@@ -115,7 +115,7 @@ const OrderForm = ({ item, onClose, menuName }) => {
           <div className='form-group'>
             <label>
               Payment Method:
-              <select value={paymentMethod} onChange={handlePaymentChange}>
+              <select className="select-payment" value={paymentMethod} onChange={handlePaymentChange}>
                 <option value='self-collect'>Self Collect (Free)</option>
                 <option value='online-self-collect'>
                   Online Payment + Self Collect (Free)
