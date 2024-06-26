@@ -43,7 +43,7 @@ const OrderForm = ({ item, onClose, menuName }) => {
    
     setTimeout(() => {
       handleSubmit(e, menuName, item, onClose);
-    }, 9000)
+    }, 3000)
   };
 
   const handleQuantityInputChange = e => {

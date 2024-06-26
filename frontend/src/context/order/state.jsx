@@ -4,9 +4,6 @@ import OrderContext from './context'
 import Reducer from './reducer'
 import {
   SET_QUANTITY,
-  SET_NAME,
-  SET_PHONE,
-  SET_PAYMENT_METHOD,
   SET_DELIVERY_CHARGE,
   SET_TOTAL,
   SET_SELECTED_SIZE,
@@ -18,10 +15,7 @@ import {
 const OrderProvider = ({ children }) => {
   const initialState = {
     quantity: 0,
-    name: '',
-    phone: '',
-    paymentMethod: 'self-collect',
-    deliveryCharge: 20,
+
     total: 0,
     selectedSize: '',
     fooMenu: '',
@@ -70,24 +64,6 @@ const OrderProvider = ({ children }) => {
     dispatch({ type: SET_QUANTITY, payload: value })
   }
 
-  const handleNameChange = e => {
-    dispatch({ type: SET_NAME, payload: e.target.value })
-  }
-
-  const handlePhoneChange = e => {
-    const cleanedPhone = e.target.value.replace(/\D/g, '')
-    dispatch({ type: SET_PHONE, payload: cleanedPhone.slice(0, 10) })
-  }
-
-  const handlePaymentChange = e => {
-    const method = e.target.value
-    dispatch({ type: SET_PAYMENT_METHOD, payload: method })
-    dispatch({
-      type: SET_DELIVERY_CHARGE,
-      payload: method === 'cash' ? 20 : method === 'online' ? 15 : 0
-    })
-  }
-
   const handleSizeChange = e => {
     dispatch({ type: SET_SELECTED_SIZE, payload: e.target.value })
   }
@@ -132,13 +108,10 @@ const OrderProvider = ({ children }) => {
       selectedSize: state.selectedSize,
       orderNumber
     }
-    //  name: state.name,
-    //   phone: state.phone,
-    //   paymentMethod: state.paymentMethod,
-    //   deliveryCharge: state.deliveryCharge,
+
     // console.log(orderDetails)
     handleBasketItems(orderDetails)
-    // SubmitOrder(orderDetails)
+
     localStorage.setItem('orderDetails', JSON.stringify(orderDetails))
     onClose()
     setShouldReset(true)
@@ -146,65 +119,23 @@ const OrderProvider = ({ children }) => {
   /**
    * @description restorder form state to inital state
    */
-  
+
   const handleRest = () => {
-    setShouldReset(true);
-  };
-  
+    setShouldReset(true)
+  }
+
   useEffect(() => {
     if (shouldReset) {
       const preservedState = {
         ...initialState,
         basket: state.basket,
-        basketItems: state.basketItems,
-      };
-      dispatch({ type: REST_ORDER_STATE, payload: preservedState });
-      setShouldReset(false);
+        basketItems: state.basketItems
+      }
+      dispatch({ type: REST_ORDER_STATE, payload: preservedState })
+      setShouldReset(false)
     }
-  }, [shouldReset, state.basket, state.basketItems]);
+  }, [shouldReset, state.basket, state.basketItems])
 
-  // const SubmitOrder = async order => {
-
-  //   const customerMessage = `Dear ${order.name},\n your Order number: ${
-  //     order.orderNumber
-  //   } for ${order.quantity} ${order.itemName} ${
-  //     order.selectedSize.length ? `, \n size: ${order.selectedSize}` : ''
-  //   } has been received by the store. \n It will be ready in about 25 minutes. \n Delivery: ${
-  //     order.deliveryCharge > 0 ? 'yes' : 'self collect'
-  //   }`
-  //   const storeMessage = `New order received! Order number: ${order.orderNumber},
-  //    \n Customer: ${name}, \n Phone: ${phone}, \n Item: ${order.itemName}, \n Quantity: ${order.quantity},
-  //    \n Payment method ${order.paymentMethod} \n Total price: ${order.total}.`
-
-  //   console.log(customerMessage)
-  //   console.log(storeMessage)
-  //   // Send SMS using the backend API
-  //   try {
-  //     const response = await fetch('http://localhost:5000/send-sms', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({
-  //         customerNumber: state.phone,
-  //         storeNumber: '0672718374', // Replace with the store owner's number
-  //         customerMessage,
-  //         storeMessage
-  //       })
-  //     })
-
-  //     const text = await response.text() // Read response as plain text
-  //     console.log('Response from backend:', text)
-
-  //     if (response.ok) {
-  //       console.log('SMS sent successfully')
-  //     } else {
-  //       console.error('Failed to send SMS')
-  //     }
-  //   } catch (error) {
-  //     console.error('Error sending SMS:', error)
-  //   }
-  // }
   return (
     <OrderContext.Provider
       value={{
@@ -218,9 +149,6 @@ const OrderProvider = ({ children }) => {
         basket,
         basketItems,
         handleQuantityChange,
-        handleNameChange,
-        handlePhoneChange,
-        handlePaymentChange,
         handleSizeChange,
         calculateTotal,
         handleSubmit,

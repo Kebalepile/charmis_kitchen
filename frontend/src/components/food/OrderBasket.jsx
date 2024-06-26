@@ -1,16 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-// import MenuContext from '../../context/menu/context'
-// import { MENU, COMPLETE_MENU } from '../../context/types'
-import { GiBookmarklet } from 'react-icons/gi'
+import PaymentForm from '../PaymentForm'
+
 
 const OrderBasket = ({ basketItems, updateBasketItems }) => {
-  // const { OpenMenu, ChooseMenu } = useContext(MenuContext)
-  const handleClick = () => {
-    // OpenMenu(MENU, true)
-    // ChooseMenu(COMPLETE_MENU)
-    console.log('order basket button clicked')
-  }
+  const [showPaymentForm, setShowPaymentForm] = useState(false)
 
   const removeOrder = (index, arr) => {
     // Create a copy of the array to avoid mutating the original array
@@ -28,34 +22,36 @@ const OrderBasket = ({ basketItems, updateBasketItems }) => {
     console.log(
       'load form to filll payment details and select payment type, calculate amount needed to pay'
     )
+    console.log('order basket button clicked')
+    setShowPaymentForm(true)
   }
   return (
-    <section id='entire-menu' className='order-basket'>
-      <button className='menu-btn' onClick={handleClick}>
-        Order Basket <GiBookmarklet />
-      </button>
-      <h3>Pending orders</h3>
-      <button className='pay-button' onClick={handlePaymentType}>
-        pay
-      </button>
-      {basketItems.map((order, index) => (
-        <article key={index} className='order-item'>
-          <p> order number: {order.orderNumber}</p>
-          <p> meal: {order.itemName}</p>
-          <p> number of meal ordered: {order.quantity}</p>
-          {order.selectedSize.length > 0 && (
-            <p> meal size: {order.selectedSize}</p>
-          )}
-          <p> total: R{order.total}</p>
-          <button
-            className='pop'
-            onClick={() => removeOrder(index, basketItems)}
-          >
-            remove
-          </button>
-        </article>
-      ))}
-    </section>
+    <>
+      {showPaymentForm && <PaymentForm />}
+      <section id='entire-menu' className='order-basket'>
+        <h3>Pending orders</h3>
+        <button className='menu-btn pay-button' onClick={handlePaymentType}>
+          pay
+        </button>
+        {basketItems.map((order, index) => (
+          <article key={index} className='order-item'>
+            <p> order number: {order.orderNumber}</p>
+            <p> meal: {order.itemName}</p>
+            <p> number of meal ordered: {order.quantity}</p>
+            {order.selectedSize.length > 0 && (
+              <p> meal size: {order.selectedSize}</p>
+            )}
+            <p> total: R{order.total}</p>
+            <button
+              className='pop'
+              onClick={() => removeOrder(index, basketItems)}
+            >
+              remove
+            </button>
+          </article>
+        ))}
+      </section>
+    </>
   )
 }
 
