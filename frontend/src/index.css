@@ -225,7 +225,7 @@ footer > p {
   }
 }
 
-#overlay {
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -235,8 +235,12 @@ footer > p {
   z-index: 9;
   display: none;
 }
+#price-form > .overlay{
 
-#overlay.show {
+  z-index:10
+}
+
+.overlay.show {
   display: block;
 }
 
@@ -262,9 +266,10 @@ footer > p {
   max-width: 100%;
   max-height: 100%;
   border-radius: 4px;
+  cursor: pointer;
 }
 
-#read-menu {
+.order-form, .read-menu {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -276,32 +281,43 @@ footer > p {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   max-height: 80vh;
-  width: 400px;
+  width: 320px;
   overflow-y: auto;
 }
-
-@media only screen and (min-width: 200px) {
-  #read-menu {
+.order-form{
+  height: 50vh;
+  display:flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5e7ac;
+  backdrop-filter: blur(10px);
+}
+.size-select{
+  width:60%;
+}
+@media only screen and (max-width: 320px) {
+ .order-form, .read-menu {
     width: 270px;
   }
 }
 
-#read-menu ul {
+.read-menu ul {
   list-style: none;
   padding: 0;
 }
 
-#read-menu li {
+.read-menu li {
   margin-bottom: 10px;
 }
 
-#read-menu img {
+.read-menu img {
   width: 100px;
   height: 100px;
   object-fit: cover;
 }
 
-#read-menu button {
+.read-menu button {
   margin-top: 20px;
   padding: 10px 20px;
   background-color: #007bff;
@@ -311,7 +327,7 @@ footer > p {
   cursor: pointer;
 }
 
-#read-menu button:hover {
+.read-menu button:hover {
   background-color: #0056b3;
 }
 
@@ -415,7 +431,7 @@ footer > p {
   cursor: pointer;
   font-size: 14px;
   width: 100px;
-  margin: auto;
+  /* margin: auto; */
 }
 
 .order-form button:hover {
@@ -424,8 +440,22 @@ footer > p {
 
 .order-form button.cancel {
   background-color: #f71848 !important;
+ 
 }
 
 .select-payment{
   width:270px;
+}
+
+.order-form button[type="submit"].basket-btn{
+width:150px;
+background-color:#09d424 !important;
+
+}
+
+.order-basket{
+ background-color:black
+}
+.order-basket .order-item{
+  background-color: gray;
 }

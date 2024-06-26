@@ -10,7 +10,9 @@ import {
   SET_DELIVERY_CHARGE,
   SET_TOTAL,
   SET_SELECTED_SIZE,
-  RESET_STATE
+  REST_ORDER_STATE,
+  BASKET,
+  BASKET_ITEMS
 } from '../types'
 
 const OrderProvider = ({ children }) => {
@@ -22,7 +24,9 @@ const OrderProvider = ({ children }) => {
     deliveryCharge: 20,
     total: 0,
     selectedSize: '',
-    fooMenu: ''
+    fooMenu: '',
+    basket: false,
+    basketItems: []
   }
 
   const [state, dispatch] = useReducer(Reducer, initialState)
@@ -33,9 +37,22 @@ const OrderProvider = ({ children }) => {
     paymentMethod,
     deliveryCharge,
     total,
-    selectedSize
+    selectedSize,
+    basket,
+    basketItems
   } = state
 
+  const handleBasketItems = order => {
+    console.log(basket)
+    console.log(state)
+    if (basket) {
+      dispatch({ type: BASKET_ITEMS, payload: [...basketItems, order] })
+    } else {
+      dispatch({ type: BASKET, payload: true })
+      dispatch({ type: BASKET_ITEMS, payload: [order] })
+      console.log("basket activted")
+    }
+  }
   const handleQuantityChange = e => {
     let value = parseInt(e.target.value, 10)
     if (isNaN(value) || value < 1) {
@@ -95,69 +112,84 @@ const OrderProvider = ({ children }) => {
     return array[0] % 10000 // Ensure it's a 4-digit number
   }
 
-  const handleSubmit = async (e, foodMenu, item, onClose) => {
+  const handleSubmit = (e, foodMenu, item, onClose) => {
     e.preventDefault()
+    // NB to order details add house addres or street address
     const orderNumber = generateOrderNumber() // Generate unique order number
     const orderDetails = {
       foodMenu,
       item,
+      itemName: item.name,
       quantity: state.quantity,
-      name: state.name,
-      phone: state.phone,
-      paymentMethod: state.paymentMethod,
-      deliveryCharge: state.deliveryCharge,
       total: state.total,
       selectedSize: state.selectedSize,
       orderNumber
     }
-
-    // console.log(orderDetails)
+    //  name: state.name,
+    //   phone: state.phone,
+    //   paymentMethod: state.paymentMethod,
+    //   deliveryCharge: state.deliveryCharge,
+    console.log(orderDetails)
+    handleBasketItems(orderDetails)
+    // SubmitOrder(orderDetails)
     localStorage.setItem('orderDetails', JSON.stringify(orderDetails))
-
-    const customerMessage = `Dear ${name}, your Order number: ${orderNumber} for ${quantity} ${
-      item.name
-    } ${
-      selectedSize.length ? `, \n size: ${selectedSize}` : ''
-    } has been received by the store. \n It will be ready in about 25 minutes. \n Delivery: ${
-      deliveryCharge > 0 ? 'yes' : 'self collect'
-    }`
-    const storeMessage = `New order received! Order number: ${orderNumber},
-     \n Customer: ${name}, \n Phone: ${phone}, \n Item: ${item.name}, \n Quantity: ${quantity},
-     \n Payment method ${paymentMethod}.`
-
-    console.log(customerMessage)
-    console.log(storeMessage)
-    // Send SMS using the backend API
-    try {
-      const response = await fetch('http://localhost:5000/send-sms', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              customerNumber: state.phone,
-              storeNumber: '0672718374', // Replace with the store owner's number
-              customerMessage,
-              storeMessage
-          }),
-      });
-
-      const text = await response.text(); // Read response as plain text
-      console.log('Response from backend:', text);
-
-      if (response.ok) {
-          console.log('SMS sent successfully');
-      } else {
-          console.error('Failed to send SMS');
-      }
-  } catch (error) {
-      console.error('Error sending SMS:', error);
-  }
-
     onClose()
-    dispatch({ type: RESET_STATE, payload: initialState })
+    // handleRest()
   }
+  /**
+   * @description restorder form state to inital state
+   */
+  const handleRest = () => {
+    const preservedState = {
+      ...initialState,
+      basket: state.basket,
+      basketItems: state.basketItems
+    }
+    console.log(preservedState)
+    dispatch({ type: REST_ORDER_STATE, payload: preservedState }) }
 
+  // const SubmitOrder = async order => {
+  
+  //   const customerMessage = `Dear ${order.name},\n your Order number: ${
+  //     order.orderNumber
+  //   } for ${order.quantity} ${order.itemName} ${
+  //     order.selectedSize.length ? `, \n size: ${order.selectedSize}` : ''
+  //   } has been received by the store. \n It will be ready in about 25 minutes. \n Delivery: ${
+  //     order.deliveryCharge > 0 ? 'yes' : 'self collect'
+  //   }`
+  //   const storeMessage = `New order received! Order number: ${order.orderNumber},
+  //    \n Customer: ${name}, \n Phone: ${phone}, \n Item: ${order.itemName}, \n Quantity: ${order.quantity},
+  //    \n Payment method ${order.paymentMethod} \n Total price: ${order.total}.`
+
+  //   console.log(customerMessage)
+  //   console.log(storeMessage)
+  //   // Send SMS using the backend API
+  //   try {
+  //     const response = await fetch('http://localhost:5000/send-sms', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({
+  //         customerNumber: state.phone,
+  //         storeNumber: '0672718374', // Replace with the store owner's number
+  //         customerMessage,
+  //         storeMessage
+  //       })
+  //     })
+
+  //     const text = await response.text() // Read response as plain text
+  //     console.log('Response from backend:', text)
+
+  //     if (response.ok) {
+  //       console.log('SMS sent successfully')
+  //     } else {
+  //       console.error('Failed to send SMS')
+  //     }
+  //   } catch (error) {
+  //     console.error('Error sending SMS:', error)
+  //   }
+  // }
   return (
     <OrderContext.Provider
       value={{
@@ -168,13 +200,16 @@ const OrderProvider = ({ children }) => {
         deliveryCharge,
         total,
         selectedSize,
+        basket,
+        basketItems,
         handleQuantityChange,
         handleNameChange,
         handlePhoneChange,
         handlePaymentChange,
         handleSizeChange,
         calculateTotal,
-        handleSubmit
+        handleSubmit,
+        handleRest
       }}
     >
       {children}

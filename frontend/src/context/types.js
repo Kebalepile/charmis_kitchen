@@ -13,5 +13,10 @@ export const SET_PAYMENT_METHOD = "SET_PAYMENT_METHOD";
 export const SET_DELIVERY_CHARGE = "SET_DELIVERY_CHARGE";
 export const SET_TOTAL = "SET_TOTAL";
 export const SET_SELECTED_SIZE = "SET_SELECTED_SIZE";
-export const RESET_STATE = "RESET_STATE";
-
+export const REST_ORDER_STATE = "REST_ORDER_STATE";
+export const BASKET = "BASKET";
+export const BASKET_ITEMS = "BASKET_ITEMS";
+export const CONFIRM_ORDER = "CONFIRM_ORDER";
+// payment context
+export const PAYMENT = "PAYMENT";
+export const ORDER_PUNCHED = "ORDER_PUNCED";

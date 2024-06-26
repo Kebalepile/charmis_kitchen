@@ -1,4 +1,3 @@
-// Action types
 import {
   SET_QUANTITY,
   SET_NAME,
@@ -7,12 +6,23 @@ import {
   SET_DELIVERY_CHARGE,
   SET_TOTAL,
   SET_SELECTED_SIZE,
-  RESET_STATE
+  REST_ORDER_STATE,
+  BASKET,
+  BASKET_ITEMS
 } from '../types'
 
-// Reducer function
-export default function orderReducer (state, action) {
+export default function orderReducer(state, action) {
   switch (action.type) {
+    case BASKET:
+      return {
+        ...state,
+        basket: action.payload
+      }
+    case BASKET_ITEMS:
+      return {
+        ...state,
+        basketItems: action.payload
+      }
     case SET_QUANTITY:
       return {
         ...state,
@@ -48,7 +58,7 @@ export default function orderReducer (state, action) {
         ...state,
         selectedSize: action.payload
       }
-    case RESET_STATE:
+    case REST_ORDER_STATE:
       return { ...action.payload }
     default:
       return state

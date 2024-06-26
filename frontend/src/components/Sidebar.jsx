@@ -17,9 +17,6 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
       </h4>
       <hr className='bg-hr' />
       <ul className='sidebar-list'>
-        <li onClick={() => handleClick('#menu')} className='sidebar-list-item'>
-          Food
-        </li>
         <li onClick={() => handleClick('#about')} className='sidebar-list-item'>
           About Us
         </li>
@@ -28,6 +25,9 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
           className='sidebar-list-item'
         >
           Contact Us
+        </li>
+        <li onClick={() => handleClick('#menu')} className='sidebar-list-item'>
+          Food
         </li>
         {/* <li onClick={handleLogin} className='sidebar-list-item'>
           Login
