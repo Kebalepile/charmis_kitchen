@@ -45,7 +45,7 @@ const OrderProvider = ({ children }) => {
   } = state
 
   const handleBasketItems = order => {
-    console.log(basket)
+    // console.log(basket)
 
     if (basket) {
       dispatch({ type: BASKET_ITEMS, payload: [...basketItems, order] })
@@ -143,21 +143,23 @@ const OrderProvider = ({ children }) => {
   /**
    * @description restorder form state to inital state
    */
+  
   const handleRest = () => {
-    const preservedState = {
-      ...initialState,
-      basket: state.basket,
-      basketItems: state.basketItems
-    }
-    // console.log(preservedState)
-    dispatch({ type: REST_ORDER_STATE, payload: preservedState })
-  }
+    setShouldReset(true);
+  };
+  
   useEffect(() => {
     if (shouldReset) {
-      handleRest()
-      setShouldReset(false)
+      const preservedState = {
+        ...initialState,
+        basket: state.basket,
+        basketItems: state.basketItems,
+      };
+      dispatch({ type: REST_ORDER_STATE, payload: preservedState });
+      setShouldReset(false);
     }
-  }, [shouldReset, state.basket, state.basketItems])
+  }, [shouldReset, state.basket, state.basketItems]);
+
   // const SubmitOrder = async order => {
 
   //   const customerMessage = `Dear ${order.name},\n your Order number: ${
