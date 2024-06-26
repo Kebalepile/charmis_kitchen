@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import OrderContext from './context'
 import Reducer from './reducer'
@@ -30,6 +30,8 @@ const OrderProvider = ({ children }) => {
   }
 
   const [state, dispatch] = useReducer(Reducer, initialState)
+  const [shouldReset, setShouldReset] = useState(false)
+
   const {
     quantity,
     name,
@@ -44,14 +46,16 @@ const OrderProvider = ({ children }) => {
 
   const handleBasketItems = order => {
     console.log(basket)
-    console.log(state)
+
     if (basket) {
       dispatch({ type: BASKET_ITEMS, payload: [...basketItems, order] })
     } else {
       dispatch({ type: BASKET, payload: true })
       dispatch({ type: BASKET_ITEMS, payload: [order] })
-      console.log("basket activted")
     }
+  }
+  const updateBasketItems = updatedArr => {
+    dispatch({ type: BASKET_ITEMS, payload: updatedArr })
   }
   const handleQuantityChange = e => {
     let value = parseInt(e.target.value, 10)
@@ -129,12 +133,12 @@ const OrderProvider = ({ children }) => {
     //   phone: state.phone,
     //   paymentMethod: state.paymentMethod,
     //   deliveryCharge: state.deliveryCharge,
-    console.log(orderDetails)
+    // console.log(orderDetails)
     handleBasketItems(orderDetails)
     // SubmitOrder(orderDetails)
     localStorage.setItem('orderDetails', JSON.stringify(orderDetails))
     onClose()
-    // handleRest()
+    setShouldReset(true)
   }
   /**
    * @description restorder form state to inital state
@@ -145,11 +149,17 @@ const OrderProvider = ({ children }) => {
       basket: state.basket,
       basketItems: state.basketItems
     }
-    console.log(preservedState)
-    dispatch({ type: REST_ORDER_STATE, payload: preservedState }) }
-
+    // console.log(preservedState)
+    dispatch({ type: REST_ORDER_STATE, payload: preservedState })
+  }
+  useEffect(() => {
+    if (shouldReset) {
+      handleRest()
+      setShouldReset(false)
+    }
+  }, [shouldReset, state.basket, state.basketItems])
   // const SubmitOrder = async order => {
-  
+
   //   const customerMessage = `Dear ${order.name},\n your Order number: ${
   //     order.orderNumber
   //   } for ${order.quantity} ${order.itemName} ${
@@ -209,7 +219,8 @@ const OrderProvider = ({ children }) => {
         handleSizeChange,
         calculateTotal,
         handleSubmit,
-        handleRest
+        handleRest,
+        updateBasketItems
       }}
     >
       {children}

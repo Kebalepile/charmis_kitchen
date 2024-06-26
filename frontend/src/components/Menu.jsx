@@ -10,7 +10,7 @@ import ReadMenu from './ReadMenu'
 
 export default function Menu () {
   const { MENU: _menu_ } = useContext(MenuContext)
-  const { basket, basketItems } = useContext(OrderContext)
+  const { basket, basketItems, updateBasketItems } = useContext(OrderContext)
 
   useEffect(() => {}, [_menu_, basket, basketItems])
 
@@ -24,7 +24,8 @@ export default function Menu () {
       <PizzaMenu />
       <ChickenMenu />
 
-      {basket && <OrderBasket basketItems={basketItems} />}
+      {basket && <OrderBasket basketItems={basketItems} 
+      updateBasketItems={updateBasketItems}/>}
       {_menu_ && <ReadMenu />}
     </section>
   )
