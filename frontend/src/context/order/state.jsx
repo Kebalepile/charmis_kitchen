@@ -57,6 +57,9 @@ const OrderProvider = ({ children }) => {
   const updateBasketItems = updatedArr => {
     dispatch({ type: BASKET_ITEMS, payload: updatedArr })
   }
+  const handleCloseBasket = () => {
+    dispatch({ type: BASKET, payload: false })
+  }
   const handleQuantityChange = e => {
     let value = parseInt(e.target.value, 10)
     if (isNaN(value) || value < 1) {
@@ -222,7 +225,8 @@ const OrderProvider = ({ children }) => {
         calculateTotal,
         handleSubmit,
         handleRest,
-        updateBasketItems
+        updateBasketItems,
+        handleCloseBasket
       }}
     >
       {children}

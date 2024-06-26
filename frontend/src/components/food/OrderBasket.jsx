@@ -9,7 +9,7 @@ const OrderBasket = ({ basketItems, updateBasketItems }) => {
   const handleClick = () => {
     // OpenMenu(MENU, true)
     // ChooseMenu(COMPLETE_MENU)
-    console.log("order basket button clicked")
+    console.log('order basket button clicked')
   }
 
   const removeOrder = (index, arr) => {
@@ -24,12 +24,20 @@ const OrderBasket = ({ basketItems, updateBasketItems }) => {
     updateBasketItems(updatedArr)
   }
 
+  const handlePaymentType = () => {
+    console.log(
+      'load form to filll payment details and select payment type, calculate amount needed to pay'
+    )
+  }
   return (
     <section id='entire-menu' className='order-basket'>
       <button className='menu-btn' onClick={handleClick}>
         Order Basket <GiBookmarklet />
       </button>
       <h3>Pending orders</h3>
+      <button className='pay-button' onClick={handlePaymentType}>
+        pay
+      </button>
       {basketItems.map((order, index) => (
         <article key={index} className='order-item'>
           <p> order number: {order.orderNumber}</p>
@@ -39,7 +47,10 @@ const OrderBasket = ({ basketItems, updateBasketItems }) => {
             <p> meal size: {order.selectedSize}</p>
           )}
           <p> total: R{order.total}</p>
-          <button className='pop' onClick={() => removeOrder(index, basketItems)}>
+          <button
+            className='pop'
+            onClick={() => removeOrder(index, basketItems)}
+          >
             remove
           </button>
         </article>

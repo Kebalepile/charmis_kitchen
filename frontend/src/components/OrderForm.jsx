@@ -43,7 +43,7 @@ const OrderForm = ({ item, onClose, menuName }) => {
    
     setTimeout(() => {
       handleSubmit(e, menuName, item, onClose);
-    }, 5000)
+    }, 9000)
   };
 
   const handleQuantityInputChange = e => {
@@ -56,10 +56,14 @@ const OrderForm = ({ item, onClose, menuName }) => {
     setShowPopup(false)
     setPopupMessage('')
   }
+  const handleClose = () => {
+    handleRest()
+    onClose()
+  }
 
   return (
     <div id='price-form'>
-      <div className='overlay show' onClick={onClose}></div>
+      <div className='overlay show' onClick={handleClose}></div>
       <div className='order-form'>
         <h2>Order {item?.name}</h2>
         <hr className='bg-hr' />
@@ -138,10 +142,7 @@ const OrderForm = ({ item, onClose, menuName }) => {
           <button
             type='button'
             className='cancel'
-            onClick={() => {
-              handleRest()
-              onClose()
-            }}
+            onClick={handleClose}
           >
             Cancel
           </button>
