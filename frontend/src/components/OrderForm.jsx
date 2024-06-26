@@ -25,29 +25,31 @@ const OrderForm = ({ item, onClose, menuName }) => {
   const [quantityInput, setQuantityInput] = useState(quantity)
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
+  
 
   useEffect(() => {
     if (item && (item.price || (item.prices && selectedSize))) {
       calculateTotal(item)
     }
+   
   }, [item, selectedSize, quantity /**, quantity, paymentMethod, */])
+
+ 
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    setPopupMessage("🛒 Order added to basket! Check your basket when you're done ordering.");
+    setShowPopup(true);
+   
+    setTimeout(() => {
+      handleSubmit(e, menuName, item, onClose);
+    }, 5000)
+  };
 
   const handleQuantityInputChange = e => {
     const value = e.target.value
     setQuantityInput(value)
     handleQuantityChange(e)
-  }
-
-  const handleFormSubmit = e => {
-    e.preventDefault()
-
-    // if (!phone.startsWith('0')) {
-    //   setPopupMessage('Phone number must start with 0');
-    //   setShowPopup(true);
-    //   return;
-    // }
-
-    handleSubmit(e, menuName, item, onClose)
   }
 
   const closePopup = () => {
