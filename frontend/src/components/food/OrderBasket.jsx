@@ -27,7 +27,7 @@ const OrderBasket = ({ basketItems, updateBasketItems }) => {
   }
   return (
     <>
-      {showPaymentForm && <PaymentForm />}
+      {showPaymentForm && <PaymentForm setShowPaymentForm={setShowPaymentForm}/>}
       <section id='entire-menu' className='order-basket'>
         <h3>Pending orders</h3>
         <button className='menu-btn pay-button' onClick={handlePaymentType}>

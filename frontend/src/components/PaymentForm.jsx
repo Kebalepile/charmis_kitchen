@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react'
+import PropTypes from 'prop-types'
 import PaymentContext from '../context/payment/context'
 import Popup from './Popup'
 
-const PaymentForm = () => {
+const PaymentForm = ({ setShowPaymentForm }) => {
   const {
     name,
     phone,
@@ -57,6 +58,7 @@ const PaymentForm = () => {
 
   const handleCloseFrom = () => {
     console.log('close payment form')
+    setShowPaymentForm(false)
   }
   const renderAddressInputs = () => {
     if (paymentMethod === 'self-collect') {
@@ -95,11 +97,10 @@ const PaymentForm = () => {
     <div id='payment-form'>
       <div className='overlay show' onClick={closePopup}></div>
       <div className='order-form'>
-       
         <form onSubmit={handleFormSubmit} className='order-form'>
           <div className='form-group'>
-          <h3>Payment details</h3>
-          <hr className='bg-hr' />
+            <h3>Payment details</h3>
+            <hr className='bg-hr' />
             <label>
               Name:
               <input
@@ -157,4 +158,7 @@ const PaymentForm = () => {
   )
 }
 
+PaymentForm.propTypes = {
+  setShowPaymentForm: PropTypes.func.isRequired
+}
 export default PaymentForm
