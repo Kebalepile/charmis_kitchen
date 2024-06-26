@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import PaymentForm from '../PaymentForm'
 
-
 const OrderBasket = ({ basketItems, updateBasketItems }) => {
   const [showPaymentForm, setShowPaymentForm] = useState(false)
 
@@ -25,14 +24,30 @@ const OrderBasket = ({ basketItems, updateBasketItems }) => {
     console.log('order basket button clicked')
     setShowPaymentForm(true)
   }
+
+  const total = () => {
+    return basketItems.reduce((acc, cur) => {
+      acc += cur.total
+      return acc
+    }, 0)
+  }
+
   return (
     <>
-      {showPaymentForm && <PaymentForm setShowPaymentForm={setShowPaymentForm}/>}
-      <section id='entire-menu' className='order-basket'>
+      {showPaymentForm && (
+        <PaymentForm
+          setShowPaymentForm={setShowPaymentForm}
+          paymentItems={basketItems}
+        />
+      )}
+      <section className='order-basket'>
         <h3>Pending orders</h3>
         <button className='menu-btn pay-button' onClick={handlePaymentType}>
           pay
         </button>
+        <hr className='bg-hr' />
+        <p>Total Amount to be paid is: R{total()}</p>
+        <hr className='bg-hr' />
         {basketItems.map((order, index) => (
           <article key={index} className='order-item'>
             <p> order number: {order.orderNumber}</p>

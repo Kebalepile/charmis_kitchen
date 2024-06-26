@@ -6,16 +6,11 @@ import Popup from './Popup'
 const OrderForm = ({ item, onClose, menuName }) => {
   const {
     quantity,
-    // name,
-    // phone,
-    // paymentMethod,
-    // deliveryCharge,
+
     total,
     selectedSize,
     handleQuantityChange,
-    // handleNameChange,
-    // handlePhoneChange,
-    // handlePaymentChange,
+
     handleSizeChange,
     calculateTotal,
     handleSubmit,
@@ -25,26 +20,24 @@ const OrderForm = ({ item, onClose, menuName }) => {
   const [quantityInput, setQuantityInput] = useState(quantity)
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
-  
 
   useEffect(() => {
     if (item && (item.price || (item.prices && selectedSize))) {
       calculateTotal(item)
     }
-   
-  }, [item, selectedSize, quantity /**, quantity, paymentMethod, */])
+  }, [item, selectedSize, quantity])
 
- 
+  const handleFormSubmit = e => {
+    e.preventDefault()
+    setPopupMessage(
+      "🛒 Order added to basket! Check your basket when you're done ordering."
+    )
+    setShowPopup(true)
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    setPopupMessage("🛒 Order added to basket! Check your basket when you're done ordering.");
-    setShowPopup(true);
-   
     setTimeout(() => {
-      handleSubmit(e, menuName, item, onClose);
+      handleSubmit(e, menuName, item, onClose)
     }, 3000)
-  };
+  }
 
   const handleQuantityInputChange = e => {
     const value = e.target.value
@@ -64,10 +57,11 @@ const OrderForm = ({ item, onClose, menuName }) => {
   return (
     <div id='price-form'>
       <div className='overlay show' onClick={handleClose}></div>
-      <div className='order-form'>
-        <h2>Order {item?.name}</h2>
-        <hr className='bg-hr' />
-        <form onSubmit={handleFormSubmit} className='order-form'>
+
+      <div>
+        <form onSubmit={handleFormSubmit} className='select-order'>
+          <h2>Order {item?.name}</h2>
+          <hr className='bg-hr' />
           {item?.prices ? (
             <div className='form-group size-select'>
               <label>Select Size:</label>
@@ -81,7 +75,9 @@ const OrderForm = ({ item, onClose, menuName }) => {
               </select>
             </div>
           ) : (
-            <p>Price: {item?.price}</p>
+            <p>
+              <strong>Price: {item?.price}</strong>
+            </p>
           )}
           <div className='form-group'>
             <label>
@@ -97,53 +93,15 @@ const OrderForm = ({ item, onClose, menuName }) => {
               />
             </label>
           </div>
-          {/* <div className='form-group'>
-            <label>
-              Name:
-              <input
-                type='text'
-                value={name}
-                onChange={handleNameChange}
-                required
-              />
-            </label>
-          </div>
-          <div className='form-group'>
-            <label>
-              Phone (RSA only):
-              <input
-                type='tel'
-                value={phone}
-                onChange={handlePhoneChange}
-                pattern='[0-9]{10}'
-                required
-              />
-            </label>
-          </div>
-          <div className='form-group'>
-            <label>
-              Payment Method:
-              <select className="select-payment" value={paymentMethod} onChange={handlePaymentChange}>
-                <option value='self-collect'>Self Collect (Free)</option>
-                <option value='online-self-collect'>
-                  Online Payment + Self Collect (Free)
-                </option>
-                <option value='cash'>Cash on Delivery (+R20.00)</option>
-                <option value='online'>Online Payment (+R15.00)</option>
-              </select>
-            </label>
-          </div>
-          <p>Total Delivery Charge: R{deliveryCharge}.00</p> */}
-          <p>Total Amount: R{total}.00</p>
+
+          <p>
+            <strong>Total Amount: R{total}.00</strong>
+          </p>
           <button type='submit' className='basket-btn'>
             Add to Basket
           </button>
           {/* <br /> */}
-          <button
-            type='button'
-            className='cancel'
-            onClick={handleClose}
-          >
+          <button type='button' className='cancel' onClick={handleClose}>
             Cancel
           </button>
         </form>

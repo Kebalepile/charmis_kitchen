@@ -17,7 +17,8 @@ function PaymentProvider ({ children }) {
     phone: '',
     paymentMethod: 'self-collect',
     deliveryCharge: 20,
-    paymentTotal: 0
+    paymentTotal: 0,
+    paymentItems: []
   }
 
   const [state, dispatch] = useReducer(PaymentReducer, initailState)
@@ -41,7 +42,15 @@ function PaymentProvider ({ children }) {
   }
   //    get order items from order state write method that does so.
   const handlePaymentItems = items => {
-    dispatch({ type: PAYMENT, payload: items })
+    let paymentTotal = items.reduce((acc, cur) => {
+      acc += cur.total
+
+      return acc
+    }, 0)
+    
+    paymentTotal += deliveryCharge
+
+    dispatch({ type: PAYMENT, payload: { paymentTotal, paymentItems: items } })
   }
 
   // update method code

@@ -53,7 +53,6 @@ body {
   color: #fdfdfd;
 }
 
-
 .sidebar-nav {
   width: 200px;
   height: 320px;
@@ -155,8 +154,8 @@ footer > p {
   backdrop-filter: blur(3px);
   word-wrap: break-word;
 }
-#home{
-  margin:110px auto auto auto;
+#home {
+  margin: 110px auto auto auto;
 }
 #home,
 #menu {
@@ -165,11 +164,10 @@ footer > p {
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  
 }
 
 #menu {
-  margin:30px auto auto auto;
+  margin: 30px auto auto auto;
 }
 
 #contact,
@@ -235,74 +233,9 @@ footer > p {
   z-index: 9;
   display: none;
 }
-#price-form > .overlay{
-
-  z-index:10
+#price-form > .overlay {
+  z-index: 10;
 }
-#payment-form > .overlay{
-
-  z-index:10
-}
-/* Existing CSS */
-/* Add your existing CSS rules here */
-
-/* Additional CSS for PaymentForm */
-#payment-form {
-  max-width: 302px;
-  margin: 0 auto; /* Center the form horizontally */
-  padding: 10px;
-  box-sizing: border-box;
-
-}
-
-#payment-form .order-form {
-  display: flex;
-  flex-direction: column;
-  height:100dvh;
-  overflow: auto;
-}
-
-#payment-form .form-group {
-  margin-bottom: 15px;
-}
-
-#payment-form .form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-#payment-form .form-group input,
-#payment-form .form-group select {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-#payment-form .basket-btn,
-#payment-form .cancel {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-
-#payment-form .cancel {
-  background-color: #dc3545;
-}
-
-#payment-form .basket-btn:hover,
-#payment-form .cancel:hover {
-  opacity: 0.8;
-}
-
 
 .overlay.show {
   display: block;
@@ -333,12 +266,13 @@ footer > p {
   cursor: pointer;
 }
 
-.order-form, .read-menu {
+.order-form,
+.read-menu {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.8);
+  background: #ffffffcc;
   backdrop-filter: blur(10px);
   z-index: 10;
   padding: 20px;
@@ -348,22 +282,35 @@ footer > p {
   width: 320px;
   overflow-y: auto;
 }
-.order-form{
-  height: 50vh;
-  display:flex;
+.order-form {
+  height: 80vh;
+  display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  background-color: #f5e7ac;
-  backdrop-filter: blur(10px);
+  background-color: #faf0d0;
 }
-.size-select{
-  width:60%;
+.select-order {
+  width: 320px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #faf0d0;
+  z-index: 10;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  height: 70dvh;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
 }
-@media only screen and (max-width: 320px) {
- .order-form, .read-menu {
-    width: 270px;
-  }
+
+.size-select {
+  width: 60%;
 }
 
 .read-menu ul {
@@ -445,7 +392,7 @@ footer > p {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
-  width:260px;
+  width: 260px;
 }
 
 #popup button {
@@ -505,22 +452,142 @@ footer > p {
 
 .order-form button.cancel {
   background-color: #f71848 !important;
- 
 }
 
-.select-payment{
-  width:270px;
+.select-payment {
+  width: 270px;
 }
 
-.order-form button[type="submit"].basket-btn{
-width:150px;
-background-color:#09d424 !important;
-
+.order-form button[type="submit"].basket-btn {
+  width: 150px;
+  background-color: #09d424 !important;
 }
 
-.order-basket{
- /* background-color:black */
+.order-basket {
+  /* background-color:black */
 }
-.order-basket .order-item{
+.order-basket .order-item {
   background-color: gray;
+}
+
+#payment-form > .overlay {
+  z-index: 10;
+}
+
+/* id='entire-menu' */
+#payment-form {
+  max-width: 302px;
+  margin: 0 auto; /* Center the form horizontally */
+}
+
+#payment-form .payment-details {
+  width: 320px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #faf0d0;
+  z-index: 10;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  height: 70dvh;
+}
+
+#payment-form .form-group {
+  margin-bottom: 15px;
+}
+
+#payment-form .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+#payment-form .form-group input,
+#payment-form .form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+#payment-form .basket-btn,
+#payment-form .cancel {
+  width: 30%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #0fb93a;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+#payment-form .cancel {
+  background-color: #fa0921;
+  margin-left: 12px;
+}
+
+#payment-form .basket-btn:hover,
+#payment-form .cancel:hover {
+  opacity: 0.8;
+}
+
+/* --- */
+.select-order .form-group {
+  margin-bottom: 15px;
+}
+
+.select-order .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.select-order .form-group input,
+.select-order .form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.select-order .basket-btn,
+.select-order .cancel {
+  width: 50%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #1164ff;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.select-order .cancel {
+  background-color: #fa0921;
+  width: 30%;
+}
+
+.select-order .basket-btn:hover,
+.select-order .cancel:hover {
+  opacity: 0.8;
+}
+
+@media only screen and (max-width: 320px) {
+  order-form,
+  .select-order,
+  .read-menu {
+    width: 270px;
+  }
+
+  #payment-form .payment-details {
+    width: 260px;
+  }
 }

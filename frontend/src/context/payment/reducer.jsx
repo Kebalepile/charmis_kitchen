@@ -36,6 +36,10 @@ export default function PaymenReducer (state, action) {
         deliveryCharge: action.payload
       }
     case PAYMENT:
+      return {
+        ...state,
+        ...action.payload
+      }
     case ORDER_PUNCHED:
     default:
       return state

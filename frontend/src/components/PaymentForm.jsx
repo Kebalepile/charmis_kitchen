@@ -1,18 +1,24 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import PaymentContext from '../context/payment/context'
 import Popup from './Popup'
 
-const PaymentForm = ({ setShowPaymentForm }) => {
+const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
   const {
     name,
     phone,
     paymentMethod,
     deliveryCharge,
+    paymentTotal,
     handleNameChange,
     handlePhoneChange,
-    handlePaymentChange
+    handlePaymentChange,
+    handlePaymentItems
   } = useContext(PaymentContext)
+
+  useEffect(() => {
+    handlePaymentItems(paymentItems)
+  }, [paymentItems])
 
   const [streetAddress, setStreetAddress] = useState('')
   const [houseNumber, setHouseNumber] = useState('')
@@ -95,9 +101,9 @@ const PaymentForm = ({ setShowPaymentForm }) => {
 
   return (
     <div id='payment-form'>
-      <div className='overlay show' onClick={closePopup}></div>
-      <div className='order-form'>
-        <form onSubmit={handleFormSubmit} className='order-form'>
+      <div className='overlay show' onClick={handleCloseFrom}></div>
+      <div className='payment-details'>
+        <form onSubmit={handleFormSubmit}>
           <div className='form-group'>
             <h3>Payment details</h3>
             <hr className='bg-hr' />
@@ -140,12 +146,18 @@ const PaymentForm = ({ setShowPaymentForm }) => {
               </select>
             </label>
           </div>
-          <p>Total Delivery Charge: R{deliveryCharge}.00</p>
+          <p>
+            Total Delivery Charge: <strong>R{deliveryCharge}.00</strong>
+          </p>
+          <p>
+            Required Payment Total:
+            <strong> R{paymentTotal + deliveryCharge}</strong>
+          </p>
 
           {renderAddressInputs()}
 
           <button type='submit' className='basket-btn'>
-            Pay / Send Order
+            Pay
           </button>
 
           <button type='button' className='cancel' onClick={handleCloseFrom}>
@@ -159,6 +171,7 @@ const PaymentForm = ({ setShowPaymentForm }) => {
 }
 
 PaymentForm.propTypes = {
-  setShowPaymentForm: PropTypes.func.isRequired
+  setShowPaymentForm: PropTypes.func.isRequired,
+  paymentItems: PropTypes.array.isRequired
 }
 export default PaymentForm
