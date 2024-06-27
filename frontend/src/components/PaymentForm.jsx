@@ -57,6 +57,13 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
     if (validateForm()) {
       // Handle form submission here
       console.log('Form submitted')
+      switch (paymentMethod) {
+        case 'cash':
+        case 'online':
+          setPopupMessage('Delivery is currenlty limited to Boitekong Ext 2,4,5,6 and 8')
+          setShowPopup(true)
+          break
+      }
       handleSubmitOrder()
       // Reset form if needed
     }
