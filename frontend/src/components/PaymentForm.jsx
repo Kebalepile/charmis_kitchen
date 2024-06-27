@@ -17,12 +17,13 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
     handlePaymentChange,
     handlePaymentItems,
     handleHouseNumbersChange,
-    handleStreetAddressChange
+    handleStreetAddressChange,
+    handleSubmitOrder
   } = useContext(PaymentContext)
 
   useEffect(() => {
     handlePaymentItems(paymentItems)
-  }, [paymentItems, handlePaymentItems])
+  }, [paymentItems])
 
  
   const [showPopup, setShowPopup] = useState(false)
@@ -56,6 +57,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
     if (validateForm()) {
       // Handle form submission here
       console.log('Form submitted')
+      handleSubmitOrder()
       // Reset form if needed
     }
   }

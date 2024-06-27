@@ -76,47 +76,63 @@ function PaymentProvider ({ children }) {
   }
 
   // update method code
-  const handleSubmitOrder = async order => {
+  const handleSubmitOrder = async () => {
     dispatch({ type: ORDER_PUNCHED, payload: true })
-    const customerMessage = `Dear ${order.name},\n your Order number: ${
-      order.orderNumber
-    } for ${order.quantity} ${order.itemName} ${
-      order.selectedSize.length ? `, \n size: ${order.selectedSize}` : ''
-    } has been received by the store. \n It will be ready in about 25 minutes. \n Delivery: ${
-      order.deliveryCharge > 0 ? 'yes' : 'self collect'
-    }`
-    const storeMessage = `New order received! Order number: ${order.orderNumber},
-       \n Customer: ${name}, \n Phone: ${phone}, \n Item: ${order.itemName}, \n Quantity: ${order.quantity},
-       \n Payment method ${order.paymentMethod} \n Total price: ${order.total}.`
 
-    console.log(customerMessage)
-    console.log(storeMessage)
-    // Send SMS using the backend API
-    try {
-      const response = await fetch('http://localhost:5000/send-sms', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          customerNumber: state.phone,
-          storeNumber: '0672718374', // Replace with the store owner's number
-          customerMessage,
-          storeMessage
-        })
-      })
-
-      const text = await response.text() // Read response as plain text
-      console.log('Response from backend:', text)
-
-      if (response.ok) {
-        console.log('SMS sent successfully')
-      } else {
-        console.error('Failed to send SMS')
-      }
-    } catch (error) {
-      console.error('Error sending SMS:', error)
+    console.dir(state)
+    // const punchOrder = async (order) => {}
+      // const paymentGateWay = () => {}
+    switch (state.paymentMethod) {
+      case 'self-collect':
+      case 'cash':
+        console.log('run cash / self-collect logic.')
+        break
+      case 'online-self-collect':
+        console.log('run online self collect logic')
+        break
+      case 'online':
+        console.log('run online payment logic')
+        break
     }
+    // const customerMessage = `Dear ${order.name},\n your Order number: ${
+    //   order.orderNumber
+    // } for ${order.quantity} ${order.itemName} ${
+    //   order.selectedSize.length ? `, \n size: ${order.selectedSize}` : ''
+    // } has been received by the store. \n It will be ready in about 25 minutes. \n Delivery: ${
+    //   order.deliveryCharge > 0 ? 'yes' : 'self collect'
+    // }`
+    // const storeMessage = `New order received! Order number: ${order.orderNumber},
+    //    \n Customer: ${name}, \n Phone: ${phone}, \n Item: ${order.itemName}, \n Quantity: ${order.quantity},
+    //    \n Payment method ${order.paymentMethod} \n Total price: ${order.total}.`
+
+    // console.log(customerMessage)
+    // console.log(storeMessage)
+    // // Send SMS using the backend API
+    // try {
+    //   const response = await fetch('http://localhost:5000/send-sms', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       customerNumber: state.phone,
+    //       storeNumber: '0672718374', // Replace with the store owner's number
+    //       customerMessage,
+    //       storeMessage
+    //     })
+    //   })
+
+    //   const text = await response.text() // Read response as plain text
+    //   console.log('Response from backend:', text)
+
+    //   if (response.ok) {
+    //     console.log('SMS sent successfully')
+    //   } else {
+    //     console.error('Failed to send SMS')
+    //   }
+    // } catch (error) {
+    //   console.error('Error sending SMS:', error)
+    // }
   }
 
   return (
