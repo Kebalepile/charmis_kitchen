@@ -34,7 +34,8 @@ function PaymentProvider ({ children }) {
     houseNumber,
     paymentMethod,
     deliveryCharge,
-    paymentTotal
+    paymentTotal,
+    paymentItems
   } = state
 
   const handleNameChange = e => {
@@ -82,10 +83,28 @@ function PaymentProvider ({ children }) {
     console.dir(state)
     // const punchOrder = async (order) => {}
       // const paymentGateWay = () => {}
+
+    let customerMessage;
+
+    let paymentItemsDescriptions =  paymentItems.map(({ foodMenu, itemName, orderNumber, quantity, selectedSize, total }) => {
+      return `\n ${foodMenu}: \n ${itemName} \n(Order Number: ${orderNumber}\n Quantity: ${quantity}\n Total: R${total}${selectedSize ? `\n Size: ${selectedSize}` : ''})`;
+    }).join("\n ");
+
     switch (state.paymentMethod) {
       case 'self-collect':
       case 'cash':
-        console.log('run cash / self-collect logic.')
+        
+        
+        customerMessage =[
+          `\n Name: ${name}`,
+          phone ? `\n Phone: ${phone}` : null,
+          (streetAddress || streetAddress) ? `\n Address: ${streetAddress || streetAddress}` : null,
+          houseNumber ? `\n House Number: ${houseNumber}` : null,
+          `\n Payment Method: ${paymentMethod}`,
+          `\n Payment Total: R${paymentTotal}`,
+          deliveryCharge ? `\n Delivery Charge: R${deliveryCharge}` : null,
+          `\n Payment Items: \n ${paymentItemsDescriptions}`
+        ].filter(Boolean).join("");
         break
       case 'online-self-collect':
         console.log('run online self collect logic')
@@ -94,6 +113,8 @@ function PaymentProvider ({ children }) {
         console.log('run online payment logic')
         break
     }
+
+    console.log(customerMessage)
     // const customerMessage = `Dear ${order.name},\n your Order number: ${
     //   order.orderNumber
     // } for ${order.quantity} ${order.itemName} ${

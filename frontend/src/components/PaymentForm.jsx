@@ -82,6 +82,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
     if (paymentMethod === 'self-collect') {
       return null // Render nothing if self-collect
     }
+    
 
     return (
       <div>
