@@ -8,21 +8,35 @@ import {
   SET_NAME,
   SET_PHONE,
   SET_PAYMENT_METHOD,
-  SET_DELIVERY_CHARGE
+  SET_DELIVERY_CHARGE,
+  // PAYMENT_FORM_INFO,
+  SET_STREET_ADDRESS,
+  SET_HOUSENUMBER
 } from '../types'
 
 function PaymentProvider ({ children }) {
   const initailState = {
     name: '',
     phone: '',
+    streetAdress: '',
+    houseNumber: '',
     paymentMethod: 'self-collect',
-    deliveryCharge: 20,
+    deliveryCharge: 0,
     paymentTotal: 0,
     paymentItems: []
   }
 
   const [state, dispatch] = useReducer(PaymentReducer, initailState)
-  const { name, phone, paymentMethod, deliveryCharge, paymentTotal } = state
+  const {
+    name,
+    phone,
+    streetAddress,
+    houseNumber,
+    paymentMethod,
+    deliveryCharge,
+    paymentTotal
+  } = state
+
   const handleNameChange = e => {
     dispatch({ type: SET_NAME, payload: e.target.value })
   }
@@ -30,6 +44,14 @@ function PaymentProvider ({ children }) {
   const handlePhoneChange = e => {
     const cleanedPhone = e.target.value.replace(/\D/g, '')
     dispatch({ type: SET_PHONE, payload: cleanedPhone.slice(0, 10) })
+  }
+
+  const handleHouseNumbersChange = e => {
+    dispatch({ type: SET_HOUSENUMBER, payload: e.target.value })
+  }
+
+  const handleStreetAddressChange = e => {
+    dispatch({ type: SET_STREET_ADDRESS, payload: e.target.value })
   }
 
   const handlePaymentChange = e => {
@@ -47,7 +69,7 @@ function PaymentProvider ({ children }) {
 
       return acc
     }, 0)
-    
+
     paymentTotal += deliveryCharge
 
     dispatch({ type: PAYMENT, payload: { paymentTotal, paymentItems: items } })
@@ -102,6 +124,8 @@ function PaymentProvider ({ children }) {
       value={{
         name,
         phone,
+        streetAddress,
+        houseNumber,
         paymentMethod,
         deliveryCharge,
         paymentTotal,
@@ -109,7 +133,9 @@ function PaymentProvider ({ children }) {
         handlePhoneChange,
         handlePaymentChange,
         handlePaymentItems,
-        handleSubmitOrder
+        handleSubmitOrder,
+        handleHouseNumbersChange,
+        handleStreetAddressChange
       }}
     >
       {children}

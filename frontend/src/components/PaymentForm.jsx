@@ -10,18 +10,21 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
     paymentMethod,
     deliveryCharge,
     paymentTotal,
+    streetAddress,
+    houseNumber,
     handleNameChange,
     handlePhoneChange,
     handlePaymentChange,
-    handlePaymentItems
+    handlePaymentItems,
+    handleHouseNumbersChange,
+    handleStreetAddressChange
   } = useContext(PaymentContext)
 
   useEffect(() => {
     handlePaymentItems(paymentItems)
-  }, [paymentItems])
+  }, [paymentItems, handlePaymentItems])
 
-  const [streetAddress, setStreetAddress] = useState('')
-  const [houseNumber, setHouseNumber] = useState('')
+ 
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
 
@@ -79,7 +82,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
             <input
               type='text'
               value={streetAddress}
-              onChange={e => setStreetAddress(e.target.value)}
+              onChange={handleStreetAddressChange}
               required
             />
           </label>
@@ -90,7 +93,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
             <input
               type='text'
               value={houseNumber}
-              onChange={e => setHouseNumber(e.target.value)}
+              onChange={handleHouseNumbersChange}
               required
             />
           </label>

@@ -19,4 +19,7 @@ export const BASKET_ITEMS = "BASKET_ITEMS";
 export const CONFIRM_ORDER = "CONFIRM_ORDER";
 // payment context
 export const PAYMENT = "PAYMENT";
+export const PAYMENT_FORM_INFO = "PAYMENT_FORM_INFO";
 export const ORDER_PUNCHED = "ORDER_PUNCED";
+export const SET_STREET_ADDRESS = "SET_STREET_ADDRESS";
+export const SET_HOUSENUMBER = "SET_HOUSENUMBER";
