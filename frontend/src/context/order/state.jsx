@@ -12,6 +12,7 @@ import {
   BASKET_ITEMS
 } from '../types'
 
+
 const OrderProvider = ({ children }) => {
   const initialState = {
     quantity: 0,
@@ -90,25 +91,16 @@ const OrderProvider = ({ children }) => {
     dispatch({ type: SET_TOTAL, payload: totalAmount })
   }
 
-  const generateOrderNumber = () => {
-    // Generate a 4-digit random number using crypto API
-    const array = new Uint32Array(1)
-    window.crypto.getRandomValues(array)
-    return array[0] % 10000 // Ensure it's a 4-digit number
-  }
-
   const handleSubmit = (e, foodMenu, item, onClose) => {
     e.preventDefault()
-    // NB to order details add house addres or street address
-    const orderNumber = generateOrderNumber() // Generate unique order number
+   
     const orderDetails = {
       foodMenu,
       item,
       itemName: item.name,
       quantity: state.quantity,
       total: state.total,
-      selectedSize: state.selectedSize,
-      orderNumber
+      selectedSize: state.selectedSize
     }
 
     // console.log(orderDetails)

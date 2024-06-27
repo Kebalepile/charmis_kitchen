@@ -9,11 +9,11 @@ import {
   SET_PHONE,
   SET_PAYMENT_METHOD,
   SET_DELIVERY_CHARGE,
-  // PAYMENT_FORM_INFO,
   SET_STREET_ADDRESS,
   SET_HOUSENUMBER,
   REST_PAYMENT_STATE
 } from '../types'
+import {generateOrderNumber} from "../../utils/Utils"
 
 function PaymentProvider ({ children }) {
   const initialState = {
@@ -42,7 +42,7 @@ function PaymentProvider ({ children }) {
   } = state
 
   const resetPaymentState = () => {
-    dispatch({ type: REST_PAYMENT_STATE, payload:initialState})
+    dispatch({ type: REST_PAYMENT_STATE, payload: initialState })
   }
   const handleNameChange = e => {
     dispatch({ type: SET_NAME, payload: e.target.value })
@@ -84,7 +84,17 @@ function PaymentProvider ({ children }) {
   const restPunchedOrder = () => {
     dispatch({ type: ORDER_PUNCHED, payload: !orderSubmitted })
   }
-
+  /**
+   * @description format phone numbers
+   * @param {string} number
+   * @returns string
+   */
+  function formatCellNumber (number) {
+    if (number.startsWith('0')) {
+      return '27' + number.slice(1)
+    }
+    return number
+  }
   /**
    *
    * @param {string} customerMessage
@@ -93,37 +103,75 @@ function PaymentProvider ({ children }) {
    */
   const orderNotification = async (customerMessage, storeMessage) => {
     try {
-      const response = await fetch('http://localhost:5000/send-sms', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          customerNumber: state.phone,
-          storeNumber: '0633343249', // Replace with the store owner's number
-          customerMessage,
-          storeMessage
-        })
-      })
+     
+      const customerNumber = formatCellNumber(state.phone),
+        storeNumber = formatCellNumber('0672718374')
+      const apiKey = 'mQ-6Cd1RRT-BkEUpa7Xgbw=='
 
-      const text = await response.text() // Read response as plain text
-      console.log('Response from backend:', text)
+      const clickTelApi = (phone, message, apiKey) => {
+        try {
+          const xhr = new XMLHttpRequest()
+          xhr.open(
+            'GET',
+            `https://platform.clickatell.com/messages/http/send?apiKey=${apiKey}&to=${phone}&content=${message}`,
+            true
+          )
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+              console.log('success')
+              restPunchedOrder()
+            } else if (xhr.status == 202) {
+              console.log(xhr.status)
+              console.log(
+                'request has been accepted for processing, but the processing has not been finished yet'
+              )
+              restPunchedOrder()
+            } else {
+              console.log(xhr.status)
+              console.log('somthings wrong')
+            }
+          }
+          xhr.send()
 
-      if (response.ok) {
-        console.log('SMS sent successfully')
-        restPunchedOrder()
-      } else {
-        console.error('Failed to send SMS')
+          // 0633343249
+        } catch (error) {
+          console.error('There was a problem with the fetch operation:', error)
+        }
       }
+      console.log(storeMessage)
+      clickTelApi(storeNumber, storeMessage, apiKey)
+      console.log(customerMessage)
+      clickTelApi(customerNumber, customerMessage, apiKey)
+
+      // const response = await fetch('http://localhost:5000/send-sms', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify({
+      //     customerNumber: state.phone,
+      //     storeNumber: '0633343249', // Replace with the store owner's number
+      //     customerMessage,
+      //     storeMessage
+      //   })
+      // })
+
+      // const text = await response.text() // Read response as plain text
+      // console.log('Response from backend:', text)
+
+      // if (response.ok) {
+      //   console.log('SMS sent successfully')
+      //   restPunchedOrder()
+      // } else {
+      //   console.error('Failed to send SMS')
+      // }
     } catch (error) {
       console.error('Error sending SMS:', error)
     }
   }
 
   const handleSubmitOrder = async () => {
-    console.dir(state)
-
-    // const paymentGateWay = () => {}
+    
     let paymentItemsDescriptions = paymentItems
       .map(
         ({
@@ -134,27 +182,30 @@ function PaymentProvider ({ children }) {
           selectedSize,
           total
         }) => {
-          return `\n ${foodMenu}: \n ${itemName} \n(Order Number: ${orderNumber}\n Quantity: ${quantity}\n Total: R${total}${
-            selectedSize ? `\n Size: ${selectedSize}` : ''
+          return `${foodMenu}: ${itemName} (Order#: ${orderNumber}, Qty: ${quantity}, Total: R${total}${
+            selectedSize ? `, Size: ${selectedSize}` : ''
           })`
         }
       )
-      .join('\n ')
-
+      .join('; ')
+    const orderNumber = generateOrderNumber() // Generate unique order number
     const customerMessage = [
-      `\n 🍽️ Charmi's Kitchen ORDER NOTIFICATION:
-      \n 🧑 Name: ${name}`,
-      phone ? `\n 📞 Phone: ${phone}` : null,
-      streetAddress ? `\n 🏠 Address: ${streetAddress}` : null,
-      houseNumber ? `\n 🔢 House Number: ${houseNumber}` : null,
-      `\n 💳 Payment Method: ${paymentMethod}`,
-      `\n 💰 Payment Total: R${paymentTotal}`,
-      deliveryCharge ? `\n 🚚 Delivery Charge: R${deliveryCharge}` : `Order collection point: 2379 Windsa st, Boitekong Ext 2`,
-      `\n 📦 Payment Items: \n ${paymentItemsDescriptions}
-      \n 📲 You'll be notified via SMS when the order is ready.`
+      `Julia's Kitchen ORDER NOTIFICATION:`,
+      `Order: ${orderNumber}`,
+      `Name: ${name}`,
+      phone ? `Phone: ${phone}` : null,
+      streetAddress ? `Address: ${streetAddress}` : null,
+      houseNumber ? `House: ${houseNumber}` : null,
+      `Payment: ${paymentMethod}`,
+      `Total: R${paymentTotal}`,
+      deliveryCharge
+        ? `Delivery: R${deliveryCharge}`
+        : `Collection: 2379 Windsa St, Boitekong Ext 2`,
+      `Items: ${paymentItemsDescriptions}`,
+      `You'll be notified via SMS when the order is ready.`
     ]
       .filter(Boolean)
-      .join('')
+      .join(' ')
 
     const deliveryType = type => {
       switch (type.trim()) {
@@ -166,22 +217,25 @@ function PaymentProvider ({ children }) {
           return 'self collect'
       }
     }
+
     const storeMessage = [
-      `\n 🆕 New order received!:
-      \n 🧑 Name: ${name}`,
-      phone ? `\n 📞 Phone: ${phone}` : null,
-      streetAddress ? `\n 🏠 Address: ${streetAddress}` : null,
-      houseNumber ? `\n 🔢 House Number: ${houseNumber}` : null,
-      `\n 💳 Payment Method: ${paymentMethod}`,
-      `\n 💰 Payment Total: R${paymentTotal}`,
-      deliveryCharge ? `\n 🚚 Delivery Charge: R${deliveryCharge}` : null,
-      `\n 📦 Payment Items: \n ${paymentItemsDescriptions}
-      \n 📲 Send SMS or call ${name} at ${phone} when the order is ready for ${deliveryType(
+      `New order received!`,
+      `Order: ${orderNumber}`,
+      `Name: ${name}`,
+      phone ? `Phone: ${phone}` : null,
+      streetAddress ? `Address: ${streetAddress}` : null,
+      houseNumber ? `House: ${houseNumber}` : null,
+      `Payment: ${paymentMethod}`,
+      `Total: R${paymentTotal}`,
+      deliveryCharge ? `Delivery: R${deliveryCharge}` : null,
+      `Items: ${paymentItemsDescriptions}`,
+      `Notify ${name} at ${phone} when the order is ready for ${deliveryType(
         paymentMethod
       )}.`
     ]
       .filter(Boolean)
-      .join('')
+      .join(' ')
+
     if (
       paymentMethod.trim() === 'self-collect' ||
       paymentMethod.trim() === 'cash'

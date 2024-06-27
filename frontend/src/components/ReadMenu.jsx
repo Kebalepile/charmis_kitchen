@@ -46,7 +46,7 @@ export default function ReadMenu () {
       <div className='overlay show' onClick={handleClick}></div>
       <section className='read-menu'>
         <button id='close-menu' onClick={handleClick}>
-          Close menu
+          X
         </button>
         {menu ? (
           <>
