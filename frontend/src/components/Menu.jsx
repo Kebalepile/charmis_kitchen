@@ -10,10 +10,16 @@ import ReadMenu from './ReadMenu'
 
 export default function Menu () {
   const { MENU: _menu_ } = useContext(MenuContext)
-  const { basket, basketItems, updateBasketItems, handleCloseBasket } = useContext(OrderContext)
+  const {
+    basket,
+    basketItems,
+    updateBasketItems,
+    handleCloseBasket,
+    resetToInitialState
+  } = useContext(OrderContext)
 
   useEffect(() => {
-    if(basketItems.length <= 0 && basket) {
+    if (basketItems.length <= 0 && basket) {
       handleCloseBasket()
     }
   }, [_menu_, basket, basketItems])
@@ -28,8 +34,13 @@ export default function Menu () {
       <PizzaMenu />
       <ChickenMenu />
 
-      {basket && <OrderBasket basketItems={basketItems} 
-      updateBasketItems={updateBasketItems}/>}
+      {basket && (
+        <OrderBasket
+          basketItems={basketItems}
+          updateBasketItems={updateBasketItems}
+          resetToInitialState={resetToInitialState}
+        />
+      )}
       {_menu_ && <ReadMenu />}
     </section>
   )

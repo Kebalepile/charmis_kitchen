@@ -15,14 +15,13 @@ import {
 const OrderProvider = ({ children }) => {
   const initialState = {
     quantity: 0,
-
     total: 0,
     selectedSize: '',
     fooMenu: '',
     basket: false,
     basketItems: []
   }
-
+ 
   const [state, dispatch] = useReducer(Reducer, initialState)
   const [shouldReset, setShouldReset] = useState(false)
 
@@ -37,7 +36,10 @@ const OrderProvider = ({ children }) => {
     basket,
     basketItems
   } = state
-
+  
+  const resetToInitialState = () => {
+    dispatch({ type: REST_ORDER_STATE, payload: initialState })
+  }
   const handleBasketItems = order => {
     // console.log(basket)
 
@@ -154,7 +156,8 @@ const OrderProvider = ({ children }) => {
         handleSubmit,
         handleRest,
         updateBasketItems,
-        handleCloseBasket
+        handleCloseBasket,
+        resetToInitialState
       }}
     >
       {children}

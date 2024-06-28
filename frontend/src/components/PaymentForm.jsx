@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import PaymentContext from '../context/payment/context'
 import Popup from './Popup'
 
-const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
+const PaymentForm = ({ setShowPaymentForm, paymentItems,
+  resetToInitialState
+ }) => {
   const {
     name,
     phone,
@@ -56,6 +58,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
     if (validateForm()) {
       
       handleSubmitOrder()
+      resetToInitialState()
       setShowPaymentForm(false)
       // Reset form if needed
     }
@@ -189,6 +192,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
 
 PaymentForm.propTypes = {
   setShowPaymentForm: PropTypes.func.isRequired,
-  paymentItems: PropTypes.array.isRequired
+  paymentItems: PropTypes.array.isRequired,
+  resetToInitialState:PropTypes.func.isRequired
 }
 export default PaymentForm
