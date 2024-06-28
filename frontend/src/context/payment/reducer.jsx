@@ -8,7 +8,8 @@ import {
   SET_PHONE,
   SET_PAYMENT_METHOD,
   SET_DELIVERY_CHARGE,
-  SET_TOTAL
+  SET_TOTAL,
+  REST_PAYMENT_STATE
 } from '../types'
 
 export default function PaymenReducer (state, action) {
@@ -58,6 +59,8 @@ export default function PaymenReducer (state, action) {
         ...state,
         orderSubmitted: action.payload
       }
+    case REST_PAYMENT_STATE:
+      return { ...action.payload }
     default:
       return state
   }

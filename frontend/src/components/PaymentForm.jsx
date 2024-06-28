@@ -4,7 +4,7 @@ import PaymentContext from '../context/payment/context'
 import Popup from './Popup'
 
 const PaymentForm = ({ setShowPaymentForm, paymentItems,
-  resetToInitialState
+  resetOrderState
  }) => {
   const {
     name,
@@ -20,7 +20,8 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems,
     handlePaymentItems,
     handleHouseNumbersChange,
     handleStreetAddressChange,
-    handleSubmitOrder
+    handleSubmitOrder,
+    resetPaymentState
   } = useContext(PaymentContext)
 
   useEffect(() => {
@@ -58,7 +59,8 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems,
     if (validateForm()) {
       
       handleSubmitOrder()
-      resetToInitialState()
+      resetOrderState()
+      resetPaymentState()
       setShowPaymentForm(false)
       // Reset form if needed
     }
@@ -71,6 +73,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems,
 
   const handleCloseFrom = () => {
     // console.log('close payment form')
+    resetPaymentState()
     setShowPaymentForm(false)
   }
   const renderAddressInputs = () => {
@@ -158,11 +161,11 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems,
                 }}
               >
                 <option value='self-collect'>Self Collect (Free)</option>
-                <option value='online-self-collect'>
+                <option value='cash'>Cash on Delivery (+R10.00)</option>
+                {/* <option value='online-self-collect'>
                   Online Payment + Self Collect (Free)
                 </option>
-                <option value='cash'>Cash on Delivery (+R20.00)</option>
-                <option value='online'>Online Payment (+R15.00)</option>
+                <option value='online'>Online Payment (+R15.00)</option> */}
               </select>
             </label>
           </div>
@@ -193,6 +196,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems,
 PaymentForm.propTypes = {
   setShowPaymentForm: PropTypes.func.isRequired,
   paymentItems: PropTypes.array.isRequired,
-  resetToInitialState:PropTypes.func.isRequired
+  resetOrderState:PropTypes.func.isRequired
 }
 export default PaymentForm

@@ -11,11 +11,12 @@ import {
   SET_DELIVERY_CHARGE,
   // PAYMENT_FORM_INFO,
   SET_STREET_ADDRESS,
-  SET_HOUSENUMBER
+  SET_HOUSENUMBER,
+  REST_PAYMENT_STATE
 } from '../types'
 
 function PaymentProvider ({ children }) {
-  const initailState = {
+  const initialState = {
     name: '',
     phone: '',
     streetAdress: '',
@@ -27,7 +28,7 @@ function PaymentProvider ({ children }) {
     orderSubmitted: false
   }
 
-  const [state, dispatch] = useReducer(PaymentReducer, initailState)
+  const [state, dispatch] = useReducer(PaymentReducer, initialState)
   const {
     name,
     phone,
@@ -40,6 +41,9 @@ function PaymentProvider ({ children }) {
     orderSubmitted
   } = state
 
+  const resetPaymentState = () => {
+    dispatch({ type: REST_PAYMENT_STATE, payload:initialState})
+  }
   const handleNameChange = e => {
     dispatch({ type: SET_NAME, payload: e.target.value })
   }
@@ -58,11 +62,11 @@ function PaymentProvider ({ children }) {
   }
 
   const handlePaymentChange = e => {
-    const method = e.target.value
+    const method = e.target.value.trim()
     dispatch({ type: SET_PAYMENT_METHOD, payload: method })
     dispatch({
       type: SET_DELIVERY_CHARGE,
-      payload: method === 'cash' ? 20 : method === 'online' ? 15 : 0
+      payload: method === 'cash' ? 10 : method === 'online' ? 15 : 0
     })
   }
   //    get order items from order state write method that does so.
@@ -96,7 +100,7 @@ function PaymentProvider ({ children }) {
         },
         body: JSON.stringify({
           customerNumber: state.phone,
-          storeNumber: '0672718374', // Replace with the store owner's number
+          storeNumber: '0633343249', // Replace with the store owner's number
           customerMessage,
           storeMessage
         })
@@ -145,7 +149,7 @@ function PaymentProvider ({ children }) {
       houseNumber ? `\n 🔢 House Number: ${houseNumber}` : null,
       `\n 💳 Payment Method: ${paymentMethod}`,
       `\n 💰 Payment Total: R${paymentTotal}`,
-      deliveryCharge ? `\n 🚚 Delivery Charge: R${deliveryCharge}` : null,
+      deliveryCharge ? `\n 🚚 Delivery Charge: R${deliveryCharge}` : `Order collection point: 2379 Windsa st, Boitekong Ext 2`,
       `\n 📦 Payment Items: \n ${paymentItemsDescriptions}
       \n 📲 You'll be notified via SMS when the order is ready.`
     ]
@@ -211,7 +215,8 @@ function PaymentProvider ({ children }) {
         handleSubmitOrder,
         handleHouseNumbersChange,
         handleStreetAddressChange,
-        restPunchedOrder
+        restPunchedOrder,
+        resetPaymentState
       }}
     >
       {children}

@@ -37,7 +37,7 @@ const OrderProvider = ({ children }) => {
     basketItems
   } = state
   
-  const resetToInitialState = () => {
+  const resetOrderState = () => {
     dispatch({ type: REST_ORDER_STATE, payload: initialState })
   }
   const handleBasketItems = order => {
@@ -80,7 +80,7 @@ const OrderProvider = ({ children }) => {
 
     const paymentCharge =
       state.paymentMethod === 'cash'
-        ? 20
+        ? 10
         : state.paymentMethod === 'online'
         ? 15
         : 0
@@ -157,7 +157,7 @@ const OrderProvider = ({ children }) => {
         handleRest,
         updateBasketItems,
         handleCloseBasket,
-        resetToInitialState
+        resetOrderState
       }}
     >
       {children}

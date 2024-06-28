@@ -15,7 +15,7 @@ export default function Menu () {
     basketItems,
     updateBasketItems,
     handleCloseBasket,
-    resetToInitialState
+    resetOrderState
   } = useContext(OrderContext)
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function Menu () {
         <OrderBasket
           basketItems={basketItems}
           updateBasketItems={updateBasketItems}
-          resetToInitialState={resetToInitialState}
+          resetOrderState={resetOrderState}
         />
       )}
       {_menu_ && <ReadMenu />}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import PaymentForm from '../PaymentForm'
 
 const OrderBasket = ({ basketItems, updateBasketItems,
-  resetToInitialState
+  resetOrderState
  }) => {
   const [showPaymentForm, setShowPaymentForm] = useState(false)
 
@@ -40,7 +40,7 @@ const OrderBasket = ({ basketItems, updateBasketItems,
         <PaymentForm
           setShowPaymentForm={setShowPaymentForm}
           paymentItems={basketItems}
-          resetToInitialState={resetToInitialState}
+          resetOrderState={resetOrderState}
         />
       )}
       <section className='order-basket'>
@@ -76,7 +76,7 @@ const OrderBasket = ({ basketItems, updateBasketItems,
 OrderBasket.propTypes = {
   basketItems: PropTypes.array.isRequired,
   updateBasketItems: PropTypes.func.isRequired,
-  resetToInitialState: PropTypes.func.isRequired
+  resetOrderState: PropTypes.func.isRequired
 }
 
 export default OrderBasket
