@@ -78,12 +78,47 @@ function PaymentProvider ({ children }) {
     dispatch({ type: PAYMENT, payload: { paymentTotal, paymentItems: items } })
   }
   const restPunchedOrder = () => {
-    dispatch({ type: ORDER_PUNCHED, payload: true })
+    dispatch({ type: ORDER_PUNCHED, payload: !orderSubmitted })
   }
-  // update method code
+
+  /**
+   *
+   * @param {string} customerMessage
+   * @param {string} storeMessage
+   * @description Send SMS using the backend API
+   */
+  const orderNotification = async (customerMessage, storeMessage) => {
+    try {
+      const response = await fetch('http://localhost:5000/send-sms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          customerNumber: state.phone,
+          storeNumber: '0672718374', // Replace with the store owner's number
+          customerMessage,
+          storeMessage
+        })
+      })
+
+      const text = await response.text() // Read response as plain text
+      console.log('Response from backend:', text)
+
+      if (response.ok) {
+        console.log('SMS sent successfully')
+        restPunchedOrder()
+      } else {
+        console.error('Failed to send SMS')
+      }
+    } catch (error) {
+      console.error('Error sending SMS:', error)
+    }
+  }
+
   const handleSubmitOrder = async () => {
     console.dir(state)
-    // const punchOrder = async (order) => {}
+
     // const paymentGateWay = () => {}
     let paymentItemsDescriptions = paymentItems
       .map(
@@ -143,36 +178,19 @@ function PaymentProvider ({ children }) {
     ]
       .filter(Boolean)
       .join('')
-
-    console.log(customerMessage)
-    console.log('\n')
-    console.log(storeMessage)
-    // // Send SMS using the backend API
-    // try {
-    //   const response = await fetch('http://localhost:5000/send-sms', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       customerNumber: state.phone,
-    //       storeNumber: '0672718374', // Replace with the store owner's number
-    //       customerMessage,
-    //       storeMessage
-    //     })
-    //   })
-
-    //   const text = await response.text() // Read response as plain text
-    //   console.log('Response from backend:', text)
-
-    //   if (response.ok) {
-    //     console.log('SMS sent successfully')
-    //   } else {
-    //     console.error('Failed to send SMS')
-    //   }
-    // } catch (error) {
-    //   console.error('Error sending SMS:', error)
-    // }
+    if (
+      paymentMethod.trim() === 'self-collect' ||
+      paymentMethod.trim() === 'cash'
+    ) {
+      orderNotification(customerMessage, storeMessage)
+    } else if (
+      paymentMethod.trim() === 'online-self-collect' ||
+      paymentMethod.trim() === 'online-self-collect'
+    ) {
+      console.log('loading gateway payment system.')
+      // after the above is done call ordernotification method.
+      orderNotification(customerMessage, storeMessage)
+    }
   }
 
   return (

@@ -23,7 +23,7 @@ const OrderBasket = ({ basketItems, updateBasketItems,
     console.log(
       'load form to filll payment details and select payment type, calculate amount needed to pay'
     )
-    console.log('order basket button clicked')
+    
     setShowPaymentForm(true)
   }
 
