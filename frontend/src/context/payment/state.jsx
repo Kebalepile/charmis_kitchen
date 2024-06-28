@@ -23,7 +23,8 @@ function PaymentProvider ({ children }) {
     paymentMethod: 'self-collect',
     deliveryCharge: 0,
     paymentTotal: 0,
-    paymentItems: []
+    paymentItems: [],
+    orderSubmitted:false
   }
 
   const [state, dispatch] = useReducer(PaymentReducer, initailState)
@@ -35,7 +36,8 @@ function PaymentProvider ({ children }) {
     paymentMethod,
     deliveryCharge,
     paymentTotal,
-    paymentItems
+    paymentItems,
+    orderSubmitted
   } = state
 
   const handleNameChange = e => {
@@ -75,15 +77,14 @@ function PaymentProvider ({ children }) {
 
     dispatch({ type: PAYMENT, payload: { paymentTotal, paymentItems: items } })
   }
-
+  const restPunchedOrder = () => {
+    dispatch({ type: ORDER_PUNCHED, payload: true })
+  }
   // update method code
   const handleSubmitOrder = async () => {
-    dispatch({ type: ORDER_PUNCHED, payload: true })
-
     console.dir(state)
     // const punchOrder = async (order) => {}
     // const paymentGateWay = () => {}
-
     let paymentItemsDescriptions = paymentItems
       .map(
         ({
@@ -192,7 +193,8 @@ function PaymentProvider ({ children }) {
         handlePaymentItems,
         handleSubmitOrder,
         handleHouseNumbersChange,
-        handleStreetAddressChange
+        handleStreetAddressChange,
+        restPunchedOrder
       }}
     >
       {children}
