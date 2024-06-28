@@ -82,52 +82,72 @@ function PaymentProvider ({ children }) {
 
     console.dir(state)
     // const punchOrder = async (order) => {}
-      // const paymentGateWay = () => {}
+    // const paymentGateWay = () => {}
 
-    let customerMessage;
+    let paymentItemsDescriptions = paymentItems
+      .map(
+        ({
+          foodMenu,
+          itemName,
+          orderNumber,
+          quantity,
+          selectedSize,
+          total
+        }) => {
+          return `\n ${foodMenu}: \n ${itemName} \n(Order Number: ${orderNumber}\n Quantity: ${quantity}\n Total: R${total}${
+            selectedSize ? `\n Size: ${selectedSize}` : ''
+          })`
+        }
+      )
+      .join('\n ')
 
-    let paymentItemsDescriptions =  paymentItems.map(({ foodMenu, itemName, orderNumber, quantity, selectedSize, total }) => {
-      return `\n ${foodMenu}: \n ${itemName} \n(Order Number: ${orderNumber}\n Quantity: ${quantity}\n Total: R${total}${selectedSize ? `\n Size: ${selectedSize}` : ''})`;
-    }).join("\n ");
+    const customerMessage = [
+      `\n 🍽️ Charmi's Kitchen ORDER NOTIFICATION:
+      \n 🧑 Name: ${name}`,
+      phone ? `\n 📞 Phone: ${phone}` : null,
+      streetAddress ? `\n 🏠 Address: ${streetAddress}` : null,
+      houseNumber ? `\n 🔢 House Number: ${houseNumber}` : null,
+      `\n 💳 Payment Method: ${paymentMethod}`,
+      `\n 💰 Payment Total: R${paymentTotal}`,
+      deliveryCharge ? `\n 🚚 Delivery Charge: R${deliveryCharge}` : null,
+      `\n 📦 Payment Items: \n ${paymentItemsDescriptions}
+      \n 📲 You'll be notified via SMS when the order is ready.`
+    ]
+      .filter(Boolean)
+      .join('')
+    
 
-    switch (state.paymentMethod) {
-      case 'self-collect':
-      case 'cash':
-        
-        
-        customerMessage =[
-          `\n Name: ${name}`,
-          phone ? `\n Phone: ${phone}` : null,
-          (streetAddress || streetAddress) ? `\n Address: ${streetAddress || streetAddress}` : null,
-          houseNumber ? `\n House Number: ${houseNumber}` : null,
-          `\n Payment Method: ${paymentMethod}`,
-          `\n Payment Total: R${paymentTotal}`,
-          deliveryCharge ? `\n Delivery Charge: R${deliveryCharge}` : null,
-          `\n Payment Items: \n ${paymentItemsDescriptions}`
-        ].filter(Boolean).join("");
-        break
-      case 'online-self-collect':
-        console.log('run online self collect logic')
-        break
-      case 'online':
-        console.log('run online payment logic')
-        break
+    const deliveryType = type => {
+      switch (type.trim()) {
+        case 'online':
+        case 'cash':
+          return 'delivery'
+        case 'online-self-collect':
+        case 'self-collect':
+          return 'self collect'
+      }
     }
+    const storeMessage = [
+      `\n 🆕 New order received!:
+      \n 🧑 Name: ${name}`,
+      phone ? `\n 📞 Phone: ${phone}` : null,
+      streetAddress ? `\n 🏠 Address: ${streetAddress}` : null,
+      houseNumber ? `\n 🔢 House Number: ${houseNumber}` : null,
+      `\n 💳 Payment Method: ${paymentMethod}`,
+      `\n 💰 Payment Total: R${paymentTotal}`,
+      deliveryCharge ? `\n 🚚 Delivery Charge: R${deliveryCharge}` : null,
+      `\n 📦 Payment Items: \n ${paymentItemsDescriptions}
+      \n 📲 Send SMS or call ${name} at ${phone} when the order is ready for ${deliveryType(
+        paymentMethod
+      )}.`
+    ]
+      .filter(Boolean)
+      .join('')
+    
 
     console.log(customerMessage)
-    // const customerMessage = `Dear ${order.name},\n your Order number: ${
-    //   order.orderNumber
-    // } for ${order.quantity} ${order.itemName} ${
-    //   order.selectedSize.length ? `, \n size: ${order.selectedSize}` : ''
-    // } has been received by the store. \n It will be ready in about 25 minutes. \n Delivery: ${
-    //   order.deliveryCharge > 0 ? 'yes' : 'self collect'
-    // }`
-    // const storeMessage = `New order received! Order number: ${order.orderNumber},
-    //    \n Customer: ${name}, \n Phone: ${phone}, \n Item: ${order.itemName}, \n Quantity: ${order.quantity},
-    //    \n Payment method ${order.paymentMethod} \n Total price: ${order.total}.`
-
-    // console.log(customerMessage)
-    // console.log(storeMessage)
+    console.log('\n')
+    console.log(storeMessage)
     // // Send SMS using the backend API
     // try {
     //   const response = await fetch('http://localhost:5000/send-sms', {

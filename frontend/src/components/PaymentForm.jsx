@@ -25,7 +25,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
     handlePaymentItems(paymentItems)
   }, [paymentItems])
 
- 
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
 
@@ -55,16 +54,9 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
   const handleFormSubmit = e => {
     e.preventDefault()
     if (validateForm()) {
-      // Handle form submission here
-      console.log('Form submitted')
-      switch (paymentMethod) {
-        case 'cash':
-        case 'online':
-          setPopupMessage('Delivery is currenlty limited to Boitekong Ext 2,4,5,6 and 8')
-          setShowPopup(true)
-          break
-      }
+      
       handleSubmitOrder()
+      setShowPaymentForm(false)
       // Reset form if needed
     }
   }
@@ -75,14 +67,13 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
   }
 
   const handleCloseFrom = () => {
-    console.log('close payment form')
+    // console.log('close payment form')
     setShowPaymentForm(false)
   }
   const renderAddressInputs = () => {
     if (paymentMethod === 'self-collect') {
       return null // Render nothing if self-collect
     }
-    
 
     return (
       <div>
@@ -148,7 +139,20 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems }) => {
               <select
                 className='select-payment'
                 value={paymentMethod}
-                onChange={handlePaymentChange}
+                onChange={e => {
+                  console.log("method: ", e.target.value)
+                  switch (e.target.value.trim()) {
+                    case 'online':
+                    case 'cash':
+                      setPopupMessage(
+                        '🚚 Delivery is currently limited to 📍 Boitekong Ext 2, 4, 5, 6, and 8'
+                      )
+                      
+                      setShowPopup(true)
+                      break
+                  }
+                  handlePaymentChange(e)
+                }}
               >
                 <option value='self-collect'>Self Collect (Free)</option>
                 <option value='online-self-collect'>
