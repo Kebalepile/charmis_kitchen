@@ -24,7 +24,7 @@ function PaymentProvider ({ children }) {
     deliveryCharge: 0,
     paymentTotal: 0,
     paymentItems: [],
-    orderSubmitted:false
+    orderSubmitted: false
   }
 
   const [state, dispatch] = useReducer(PaymentReducer, initailState)
@@ -116,7 +116,6 @@ function PaymentProvider ({ children }) {
     ]
       .filter(Boolean)
       .join('')
-    
 
     const deliveryType = type => {
       switch (type.trim()) {
@@ -144,7 +143,6 @@ function PaymentProvider ({ children }) {
     ]
       .filter(Boolean)
       .join('')
-    
 
     console.log(customerMessage)
     console.log('\n')
@@ -187,6 +185,7 @@ function PaymentProvider ({ children }) {
         paymentMethod,
         deliveryCharge,
         paymentTotal,
+        orderSubmitted,
         handleNameChange,
         handlePhoneChange,
         handlePaymentChange,
