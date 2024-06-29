@@ -1,38 +1,36 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import PaymentForm from '../PaymentForm'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import PaymentForm from '../PaymentForm';
 
-const OrderBasket = ({ basketItems, updateBasketItems,
-  resetOrderState
- }) => {
-  const [showPaymentForm, setShowPaymentForm] = useState(false)
+const OrderBasket = ({ basketItems, updateBasketItems, resetOrderState }) => {
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
 
   const removeOrder = (index, arr) => {
     // Create a copy of the array to avoid mutating the original array
-    const updatedArr = [...arr]
+    const updatedArr = [...arr];
 
     // Check if the index is within the valid range
     if (index >= 0 && index < updatedArr.length) {
       // Remove the item at the given index
-      updatedArr.splice(index, 1)
+      updatedArr.splice(index, 1);
     }
-    updateBasketItems(updatedArr)
-  }
+    updateBasketItems(updatedArr);
+  };
 
   const handlePaymentType = () => {
     console.log(
-      'load form to filll payment details and select payment type, calculate amount needed to pay'
-    )
-    
-    setShowPaymentForm(true)
-  }
+      'load form to fill payment details and select payment type, calculate amount needed to pay'
+    );
+
+    setShowPaymentForm(true);
+  };
 
   const total = () => {
     return basketItems.reduce((acc, cur) => {
-      acc += cur.total
-      return acc
-    }, 0)
-  }
+      acc += cur.total;
+      return acc;
+    }, 0);
+  };
 
   return (
     <>
@@ -44,39 +42,43 @@ const OrderBasket = ({ basketItems, updateBasketItems,
         />
       )}
       <section className='order-basket'>
-        <h3>Pending orders</h3>
-        <button className='menu-btn pay-button' onClick={handlePaymentType}>
-          pay
-        </button>
-        <hr className='bg-hr' />
-        <p>Total Amount to be paid is: R{total()}</p>
-        <hr className='bg-hr' />
+        <div className="sticky-top">
+          <h3>Pending orders</h3>
+          <button className='menu-btn pay-button' onClick={handlePaymentType}>
+            pay
+          </button>
+          <hr className='bg-hr' />
+          <p className='total-amount'>
+            Total Amount to be paid is:<strong> R {total()}.00</strong>
+          </p>
+          <hr className='bg-hr' />
+        </div>
         {basketItems.map((order, index) => (
-          <article key={index} className='order-item'>
-            <p> order number: {order.orderNumber}</p>
-            <p> meal: {order.itemName}</p>
-            <p> number of meal ordered: {order.quantity}</p>
-            {order.selectedSize.length > 0 && (
-              <p> meal size: {order.selectedSize}</p>
-            )}
-            <p> total: R{order.total}</p>
-            <button
-              className='pop'
-              onClick={() => removeOrder(index, basketItems)}
-            >
-              remove
-            </button>
-          </article>
-        ))}
+            <article key={index} className='order-item'>
+              <img className="order-img" src={order.item.image_url} alt={order.item.alt} />
+              <p className='order-total'>Total: R{order.total}</p>
+              <p className='order-quantity'>Quantity: {order.quantity}</p>
+              {order.selectedSize.length > 0 && (
+                <p className='order-size'>Size: {order.selectedSize}</p>
+              )}
+              <p className='order-name'>{order.itemName}</p>
+              <button
+                className='pop'
+                onClick={() => removeOrder(index, basketItems)}
+              >
+                X
+              </button>
+            </article>
+          ))}
       </section>
     </>
-  )
-}
+  );
+};
 
 OrderBasket.propTypes = {
   basketItems: PropTypes.array.isRequired,
   updateBasketItems: PropTypes.func.isRequired,
   resetOrderState: PropTypes.func.isRequired
-}
+};
 
-export default OrderBasket
+export default OrderBasket;

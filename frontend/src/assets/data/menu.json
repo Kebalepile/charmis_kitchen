@@ -25,9 +25,9 @@
           }
         },
         {
-          "name": "Russian & Cheese Bacon and Cheese",
+          "name": "Russian, Cheese, Bacon & Cheese",
           "image_url": "./assets/images/pizza/3.jpg",
-          "alt": "Russian & Cheese Bacon and Cheese image",
+          "alt": "Russian, Cheese, Bacon & Cheese image",
           "prices": {
             "small": "R25",
             "miniMedium": "R35",
@@ -76,10 +76,10 @@
       "name": "Chips menu",
       "items": [
         {
-          "name": "Small Pack",
+          "name": "Chips",
           "price": "R15",
           "image_url": "./assets/images/chips/2.jpg",
-          "alt": "Small Pack image"
+          "alt": "Chips image"
         }
       ]
     }
