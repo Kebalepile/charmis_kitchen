@@ -195,7 +195,6 @@ footer > p {
 
 .menu-item {
   width: 100%;
-  margin: 3px;
 }
 
 .menu-item:nth-child(1) {
@@ -712,7 +711,11 @@ button.pop {
   top: 0;
   right: 0;
 }
-
+@media only screen and ( max-width:425px){
+  .menu-item{
+    margin: 3px;
+  }
+}
 @media only screen and (max-width: 320px) {
   order-form,
   .select-order,
