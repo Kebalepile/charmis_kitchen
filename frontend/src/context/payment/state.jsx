@@ -13,7 +13,8 @@ import {
   SET_HOUSENUMBER,
   REST_PAYMENT_STATE
 } from '../types'
-import {generateOrderNumber} from "../../utils/Utils"
+import { generateOrderNumber } from '../../utils/Utils'
+import useWebSocket from '../../hooks/useWebSocket'
 
 function PaymentProvider ({ children }) {
   const initialState = {
@@ -40,6 +41,15 @@ function PaymentProvider ({ children }) {
     paymentItems,
     orderSubmitted
   } = state
+
+  const handleWebSocketMessage = message => {
+    // handle the incoming WebSocket message here
+    console.log('Received WebSocket message:', message)
+    alert('Received WebSocket message:', message)
+    // For example, you could dispatch an action based on the message content
+  }
+
+  useWebSocket('ws://localhost:5000', handleWebSocketMessage)
 
   const resetPaymentState = () => {
     dispatch({ type: REST_PAYMENT_STATE, payload: initialState })
@@ -103,7 +113,6 @@ function PaymentProvider ({ children }) {
    */
   const orderNotification = async (customerMessage, storeMessage) => {
     try {
-     
       const customerNumber = formatCellNumber(state.phone),
         storeNumber = formatCellNumber('0672718374')
       const apiKey = 'mQ-6Cd1RRT-BkEUpa7Xgbw=='
@@ -142,71 +151,46 @@ function PaymentProvider ({ children }) {
       clickTelApi(storeNumber, storeMessage, apiKey)
       console.log(customerMessage)
       clickTelApi(customerNumber, customerMessage, apiKey)
-
-      // const response = await fetch('http://localhost:5000/send-sms', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({
-      //     customerNumber: state.phone,
-      //     storeNumber: '0633343249', // Replace with the store owner's number
-      //     customerMessage,
-      //     storeMessage
-      //   })
-      // })
-
-      // const text = await response.text() // Read response as plain text
-      // console.log('Response from backend:', text)
-
-      // if (response.ok) {
-      //   console.log('SMS sent successfully')
-      //   restPunchedOrder()
-      // } else {
-      //   console.error('Failed to send SMS')
-      // }
     } catch (error) {
       console.error('Error sending SMS:', error)
     }
   }
 
   const handleSubmitOrder = async () => {
-    
     let paymentItemsDescriptions = paymentItems
-      .map(
-        ({
-          foodMenu,
-          itemName,
-          orderNumber,
-          quantity,
-          selectedSize,
-          total
-        }) => {
-          return `${foodMenu}: ${itemName} (Order#: ${orderNumber}, Qty: ${quantity}, Total: R${total}${
-            selectedSize ? `, Size: ${selectedSize}` : ''
-          })`
-        }
-      )
+      .map(({ foodMenu, itemName, quantity, selectedSize, total }) => {
+        return `${foodMenu}: ${itemName} ( Qty: ${quantity}, Total: R${total}${
+          selectedSize ? `, Size: ${selectedSize}` : ''
+        })`
+      })
       .join('; ')
-    const orderNumber = generateOrderNumber() // Generate unique order number
-    const customerMessage = [
-      `Julia's Kitchen ORDER NOTIFICATION:`,
-      `Order: ${orderNumber}`,
-      `Name: ${name}`,
-      phone ? `Phone: ${phone}` : null,
-      streetAddress ? `Address: ${streetAddress}` : null,
-      houseNumber ? `House: ${houseNumber}` : null,
-      `Payment: ${paymentMethod}`,
-      `Total: R${paymentTotal}`,
-      deliveryCharge
-        ? `Delivery: R${deliveryCharge}`
-        : `Collection: 2379 Windsa St, Boitekong Ext 2`,
-      `Items: ${paymentItemsDescriptions}`,
-      `You'll be notified via SMS when the order is ready.`
-    ]
-      .filter(Boolean)
-      .join(' ')
 
+    const orderNumber = generateOrderNumber() // Generate unique order number
+    const [customerMessage, storeMessage] = initOrderMessages(orderNumber)
+
+    if (
+      paymentMethod.trim() === 'self-collect' ||
+      paymentMethod.trim() === 'cash'
+    ) {
+      orderNotification(customerMessage, storeMessage)
+      updateOrderBoard(orderNumber, paymentItemsDescriptions)
+    } else if (
+      paymentMethod.trim() === 'online-self-collect' ||
+      paymentMethod.trim() === 'online-self-collect'
+    ) {
+      console.log('loading gateway payment system.')
+      // after the above is done call ordernotification method.
+      orderNotification(customerMessage, storeMessage)
+      updateOrderBoard(orderNumber, paymentItemsDescriptions)
+    }
+  }
+  /**
+   * @description create sms to send alert customer and store respectivly of new order being submitted.
+   * @param {number} orderNumber
+   * @param {string} paymentItemsDescriptions
+   * @returns array of sms strings
+   */
+  const initOrderMessages = orderNumber => {
     const deliveryType = type => {
       switch (type.trim()) {
         case 'online':
@@ -218,6 +202,24 @@ function PaymentProvider ({ children }) {
       }
     }
 
+    const customerMessage = [
+      `Julia's Kitchen ORDER NOTIFICATION:`,
+      `Order: ${orderNumber}`,
+      `Name: ${name}`,
+      phone ? `Phone: ${phone}` : null,
+      streetAddress ? `Address: ${streetAddress}` : null,
+      houseNumber ? `House: ${houseNumber}` : null,
+      `Delivery: ${paymentMethod}`,
+      `Total: R${paymentTotal}`,
+      deliveryCharge
+        ? `Delivery: R${deliveryCharge}`
+        : `Collection: 2379 Windsa St, Boitekong Ext 2`,
+      `You'll be notified via SMS when the order is ready.`,
+      `Track your order on the order board using your name and order number.`
+    ]
+      .filter(Boolean)
+      .join(' ')
+
     const storeMessage = [
       `New order received!`,
       `Order: ${orderNumber}`,
@@ -225,10 +227,9 @@ function PaymentProvider ({ children }) {
       phone ? `Phone: ${phone}` : null,
       streetAddress ? `Address: ${streetAddress}` : null,
       houseNumber ? `House: ${houseNumber}` : null,
-      `Payment: ${paymentMethod}`,
+      `Delivery: ${paymentMethod}`,
       `Total: R${paymentTotal}`,
       deliveryCharge ? `Delivery: R${deliveryCharge}` : null,
-      `Items: ${paymentItemsDescriptions}`,
       `Notify ${name} at ${phone} when the order is ready for ${deliveryType(
         paymentMethod
       )}.`
@@ -236,18 +237,46 @@ function PaymentProvider ({ children }) {
       .filter(Boolean)
       .join(' ')
 
-    if (
-      paymentMethod.trim() === 'self-collect' ||
-      paymentMethod.trim() === 'cash'
-    ) {
-      orderNotification(customerMessage, storeMessage)
-    } else if (
-      paymentMethod.trim() === 'online-self-collect' ||
-      paymentMethod.trim() === 'online-self-collect'
-    ) {
-      console.log('loading gateway payment system.')
-      // after the above is done call ordernotification method.
-      orderNotification(customerMessage, storeMessage)
+    return [customerMessage, storeMessage]
+  }
+
+  /**
+   *
+   * @param {number} orderNumber
+   * @param {string} paymentItemsDescriptions
+   * @descirption send new order to order database.
+   */
+  const updateOrderBoard = async (orderNumber, paymentItemsDescriptions) => {
+    const newOrder = {
+      orderNumber,
+      name,
+      phone,
+      streetAddress,
+      houseNumber,
+      paymentMethod,
+      paymentTotal,
+      deliveryCharge,
+      paymentItemsDescriptions
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newOrder)
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        console.log('Order submitted:', result)
+        // Optionally reset form or display a success message
+      } else {
+        console.error('Error submitting order:', response.statusText)
+      }
+    } catch (error) {
+      console.error('Error submitting order:', error)
     }
   }
 

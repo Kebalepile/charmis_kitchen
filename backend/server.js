@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const Order = require('./models/order'); // Import the order model
 const WebSocket = require('ws');
+const http = require('http');
 
 require('dotenv').config();
 
@@ -24,17 +25,18 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
+mongoose.connect(process.env.MONGO_URI);
 
 mongoose.connection.on('connected', () => {
   console.log('Connected to MongoDB');
 });
 
-const wss = new WebSocket.Server({ port: 8080 });
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
+
+wss.on('connection', (ws) => {
+  console.log('New WebSocket connection');
+});
 
 app.post('/orders', async (req, res) => {
   const {
@@ -48,9 +50,12 @@ app.post('/orders', async (req, res) => {
     paymentItemsDescriptions,
     orderNumber
   } = req.body;
-
-  // Generate timestamp
-  const timestamp = new Date();
+  
+  console.log('Received order:', req.body);
+  // Ensure all required fields are provided
+  if (!orderNumber || !name || !paymentMethod || paymentTotal === undefined || !paymentItemsDescriptions) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
 
   const newOrder = new Order({
     orderNumber,
@@ -62,11 +67,13 @@ app.post('/orders', async (req, res) => {
     paymentTotal,
     deliveryCharge,
     paymentItemsDescriptions,
-    timestamp
+    status: 'Pending',
+    timestamp: new Date()
   });
 
   try {
-    await newOrder.save();
+    const savedOrder = await newOrder.save();
+    console.log('Order saved:', savedOrder);
     res.status(201).json(newOrder);
 
     // Notify all connected clients
@@ -79,6 +86,7 @@ app.post('/orders', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 app.get('/orders', async (req, res) => {
   try {
@@ -111,7 +119,7 @@ app.put('/orders/:id', async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status500.json({ error: error.message });
   }
 });
 
@@ -138,7 +146,9 @@ app.delete('/orders/:id', async (req, res) => {
   }
 });
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+server.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
 
 function generateOrderNumber() {
   return Math.floor(Math.random() * 1000000).toString();
