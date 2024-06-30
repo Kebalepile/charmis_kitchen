@@ -215,6 +215,7 @@ function PaymentProvider ({ children }) {
         ? `Delivery: R${deliveryCharge}`
         : `Collection: 2379 Windsa St, Boitekong Ext 2`,
       `You'll be notified via SMS when the order is ready.`,
+      `call 0672718374 for queries`,
       `Track your order on the order board using your name and order number.`
     ]
       .filter(Boolean)
