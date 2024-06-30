@@ -742,4 +742,11 @@ button.pop {
     grid-template-areas: "img quantity remove" "img size remove"
       "img total total" "name name name";
   }
+
+  .order-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 3px;
+   
+  }
 }
