@@ -35,7 +35,7 @@ body {
   padding-left: 15px;
   background-color: #3fcefa;
   z-index: 10; /* Ensure it's above other content */
-  border-bottom: 1px solid white;;
+  border-bottom: 1px solid white;
 }
 
 #logo {
@@ -187,17 +187,15 @@ footer > p {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto auto;
-  /* gap: 20px; */
   width: 100%;
   justify-items: center;
   margin-top: 20px;
-  grid-template-areas:
-    ". chips pizza ."
-    ". chicken chicken. ";
+  grid-template-areas: ". chips pizza ." ". chicken chicken. ";
 }
 
 .menu-item {
   width: 100%;
+  margin: 3px;
 }
 
 .menu-item:nth-child(1) {
@@ -225,7 +223,7 @@ footer > p {
 
 .menu-btn {
   height: 50px;
-  width:110px;
+  width: 110px;
   border: none;
   background-color: #13a0ff;
   border-radius: 3px;
@@ -522,27 +520,24 @@ footer > p {
   border-radius: 5px 5px 1px 1px;
   padding: 5px;
   max-height: 500px; /* Set the maximum height */
-  overflow-y: auto;  /* Enable vertical scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .order-item {
   background: #f9fddfda;
   backdrop-filter: blur(3px);
   display: grid;
-  grid-template-areas: 
-    "img quantity remove"
-    "img size remove"
-    "img total total"
+  grid-template-areas: "img quantity remove" "img size remove" "img total total"
     "img name name";
   grid-template-columns: 100px 1fr auto;
   grid-template-rows: auto auto auto auto;
   padding: 10px;
   border-radius: 5px;
   border-bottom: 2px solid #1d89ee;
-  margin-bottom:5px;
+  margin-bottom: 5px;
 }
 .order-item * {
-  margin:0;
+  margin: 0;
   font-weight: bold;
 }
 .order-img {
@@ -555,7 +550,7 @@ footer > p {
 .order-name {
   grid-area: name;
   align-self: center;
-  margin-left:50px;
+  margin-left: 50px;
 }
 
 .order-quantity {
@@ -573,22 +568,22 @@ footer > p {
   align-self: center;
   justify-self: end;
 }
-button.pop{
+button.pop {
   grid-area: remove;
   align-self: start;
   justify-self: end;
-  background-color:#ff008c;
-  border:none;
-  color:white;
-  width:40px;
-  height:40px;
+  background-color: #ff008c;
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
   border-radius: 5px;
   cursor: pointer;
 }
-.pay-button{
-  width:70px;
+.pay-button {
+  width: 70px;
   height: 40px;
-  background-color:#1f85fa;
+  background-color: #1f85fa;
   font-size: large;
   font-weight: bold;
 }
@@ -705,18 +700,18 @@ button.pop{
 
 #close-menu {
   background-color: #1f85fa;
-  position: sticky;
-  top: 0;
-  right: 0;
-  margin: 0;
   border-radius: 8px;
   height: 50px;
   font-weight: bolder;
   font-size: larger;
   z-index: 1;
+  float: left;
 }
-
-
+#read-menu-nav {
+  position: sticky;
+  top: 0;
+  right: 0;
+}
 
 @media only screen and (max-width: 320px) {
   order-form,
@@ -730,7 +725,21 @@ button.pop{
   }
 
   .order-basket {
-   
-    width:280px;
+    width: 280px;
+  }
+
+  .menu-btn {
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  #close-menu {
+    font-weight: bold;
+    font-size: large;
+  }
+
+  .order-item {
+    grid-template-areas: "img quantity remove" "img size remove"
+      "img total total" "name name name";
   }
 }

@@ -45,9 +45,11 @@ export default function ReadMenu () {
     <>
       <div className='overlay show' onClick={handleClick}></div>
       <section className='read-menu'>
+        <section id="read-menu-nav">
         <button id='close-menu' onClick={handleClick}>
           X
         </button>
+        </section>
         {menu ? (
           <>
             <h3> {menu.name} </h3>
