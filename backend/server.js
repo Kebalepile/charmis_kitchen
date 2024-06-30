@@ -51,7 +51,7 @@ app.post('/orders', async (req, res) => {
     orderNumber
   } = req.body;
   
-  console.log('Received order:', req.body);
+  // console.log('Received order:', req.body);
   // Ensure all required fields are provided
   if (!orderNumber || !name || !paymentMethod || paymentTotal === undefined || !paymentItemsDescriptions) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -73,7 +73,7 @@ app.post('/orders', async (req, res) => {
 
   try {
     const savedOrder = await newOrder.save();
-    console.log('Order saved:', savedOrder);
+    // console.log('Order saved:', savedOrder);
     res.status(201).json(newOrder);
 
     // Notify all connected clients
