@@ -48,7 +48,7 @@ function PaymentProvider ({ children }) {
   const handleWebSocketMessage = message => {
     // handle the incoming WebSocket message here
     console.log('Received WebSocket message:', message)
-    alert('Received WebSocket message:', message)
+    
     // For example, you could dispatch an action based on the message content
   }
 

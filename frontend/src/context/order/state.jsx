@@ -12,7 +12,9 @@ import {
   BASKET_ITEMS,
   GET_ORDERS,
   UPDATE_ORDER,
-  DELETE_ORDER
+  DELETE_ORDER,
+  SEARCH_ORDER_FORM_VISIBLE,
+  ServerDomain
 } from '../types'
 
 const OrderProvider = ({ children }) => {
@@ -23,7 +25,8 @@ const OrderProvider = ({ children }) => {
     fooMenu: '',
     basket: false,
     basketItems: [],
-    orders: []
+    orders: [],
+    searchOrderFormVisible:false
   }
 
   const [state, dispatch] = useReducer(Reducer, initialState)
@@ -39,18 +42,24 @@ const OrderProvider = ({ children }) => {
     selectedSize,
     basket,
     basketItems,
-    orders
+    orders,
+    searchOrderFormVisible
   } = state
 
+  const setIsSearchOrderVisible = () => {
+    dispatch({ type: SEARCH_ORDER_FORM_VISIBLE, payload: !searchOrderFormVisible})
+  }
   const clearOrders = () => {
     dispatch({ type: GET_ORDERS, payload: [] })
   }
 
   const getOrder = async orderNumber => {
     try {
-      const response = await fetch(`/orders/${orderNumber}`)
+      const response = await fetch(`${ServerDomain}/orders/${orderNumber}`)
       const data = await response.json()
       dispatch({ type: GET_ORDERS, payload: [data] })
+      return true
+
     } catch (error) {
       console.error('Failed to fetch order:', error)
     }
@@ -58,7 +67,7 @@ const OrderProvider = ({ children }) => {
 
   const getOrders = async () => {
     try {
-      const response = await fetch('/orders')
+      const response = await fetch(`${ServerDomain}/orders`)
       const data = await response.json()
       dispatch({ type: GET_ORDERS, payload: data })
     } catch (error) {
@@ -67,7 +76,7 @@ const OrderProvider = ({ children }) => {
   }
   const updateOrder = async (id, updateData) => {
     try {
-      const response = await fetch(`/orders/${id}`, {
+      const response = await fetch(`${ServerDomain}/orders/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updateData)
@@ -81,7 +90,7 @@ const OrderProvider = ({ children }) => {
 
   const deleteOrder = async id => {
     try {
-      await fetch(`/orders/${id}`, { method: 'DELETE' })
+      await fetch(`${ServerDomain}/orders/${id}`, { method: 'DELETE' })
       dispatch({ type: DELETE_ORDER, payload: id })
     } catch (error) {
       console.error('Failed to delete order:', error)
@@ -155,7 +164,7 @@ const OrderProvider = ({ children }) => {
     // console.log(orderDetails)
     handleBasketItems(orderDetails)
 
-    localStorage.setItem('orderDetails', JSON.stringify(orderDetails))
+    // localStorage.setItem('orderDetails', JSON.stringify(orderDetails))
     onClose()
     setShouldReset(true)
   }
@@ -192,6 +201,8 @@ const OrderProvider = ({ children }) => {
         basket,
         basketItems,
         orders,
+        searchOrderFormVisible,
+        setIsSearchOrderVisible,
         getOrder,
         getOrders,
         updateOrder,

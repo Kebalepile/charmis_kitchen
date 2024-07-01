@@ -7,11 +7,17 @@ import {
   BASKET_ITEMS,
   GET_ORDERS,
   UPDATE_ORDER,
-  DELETE_ORDER
+  DELETE_ORDER,
+  SEARCH_ORDER_FORM_VISIBLE
 } from '../types'
 
 export default function orderReducer (state, action) {
   switch (action.type) {
+    case SEARCH_ORDER_FORM_VISIBLE:
+      return {
+        ...state,
+        searchOrderFormVisible: action.payload
+      }
     case BASKET:
       return {
         ...state,

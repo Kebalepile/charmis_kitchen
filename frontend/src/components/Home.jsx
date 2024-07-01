@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Menu from './Menu'
 import Slideshow from './Slideshow'
+import SearchOrder from "./SearchOrder"
 import PaymentContext from '../context/payment/context'
 import Popup from './Popup'
 
@@ -31,6 +32,7 @@ export default function Home () {
         <Slideshow />
         {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
       </section>
+      <SearchOrder/>
       <Menu />
     </>
   )

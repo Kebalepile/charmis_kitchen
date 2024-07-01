@@ -1,28 +1,75 @@
 import React, { useContext, useState } from 'react'
 import OrderContext from '../context/order/context'
-import OrderDisplay from './OrderDisplay'
+import Loading from './Loading'
+import Popup from './Popup'
+// import OrderDisplay from './OrderDisplay'; // Import the index.css file for global styles
 
 export default function SearchOrder () {
-  const { getOrder, orders } = useContext(OrderContext)
+  const { getOrder, orders, searchOrderFormVisible, setIsSearchOrderVisible } =
+    useContext(OrderContext)
   const [orderNumber, setOrderNumber] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [showPopup, setShowPopup] = useState(false)
+  const [popupMessage, setPopupMessage] = useState('')
 
+  const closePopup = () => {
+    setShowPopup(false)
+    setPopupMessage('')
+  }
   const handleSearch = async e => {
     e.preventDefault()
-    await getOrder(orderNumber)
+
+    try {
+      const isNum = Number(orderNumber)
+
+      if (isNum) {
+        setLoading(true)
+        const done = await getOrder(orderNumber)
+        if (done) {
+          setLoading(false)
+          console.log(orders)
+        }
+        setOrderNumber('')
+      } else {
+        setPopupMessage('order number incorrect')
+        setShowPopup(true)
+      }
+    } catch (err) {
+      console.error(err)
+      setLoading(false)
+    }
+  }
+
+  const closeSearchForm = () => {
+    setOrderNumber('')
+    setIsSearchOrderVisible()
+    setLoading(false)
   }
 
   return (
-    <div>
-      <form onSubmit={handleSearch}>
-        <input
-          type='text'
-          placeholder='Enter order number'
-          value={orderNumber}
-          onChange={e => setOrderNumber(e.target.value)}
-        />
-        <button type='submit'>Search</button>
-      </form>
-      {orders && <OrderDisplay />}
-    </div>
+    <>
+      {searchOrderFormVisible && (
+        <div id='search-order' className='search-order-container'>
+          {loading && <Loading />}
+          {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
+          <div className='overlay show' onClick={closeSearchForm}></div>
+
+          <form onSubmit={handleSearch}>
+            <input
+              type='text'
+              placeholder='Enter Order Number'
+              value={orderNumber}
+              onChange={e => setOrderNumber(e.target.value)}
+              className='search-order-input'
+              required
+            />
+            <button type='submit' className='search-order-button'>
+              Search
+            </button>
+          </form>
+          {/* {orders.length && <OrderDisplay />} */}
+        </div>
+      )}
+    </>
   )
 }

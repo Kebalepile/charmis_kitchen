@@ -31,11 +31,11 @@ const OrderDisplay = () => {
   }
 
   return (
-    <dialog ref={dialogRef}>
-      <button onClick={handleClose}>Close</button>
-      <div>
+    <dialog ref={dialogRef} className="order-dialog">
+      <button onClick={handleClose} className="menu-btn">Close</button>
+      <div className="order-details">
         {orders.map((order) => (
-          <div key={order.orderNumber} style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}>
+          <div key={order.orderNumber} className="order-item">
             {order.orderNumber && <p><strong>Order Number:</strong> {order.orderNumber}</p>}
             {order.name && <p><strong>Name:</strong> {order.name}</p>}
             {order.phone && <p><strong>Phone:</strong> {order.phone}</p>}
