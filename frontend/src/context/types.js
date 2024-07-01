@@ -17,6 +17,9 @@ export const REST_ORDER_STATE = "REST_ORDER_STATE";
 export const BASKET = "BASKET";
 export const BASKET_ITEMS = "BASKET_ITEMS";
 export const CONFIRM_ORDER = "CONFIRM_ORDER";
+export const GET_ORDERS = 'GET_ORDERS';
+export const UPDATE_ORDER = 'UPDATE_ORDER';
+export const DELETE_ORDER = 'DELETE_ORDER';
 // payment context
 export const PAYMENT = "PAYMENT";
 export const PAYMENT_FORM_INFO = "PAYMENT_FORM_INFO";
@@ -24,3 +27,9 @@ export const ORDER_PUNCHED = "ORDER_PUNCED";
 export const SET_STREET_ADDRESS = "SET_STREET_ADDRESS";
 export const SET_HOUSENUMBER = "SET_HOUSENUMBER";
 export const REST_PAYMENT_STATE = "REST_PAYMENT_STATE";
+
+// urls
+export const  WebSocketURL = 'ws://localhost:5000'
+export const ServerDomain = 'http://localhost:5000'
+// CLICKTEL API KEY 
+export const API_KEY = 'mQ-6Cd1RRT-BkEUpa7Xgbw=='

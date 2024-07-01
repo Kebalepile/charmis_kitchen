@@ -9,9 +9,11 @@ import {
   SET_SELECTED_SIZE,
   REST_ORDER_STATE,
   BASKET,
-  BASKET_ITEMS
+  BASKET_ITEMS,
+  GET_ORDERS,
+  UPDATE_ORDER,
+  DELETE_ORDER
 } from '../types'
-
 
 const OrderProvider = ({ children }) => {
   const initialState = {
@@ -20,9 +22,10 @@ const OrderProvider = ({ children }) => {
     selectedSize: '',
     fooMenu: '',
     basket: false,
-    basketItems: []
+    basketItems: [],
+    orders: []
   }
- 
+
   const [state, dispatch] = useReducer(Reducer, initialState)
   const [shouldReset, setShouldReset] = useState(false)
 
@@ -35,9 +38,55 @@ const OrderProvider = ({ children }) => {
     total,
     selectedSize,
     basket,
-    basketItems
+    basketItems,
+    orders
   } = state
-  
+
+  const clearOrders = () => {
+    dispatch({ type: GET_ORDERS, payload: [] })
+  }
+
+  const getOrder = async orderNumber => {
+    try {
+      const response = await fetch(`/orders/${orderNumber}`)
+      const data = await response.json()
+      dispatch({ type: GET_ORDERS, payload: [data] })
+    } catch (error) {
+      console.error('Failed to fetch order:', error)
+    }
+  }
+
+  const getOrders = async () => {
+    try {
+      const response = await fetch('/orders')
+      const data = await response.json()
+      dispatch({ type: GET_ORDERS, payload: data })
+    } catch (error) {
+      console.error('Failed to fetch orders:', error)
+    }
+  }
+  const updateOrder = async (id, updateData) => {
+    try {
+      const response = await fetch(`/orders/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updateData)
+      })
+      const data = await response.json()
+      dispatch({ type: UPDATE_ORDER, payload: data })
+    } catch (error) {
+      console.error('Failed to update order:', error)
+    }
+  }
+
+  const deleteOrder = async id => {
+    try {
+      await fetch(`/orders/${id}`, { method: 'DELETE' })
+      dispatch({ type: DELETE_ORDER, payload: id })
+    } catch (error) {
+      console.error('Failed to delete order:', error)
+    }
+  }
   const resetOrderState = () => {
     dispatch({ type: REST_ORDER_STATE, payload: initialState })
   }
@@ -93,7 +142,7 @@ const OrderProvider = ({ children }) => {
 
   const handleSubmit = (e, foodMenu, item, onClose) => {
     e.preventDefault()
-   
+
     const orderDetails = {
       foodMenu,
       item,
@@ -142,6 +191,11 @@ const OrderProvider = ({ children }) => {
         selectedSize,
         basket,
         basketItems,
+        orders,
+        getOrder,
+        getOrders,
+        updateOrder,
+        deleteOrder,
         handleQuantityChange,
         handleSizeChange,
         calculateTotal,
@@ -149,7 +203,8 @@ const OrderProvider = ({ children }) => {
         handleRest,
         updateBasketItems,
         handleCloseBasket,
-        resetOrderState
+        resetOrderState,
+        clearOrders
       }}
     >
       {children}

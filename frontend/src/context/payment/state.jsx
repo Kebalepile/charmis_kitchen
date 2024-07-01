@@ -11,7 +11,10 @@ import {
   SET_DELIVERY_CHARGE,
   SET_STREET_ADDRESS,
   SET_HOUSENUMBER,
-  REST_PAYMENT_STATE
+  REST_PAYMENT_STATE,
+  WebSocketURL,
+  ServerDomain,
+  API_KEY
 } from '../types'
 import { generateOrderNumber } from '../../utils/Utils'
 import useWebSocket from '../../hooks/useWebSocket'
@@ -49,7 +52,7 @@ function PaymentProvider ({ children }) {
     // For example, you could dispatch an action based on the message content
   }
 
-  useWebSocket('ws://localhost:5000', handleWebSocketMessage)
+  useWebSocket(WebSocketURL, handleWebSocketMessage)
 
   const resetPaymentState = () => {
     dispatch({ type: REST_PAYMENT_STATE, payload: initialState })
@@ -115,7 +118,7 @@ function PaymentProvider ({ children }) {
     try {
       const customerNumber = formatCellNumber(state.phone),
         storeNumber = formatCellNumber('0672718374')
-      const apiKey = 'mQ-6Cd1RRT-BkEUpa7Xgbw=='
+      
 
       const clickTelApi = (phone, message, apiKey) => {
         try {
@@ -147,10 +150,10 @@ function PaymentProvider ({ children }) {
           console.error('There was a problem with the fetch operation:', error)
         }
       }
-      console.log(storeMessage)
-      clickTelApi(storeNumber, storeMessage, apiKey)
-      console.log(customerMessage)
-      clickTelApi(customerNumber, customerMessage, apiKey)
+      // console.log(storeMessage)
+      clickTelApi(storeNumber, storeMessage, API_KEY)
+      // console.log(customerMessage)
+      clickTelApi(customerNumber, customerMessage, API_KEY)
     } catch (error) {
       console.error('Error sending SMS:', error)
     }
@@ -178,7 +181,7 @@ function PaymentProvider ({ children }) {
       paymentMethod.trim() === 'online-self-collect' ||
       paymentMethod.trim() === 'online-self-collect'
     ) {
-      console.log('loading gateway payment system.')
+      // console.log('loading gateway payment system.')
       // after the above is done call ordernotification method.
       orderNotification(customerMessage, storeMessage)
       updateOrderBoard(orderNumber, paymentItemsDescriptions)
@@ -261,7 +264,7 @@ function PaymentProvider ({ children }) {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/orders', {
+      const response = await fetch(`${ServerDomain}/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
