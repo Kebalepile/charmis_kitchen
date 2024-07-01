@@ -73,13 +73,13 @@ const OrderDisplay = () => {
             {order.paymentTotal !== undefined && (
               <p>
                 <strong>Payment Total: </strong>{' '}
-                <i>${order.paymentTotal.toFixed(2)}</i>
+                <i>R {order.paymentTotal.toFixed(2)}</i>
               </p>
             )}
             {order.deliveryCharge !== undefined && (
               <p>
                 <strong>Delivery Charge: </strong>{' '}
-                <i>${order.deliveryCharge.toFixed(2)}</i>
+                <i>R {order.deliveryCharge.toFixed(2)}</i>
               </p>
             )}
             {order.paymentItemsDescriptions && (
