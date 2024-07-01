@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import OrderContext from '../context/order/context'
 import Loading from './Loading'
 import Popup from './Popup'
-// import OrderDisplay from './OrderDisplay'; // Import the index.css file for global styles
+import OrderDisplay from './OrderDisplay'; 
 
 export default function SearchOrder () {
   const { getOrder, orders, searchOrderFormVisible, setIsSearchOrderVisible } =
@@ -16,24 +16,31 @@ export default function SearchOrder () {
     setShowPopup(false)
     setPopupMessage('')
   }
+
   const handleSearch = async e => {
     e.preventDefault()
+    
 
     try {
       const isNum = Number(orderNumber)
 
       if (isNum) {
         setLoading(true)
-        const done = await getOrder(orderNumber)
-        if (done) {
+        const [ok, message] = await getOrder(orderNumber)
+        
+        if (ok) {
           setLoading(false)
-          console.log(orders)
+         
+        } else {
+          setLoading(false)
+          setPopupMessage(message)
+          setShowPopup(true)
         }
-        setOrderNumber('')
       } else {
         setPopupMessage('order number incorrect')
         setShowPopup(true)
       }
+      setOrderNumber('')
     } catch (err) {
       console.error(err)
       setLoading(false)
@@ -67,7 +74,7 @@ export default function SearchOrder () {
               Search
             </button>
           </form>
-          {/* {orders.length && <OrderDisplay />} */}
+          {orders.length && <OrderDisplay />}
         </div>
       )}
     </>

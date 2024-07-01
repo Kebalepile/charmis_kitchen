@@ -26,7 +26,7 @@ const OrderProvider = ({ children }) => {
     basket: false,
     basketItems: [],
     orders: [],
-    searchOrderFormVisible:false
+    searchOrderFormVisible: false
   }
 
   const [state, dispatch] = useReducer(Reducer, initialState)
@@ -47,8 +47,12 @@ const OrderProvider = ({ children }) => {
   } = state
 
   const setIsSearchOrderVisible = () => {
-    dispatch({ type: SEARCH_ORDER_FORM_VISIBLE, payload: !searchOrderFormVisible})
+    dispatch({
+      type: SEARCH_ORDER_FORM_VISIBLE,
+      payload: !searchOrderFormVisible
+    })
   }
+
   const clearOrders = () => {
     dispatch({ type: GET_ORDERS, payload: [] })
   }
@@ -56,10 +60,15 @@ const OrderProvider = ({ children }) => {
   const getOrder = async orderNumber => {
     try {
       const response = await fetch(`${ServerDomain}/orders/${orderNumber}`)
-      const data = await response.json()
-      dispatch({ type: GET_ORDERS, payload: [data] })
-      return true
 
+      const data = await response.json()
+
+      if (response.ok) {
+        dispatch({ type: GET_ORDERS, payload: [data] })
+        return [response.ok, null]
+      } else {
+        return [response.ok, data?.message || 'Internal sServer Error']
+      }
     } catch (error) {
       console.error('Failed to fetch order:', error)
     }
