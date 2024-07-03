@@ -12,12 +12,12 @@ import {
   SET_STREET_ADDRESS,
   SET_HOUSENUMBER,
   REST_PAYMENT_STATE,
-  WebSocketURL,
+  // WebSocketURL,
   ServerDomain,
   API_KEY
 } from '../types'
 import { generateOrderNumber } from '../../utils/Utils'
-import useWebSocket from '../../hooks/useWebSocket'
+// import useWebSocket from '../../hooks/useWebSocket'
 
 function PaymentProvider ({ children }) {
   const initialState = {
@@ -45,14 +45,14 @@ function PaymentProvider ({ children }) {
     orderSubmitted
   } = state
 
-  const handleWebSocketMessage = message => {
-    // handle the incoming WebSocket message here
-    console.log('Received WebSocket message:', message)
+  // const handleWebSocketMessage = message => {
+  //   // handle the incoming WebSocket message here
+  //   console.log('Received WebSocket message:', message)
     
-    // For example, you could dispatch an action based on the message content
-  }
+  //   // For example, you could dispatch an action based on the message content
+  // }
 
-  useWebSocket(WebSocketURL, handleWebSocketMessage)
+  // useWebSocket(WebSocketURL, handleWebSocketMessage)
 
   const resetPaymentState = () => {
     dispatch({ type: REST_PAYMENT_STATE, payload: initialState })

@@ -11,11 +11,13 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-align: center;
 }
 
 body {
   margin: 0;
   display: flex;
+  justify-content: center;
   place-items: center;
   background-color: var(--b1);
   padding: 0;
@@ -27,6 +29,7 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
+  max-width: 700px;
   height: 100px; /* Ensure it accommodates the height of #logo */
   border-radius: 3px;
   display: grid;
@@ -63,8 +66,7 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 100px;
-  left: 0;
-  margin: 0;
+  margin: 0 auto;
   display: flex;
   flex-flow: column nowrap;
   color: white;
@@ -128,6 +130,7 @@ footer > p {
   position: relative;
   overflow: hidden;
   width: 80%;
+  max-width: 700px;
   height: 50vh;
   border-radius: 0 0 5px 5px;
   padding: 0;
@@ -158,7 +161,7 @@ footer > p {
   background-color: rgba(0, 0, 0, 0.5);
   padding: 10px 20px;
   border-radius: 3px;
-  width:80%;
+  width: 80%;
 }
 
 .slide-text p {
@@ -177,6 +180,7 @@ footer > p {
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+  max-width: 700px;
 }
 
 #menu {
@@ -221,6 +225,7 @@ footer > p {
 #about {
   text-align: justify;
   padding: 20px;
+  max-width: 700px;
 }
 
 .menu-icon {
@@ -279,7 +284,7 @@ footer > p {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 9;
+  z-index: 12;
   display: none;
 }
 #price-form > .overlay {
@@ -300,7 +305,7 @@ footer > p {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 11;
+  z-index: 14;
 }
 
 .image-container {
@@ -323,7 +328,7 @@ footer > p {
   transform: translate(-50%, -50%);
   background: #ffffffcc;
   backdrop-filter: blur(10px);
-  z-index: 10;
+  z-index: 13;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -346,7 +351,7 @@ footer > p {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #faf0d0;
-  z-index: 10;
+  z-index: 14;
   padding: 10px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -483,7 +488,6 @@ footer > p {
 }
 
 .order-form button {
-  /* margin-top: 20px; */
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
@@ -492,7 +496,6 @@ footer > p {
   cursor: pointer;
   font-size: 14px;
   width: 100px;
-  /* margin: auto; */
 }
 
 .order-form button:hover {
@@ -518,7 +521,6 @@ footer > p {
   background-color: #f4f5d4; /* Same as the order-basket background */
   z-index: 1; /* Ensure it stays on top of other content */
   padding: 5px;
-  /* border-bottom: 2px solid #1d89ee; Optional: add a bottom border for better visibility */
 }
 
 .order-basket {
@@ -596,10 +598,9 @@ button.pop {
 }
 
 #payment-form > .overlay {
-  z-index: 10;
+  z-index: 12;
 }
 
-/* id='entire-menu' */
 #payment-form {
   max-width: 302px;
   margin: 0 auto; /* Center the form horizontally */
@@ -612,7 +613,7 @@ button.pop {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #faf0d0;
-  z-index: 10;
+  z-index: 13;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -662,7 +663,6 @@ button.pop {
   opacity: 0.8;
 }
 
-/* --- */
 .select-order .form-group {
   margin-bottom: 15px;
 }
@@ -760,16 +760,16 @@ button.pop {
     border-radius: 3px;
   }
 }
-
-/* Styles for SearchOrder component */
-
+.search-order-container{
+  max-width:700px;
+}
 .search-order-container form {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: auto;
-  z-index: 10;
+  z-index: 13;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -795,7 +795,7 @@ button.pop {
 .search-order-input {
   height: 30px;
   padding: 10px;
-  /* margin-right: 10px; */
+
   border: none;
   border-radius: 5px;
   font-size: 15px;
@@ -812,7 +812,6 @@ button.pop {
   margin-top: 5px;
 }
 
-/* Styles for OrderDisplay component */
 .order-dialog {
   border: none;
   border-radius: 3px;

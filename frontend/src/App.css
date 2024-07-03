@@ -1,9 +1,7 @@
 #root {
+  max-width: 700px;
   margin: 0 auto;
-  text-align: center;
-  overflow-x: hidden;
 }
-
 /* Scrollbar Styles */
 ::-webkit-scrollbar {
   height: 4px;
