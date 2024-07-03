@@ -840,3 +840,13 @@ button.pop {
 .order-display-details p {
   margin-bottom: 5px;
 }
+
+.lang-button{
+  border:none;
+  height:40px;
+  margin:5px;
+  background:rgb(75, 73, 73);
+  border-radius: 4px;
+  color:white;
+  cursor:pointer;
+}

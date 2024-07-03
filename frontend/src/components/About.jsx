@@ -1,18 +1,71 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { GrContact } from 'react-icons/gr'
 
 export default function About () {
-  return (
-    <section id='about'>
-      <GrContact />
-      <h3> about </h3>
+  const [language, setLanguage] = useState('setswana')
+
+  const englishContent = (
+    <section>
       <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Error ipsum
-        nulla ipsam quis ea quasi, doloremque illum mollitia earum quaerat
-        obcaecati dicta amet, delectus maxime voluptatibus beatae quod molestias
-        dolorem. Sapiente nisi qui necessitatibus ipsa illo, cumque beatae neque
-        pariatur tempora. Atque dolores excepturi, at est enim modi
+        🍕 Welcome to Julia's Kitchen, your go-to web app for homemade fast
+        food! We specialize in offering a variety of delicious homemade dishes
+        and drinks, all available for prepaid order.
+      </p>
+      <p>
+        🍗 At Julia's Kitchen, we pride ourselves on serving homemade African
+        township cuisine. From pizza and chicken wings to magwinya and baked
+        cookies, we have something to satisfy every craving.
+      </p>
+      <p>
+        🥘 Our goal is to ensure that our food arrives fresh and tasty,
+        providing you with a delightful experience of traditional Setswana
+        meals. Thank you for your support, and we hope you enjoy our food as
+        much as we enjoy making it for you!
       </p>
     </section>
+  )
+
+  const setswanaContent = (
+    <section>
+      <p>
+        🍕 Dumelang! Re a go amogela mo Julia's Kitchen, lefelo la gago la dijo
+        tsa malatsi otlhe tse di phepafetseng. Re ikgantsha ka go go abela dijo
+        tse di tlhotlhwa sentle tsa Setswana tse di mo godimo ga dipitsa tsa
+        motse, tse di dirilweng ka lorato le boineelo.
+      </p>
+      <p>
+        🍗 Mo Julia's Kitchen, re itsholela ka dijo tse di monate go tswa mo
+        dipitsa tsa Setswana go fitlha mo menongwane ya di kuku. Ka dikgetho tse
+        di jaaka pizza, malana a kana, magwinya, le dinkgwe tse di apeilweng, re
+        na le sengwe le sengwe go kgotsofatsa matlalo a gago.
+      </p>
+      <p>
+        🥘 Re dira ka natla go netefatsa gore dijo tsa rona di goroga ka nako,
+        di ntse di le foreshe mme di le monate. Keletso ya rona ke go go naya
+        phitlhelelo e e monate ya dijo tsa Setswana, tse di neng di tshela
+        ditswa mo motseng.
+      </p>
+      <p>
+        🙏 Re leboga kago re tshegetsa, mme re solofela gore o tla itumelela
+        dijo tsa rona fela jaaka re itumelela go di go abela. Re a leboga!
+      </p>
+    </section>
+  )
+
+  return (
+    <div id='about'>
+      <hr className='bg-hr' />
+      <GrContact />
+      <h3>About</h3>
+      <div>
+        <button onClick={() => setLanguage('english')} className='lang-button'>
+          English 🇬🇧
+        </button>
+        <button onClick={() => setLanguage('setswana')} className='lang-button'>
+          Setswana 🇿🇦
+        </button>
+      </div>
+      {language === 'english' ? englishContent : setswanaContent}
+    </div>
   )
 }
