@@ -274,7 +274,7 @@ function PaymentProvider ({ children }) {
 
       if (response.ok) {
         const result = await response.json()
-        console.log('Order submitted:', result)
+        // console.log('Order submitted:', result)
         // Optionally reset form or display a success message
       } else {
         console.error('Error submitting order:', response.statusText)
