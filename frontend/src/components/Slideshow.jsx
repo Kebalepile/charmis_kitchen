@@ -9,27 +9,27 @@ import c3 from '../assets/images/chicken/1.jpg'
 const images = [
   {
     src: p1,
-    text: ' Lorem ipsum, dolor sit amet consectetur adipisicing'
+    text: 'Sizzling Hot Pizza Just For You!'
   },
   {
     src: p2,
-    text: ' Lorem ipsum, dolor sit amet consectetur adipisicing'
+    text: 'Indulge in Our Cheesy Delight!'
   },
   {
     src: p3,
-    text: ' Lorem ipsum, dolor sit amet consectetur adipisicing'
+    text: 'Your Perfect Slice of Happiness!'
   },
   {
     src: c1,
-    text: 'Lorem ipsum, dolor sit amet consectetur adipisicing'
+    text: 'Unforgettable Flavor!'
   },
   {
     src: c2,
-    text: 'Lorem ipsum, dolor sit amet consectetur adipisicing'
+    text: 'Goodness Awaits!'
   },
   {
     src: c3,
-    text: 'Lorem ipsum, dolor sit amet consectetur adipisicing'
+    text: 'Bite Into Juicy Chicken Perfection!'
   }
   // Add more images as needed
 ]
@@ -50,7 +50,7 @@ const Slideshow = () => {
   return (
     <div className='slideshow'>
       <div className='slide' style={{ backgroundImage: `url(${src})` }}>
-        <div className='slide-text'>{text}</div>
+        <div className='slide-text'><p>{text}</p></div>
       </div>
     </div>
   )
