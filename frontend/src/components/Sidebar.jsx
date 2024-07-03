@@ -27,6 +27,15 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
         <hr className='bg-hr' />
         <ul className='sidebar-list'>
           <li
+            onClick={() => handleClick('#menu')}
+            className='sidebar-list-item'
+          >
+            Food
+          </li>
+          <li onClick={handleSearchOrderClick} className='sidebar-list-item'>
+            Search Order
+          </li>
+          <li
             onClick={() => handleClick('#about')}
             className='sidebar-list-item'
           >
@@ -37,15 +46,6 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
             className='sidebar-list-item'
           >
             Contact Us
-          </li>
-          <li
-            onClick={() => handleClick('#menu')}
-            className='sidebar-list-item'
-          >
-            Food
-          </li>
-          <li onClick={handleSearchOrderClick} className='sidebar-list-item'>
-            Search Order
           </li>
         </ul>
         <hr className='bg-hr' />
