@@ -33,4 +33,4 @@ export const REST_PAYMENT_STATE = "REST_PAYMENT_STATE";
 export const WebSocketURL = "ws://localhost:5000";
 export const ServerDomain = "http://localhost:5000";
 // CLICKTEL API KEY
-export const API_KEY = "mQ-6Cd1RRT-BkEUpa7Xgbw==";
+export const API_KEY = "p1vV7LHbScq-0F10K9VeNA==";
