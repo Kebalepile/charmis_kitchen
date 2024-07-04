@@ -25,9 +25,9 @@
           }
         },
         {
-          "name": "Russian, Cheese, Bacon & Cheese",
+          "name": "Russian & Cheese Bacon and Cheese",
           "image_url": "./assets/images/pizza/3.jpg",
-          "alt": "Russian, Cheese, Bacon & Cheese image",
+          "alt": "Russian & Cheese Bacon and Cheese image",
           "prices": {
             "small": "R25",
             "miniMedium": "R35",
@@ -43,13 +43,13 @@
         {
           "name": "4 Wings",
           "price": "R25",
-          "image_url": "./assets/images/chicken/3.jpg",
+          "image_url": "./assets/images/chicken/2.jpg",
           "alt": "4 Wings image"
         },
         {
           "name": "6 Wings",
           "price": "R38",
-          "image_url": "./assets/images/chicken/3.jpg",
+          "image_url": "./assets/images/chicken/2.jpg",
           "alt": "6 Wings image"
         },
         {
@@ -76,38 +76,10 @@
       "name": "Chips menu",
       "items": [
         {
-          "name": "Chips (small)",
+          "name": "Small Pack",
           "price": "R15",
-          "image_url": "./assets/images/chips/1.jpeg",
-          "alt": "Chips image"
-        },
-        {
-          "name": "Chips (medium)",
-          "price": "R30",
-          "image_url": "./assets/images/chips/1.jpeg",
-          "alt": "Chips image"
-        }
-      ]
-    },
-     "magwinyaMenu": {
-      "name": "Magwinya menu",
-      "items": [
-        {
-          "name": "Magwinya (5 x R3)",
-          "price": "R15",
-          "image_url": "./assets/images/magwinya/2.jpg",
-          "alt": "Magwinya image"
-        }
-      ]
-    },
-     "dikukuMenu": {
-      "name": "dikuku menu",
-      "items": [
-        {
-          "name": "dikuku (5 liter)",
-          "price": "R100",
-          "image_url": "./assets/images/dikuku/1.jpg",
-          "alt": "dikuku image"
+          "image_url": "./assets/images/chips/2.jpg",
+          "alt": "Small Pack image"
         }
       ]
     }
