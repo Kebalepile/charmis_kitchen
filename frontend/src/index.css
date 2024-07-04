@@ -184,42 +184,28 @@ footer > p {
 }
 
 #menu {
-  margin: 30px auto auto auto;
-}
-#menu {
   width: 96dvw;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  margin: 30px auto auto auto;
+  margin: 30px auto;
 }
 
 .menu-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto auto;
-  width: 100%;
-  justify-items: center;
-  margin-top: 20px;
-  grid-template-areas: ". chips pizza ." ". chicken chicken. ";
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
 }
 
 .menu-item {
-  width: 100%;
+  flex: 1 1 30%; /* Allow flex items to grow and shrink, setting an initial basis of 30% */
+  margin: 10px; /* Add some margin for spacing between items */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
-.menu-item:nth-child(1) {
-  grid-area: chips;
-}
-
-.menu-item:nth-child(2) {
-  grid-area: pizza;
-}
-
-.menu-item-full {
-  grid-area: chicken;
-}
 
 #contact,
 #about {
