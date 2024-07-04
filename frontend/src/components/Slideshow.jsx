@@ -5,7 +5,7 @@ import p3 from '../assets/images/pizza/3.jpg'
 import c1 from '../assets/images/chicken/1.jpg'
 import c2 from '../assets/images/chicken/3.jpg'
 import a1 from '../assets/images/chips/1.jpeg'
-import b1 from '../assets/images/magwinya/1.jpg'
+import b1 from '../assets/images/magwinya/3.jpg'
 
 const images = [
   {
