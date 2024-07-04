@@ -1,6 +1,6 @@
 :root {
   --default-bg-color: #bd9e1518;
-  
+
   --primary-bg: #3fcefa;
   --primary-color: #007bff;
   --secondary-color: #f4f5d4;
@@ -199,7 +199,6 @@ footer > p {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-
 }
 
 .menu-item {
@@ -207,7 +206,6 @@ footer > p {
   margin: 10px; /* Add some margin for spacing between items */
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
-
 
 #contact,
 #about {
@@ -506,7 +504,9 @@ footer > p {
 .sticky-top {
   position: sticky;
   top: 0;
-  background-color: var(--secondary-color); /* Same as the order-basket background */
+  background-color: var(
+    --secondary-color
+  ); /* Same as the order-basket background */
   z-index: 1; /* Ensure it stays on top of other content */
   padding: 5px;
 }
@@ -684,7 +684,7 @@ button.pop {
 }
 
 .select-order .cancel {
-  background-color:var(--danger-color);
+  background-color: var(--danger-color);
   width: 30%;
 }
 
@@ -748,8 +748,8 @@ button.pop {
     border-radius: 3px;
   }
 }
-.search-order-container{
-  max-width:700px;
+.search-order-container {
+  max-width: 700px;
 }
 .search-order-container form {
   display: flex;
@@ -845,4 +845,25 @@ button.pop {
   border-radius: 4px;
   color: var(--light-color);
   cursor: pointer;
+}
+
+.not-found {
+  text-align: center;
+  padding: 50px;
+  margin: 100px auto;
+  max-width: 700px;
+}
+
+.not-found .img-404 {
+  width: 200px;
+  height: auto;
+}
+
+.not-found h1 {
+  font-size: 2rem;
+  margin: 20px 0;
+}
+
+.not-found p {
+  font-size: 1.2rem;
 }
