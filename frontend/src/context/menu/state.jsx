@@ -7,6 +7,8 @@ import menuInfo from '../../assets/data/menu.json'
 
 export default function MenuProvider ({ children }) {
   const initialState = {
+    MAGWINYA_MENU:menuInfo.magwinyaMenu,
+    DIKUKU_MENU: menuInfo.dikukuMenu,
     CHIPS_MENU: menuInfo.chipsMenu,
     PIZZA_MENU: menuInfo.pizzaMenu,
     CHICKEN_MENU: menuInfo.wingsMenu,

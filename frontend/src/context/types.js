@@ -5,6 +5,8 @@ export const COMPLETE_MENU = "COMPLETE_MENU";
 export const MENU = "MENU";
 export const OPEN_MENU = "OPEN_MENU";
 export const CHIPS_MENU = "CHIPS_MENU";
+export const MAGWINYA_MENU = "MAGWINYA_MENU";
+export const DIKUKU_MENU = "DIKUKU_MENU";
 // order context
 export const SET_QUANTITY = "SET_QUANTITY";
 export const SET_NAME = "SET_NAME";

@@ -60,7 +60,7 @@ const OrderForm = ({ item, onClose, menuName }) => {
 
       <div>
         <form onSubmit={handleFormSubmit} className='select-order'>
-          <h2>Order {item?.name}</h2>
+          <h2>{item?.name}</h2>
           <hr className='bg-hr' />
           {item?.prices ? (
             <div className='form-group size-select'>

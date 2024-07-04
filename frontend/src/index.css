@@ -1,12 +1,19 @@
 :root {
-  --b1: #bd9e1518;
-  --b2: black;
+  --default-bg-color: #bd9e1518;
+  
+  --primary-bg: #3fcefa;
+  --primary-color: #007bff;
+  --secondary-color: #f4f5d4;
+  --accent-color: #13a0ff;
+  --danger-color: #fa0921;
+  --light-color: white;
+  --dark-color: black;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color-scheme: light dark;
-  color: var(--b2);
-  background-color: var(--b1);
+  color: var(--dark-color);
+  background-color: var(--default-bg-color);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -19,7 +26,7 @@ body {
   display: flex;
   justify-content: center;
   place-items: center;
-  background-color: var(--b1);
+  background-color: var(--default-bg-color);
   padding: 0;
   height: 100%;
   width: 100%;
@@ -36,9 +43,9 @@ body {
   grid-template-columns: 1fr 100px 1fr; /* Create three columns */
   align-items: center; /* Center items vertically */
   padding-left: 15px;
-  background-color: #3fcefa;
+  background-color: var(--primary-bg);
   z-index: 12; /* Ensure it's above other content */
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid var(--light-color);
 }
 
 #logo {
@@ -61,7 +68,7 @@ body {
   width: 200px;
   height: 320px;
   padding: 10px;
-  background-color: #3fcefa;
+  background-color: var(--primary-bg);
   border-radius: 0 0 10px 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: fixed;
@@ -69,7 +76,7 @@ body {
   margin: 0 auto;
   display: flex;
   flex-flow: column nowrap;
-  color: white;
+  color: var(--light-color);
   z-index: 11;
   overflow: auto;
 }
@@ -93,12 +100,12 @@ body {
 
 .bg-hr {
   width: 80%;
-  border-color: white;
+  border-color: var(--light-color);
 }
 
 .sm-hr {
   width: 40%;
-  border-color: white;
+  border-color: var(--light-color);
 }
 
 .sidebar-list {
@@ -184,11 +191,6 @@ footer > p {
 }
 
 #menu {
-  width: 96dvw;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
   margin: 30px auto;
 }
 
@@ -223,11 +225,11 @@ footer > p {
   height: 50px;
   width: 110px;
   border: none;
-  background-color: #13a0ff;
+  background-color: var(--accent-color);
   border-radius: 3px;
   cursor: pointer;
   margin-bottom: 5px;
-  color: white;
+  color: var(--light-color);
   font-size: 18px;
   font-weight: bolder;
 }
@@ -372,7 +374,7 @@ footer > p {
   margin-top: 20px;
   padding: 10px 20px;
   background-color: #007bff;
-  color: white;
+  color: var(--light-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -427,7 +429,7 @@ footer > p {
 }
 
 #popup {
-  background: white;
+  background: var(--light-color);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -439,7 +441,7 @@ footer > p {
   margin-top: 10px;
   padding: 10px 20px;
   background-color: #007bff;
-  color: white;
+  color: var(--light-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -476,7 +478,7 @@ footer > p {
 .order-form button {
   padding: 10px 20px;
   background-color: #007bff;
-  color: white;
+  color: var(--light-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -504,13 +506,13 @@ footer > p {
 .sticky-top {
   position: sticky;
   top: 0;
-  background-color: #f4f5d4; /* Same as the order-basket background */
+  background-color: var(--secondary-color); /* Same as the order-basket background */
   z-index: 1; /* Ensure it stays on top of other content */
   padding: 5px;
 }
 
 .order-basket {
-  background-color: #f4f5d4;
+  background-color: var(--secondary-color);
   width: 400px;
   border-radius: 5px 5px 1px 1px;
   padding: 5px;
@@ -569,7 +571,7 @@ button.pop {
   justify-self: end;
   background-color: #ff008c;
   border: none;
-  color: white;
+  color: var(--light-color);
   width: 40px;
   height: 40px;
   border-radius: 5px;
@@ -640,7 +642,7 @@ button.pop {
 }
 
 #payment-form .cancel {
-  background-color: #fa0921;
+  background-color: var(--danger-color);
   margin-left: 12px;
 }
 
@@ -682,7 +684,7 @@ button.pop {
 }
 
 .select-order .cancel {
-  background-color: #fa0921;
+  background-color:var(--danger-color);
   width: 30%;
 }
 
@@ -771,7 +773,7 @@ button.pop {
   height: 30px;
   border-radius: 30%;
   background-color: #007bff;
-  border: 2px solid white;
+  border: 2px solid var(--light-color);
 }
 .search-order-form {
   display: flex;
@@ -790,7 +792,7 @@ button.pop {
 .search-order-button {
   padding: 10px 20px;
   background-color: #007bff;
-  color: white;
+  color: var(--light-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -808,7 +810,7 @@ button.pop {
   font-size: 16px;
   cursor: pointer;
   border: none;
-  color: #13a0ff;
+  color: var(--accent-color);
   background-color: rgba(255, 255, 255, 0);
   border-radius: 3px;
   cursor: pointer;
@@ -841,6 +843,6 @@ button.pop {
   margin: 5px;
   background: rgb(75, 73, 73);
   border-radius: 4px;
-  color: white;
+  color: var(--light-color);
   cursor: pointer;
 }

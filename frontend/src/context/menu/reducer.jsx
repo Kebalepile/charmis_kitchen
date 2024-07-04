@@ -1,4 +1,6 @@
 import {
+  DIKUKU_MENU,
+  MAGWINYA_MENU,
   PIZZA_MENU,
   CHICKEN_MENU,
   COMPLETE_MENU,
@@ -17,6 +19,8 @@ export default function Reducer (state, action) {
     case PIZZA_MENU:
     case CHICKEN_MENU:
     case COMPLETE_MENU:
+    case DIKUKU_MENU:
+    case MAGWINYA_MENU:
     default:
       return state
   }
