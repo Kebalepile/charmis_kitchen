@@ -76,10 +76,38 @@
       "name": "Chips menu",
       "items": [
         {
-          "name": "Chips",
+          "name": "Chips (small)",
           "price": "R15",
-          "image_url": "./assets/images/chips/2.jpg",
+          "image_url": "./assets/images/chips/1.jpeg",
           "alt": "Chips image"
+        },
+        {
+          "name": "Chips (medium)",
+          "price": "R30",
+          "image_url": "./assets/images/chips/1.jpeg",
+          "alt": "Chips image"
+        }
+      ]
+    },
+     "magwinyaMenu": {
+      "name": "Magwinya menu",
+      "items": [
+        {
+          "name": "Magwinya (5 per paper bag)",
+          "price": "R15",
+          "image_url": "./assets/images/magwinya/2.jpg",
+          "alt": "Magwinya image"
+        }
+      ]
+    },
+     "dikukuMenu": {
+      "name": "dikuku menu",
+      "items": [
+        {
+          "name": "dikuku (5 liter)",
+          "price": "R100",
+          "image_url": "./assets/images/dikuku/1.jpg",
+          "alt": "dikuku image"
         }
       ]
     }

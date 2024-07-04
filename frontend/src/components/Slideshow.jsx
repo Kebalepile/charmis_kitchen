@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import p1 from '../assets/images/pizza/1.jpg'
-import p2 from '../assets/images/pizza/1.jpg'
-import p3 from '../assets/images/pizza/1.jpg'
+import p2 from '../assets/images/pizza/4.jpg'
+import p3 from '../assets/images/pizza/3.jpg'
 import c1 from '../assets/images/chicken/1.jpg'
-import c2 from '../assets/images/chicken/1.jpg'
-import c3 from '../assets/images/chicken/1.jpg'
+import c2 from '../assets/images/chicken/3.jpg'
+import a1 from '../assets/images/chips/1.jpeg'
+import b1 from '../assets/images/magwinya/1.jpg'
 
 const images = [
+  {
+    src: a1,
+    text: 'Goodness Awaits!'
+  },
+  {
+    src: b1,
+    text: 'Crispy Delights, Savory Bites!'
+  },
   {
     src: p1,
     text: 'Sizzling Hot Pizza Just For You!'
@@ -25,14 +34,11 @@ const images = [
   },
   {
     src: c2,
-    text: 'Goodness Awaits!'
-  },
-  {
-    src: c3,
     text: 'Bite Into Juicy Chicken Perfection!'
   }
   // Add more images as needed
 ]
+
 
 const Slideshow = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
