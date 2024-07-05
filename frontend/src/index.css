@@ -867,3 +867,12 @@ button.pop {
 .not-found p {
   font-size: 1.2rem;
 }
+
+.founder-img {
+  float: left;
+  margin: 0 20px 20px 0;
+  width: 150px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 6px;
+}
+

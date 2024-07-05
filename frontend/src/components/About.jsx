@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
-import { GrContact } from 'react-icons/gr'
+import React, { useState } from 'react';
+import { GrContact } from 'react-icons/gr';
+import founderImg from "../assets/images/julia.jpg";
 
-export default function About () {
-  const [language, setLanguage] = useState('setswana')
+export default function About() {
+  const [language, setLanguage] = useState('setswana');
 
   const englishContent = (
     <section>
+      <img src={founderImg} alt="founder's image" className="founder-img" />
       <p>
         🍕 Welcome to Julia's Kitchen, your go-to web app for homemade fast
         food! We specialize in offering a variety of delicious homemade dishes
@@ -23,10 +25,11 @@ export default function About () {
         much as we enjoy making it for you!
       </p>
     </section>
-  )
+  );
 
   const setswanaContent = (
     <section>
+      <img src={founderImg} alt="founder's image" className="founder-img" />
       <p>
         🍕 Dumelang! Re a go amogela mo Julia's Kitchen, lefelo la gago la dijo
         tsa malatsi otlhe tse di phepafetseng. Re ikgantsha ka go go abela dijo
@@ -50,7 +53,7 @@ export default function About () {
         dijo tsa rona fela jaaka re itumelela go di go abela. Re a leboga!
       </p>
     </section>
-  )
+  );
 
   return (
     <div id='about'>
@@ -67,5 +70,5 @@ export default function About () {
       </div>
       {language === 'english' ? englishContent : setswanaContent}
     </div>
-  )
+  );
 }
