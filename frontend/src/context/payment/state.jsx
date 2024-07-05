@@ -206,7 +206,7 @@ function PaymentProvider ({ children }) {
     }
 
     const customerMessage = [
-      `Julia's Kitchen ORDER NOTIFICATION:`,
+      `BtownBites ORDER NOTIFICATION:`,
       `Order: ${orderNumber}`,
       `Name: ${name}`,
       phone ? `Phone: ${phone}` : null,
@@ -273,7 +273,8 @@ function PaymentProvider ({ children }) {
       })
 
       if (response.ok) {
-        const result = await response.json()
+        await response.json()
+        // const result = await response.json()
         // console.log('Order submitted:', result)
         // Optionally reset form or display a success message
       } else {

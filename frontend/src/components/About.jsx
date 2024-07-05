@@ -9,12 +9,12 @@ export default function About() {
     <section>
       <img src={founderImg} alt="founder's image" className="founder-img" />
       <p>
-        🍕 Welcome to Julia's Kitchen, your go-to web app for homemade 
+        🍕 Welcome to BtownBites, your go-to web app for homemade 
         food! We specialize in offering a variety of delicious homemade dishes
         and drinks, all available for prepaid order.
       </p>
       <p>
-        🍗 At Julia's Kitchen, we pride ourselves on serving homemade African
+        🍗 At BtownBites, we pride ourselves on serving homemade African
         township cuisine. From magwinya and chicken wings to pizza and baked
         cookies, we have something to satisfy every craving.
       </p>
@@ -31,13 +31,13 @@ export default function About() {
     <section>
       <img src={founderImg} alt="founder's image" className="founder-img" />
       <p>
-        🍕 Dumelang! Re a go amogela mo Julia's Kitchen, lefelo la gago la dijo
+        🍕 Dumelang! Re a go amogela mo BtownBites, lefelo la gago la dijo
         tsa malatsi otlhe tse di phepafetseng. Re ikgantsha ka go go abela dijo
         tse di tlhotlhwa sentle tsa Setswana tse di mo godimo ga dipitsa tsa
         motse, tse di dirilweng ka lorato le boineelo.
       </p>
       <p>
-        🍗 Mo Julia's Kitchen, re itsholela ka dijo tse di monate go tswa mo
+        🍗 Mo BtownBites, re itsholela ka dijo tse di monate go tswa mo
         dipitsa tsa Setswana go fitlha mo menongwane ya di kuku. Ka dikgetho tse
         di jaaka pizza, malana a kana, magwinya, le dinkgwe tse di apeilweng, re
         na le sengwe le sengwe go kgotsofatsa matlalo a gago.
