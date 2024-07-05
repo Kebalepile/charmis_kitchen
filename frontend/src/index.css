@@ -876,3 +876,10 @@ button.pop {
   border-radius: 6px;
 }
 
+/* Add this rule to your existing CSS */
+.vendor-inquiry {
+  margin-top: 20px;
+  font-weight: bold;
+  color: var(--dark-color); /* Adjust color as needed */
+  text-align: center; /* Ensure consistent alignment */
+}

@@ -30,12 +30,16 @@ export default function Contact () {
         073 775 7160
       </p>
       <p>
-        <FaEnvelope style={{ color: 'gray', marginRight: '5px' }} /> Email us
-        at: <a href='mailto:kmotshoana@gmail.com'>kmotshoana@gmail.com</a>
+        <FaEnvelope style={{ color: 'gray' }} /> Email us at:
+        <br /> <a href='mailto:kmotshoana@gmail.com'>kmotshoana@gmail.com</a>
       </p>
       <p>
         Feel free to reach out for orders, feedback, or any other questions. We
         are here to help!
+      </p>
+      <p className='vendor-inquiry'>
+        If you want to become a vendor via Julia's Kitchen and sell food,
+        contact us at the above details.
       </p>
     </section>
   )
