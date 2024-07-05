@@ -9,13 +9,13 @@ export default function About() {
     <section>
       <img src={founderImg} alt="founder's image" className="founder-img" />
       <p>
-        🍕 Welcome to Julia's Kitchen, your go-to web app for homemade fast
+        🍕 Welcome to Julia's Kitchen, your go-to web app for homemade 
         food! We specialize in offering a variety of delicious homemade dishes
         and drinks, all available for prepaid order.
       </p>
       <p>
         🍗 At Julia's Kitchen, we pride ourselves on serving homemade African
-        township cuisine. From pizza and chicken wings to magwinya and baked
+        township cuisine. From magwinya and chicken wings to pizza and baked
         cookies, we have something to satisfy every craving.
       </p>
       <p>
