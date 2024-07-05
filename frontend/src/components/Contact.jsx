@@ -11,14 +11,6 @@ export default function Contact () {
       <p>
         For inquiries, please call or WhatsApp:
         <br />
-        <FaPhone
-          style={{
-            color: 'green',
-            marginRight: '5px',
-            transform: 'rotate(90deg)'
-          }}
-        />{' '}
-        067 271 8347
         <br />
         <FaPhone
           style={{
@@ -27,7 +19,16 @@ export default function Contact () {
             transform: 'rotate(90deg)'
           }}
         />{' '}
-        073 775 7160
+        <strong> 067 271 8347</strong>
+        <br />
+        <FaPhone
+          style={{
+            color: 'green',
+            marginRight: '5px',
+            transform: 'rotate(90deg)'
+          }}
+        />{' '}
+        <strong>073 775 7160</strong>
       </p>
       <p>
         <FaEnvelope style={{ color: 'gray' }} /> Email us at:
