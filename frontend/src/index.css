@@ -723,7 +723,7 @@ button.pop {
     margin: 3px;
   }
 }
-@media only screen and (max-width: 320px) {
+@media only screen and (max-width: 400px) {
   order-form,
   .select-order,
   .read-menu {
@@ -769,7 +769,7 @@ button.pop {
   justify-content: center;
   margin: auto;
   z-index: 13;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -778,6 +778,10 @@ button.pop {
   z-index: 13;
   position: relative;
 }
+.search-order-container .overlay.show {
+  background: rgba(0, 0, 0, 0.938);
+  backdrop-filter: blur(6px);
+}
 
 .search-order-container .loading-dot {
   width: 30px;
@@ -785,10 +789,6 @@ button.pop {
   border-radius: 30%;
   background-color: #007bff;
   border: 2px solid var(--light-color);
-}
-.search-order-form {
-  display: flex;
-  align-items: center;
 }
 
 .search-order-input {
@@ -861,7 +861,7 @@ button.pop {
 .not-found {
   text-align: center;
   padding: 50px;
-  margin: 100px auto;
+  margin: 30px auto;
   max-width: 700px;
 }
 
