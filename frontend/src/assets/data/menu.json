@@ -43,13 +43,13 @@
         {
           "name": "4 Wings",
           "price": "R25",
-          "image_url": "./assets/images/chicken/2.jpg",
+          "image_url": "./assets/images/chicken/3.jpg",
           "alt": "4 Wings image"
         },
         {
           "name": "6 Wings",
           "price": "R38",
-          "image_url": "./assets/images/chicken/2.jpg",
+          "image_url": "./assets/images/chicken/3.jpg",
           "alt": "6 Wings image"
         },
         {
