@@ -3,22 +3,16 @@ import Footer from './Footer';
 import PropTypes from 'prop-types';
 import { GiSlicedBread } from 'react-icons/gi';
 import OrderContext from '../context/order/context';
+import { deferredPrompt } from '../main.jsx'; // Import the deferredPrompt
 
 const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
   const { setIsSearchOrderVisible } = useContext(OrderContext);
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [prompt, setPrompt] = useState(null);
 
   useEffect(() => {
-    const handleBeforeInstallPrompt = (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
+    if (sessionStorage.getItem('deferredPrompt')) {
+      setPrompt(deferredPrompt);
+    }
   }, []);
 
   const handleClick = (id) => {
@@ -33,15 +27,17 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
   };
 
   const handleInstallClick = () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
+    if (prompt) {
+      prompt.prompt();
+      prompt.userChoice.then((choiceResult) => {
+        console.log('User choice:', choiceResult);
         if (choiceResult.outcome === 'accepted') {
-          // console.log('User accepted the A2HS prompt');
+          console.log('User accepted the A2HS prompt');
         } else {
-          // console.log('User dismissed the A2HS prompt');
+          console.log('User dismissed the A2HS prompt');
         }
-        setDeferredPrompt(null);
+        setPrompt(null);
+        sessionStorage.removeItem('deferredPrompt');
       });
     }
   };
@@ -66,7 +62,7 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
           <li onClick={() => handleClick('#contact')} className='sidebar-list-item'>
             Contact Us
           </li>
-          {deferredPrompt && (
+          {prompt && (
             <li onClick={handleInstallClick} className='sidebar-list-item install-button'>
               Install app
             </li>

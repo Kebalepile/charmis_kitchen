@@ -6,7 +6,6 @@ import PaymentProvider from './context/payment/state.jsx'
 import App from './App.jsx'
 import './index.css'
 
-
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     //   ./src/serviceWorker.js for development
@@ -19,6 +18,17 @@ if ("serviceWorker" in navigator) {
       .catch((error) => console.error("service worker registration: ", error));
   });
 }
+
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  console.log('beforeinstallprompt event fired');
+  e.preventDefault();
+  deferredPrompt = e;
+  sessionStorage.setItem('deferredPrompt', 'true');
+});
+
+export { deferredPrompt };
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
