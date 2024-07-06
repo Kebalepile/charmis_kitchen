@@ -11,10 +11,15 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-const allowedOrigins = ["http://localhost:5173", "http://localhost:5173/"];
+// const allowedOrigins = ["http://localhost:5173", "http://localhost:5173/"];  // developement
+
+const allowedOrigins = [
+  "https://btownbites.github.io/",
+  "https://btownbites.github.io"
+]; //production
 
 const corsOptions = {
-  origin: function (origin, callback) {
+  origin: function(origin, callback) {
     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
@@ -34,9 +39,9 @@ mongoose.connection.on("connected", () => {
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-wss.on("connection", async (ws) => {
+wss.on("connection", async ws => {
   console.log("New WebSocket connection");
-  
+
   try {
     const orders = await Order.find({});
     ws.send(JSON.stringify({ type: "initialData", orders }));
@@ -45,8 +50,8 @@ wss.on("connection", async (ws) => {
   }
 });
 
-const notifyClients = (data) => {
-  wss.clients.forEach((client) => {
+const notifyClients = data => {
+  wss.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(data));
     }
