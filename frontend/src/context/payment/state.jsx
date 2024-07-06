@@ -14,7 +14,8 @@ import {
   REST_PAYMENT_STATE,
   // WebSocketURL,
   ServerDomain,
-  API_KEY
+  API_KEY,
+  storePhoneNumber
 } from '../types'
 import { generateOrderNumber } from '../../utils/Utils'
 // import useWebSocket from '../../hooks/useWebSocket'
@@ -117,7 +118,7 @@ function PaymentProvider ({ children }) {
   const orderNotification = async (customerMessage, storeMessage) => {
     try {
       const customerNumber = formatCellNumber(state.phone),
-        storeNumber = formatCellNumber('0672718374')
+        storeNumber = formatCellNumber(`${storePhoneNumber}`)
       
 
       const clickTelApi = (phone, message, apiKey) => {
@@ -133,19 +134,19 @@ function PaymentProvider ({ children }) {
               console.log('success')
               restPunchedOrder()
             } else if (xhr.status == 202) {
-              console.log(xhr.status)
-              console.log(
-                'request has been accepted for processing, but the processing has not been finished yet'
-              )
+              // console.log(xhr.status)
+              // console.log(
+              //   'request has been accepted for processing, but the processing has not been finished yet'
+              // )
               restPunchedOrder()
             } else {
-              console.log(xhr.status)
-              console.log('somthings wrong')
+              // console.log(xhr.status)
+              // console.log('somthings wrong')
             }
           }
           xhr.send()
 
-          // 0633343249
+          
         } catch (error) {
           console.error('There was a problem with the fetch operation:', error)
         }
@@ -206,7 +207,7 @@ function PaymentProvider ({ children }) {
     }
 
     const customerMessage = [
-      `BtownBites ORDER NOTIFICATION:`,
+      `B-town Bites ORDER NOTIFICATION:`,
       `Order: ${orderNumber}`,
       `Name: ${name}`,
       phone ? `Phone: ${phone}` : null,
@@ -218,7 +219,7 @@ function PaymentProvider ({ children }) {
         ? `Delivery: R${deliveryCharge}`
         : `Collection: 2379 Windsa St, Boitekong Ext 2`,
       `You'll be notified via SMS when the order is ready.`,
-      `call 0672718374 for queries`,
+      `call ${storePhoneNumber} for queries`,
       `Track your order on the order board using your name and order number.`
     ]
       .filter(Boolean)

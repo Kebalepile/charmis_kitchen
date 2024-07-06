@@ -1,87 +1,108 @@
 {
-    "pizzaMenu": {
-      "name": "Pizza menu",
-      "items": [
-        {
-          "name": "Chicken Amyo",
-          "image_url": "./assets/images/pizza/2.jpg",
-          "alt": "Chicken Amyo image",
-          "prices": {
-            "small": "R25",
-            "miniMedium": "R35",
-            "medium": "R40",
-            "large": "R75"
-          }
-        },
-        {
-          "name": "BBQ Chicken",
-          "image_url": "./assets/images/pizza/1.jpg",
-          "alt": "BBQ Chicken image",
-          "prices": {
-            "small": "R25",
-            "miniMedium": "R35",
-            "medium": "R40",
-            "large": "R75"
-          }
-        },
-        {
-          "name": "Russian & Cheese Bacon and Cheese",
-          "image_url": "./assets/images/pizza/3.jpg",
-          "alt": "Russian & Cheese Bacon and Cheese image",
-          "prices": {
-            "small": "R25",
-            "miniMedium": "R35",
-            "medium": "R40",
-            "large": "R75"
-          }
+  "pizzaMenu": {
+    "name": "Pizza menu",
+    "items": [
+      {
+        "name": "Chicken Amyo",
+        "image_url": "./assets/images/pizza/2.jpg",
+        "alt": "Chicken Amyo image",
+        "prices": {
+          "small": "R25",
+          "miniMedium": "R35",
+          "medium": "R40",
+          "large": "R75"
         }
-      ]
-    },
-    "wingsMenu": {
-      "name": "Chicken menu",
-      "items": [
-        {
-          "name": "4 Wings",
-          "price": "R25",
-          "image_url": "./assets/images/chicken/2.jpg",
-          "alt": "4 Wings image"
-        },
-        {
-          "name": "6 Wings",
-          "price": "R38",
-          "image_url": "./assets/images/chicken/2.jpg",
-          "alt": "6 Wings image"
-        },
-        {
-          "name": "12 Wings",
-          "price": "R75",
-          "image_url": "./assets/images/chicken/1.jpg",
-          "alt": "12 Wings image"
-        },
-        {
-          "name": "Combo: 4 Wings and Chips",
-          "price": "R35",
-          "image_url": "../assets/images/chips/2.jpg",
-          "alt": "Combo: 4 Wings and Chips image"
-        },
-        {
-          "name": "Combo: 6 Wings and Chips",
-          "price": "R45",
-          "image_url": "../assets/images/chips/2.jpg",
-          "alt": "Combo: 6 Wings and Chips image"
+      },
+      {
+        "name": "BBQ Chicken",
+        "image_url": "./assets/images/pizza/1.jpg",
+        "alt": "BBQ Chicken image",
+        "prices": {
+          "small": "R25",
+          "miniMedium": "R35",
+          "medium": "R40",
+          "large": "R75"
         }
-      ]
-    },
-    "chipsMenu": {
-      "name": "Chips menu",
-      "items": [
-        {
-          "name": "Small Pack",
-          "price": "R15",
-          "image_url": "./assets/images/chips/2.jpg",
-          "alt": "Small Pack image"
+      },
+      {
+        "name": "Russian & Cheese Bacon and Cheese",
+        "image_url": "./assets/images/pizza/3.jpg",
+        "alt": "Russian & Cheese Bacon and Cheese image",
+        "prices": {
+          "small": "R25",
+          "miniMedium": "R35",
+          "medium": "R40",
+          "large": "R75"
         }
-      ]
-    }
+      }
+    ]
+  },
+  "wingsMenu": {
+    "name": "Chicken menu",
+    "items": [
+      {
+        "name": "4 Wings",
+        "price": "R25",
+        "image_url": "./assets/images/chicken/2.jpg",
+        "alt": "4 Wings image"
+      },
+      {
+        "name": "6 Wings",
+        "price": "R38",
+        "image_url": "./assets/images/chicken/2.jpg",
+        "alt": "6 Wings image"
+      },
+      {
+        "name": "12 Wings",
+        "price": "R75",
+        "image_url": "./assets/images/chicken/1.jpg",
+        "alt": "12 Wings image"
+      },
+      {
+        "name": "Combo: 4 Wings and Chips",
+        "price": "R35",
+        "image_url": "../assets/images/chips/2.jpg",
+        "alt": "Combo: 4 Wings and Chips image"
+      },
+      {
+        "name": "Combo: 6 Wings and Chips",
+        "price": "R45",
+        "image_url": "../assets/images/chips/2.jpg",
+        "alt": "Combo: 6 Wings and Chips image"
+      }
+    ]
+  },
+  "chipsMenu": {
+    "name": "Chips menu",
+    "items": [
+      {
+        "name": "Small Pack",
+        "price": "R15",
+        "image_url": "./assets/images/chips/1.jpeg",
+        "alt": "Small Pack image"
+      }
+    ]
+  },
+  "magwinyaMenu": {
+    "name": "Magwinya menu",
+    "items": [
+      {
+        "name": "Magwinya (5 x R3)",
+        "price": "R15",
+        "image_url": "./assets/images/magwinya/2.jpg",
+        "alt": "Magwinya image"
+      }
+    ]
+  },
+  "dikukuMenu": {
+    "name": "dikuku menu",
+    "items": [
+      {
+        "name": "dikuku (5 liter)",
+        "price": "R100",
+        "image_url": "./assets/images/dikuku/1.jpg",
+        "alt": "dikuku image"
+      }
+    ]
   }
-  
+}
