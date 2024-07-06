@@ -111,8 +111,10 @@ body {
 .sidebar-list {
   list-style-type: none;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
 .sidebar-list-item {
   margin-bottom: 10px;
   cursor: pointer;
@@ -127,6 +129,15 @@ body {
 .sidebar-list-item:hover {
   background: #2ec4ff56;
   border-radius: 3px;
+}
+
+.sidebar-list-item.install-button {
+  background-color: #5cee22;
+  width: 100px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
 }
 
 footer > p {
