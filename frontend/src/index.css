@@ -33,11 +33,11 @@ body {
 }
 
 .navbar {
-  position: fixed;
+  position: sticky;
   top: 0;
   width: 100%;
   max-width: 700px;
-  height: 100px; /* Ensure it accommodates the height of #logo */
+  height: 100px; /* Default height */
   border-radius: 3px;
   display: grid;
   grid-template-columns: 1fr 100px 1fr; /* Create three columns */
@@ -46,7 +46,13 @@ body {
   background-color: var(--primary-bg);
   z-index: 12; /* Ensure it's above other content */
   border-bottom: 1px solid var(--light-color);
+  transition: height 0.3s ease; /* Smooth transition for height change */
 }
+
+.navbar.sticky {
+  height: 120px;/* Height when sticky */
+}
+
 
 #logo {
   grid-column: 2; /* Place the logo in the center column */
@@ -189,7 +195,7 @@ footer > p {
 }
 
 #home {
-  margin: 110px auto auto auto;
+  margin:10px auto;
 }
 #home,
 #menu {
@@ -205,11 +211,14 @@ footer > p {
   margin: 30px auto;
 }
 
+
 .menu-grid {
   width: 80%;
   display: flex;
+  /* flex-direction: column; */
   flex-wrap: wrap;
   justify-content: center;
+
 }
 
 .menu-item {
@@ -242,6 +251,31 @@ footer > p {
   font-size: 18px;
   font-weight: bolder;
 }
+
+.menu-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
+  transition: transform 0.2s;
+}
+
+.menu-card:hover {
+  transform: scale(1.05);
+}
+
+.menu-card-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+
 
 @keyframes zoom {
   0% {
