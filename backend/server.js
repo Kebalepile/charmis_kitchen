@@ -12,12 +12,12 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-// const allowedOrigins = ["http://localhost:5173", "http://localhost:5173/"];  // developement
+const allowedOrigins = ["http://localhost:5173", "http://localhost:5173/"];  // developement
 
-const allowedOrigins = [
-  "https://btownbites.github.io/",
-  "https://btownbites.github.io"
-]; //production
+// const allowedOrigins = [
+//   "https://btownbites.github.io/",
+//   "https://btownbites.github.io"
+// ]; //production
 
 const corsOptions = {
   origin: function(origin, callback) {

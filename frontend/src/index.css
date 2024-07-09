@@ -138,6 +138,7 @@ body {
 
 .sidebar-list-item.install-button {
   background-color: #5cee22;
+  background-image: linear-gradient(45deg, #3fe41e, #32ff76);
   width: 100px;
   border-radius: 5px;
   text-align: center;

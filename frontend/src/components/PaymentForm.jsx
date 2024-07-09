@@ -82,7 +82,8 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
             setShowPopup(true);
           } else {
             try {
-              const response = await fetch(`${ServerDomain}/process-payment`, {
+              const developemtServer = 'http://localhost:5000'
+              const response = await fetch(`${developemtServer}/process-payment`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -94,6 +95,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
                 }),
               });
               const data = await response.json();
+              console.log(data)
               if (data.success) {
                 handleSubmitOrder();
                 resetOrderState();
