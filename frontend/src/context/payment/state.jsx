@@ -17,7 +17,7 @@ import {
   API_KEY,
   storePhoneNumber
 } from '../types'
-import { generateOrderNumber } from '../../utils/Utils'
+import { generateOrderNumber, checkTime } from '../../utils/Utils'
 // import useWebSocket from '../../hooks/useWebSocket'
 
 function PaymentProvider ({ children }) {
@@ -49,7 +49,7 @@ function PaymentProvider ({ children }) {
   // const handleWebSocketMessage = message => {
   //   // handle the incoming WebSocket message here
   //   console.log('Received WebSocket message:', message)
-    
+
   //   // For example, you could dispatch an action based on the message content
   // }
 
@@ -119,7 +119,6 @@ function PaymentProvider ({ children }) {
     try {
       const customerNumber = formatCellNumber(state.phone),
         storeNumber = formatCellNumber(`${storePhoneNumber}`)
-      
 
       const clickTelApi = (phone, message, apiKey) => {
         try {
@@ -145,16 +144,14 @@ function PaymentProvider ({ children }) {
             }
           }
           xhr.send()
-
-          
         } catch (error) {
           console.error('There was a problem with the fetch operation:', error)
         }
       }
       // console.log(storeMessage)
-      // clickTelApi(storeNumber, storeMessage, API_KEY)
+      clickTelApi(storeNumber, storeMessage, API_KEY)
       // console.log(customerMessage)
-      // clickTelApi(customerNumber, customerMessage, API_KEY)
+      clickTelApi(customerNumber, customerMessage, API_KEY)
     } catch (error) {
       console.error('Error sending SMS:', error)
     }
@@ -171,23 +168,19 @@ function PaymentProvider ({ children }) {
 
     const orderNumber = generateOrderNumber() // Generate unique order number
     const [customerMessage, storeMessage] = initOrderMessages(orderNumber)
-
-    if (
-      paymentMethod.trim() === 'self-collect' ||
-      paymentMethod.trim() === 'cash'
-    ) {
-      orderNotification(customerMessage, storeMessage)
-      updateOrderBoard(orderNumber, paymentItemsDescriptions)
-    } else if (
-      paymentMethod.trim() === 'online-self-collect' ||
-      paymentMethod.trim() === 'online-self-collect'
-    ) {
-      // console.log('loading gateway payment system.')
-      // after the above is done call ordernotification method.
-      orderNotification(customerMessage, storeMessage)
-      updateOrderBoard(orderNumber, paymentItemsDescriptions)
+    const { startTime, endTime, currentTime } = checkTime()
+   
+    switch (currentTime < startTime || currentTime > endTime) {
+      case true:
+        alert('⚠️ Rebereka gare ga 6:30 AM le 18:30 PM. 🌞')
+        break
+      case false:
+        orderNotification(customerMessage, storeMessage)
+        updateOrderBoard(orderNumber, paymentItemsDescriptions)
+        break
     }
   }
+
   /**
    * @description create sms to send alert customer and store respectivly of new order being submitted.
    * @param {number} orderNumber
@@ -197,9 +190,10 @@ function PaymentProvider ({ children }) {
   const initOrderMessages = orderNumber => {
     const deliveryType = type => {
       switch (type.trim()) {
-        case 'online':
+        case 'online-delivery':
         case 'cash':
           return 'delivery'
+        case 'online':
         case 'online-self-collect':
         case 'self-collect':
           return 'self collect'
