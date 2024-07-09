@@ -20,3 +20,16 @@ export const checkTime = () => {
   const endTime = 18 * 60 + 30; // 6:30 PM
   return { startTime, endTime, currentTime };
 };
+
+/**
+ * @description use share Web Api to enable enduser to share certain data 
+ * relating to the site.
+ * @param {object} data 
+ */
+export  async function Share(data) {
+  try {
+    await navigator.share(data);
+  } catch (err) {
+    console.error(err);
+  }
+}
