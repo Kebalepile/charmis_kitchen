@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import PaymentContext from '../context/payment/context';
-import Popup from './Popup';
-import { ServerDomain } from '../context/types';
+import React, { useContext, useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
+import PaymentContext from '../context/payment/context'
+import Popup from './Popup'
+import { ServerDomain } from '../context/types'
 
 const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const {
@@ -20,130 +20,135 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     handleHouseNumbersChange,
     handleStreetAddressChange,
     handleSubmitOrder,
-    resetPaymentState,
-  } = useContext(PaymentContext);
+    resetPaymentState
+  } = useContext(PaymentContext)
 
   useEffect(() => {
-    handlePaymentItems(paymentItems);
-  }, [paymentItems]);
+    handlePaymentItems(paymentItems)
+  }, [paymentItems])
 
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupMessage, setPopupMessage] = useState('');
-  const [yocoSdkLoaded, setYocoSdkLoaded] = useState(false);
+  const [showPopup, setShowPopup] = useState(false)
+  const [popupMessage, setPopupMessage] = useState('')
+  const [yocoSdkLoaded, setYocoSdkLoaded] = useState(false)
 
   useEffect(() => {
     // Load Yoco script
-    const script = document.createElement('script');
-    script.src = 'https://js.yoco.com/sdk/v1/yoco-sdk-web.js';
-    script.async = true;
-    script.onload = () => setYocoSdkLoaded(true);
-    document.body.appendChild(script);
+    const script = document.createElement('script')
+    script.src = 'https://js.yoco.com/sdk/v1/yoco-sdk-web.js'
+    script.async = true
+    script.onload = () => setYocoSdkLoaded(true)
+    document.body.appendChild(script)
 
     return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+      document.body.removeChild(script)
+    }
+  }, [])
 
   const validateForm = () => {
-    const phoneRegex = /^0[0-9]{9}$/;
-    const nameRegex = /^[a-zA-Z\s]+$/;
+    const phoneRegex = /^0[0-9]{9}$/
+    const nameRegex = /^[a-zA-Z\s]+$/
 
     if (!phone.match(phoneRegex)) {
-      setPopupMessage('📞 Phone number must be 10 digits and start with 0.');
-      setShowPopup(true);
-      return false;
+      setPopupMessage('📞 Phone number must be 10 digits and start with 0.')
+      setShowPopup(true)
+      return false
     }
 
     if (!name.trim() || !name.match(nameRegex)) {
       setPopupMessage(
         '👤 Name must not be empty, contain only spaces, and should only include word characters.'
-      );
-      setShowPopup(true);
-      return false;
+      )
+      setShowPopup(true)
+      return false
     }
 
-    return true;
-  };
+    return true
+  }
 
   const handleYocoPayment = (additionalCharge = 0) => {
     if (yocoSdkLoaded) {
       const yoco = new window.YocoSDK({
-        publicKey: 'pk_test_9d6360c3kw7G48w14574', // Replace with your actual public key
-      });
+        publicKey: 'pk_test_9d6360c3kw7G48w14574' // Replace with your actual public key
+      })
 
       yoco.showPopup({
         amountInCents: (paymentTotal + deliveryCharge + additionalCharge) * 100, // Convert to cents
         currency: 'ZAR',
         name: 'B-town Bites',
         description: 'Order Payment',
-        callback: async (result) => {
+        callback: async result => {
           if (result.error) {
-            setPopupMessage('Error: ' + result.error.message);
-            setShowPopup(true);
+            setPopupMessage('Error: ' + result.error.message)
+            setShowPopup(true)
           } else {
             try {
               const developemtServer = 'http://localhost:5000'
-              const response = await fetch(`${developemtServer}/process-payment`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  token: result.id,
-                  paymentTotal: paymentTotal + additionalCharge,
-                  deliveryCharge,
-                }),
-              });
-              const data = await response.json();
+              const response = await fetch(
+                `${developemtServer}/process-payment`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    token: result.id,
+                    paymentTotal: paymentTotal + additionalCharge,
+                    deliveryCharge
+                  })
+                }
+              )
+              const data = await response.json()
               console.log(data)
               if (data.success) {
-                handleSubmitOrder();
-                resetOrderState();
-                resetPaymentState();
-                setShowPaymentForm(false);
+                handleSubmitOrder()
+                resetOrderState()
+                resetPaymentState()
+                setShowPaymentForm(false)
               } else {
-                setPopupMessage('Payment failed.');
-                setShowPopup(true);
+                setPopupMessage('Payment failed.')
+                setShowPopup(true)
               }
             } catch (error) {
-              setPopupMessage('Payment failed.');
-              setShowPopup(true);
+              setPopupMessage('Payment failed.')
+              setShowPopup(true)
             }
           }
-        },
-      });
+        }
+      })
     }
-  };
+  }
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
+  const handleFormSubmit = e => {
+    e.preventDefault()
     if (validateForm()) {
-      if (paymentMethod === 'online') {
-        handleYocoPayment();
-      } else if (paymentMethod === 'online-delivery') {
-        handleYocoPayment(10); // Adding R10 for delivery
-      } else {
-        handleSubmitOrder();
-        resetOrderState();
-        resetPaymentState();
-        setShowPaymentForm(false);
+      switch (paymentMethod) {
+        case 'online':
+        case 'online-delivery':
+          handleYocoPayment()
+          break
+        default:
+          handleSubmitOrder()
+          resetOrderState()
+          resetPaymentState()
+          setShowPaymentForm(false)
+          break
       }
     }
-  };
+  }
 
   const closePopup = () => {
-    setShowPopup(false);
-    setPopupMessage('');
-  };
+    setShowPopup(false)
+    setPopupMessage('')
+  }
 
   const handleCloseForm = () => {
-    resetPaymentState();
-    setShowPaymentForm(false);
-  };
+    resetPaymentState()
+    setShowPaymentForm(false)
+  }
 
   const renderAddressInputs = () => {
     if (paymentMethod === 'self-collect') {
-      return null;
+      return null
     }
 
     return (
@@ -171,8 +176,8 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
           </label>
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div id='payment-form'>
@@ -210,23 +215,25 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
               <select
                 className='select-payment'
                 value={paymentMethod}
-                onChange={(e) => {
+                onChange={e => {
                   switch (e.target.value.trim()) {
                     case 'online-delivery':
                     case 'cash':
                       setPopupMessage(
                         '🚚 Delivery is currently limited to 📍 Boitekong Ext 2, 4, 5, 6, and 8'
-                      );
-                      setShowPopup(true);
-                      break;
+                      )
+                      setShowPopup(true)
+                      break
                   }
-                  handlePaymentChange(e);
+                  handlePaymentChange(e)
                 }}
               >
                 <option value='self-collect'>Self Collect (Free)</option>
                 <option value='cash'>Cash on Delivery (+R10.00)</option>
                 <option value='online'>Pay Online</option>
-                <option value='online-delivery'>Pay Online + Delivery (+R15.00)</option>
+                <option value='online-delivery'>
+                  Pay Online + Delivery (+R15.00)
+                </option>
               </select>
             </label>
           </div>
@@ -251,13 +258,13 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
       </div>
       {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
     </div>
-  );
-};
+  )
+}
 
 PaymentForm.propTypes = {
   setShowPaymentForm: PropTypes.func.isRequired,
   paymentItems: PropTypes.array.isRequired,
-  resetOrderState: PropTypes.func.isRequired,
-};
+  resetOrderState: PropTypes.func.isRequired
+}
 
-export default PaymentForm;
+export default PaymentForm

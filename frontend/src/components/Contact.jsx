@@ -19,7 +19,7 @@ export default function Contact () {
             transform: 'rotate(90deg)'
           }}
         />{' '}
-        <strong> 067 271 8347</strong>
+        <strong> 073 775 7160</strong>
         <br />
         <FaPhone
           style={{
@@ -28,7 +28,7 @@ export default function Contact () {
             transform: 'rotate(90deg)'
           }}
         />{' '}
-        <strong>073 775 7160</strong>
+        <strong>067 271 8347</strong>
       </p>
       <p>
         <FaEnvelope style={{ color: 'gray' }} /> Email us at:
