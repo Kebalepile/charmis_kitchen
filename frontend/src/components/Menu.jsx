@@ -28,6 +28,15 @@ export default function Menu () {
 
   return (
     <section id='menu'>
+      {basket && (
+        <OrderBasket
+          basketItems={basketItems}
+          updateBasketItems={updateBasketItems}
+          resetOrderState={resetOrderState}
+        />
+      )}
+      {_menu_ && <ReadMenu />}
+     
       <MdOutlineRestaurantMenu className='menu-icon' />
       <h1>Menu</h1>
       <hr className='sm-hr' />
@@ -51,14 +60,6 @@ export default function Menu () {
           <DikukuMenu />
         </div>
       </div>
-      {basket && (
-        <OrderBasket
-          basketItems={basketItems}
-          updateBasketItems={updateBasketItems}
-          resetOrderState={resetOrderState}
-        />
-      )}
-      {_menu_ && <ReadMenu />}
     </section>
   )
 }

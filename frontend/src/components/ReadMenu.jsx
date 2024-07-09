@@ -22,6 +22,16 @@ export default function ReadMenu () {
 
   const handleClick = () => {
     CloseMenu(MENU, false)
+    // Get a reference to the .order-basket element
+    const orderBasketElement = document.querySelector('#home')
+
+    if (orderBasketElement) {
+      // Scroll the element into view
+      orderBasketElement.scrollIntoView({
+        behavior: 'smooth', // Smooth scrolling animation
+        block: 'start' // Scroll to the top of the viewport
+      })
+    }
   }
 
   const handleImageClick = imageUrl => {
@@ -45,10 +55,10 @@ export default function ReadMenu () {
     <>
       <div className='overlay show' onClick={handleClick}></div>
       <section className='read-menu'>
-        <section id="read-menu-nav">
-        <button id='close-menu' onClick={handleClick}>
-          X
-        </button>
+        <section id='read-menu-nav'>
+          <button id='close-menu' onClick={handleClick}>
+            X
+          </button>
         </section>
         {menu ? (
           <>
@@ -86,7 +96,7 @@ export default function ReadMenu () {
                       <p>Price: {item.price}</p>
                     )}
                     <button
-                      className='menu-btn'
+                      className='menu-btn order-btn'
                       onClick={() => {
                         setSelectedFoodMenu(menu.name)
                         handleOrderClick(item)

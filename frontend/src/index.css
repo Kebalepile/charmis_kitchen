@@ -248,6 +248,16 @@ footer > p {
   font-size: 18px;
   font-weight: bolder;
 }
+.menu-btn.order-btn{
+  height:40px;
+  width:80px;
+  font-size:15px;
+  border-radius:4%;
+  color: var(--light-color);
+  background-color: #007bff;
+}
+
+
 
 .menu-card {
   display: flex;
@@ -376,7 +386,7 @@ footer > p {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #faf0d0;
+  background-color: var(--default-bg-color);
   z-index: 14;
   padding: 10px;
   border-radius: 10px;
@@ -408,15 +418,6 @@ footer > p {
   object-fit: cover;
 }
 
-.read-menu button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: var(--light-color);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
 
 .read-menu button:hover {
   background-color: #0056b3;
@@ -907,25 +908,31 @@ button.pop {
 }
 
 #close-menu {
-  background-color: #1f85fa;
+  background-color: #fa1f3c;
   border-radius: 8px;
   height: 50px;
-  font-weight: bolder;
-  font-size: larger;
+  width:50px;
+  font-weight: bold;
+  font-size: large;
   z-index: 1;
   float: left;
-}
+  border: none;
+  border-radius: 30%;
+  color: var(--light-color);
+
+} 
+
 #read-menu-nav {
   position: sticky;
   top: 0;
   right: 0;
+
 }
 @media only screen and (max-width: 425px) {
   .menu-item {
     margin: 3px;
   }
-}
-@media only screen and (max-width: 400px) {
+
   order-form,
   .select-order,
   .read-menu {
@@ -945,10 +952,6 @@ button.pop {
     font-weight: bold;
   }
 
-  #close-menu {
-    font-weight: bold;
-    font-size: large;
-  }
 
   .order-item {
     grid-template-areas: "img quantity remove" "img size remove"

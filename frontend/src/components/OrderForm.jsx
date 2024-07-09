@@ -6,11 +6,9 @@ import Popup from './Popup'
 const OrderForm = ({ item, onClose, menuName }) => {
   const {
     quantity,
-
     total,
     selectedSize,
     handleQuantityChange,
-
     handleSizeChange,
     calculateTotal,
     handleSubmit,
@@ -30,7 +28,7 @@ const OrderForm = ({ item, onClose, menuName }) => {
   const handleFormSubmit = e => {
     e.preventDefault()
     setPopupMessage(
-      "🛒 Order added to basket! Check your basket when you're done ordering."
+      "🛒 Order added to cart! Check your basket when you're done ordering."
     )
     setShowPopup(true)
 
@@ -60,7 +58,7 @@ const OrderForm = ({ item, onClose, menuName }) => {
 
       <div>
         <form onSubmit={handleFormSubmit} className='select-order'>
-          <h2>{item?.name}</h2>
+          <h3>{item?.name}</h3>
           <hr className='bg-hr' />
           {item?.prices ? (
             <div className='form-group size-select'>
@@ -100,7 +98,7 @@ const OrderForm = ({ item, onClose, menuName }) => {
           <button type='submit' className='basket-btn'>
             Add to Basket
           </button>
-          
+
           <button type='button' className='cancel' onClick={handleClose}>
             Cancel
           </button>
