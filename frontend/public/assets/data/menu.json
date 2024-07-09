@@ -87,7 +87,7 @@
       "name": "Magwinya menu",
        "items": [
          {
-          "name": "Magwinya (5 x R3)",
+          "name": "Magwinya (5 x R3 per fresh pack)",
            "price": "R15",
            "image_url": "./assets/images/magwinya/4.jpg",
            "alt": "Magwinya image"
@@ -97,9 +97,9 @@
     "name": "dikuku menu",
        "items": [
          {
-          "name": "dikuku (5 liter)",
-           "price": "R100",
-           "image_url": "./assets/images/dikuku/1.jpg",
+          "name": "Dikuku (5 liter)",
+           "price": "R120",
+           "image_url": "./assets/images/dikuku/3.jpg",
            "alt": "dikuku image"
     }]
   }
