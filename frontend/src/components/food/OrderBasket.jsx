@@ -6,12 +6,8 @@ const OrderBasket = ({ basketItems, updateBasketItems, resetOrderState }) => {
   const [showPaymentForm, setShowPaymentForm] = useState(false);
 
   const removeOrder = (index, arr) => {
-    // Create a copy of the array to avoid mutating the original array
     const updatedArr = [...arr];
-
-    // Check if the index is within the valid range
     if (index >= 0 && index < updatedArr.length) {
-      // Remove the item at the given index
       updatedArr.splice(index, 1);
     }
     updateBasketItems(updatedArr);
@@ -21,7 +17,6 @@ const OrderBasket = ({ basketItems, updateBasketItems, resetOrderState }) => {
     console.log(
       'load form to fill payment details and select payment type, calculate amount needed to pay'
     );
-
     setShowPaymentForm(true);
   };
 
@@ -44,8 +39,8 @@ const OrderBasket = ({ basketItems, updateBasketItems, resetOrderState }) => {
       <section className='order-basket'>
         <div className="sticky-top">
           <h3>Pending orders</h3>
-          <button className='menu-btn pay-button' onClick={handlePaymentType}>
-            pay
+          <button className='menu-btn checkout-button' onClick={handlePaymentType}>
+          <span>Checkout</span>  🛒
           </button>
           <hr className='bg-hr' />
           <p className='total-amount'>
