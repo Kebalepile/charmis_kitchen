@@ -679,14 +679,14 @@ button.pop {
   transform: translateY(0);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
+/* 
 #payment-form > .overlay {
   z-index: 12;
 }
 
 #payment-form {
   max-width: 302px;
-  margin: 0 auto; /* Center the form horizontally */
+  margin: 0 auto; 
 }
 
 #payment-form .payment-details {
@@ -744,7 +744,125 @@ button.pop {
 #payment-form .basket-btn:hover,
 #payment-form .cancel:hover {
   opacity: 0.8;
+} */
+/* Center the form */
+#payment-form {
+  max-width: 400px;
+  margin: 0 auto;
 }
+
+#payment-form > .overlay {
+  z-index: 12;
+  background: rgba(0, 0, 0, 0.5); /* Darken the background */
+}
+
+/* Styling for the payment details container */
+#payment-form .payment-details {
+  width: 400px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--default-bg-color); /* White background */
+  z-index: 13;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  height: 70dvh;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Form group styling */
+#payment-form .form-group {
+  margin-bottom: 20px;
+}
+
+/* Label styling */
+#payment-form .form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Input and select field styling */
+#payment-form .form-group input,
+#payment-form .form-group select {
+  width: 100%;
+  padding: 10px;
+  border: none; /* Remove default border */
+  border-bottom: 2px dashed #918e8e; /* Green underline */
+  border-radius: 0 0 0 15%; /* Border radius for bottom-right corner */
+  box-sizing: border-box;
+  font-size: 14px;
+  color: #333;
+  background-color: inherit; /* Inherit background color */
+  transition: border-bottom-color 0.3s ease; /* Smooth transition for underline color */
+}
+/* Placeholder text */
+#payment-form .form-group input::placeholder,
+#payment-form .form-group select::placeholder {
+  color: rgb(8, 8, 8); /* White placeholder text */
+}
+
+/* Remove underline on focus */
+#payment-form .form-group input:focus,
+#payment-form .form-group select:focus {
+  outline: none; /* Remove default focus outline */
+  /* border-bottom-color: transparent; Transparent underline on focus */
+}
+
+/* Button styling */
+#payment-form .basket-btn,
+#payment-form .cancel {
+  width: 45%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#payment-form .basket-btn {
+  background-color: #0077b6; /* Blue color */
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+#payment-form .basket-btn:hover {
+  background-color: #005f99; /* Darker blue */
+}
+
+#payment-form .cancel {
+  background-color: #d32f2f; /* Red color */
+  color: #fff;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+#payment-form .cancel:hover {
+  background-color: #b71c1c; /* Darker red */
+}
+
+/* Additional styles for the form */
+#payment-form hr {
+  width: 80%;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -55%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
 
 .select-order .form-group {
   margin-bottom: 15px;
