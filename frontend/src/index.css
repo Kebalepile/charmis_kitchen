@@ -1041,7 +1041,8 @@ button.pop {
 
 .order-display-details {
   margin-bottom: 15px;
-  background: #f9fddfda;
+  background-color: #242424da;
+  color: white;
   padding: 15px;
   display: flex;
   flex-flow: column wrap;
