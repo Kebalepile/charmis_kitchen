@@ -1100,3 +1100,10 @@ button.pop {
   color: var(--dark-color); /* Adjust color as needed */
   text-align: center; /* Ensure consistent alignment */
 }
+
+
+/* yoc form styling */
+/* Add this to your CSS file */
+.yc-auto-shown-popup {
+  z-index: 15 !important;
+}

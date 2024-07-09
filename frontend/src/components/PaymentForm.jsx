@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import PaymentContext from '../context/payment/context';
 import Popup from './Popup';
+import { ServerDomain } from '../context/types';
 
 const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const {
@@ -28,6 +29,20 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
 
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
+  const [yocoSdkLoaded, setYocoSdkLoaded] = useState(false);
+
+  useEffect(() => {
+    // Load Yoco script
+    const script = document.createElement('script');
+    script.src = 'https://js.yoco.com/sdk/v1/yoco-sdk-web.js';
+    script.async = true;
+    script.onload = () => setYocoSdkLoaded(true);
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   const validateForm = () => {
     const phoneRegex = /^0[0-9]{9}$/;
@@ -47,19 +62,74 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
       return false;
     }
 
-    // Additional validation logic as needed
-
     return true;
+  };
+
+  const handleYocoPayment = (additionalCharge = 0) => {
+    if (yocoSdkLoaded) {
+      const yoco = new window.YocoSDK({
+        publicKey: 'pk_test_9d6360c3kw7G48w14574', // Replace with your actual public key
+      });
+
+      yoco.showPopup({
+        amountInCents: (paymentTotal + deliveryCharge + additionalCharge) * 100, // Convert to cents
+        currency: 'ZAR',
+        name: 'B-town Bites',
+        description: 'Order Payment',
+        callback: async (result) => {
+          if (result.error) {
+            setPopupMessage('Error: ' + result.error.message);
+            setShowPopup(true);
+          } else {
+            try {
+              const response = await fetch(`${ServerDomain}/process-payment`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  token: result.id,
+                  paymentTotal: paymentTotal + additionalCharge,
+                  deliveryCharge,
+                }),
+              });
+              const data = await response.json();
+              if (data.success) {
+                handleSubmitOrder();
+                resetOrderState();
+                resetPaymentState();
+                setShowPaymentForm(false);
+              } else {
+                setPopupMessage('Payment failed.');
+                setShowPopup(true);
+              }
+            } catch (error) {
+              setPopupMessage('Payment failed.');
+              setShowPopup(true);
+            }
+          }
+        },
+        styling: {
+          // Add the class name for custom styling
+          popupClassName: 'yoco-popup',
+        },
+      });
+    }
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      handleSubmitOrder();
-      resetOrderState();
-      resetPaymentState();
-      setShowPaymentForm(false);
-      // Reset form if needed
+      if (paymentMethod === 'online') {
+        handleYocoPayment();
+      } else if (paymentMethod === 'online-delivery') {
+        handleYocoPayment(10); // Adding R10 for delivery
+      } else {
+        handleSubmitOrder();
+        resetOrderState();
+        resetPaymentState();
+        setShowPaymentForm(false);
+      }
     }
   };
 
@@ -75,14 +145,13 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
 
   const renderAddressInputs = () => {
     if (paymentMethod === 'self-collect') {
-      return null; // Render nothing if self-collect
+      return null;
     }
 
     return (
       <div>
         <div className='form-group'>
           <label>
-            {/* Street Address: */}
             <input
               type='text'
               value={streetAddress}
@@ -94,7 +163,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
         </div>
         <div className='form-group'>
           <label>
-            {/* House Number: */}
             <input
               type='text'
               value={houseNumber}
@@ -115,9 +183,8 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
         <form onSubmit={handleFormSubmit}>
           <div className='form-group'>
             <h3>Payment details</h3>
-            <hr  />
+            <hr />
             <label>
-              {/* Name: */}
               <input
                 type='text'
                 value={name}
@@ -129,7 +196,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
           </div>
           <div className='form-group'>
             <label>
-              {/* Phone (RSA only): */}
               <input
                 type='tel'
                 value={phone}
@@ -149,6 +215,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
                 onChange={(e) => {
                   switch (e.target.value.trim()) {
                     case 'online':
+                    case 'online-delivery':
                     case 'cash':
                       setPopupMessage(
                         '🚚 Delivery is currently limited to 📍 Boitekong Ext 2, 4, 5, 6, and 8'
@@ -161,6 +228,8 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
               >
                 <option value='self-collect'>Self Collect (Free)</option>
                 <option value='cash'>Cash on Delivery (+R10.00)</option>
+                <option value='online'>Pay Online</option>
+                <option value='online-delivery'>Pay Online + Delivery (+R15.00)</option>
               </select>
             </label>
           </div>

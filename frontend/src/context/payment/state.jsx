@@ -80,7 +80,7 @@ function PaymentProvider ({ children }) {
     dispatch({ type: SET_PAYMENT_METHOD, payload: method })
     dispatch({
       type: SET_DELIVERY_CHARGE,
-      payload: method === 'cash' ? 10 : method === 'online' ? 15 : 0
+      payload: method === 'cash' ? 10 : method === 'online-delivery' ? 15 : 0
     })
   }
   //    get order items from order state write method that does so.
@@ -152,9 +152,9 @@ function PaymentProvider ({ children }) {
         }
       }
       // console.log(storeMessage)
-      clickTelApi(storeNumber, storeMessage, API_KEY)
+      // clickTelApi(storeNumber, storeMessage, API_KEY)
       // console.log(customerMessage)
-      clickTelApi(customerNumber, customerMessage, API_KEY)
+      // clickTelApi(customerNumber, customerMessage, API_KEY)
     } catch (error) {
       console.error('Error sending SMS:', error)
     }

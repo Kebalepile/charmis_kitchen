@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const Order = require("./models/order"); // Import the order model
 const WebSocket = require("ws");
 const http = require("http");
+const axios = require('axios');
 
 require("dotenv").config();
 
@@ -168,6 +169,30 @@ app.delete("/orders/:id", async (req, res) => {
     notifyClients({ type: "deleteOrder", orderId: id });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/process-payment', async (req, res) => {
+  const { token, paymentTotal, deliveryCharge } = req.body;
+
+  try {
+    const response = await axios.post('https://online.yoco.com/v1/charges/', {
+      token: token,
+      amountInCents: (paymentTotal + deliveryCharge) * 100, // Convert to cents
+      currency: 'ZAR',
+    }, {
+      headers: {
+        'X-Auth-Secret-Key': process.env.YOCO_SECRET_KEY, // Use your actual secret key
+      },
+    });
+
+    if (response.data.status === 'successful') {
+      res.json({ success: true });
+    } else {
+      res.json({ success: false });
+    }
+  } catch (error) {
+    res.json({ success: false, error: error.message });
   }
 });
 

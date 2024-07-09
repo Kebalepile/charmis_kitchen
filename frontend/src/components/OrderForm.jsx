@@ -100,7 +100,7 @@ const OrderForm = ({ item, onClose, menuName }) => {
           </button>
 
           <button type='button' className='cancel' onClick={handleClose}>
-            Cancel
+            Close
           </button>
         </form>
       </div>
