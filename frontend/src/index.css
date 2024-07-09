@@ -748,7 +748,7 @@ button.pop {
 } */
 /* Center the form */
 #payment-form {
-  max-width: 400px;
+  max-width: 320px;
   margin: 0 auto;
 }
 
@@ -759,7 +759,7 @@ button.pop {
 
 /* Styling for the payment details container */
 #payment-form .payment-details {
-  width: 400px;
+  width: 320px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -790,7 +790,7 @@ button.pop {
 /* Input and select field styling */
 #payment-form .form-group input,
 #payment-form .form-group select {
-  width: 100%;
+  width: 70%;
   padding: 10px;
   border: none; /* Remove default border */
   border-bottom: 2px dashed #918e8e; /* Green underline */

@@ -6,13 +6,13 @@ import { ServerDomain } from '../context/types';
 
 const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const {
-    name,
-    phone,
+    name = '', // Ensure name is defined
+    phone = '', // Ensure phone is defined
     paymentMethod,
     deliveryCharge,
     paymentTotal,
-    streetAddress,
-    houseNumber,
+    streetAddress = '', // Ensure streetAddress is defined
+    houseNumber = '', // Ensure houseNumber is defined
     handleNameChange,
     handlePhoneChange,
     handlePaymentChange,
@@ -108,10 +108,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
               setShowPopup(true);
             }
           }
-        },
-        styling: {
-          // Add the class name for custom styling
-          popupClassName: 'yoco-popup',
         },
       });
     }
@@ -214,7 +210,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
                 value={paymentMethod}
                 onChange={(e) => {
                   switch (e.target.value.trim()) {
-                    case 'online':
                     case 'online-delivery':
                     case 'cash':
                       setPopupMessage(
