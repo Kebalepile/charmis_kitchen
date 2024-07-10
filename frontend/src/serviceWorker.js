@@ -1,4 +1,4 @@
-const cacheName = "B-Twon Bites";
+const cacheName = "Boitekong Eats";
 
 self.addEventListener("install", e => {
   e.waitUntil(

@@ -11,12 +11,12 @@ export default function About () {
     <section>
       <img src={founderImg} alt="founder's image" className='founder-img' />
       <p>
-        🍕 Welcome to B-town Bites, your go for homemade food! We specialize in
+        🍕 Welcome to Boitekong Eats, your go for homemade food! We specialize in
         offering a variety of delicious homemade dishes, drinks, all available
         for prepaid order.
       </p>
       <p>
-        🍗 At B-town Bites, we pride ourselves on serving homemade African
+        🍗 At Boitekong Eats, we pride ourselves on serving homemade African
         township cuisine. From magwinya and chicken wings to pizza and baked
         cookies, we have something to satisfy every craving.
       </p>
@@ -33,12 +33,12 @@ export default function About () {
     <section>
       <img src={founderImg} alt="founder's image" className='founder-img' />
       <p>
-        🍕 Dumelang! Re a go amogela mo B-town Bites, lefelo la gago la dijo tsa
+        🍕 Dumelang! Re a go amogela mo Boitekong Eats, lefelo la gago la dijo tsa
         malatsi otlhe tse di phepafetseng, tse di dirilweng ka lorato le
         boineelo.
       </p>
       <p>
-        🍗 Mo B-town Bites, re dira ka natla go netefatsa gore dijo tsa rona di
+        🍗 Mo Boitekong Eats, re dira ka natla go netefatsa gore dijo tsa rona di
         goroga ka nako, di ntse di le foreshe mme di le monate.
       </p>
       <p>
@@ -57,7 +57,7 @@ export default function About () {
         onClick={() => {
           Share({
             title: 'B-Town Bites',
-            text: 'Check out B-town Bites, your go for homemade food!',
+            text: 'Check out Boitekong Eats, your go for homemade food!',
             url: location.origin
           })
         }}

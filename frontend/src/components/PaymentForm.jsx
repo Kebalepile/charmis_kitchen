@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import PaymentContext from '../context/payment/context'
 import Loading from './Loading'
 import Popup from './Popup'
-import { ServerDomain } from '../context/types'
+// import { ServerDomain } from '../context/types'
 
 const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const {
