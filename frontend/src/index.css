@@ -467,7 +467,15 @@ footer > p {
   animation-delay: calc(var(--i) * 0.2s);
 }
 
-#popup-overlay {
+#payment-overlay .loading-dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 40% 40% 20% 20%;
+  background-color: #007bff;
+  border: 2px solid var(--light-color);
+}
+
+#popup-overlay,#payment-overlay {
   position: fixed;
   top: 0;
   left: 0;

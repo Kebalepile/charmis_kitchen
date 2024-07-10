@@ -5,19 +5,19 @@ const mongoose = require("mongoose");
 const Order = require("./models/order"); // Import the order model
 const WebSocket = require("ws");
 const http = require("http");
-const axios = require('axios');
+const axios = require("axios");
 
 require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-const allowedOrigins = ["http://localhost:5173", "http://localhost:5173/"];  // developement
+// const allowedOrigins = ["http://localhost:5173", "http://localhost:5173/"];  // developement
 
-// const allowedOrigins = [
-//   "https://btownbites.github.io/",
-//   "https://btownbites.github.io"
-// ]; //production
+const allowedOrigins = [
+  "https://btownbites.github.io/",
+  "https://btownbites.github.io"
+]; //production
 
 const corsOptions = {
   origin: function(origin, callback) {
@@ -172,33 +172,36 @@ app.delete("/orders/:id", async (req, res) => {
   }
 });
 
-app.post('/process-payment', async (req, res) => {
+app.post("/process-payment", async (req, res) => {
   const { token, paymentTotal, deliveryCharge } = req.body;
 
   try {
-    const response = await axios.post('https://online.yoco.com/v1/charges/', {
-      token: token,
-      amountInCents: (paymentTotal + deliveryCharge) * 100, // Convert to cents
-      currency: 'ZAR',
-    }, {
-      headers: {
-        'X-Auth-Secret-Key': process.env.YOCO_SECRET_KEY, // Use your actual secret key
+    const response = await axios.post(
+      "https://online.yoco.com/v1/charges/",
+      {
+        token: token,
+        amountInCents: (paymentTotal + deliveryCharge) * 100, // Convert to cents
+        currency: "ZAR"
       },
-    });
+      {
+        headers: {
+          "X-Auth-Secret-Key": process.env.YOCO_SECRET_KEY // Use your actual secret key
+        }
+      }
+    );
 
-    console.log('Yoco response:', response.data);
+    console.log("Yoco response:", response.data);
 
-    if (response.data.status === 'successful') {
+    if (response.data.status === "successful") {
       res.json({ success: true });
     } else {
       res.json({ success: false });
     }
   } catch (error) {
-    console.error('Error processing payment:', error);
+    console.error("Error processing payment:", error);
     res.json({ success: false, error: error.message });
   }
 });
-
 
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);

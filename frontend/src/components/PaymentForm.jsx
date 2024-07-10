@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import PaymentContext from '../context/payment/context'
+import Loading from './Loading'
 import Popup from './Popup'
 import { ServerDomain } from '../context/types'
 
@@ -23,9 +24,10 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     resetPaymentState
   } = useContext(PaymentContext)
 
+  const [loading, setLoading] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
-  const [yocoSdkLoaded, setYocoSdkLoaded] = useState(false)
+  // const [yocoSdkLoaded, setYocoSdkLoaded] = useState(false)
 
   useEffect(() => {
     handlePaymentItems(paymentItems)
@@ -124,6 +126,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
 
   const handleFormSubmit = e => {
     e.preventDefault()
+    setLoading(true)
     if (validateForm()) {
       switch (paymentMethod) {
         case 'online':
@@ -131,10 +134,13 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
           // handleYocoPayment()
           break
         default:
+         setTimeout(() => {
           handleSubmitOrder()
           resetOrderState()
           resetPaymentState()
+          setLoading(false)
           setShowPaymentForm(false)
+         },7000) //7 seconds
           break
       }
     }
@@ -260,6 +266,12 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
           </button>
         </form>
       </div>
+      {loading && (
+        <div id='payment-overlay'>
+       
+          <Loading />
+        </div>
+      )}
       {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
     </div>
   )

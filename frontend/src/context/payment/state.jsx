@@ -15,7 +15,8 @@ import {
   // WebSocketURL,
   ServerDomain,
   API_KEY,
-  storePhoneNumber
+  storePhoneNumber,
+  STORE_ADDRESS
 } from '../types'
 import { generateOrderNumber, checkTime } from '../../utils/Utils'
 // import useWebSocket from '../../hooks/useWebSocket'
@@ -117,43 +118,50 @@ function PaymentProvider ({ children }) {
    */
   const orderNotification = async (customerMessage, storeMessage) => {
     try {
-      const customerNumber = formatCellNumber(state.phone),
-        storeNumber = formatCellNumber(`${storePhoneNumber}`)
+      const customerNumber = formatCellNumber(state.phone)
+      const storeNumber = formatCellNumber(`${storePhoneNumber}`)
 
       const clickTelApi = (phone, message, apiKey) => {
-        try {
-          const xhr = new XMLHttpRequest()
-          xhr.open(
-            'GET',
-            `https://platform.clickatell.com/messages/http/send?apiKey=${apiKey}&to=${phone}&content=${message}`,
-            true
-          )
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-              console.log('success')
-              restPunchedOrder()
-            } else if (xhr.status == 202) {
-              // console.log(xhr.status)
-              // console.log(
-              //   'request has been accepted for processing, but the processing has not been finished yet'
-              // )
-              restPunchedOrder()
-            } else {
-              // console.log(xhr.status)
-              // console.log('somthings wrong')
+        return new Promise((resolve, reject) => {
+          try {
+            const xhr = new XMLHttpRequest()
+            xhr.open(
+              'GET',
+              `https://platform.clickatell.com/messages/http/send?apiKey=${apiKey}&to=${phone}&content=${message}`,
+              true
+            )
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState == 4) {
+                if (xhr.status == 200 || xhr.status == 202) {
+                  resolve(xhr.status)
+                } else {
+                  reject(xhr.status)
+                }
+              }
             }
+            xhr.send()
+          } catch (error) {
+            reject(error)
           }
-          xhr.send()
-        } catch (error) {
-          console.error('There was a problem with the fetch operation:', error)
-        }
+        })
       }
-      // console.log(storeMessage)
-      clickTelApi(storeNumber, storeMessage, API_KEY)
-      // console.log(customerMessage)
-      clickTelApi(customerNumber, customerMessage, API_KEY)
+
+      const customerPromise = clickTelApi(
+        customerNumber,
+        customerMessage,
+        API_KEY
+      )
+      const storePromise = clickTelApi(storeNumber, storeMessage, API_KEY)
+
+      Promise.all([customerPromise, storePromise])
+        .then(() => {
+          restPunchedOrder()
+        })
+        .catch(error => {
+          console.error('Error sending SMS:', error)
+        })
     } catch (error) {
-      console.error('Error sending SMS:', error)
+      console.error('Error preparing SMS:', error)
     }
   }
 
@@ -169,13 +177,13 @@ function PaymentProvider ({ children }) {
     const orderNumber = generateOrderNumber() // Generate unique order number
     const [customerMessage, storeMessage] = initOrderMessages(orderNumber)
     const { startTime, endTime, currentTime } = checkTime()
-   
+
     switch (currentTime < startTime || currentTime > endTime) {
       case true:
         alert('⚠️ Rebereka gare ga 6:30 AM le 18:30 PM. 🌞')
         break
       case false:
-        console.log("send SMS & update database")
+        // console.log("send SMS & update database")
         orderNotification(customerMessage, storeMessage)
         updateOrderBoard(orderNumber, paymentItemsDescriptions)
         break
@@ -189,52 +197,47 @@ function PaymentProvider ({ children }) {
    * @returns array of sms strings
    */
   const initOrderMessages = orderNumber => {
-    const deliveryType = type => {
-      switch (type.trim()) {
-        case 'online-delivery':
-        case 'cash':
-          return 'delivery'
-        case 'online':
-        case 'online-self-collect':
-        case 'self-collect':
-          return 'self collect'
+    const getDeliveryInfo = type => {
+      type = type.trim()
+      if (['online-delivery', 'cash'].includes(type)) {
+        return { deliveryType: 'delivery', deliver: 'yes' }
       }
+      if (['online', 'online-self-collect', 'self-collect'].includes(type)) {
+        return { deliveryType: 'self-collect', deliver: 'self-collect' }
+      }
+      return { deliveryType: 'unknown', deliver: 'unknown' }
     }
 
+    const { deliveryType, deliver } = getDeliveryInfo(paymentMethod)
+
     const customerMessage = [
-      `B-town Bites ORDER NOTIFICATION:`,
-      `Order: ${orderNumber}`,
+      `B-town Bites ORDER NOTIFICATION: Order: ${orderNumber}`,
       `Name: ${name}`,
       phone ? `Phone: ${phone}` : null,
-      streetAddress ? `Address: ${streetAddress}` : null,
-      houseNumber ? `House: ${houseNumber}` : null,
-      `Delivery: ${paymentMethod}`,
+      streetAddress ? `Address: ${streetAddress}, House: ${houseNumber}` : null,
+      `Delivery: ${deliver}`,
       `Total: R${paymentTotal + deliveryCharge}`,
       deliveryCharge
-        ? `Deliver at ${streetAddress}, ${houseNumber}`
-        : `Collection: 2379 Windsa St, Boitekong Ext 2`,
-      `You'll be notified via SMS when the order is ready.`,
-      `call ${storePhoneNumber} for queries`,
-      `Track your order on the order board using order number  ${orderNumber}.`
+        ? `Deliver to ${streetAddress}, ${houseNumber}`
+        : `Collection at ${STORE_ADDRESS}`,
+      `You will be notified via SMS when the order is ready.`,
+      `Call ${storePhoneNumber} for queries.`,
+      `Track your order via search order with order number ${orderNumber}.`
     ]
       .filter(Boolean)
-      .join(' ')
+      .join('. ')
 
     const storeMessage = [
-      `New order received!`,
-      `Order: ${orderNumber}`,
+      `New order received! Order: ${orderNumber}`,
       `Name: ${name}`,
       phone ? `Phone: ${phone}` : null,
-      streetAddress ? `Address: ${streetAddress}` : null,
-      houseNumber ? `House: ${houseNumber}` : null,
-      `Delivery: ${paymentMethod}`,
+      streetAddress ? `Address: ${streetAddress}, House: ${houseNumber}` : null,
+      `Delivery: ${deliver}`,
       `Total: R${paymentTotal + deliveryCharge}`,
-      `Notify ${name} at ${phone} when the order is ready for ${deliveryType(
-        paymentMethod
-      )}.`
+      `Notify ${name} at ${phone} when the order is ready for ${deliveryType}.`
     ]
       .filter(Boolean)
-      .join(' ')
+      .join('. ')
 
     return [customerMessage, storeMessage]
   }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Menu from './Menu'
 import Slideshow from './Slideshow'
-import SearchOrder from "./SearchOrder"
+import SearchOrder from './SearchOrder'
 import PaymentContext from '../context/payment/context'
 import Popup from './Popup'
 
@@ -12,11 +12,11 @@ export default function Home () {
   const { restPunchedOrder, orderSubmitted } = useContext(PaymentContext)
 
   useEffect(() => {
-    if(orderSubmitted){
+    if (orderSubmitted) {
       setPopupMessage(
-        '📋👤 Your order has been lodged. Please wait for a notification SMS. 📲'
+        '📋👤Your order has been placed. Please wait a few minutes for an SMS notification 📲'
       )
-      
+
       setShowPopup(true)
       restPunchedOrder()
     }
@@ -32,7 +32,7 @@ export default function Home () {
         <Slideshow />
         {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
       </section>
-      <SearchOrder/>
+      <SearchOrder />
       <Menu />
     </>
   )
