@@ -57,8 +57,7 @@ export default function SearchOrder () {
     <>
       {searchOrderFormVisible && (
         <div id='search-order' className='search-order-container'>
-          {loading && <Loading />}
-          {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
+        
           <div className='overlay show' onClick={closeSearchForm}></div>
 
           <form onSubmit={handleSearch}>
@@ -73,6 +72,8 @@ export default function SearchOrder () {
             <button type='submit' className='search-order-button'>
               Search
             </button>
+            {loading && <Loading />}
+            {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
           </form>
           {orders.length && <OrderDisplay />}
         </div>

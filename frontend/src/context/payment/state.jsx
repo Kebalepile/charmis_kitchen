@@ -209,13 +209,13 @@ function PaymentProvider ({ children }) {
       streetAddress ? `Address: ${streetAddress}` : null,
       houseNumber ? `House: ${houseNumber}` : null,
       `Delivery: ${paymentMethod}`,
-      `Total: R${paymentTotal}`,
+      `Total: R${paymentTotal + deliveryCharge}`,
       deliveryCharge
-        ? `Delivery: R${deliveryCharge}`
+        ? `Deliver at ${streetAddress}, ${houseNumber}`
         : `Collection: 2379 Windsa St, Boitekong Ext 2`,
       `You'll be notified via SMS when the order is ready.`,
       `call ${storePhoneNumber} for queries`,
-      `Track your order on the order board using your name and order number.`
+      `Track your order on the order board using order number  ${orderNumber}.`
     ]
       .filter(Boolean)
       .join(' ')
@@ -228,8 +228,7 @@ function PaymentProvider ({ children }) {
       streetAddress ? `Address: ${streetAddress}` : null,
       houseNumber ? `House: ${houseNumber}` : null,
       `Delivery: ${paymentMethod}`,
-      `Total: R${paymentTotal}`,
-      deliveryCharge ? `Delivery: R${deliveryCharge}` : null,
+      `Total: R${paymentTotal + deliveryCharge}`,
       `Notify ${name} at ${phone} when the order is ready for ${deliveryType(
         paymentMethod
       )}.`
