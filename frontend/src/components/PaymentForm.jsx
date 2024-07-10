@@ -30,21 +30,21 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   useEffect(() => {
     handlePaymentItems(paymentItems)
     // Load Yoco script
-    const script = document.createElement('script')
-    script.src = 'https://js.yoco.com/sdk/v1/yoco-sdk-web.js'
-    script.async = true
-    script.onload = () => {
-      console.log('Yoco SDK loaded successfully')
-      setYocoSdkLoaded(true)
-    }
-    script.onerror = () => {
-      console.error('Failed to load Yoco SDK')
-    }
-    document.body.appendChild(script)
+    // const script = document.createElement('script')
+    // script.src = 'https://js.yoco.com/sdk/v1/yoco-sdk-web.js'
+    // script.async = true
+    // script.onload = () => {
+    //   console.log('Yoco SDK loaded successfully')
+    //   setYocoSdkLoaded(true)
+    // }
+    // script.onerror = () => {
+    //   console.error('Failed to load Yoco SDK')
+    // }
+    // document.body.appendChild(script)
 
-    return () => {
-      document.body.removeChild(script)
-    }
+    // return () => {
+    //   document.body.removeChild(script)
+    // }
   }, [paymentItems])
 
   const validateForm = () => {
@@ -68,59 +68,59 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     return true
   }
 
-  const handleYocoPayment = (additionalCharge = 0) => {
-    if (yocoSdkLoaded) {
-      const yoco = new window.YocoSDK({
-        publicKey: 'pk_live_de959964kw7G48web094' // Replace with your actual public key
-      })
+  // const handleYocoPayment = (additionalCharge = 0) => {
+  //   if (yocoSdkLoaded) {
+  //     const yoco = new window.YocoSDK({
+  //       publicKey: '' // Replace with your actual public key
+  //     })
 
-      yoco.showPopup({
-        amountInCents: (paymentTotal + deliveryCharge + additionalCharge) * 100, // Convert to cents
-        currency: 'ZAR',
-        name: 'B-town Bites',
-        description: 'Order Payment',
-        callback: async result => {
-          if (result.error) {
-            setPopupMessage('Error: ' + result.error.message)
-            setShowPopup(true)
-          } else {
-            try {
-              const developmentServer = 'http://localhost:5000'
-              const response = await fetch(
-                `${developmentServer}/process-payment`,
-                {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                    token: result.id,
-                    paymentTotal: paymentTotal + additionalCharge,
-                    deliveryCharge
-                  })
-                }
-              )
-              const data = await response.json()
-              console.log(data)
-              if (data.success) {
-                handleSubmitOrder()
-                resetOrderState()
-                resetPaymentState()
-                setShowPaymentForm(false)
-              } else {
-                setPopupMessage('Payment failed.')
-                setShowPopup(true)
-              }
-            } catch (error) {
-              console.error('Fetch error:', error)
-              setPopupMessage('Payment failed.')
-              setShowPopup(true)
-            }
-          }
-        }
-      })
-    }
-  }
+  //     yoco.showPopup({
+  //       amountInCents: (paymentTotal + deliveryCharge + additionalCharge) * 100, // Convert to cents
+  //       currency: 'ZAR',
+  //       name: 'B-town Bites',
+  //       description: 'Order Payment',
+  //       callback: async result => {
+  //         if (result.error) {
+  //           setPopupMessage('Error: ' + result.error.message)
+  //           setShowPopup(true)
+  //         } else {
+  //           try {
+  //             const developmentServer = 'http://localhost:5000'
+  //             const response = await fetch(
+  //               `${developmentServer}/process-payment`,
+  //               {
+  //                 method: 'POST',
+  //                 headers: {
+  //                   'Content-Type': 'application/json'
+  //                 },
+  //                 body: JSON.stringify({
+  //                   token: result.id,
+  //                   paymentTotal: paymentTotal + additionalCharge,
+  //                   deliveryCharge
+  //                 })
+  //               }
+  //             )
+  //             const data = await response.json()
+  //             console.log(data)
+  //             if (data.success) {
+  //               handleSubmitOrder()
+  //               resetOrderState()
+  //               resetPaymentState()
+  //               setShowPaymentForm(false)
+  //             } else {
+  //               setPopupMessage('Payment failed.')
+  //               setShowPopup(true)
+  //             }
+  //           } catch (error) {
+  //             console.error('Fetch error:', error)
+  //             setPopupMessage('Payment failed.')
+  //             setShowPopup(true)
+  //           }
+  //         }
+  //       }
+  //     })
+  //   }
+  // }
 
   const handleFormSubmit = e => {
     e.preventDefault()
@@ -128,7 +128,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
       switch (paymentMethod) {
         case 'online':
         case 'online-delivery':
-          handleYocoPayment()
+          // handleYocoPayment()
           break
         default:
           handleSubmitOrder()
@@ -234,10 +234,10 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
               >
                 <option value='self-collect'>Self Collect (Free)</option>
                 <option value='cash'>Cash on Delivery (+R10.00)</option>
-                <option value='online'>Pay Online</option>
+                {/* <option value='online'>Pay Online</option>
                 <option value='online-delivery'>
                   Pay Online + Delivery (+R15.00)
-                </option>
+                </option> */}
               </select>
             </label>
           </div>

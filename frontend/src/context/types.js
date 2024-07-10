@@ -34,12 +34,12 @@ export const REST_PAYMENT_STATE = "REST_PAYMENT_STATE";
 // urls
 // developement
 // export const WebSocketURL = "ws://localhost:5000";
-// export const ServerDomain = "http://localhost:5000";
+export const ServerDomain = "http://localhost:5000";
 // prodcution
 
 export const WebSocketURL = "ws://b-town-bites.onrender.com";
-export const ServerDomain = "https://b-town-bites.onrender.com";
+// export const ServerDomain = "https://b-town-bites.onrender.com";
 // CLICKTEL API KEY
 export const API_KEY = "4P7TZfQ7T1-LUL0_v6i_jg==";
 // store phone number:
-export  const storePhoneNumber = "0672718374"
+export  const storePhoneNumber = "0737757160"

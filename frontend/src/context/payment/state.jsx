@@ -176,8 +176,8 @@ function PaymentProvider ({ children }) {
         break
       case false:
         console.log("send SMS & update database")
-        // orderNotification(customerMessage, storeMessage)
-        // updateOrderBoard(orderNumber, paymentItemsDescriptions)
+        orderNotification(customerMessage, storeMessage)
+        updateOrderBoard(orderNumber, paymentItemsDescriptions)
         break
     }
   }
