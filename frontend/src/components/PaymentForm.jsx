@@ -109,6 +109,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
                 setShowPopup(true)
               }
             } catch (error) {
+              console.log(error)
               setPopupMessage('Payment failed.')
               setShowPopup(true)
             }
