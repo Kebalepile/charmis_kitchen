@@ -23,26 +23,29 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     resetPaymentState
   } = useContext(PaymentContext)
 
-  useEffect(() => {
-    handlePaymentItems(paymentItems)
-  }, [paymentItems])
-
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
   const [yocoSdkLoaded, setYocoSdkLoaded] = useState(false)
 
   useEffect(() => {
+    handlePaymentItems(paymentItems)
     // Load Yoco script
     const script = document.createElement('script')
     script.src = 'https://js.yoco.com/sdk/v1/yoco-sdk-web.js'
     script.async = true
-    script.onload = () => setYocoSdkLoaded(true)
+    script.onload = () => {
+      console.log('Yoco SDK loaded successfully')
+      setYocoSdkLoaded(true)
+    }
+    script.onerror = () => {
+      console.error('Failed to load Yoco SDK')
+    }
     document.body.appendChild(script)
 
     return () => {
       document.body.removeChild(script)
     }
-  }, [])
+  }, [paymentItems])
 
   const validateForm = () => {
     const phoneRegex = /^0[0-9]{9}$/
@@ -68,7 +71,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const handleYocoPayment = (additionalCharge = 0) => {
     if (yocoSdkLoaded) {
       const yoco = new window.YocoSDK({
-        publicKey: 'pk_test_9d6360c3kw7G48w14574' // Replace with your actual public key
+        publicKey: 'pk_live_de959964kw7G48web094' // Replace with your actual public key
       })
 
       yoco.showPopup({
@@ -82,9 +85,9 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
             setShowPopup(true)
           } else {
             try {
-              const developemtServer = 'http://localhost:5000'
+              const developmentServer = 'http://localhost:5000'
               const response = await fetch(
-                `${developemtServer}/process-payment`,
+                `${developmentServer}/process-payment`,
                 {
                   method: 'POST',
                   headers: {
@@ -109,7 +112,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
                 setShowPopup(true)
               }
             } catch (error) {
-              console.log(error)
+              console.error('Fetch error:', error)
               setPopupMessage('Payment failed.')
               setShowPopup(true)
             }

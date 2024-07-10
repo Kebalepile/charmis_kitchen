@@ -186,20 +186,24 @@ app.post('/process-payment', async (req, res) => {
       },
     });
 
+    console.log('Yoco response:', response.data);
+
     if (response.data.status === 'successful') {
       res.json({ success: true });
     } else {
       res.json({ success: false });
     }
   } catch (error) {
+    console.error('Error processing payment:', error);
     res.json({ success: false, error: error.message });
   }
 });
+
 
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
-function generateOrderNumber() {
-  return Math.floor(Math.random() * 1000000).toString();
-}
+// function generateOrderNumber() {
+//   return Math.floor(Math.random() * 1000000).toString();
+// }

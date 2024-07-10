@@ -175,8 +175,9 @@ function PaymentProvider ({ children }) {
         alert('⚠️ Rebereka gare ga 6:30 AM le 18:30 PM. 🌞')
         break
       case false:
-        orderNotification(customerMessage, storeMessage)
-        updateOrderBoard(orderNumber, paymentItemsDescriptions)
+        console.log("send SMS & update database")
+        // orderNotification(customerMessage, storeMessage)
+        // updateOrderBoard(orderNumber, paymentItemsDescriptions)
         break
     }
   }
