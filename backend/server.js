@@ -11,15 +11,18 @@ require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 5000;
-
-// const allowedOrigins = ["http://localhost:5173", "http://localhost:5173/"];  // developement
-
+// developement
 const allowedOrigins = [
-  "https://boitekongeats.co.za/",
-  "https://boitekongeats.co.za",
-  "https://btownbites.github.io/",
-  "https://btownbites.github.io"
-]; //production
+  "http://localhost:5173", 
+  "http://localhost:5173/"
+];  
+//production
+// const allowedOrigins = [
+//   "https://boitekongeats.co.za/",
+//   "https://boitekongeats.co.za",
+//   "https://btownbites.github.io/",
+//   "https://btownbites.github.io"
+// ]; 
 
 const corsOptions = {
   origin: function(origin, callback) {

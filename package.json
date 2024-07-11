@@ -1,19 +1,24 @@
 {
-    "name": "my-project",
-    "version": "1.0.0",
-    "scripts": {
-        "app": "concurrently \"npm run start --prefix backend\" \"npm run dev --prefix frontend\""
-    },
-    "devDependencies": {
-        "concurrently": "^8.2.2"
-    },
-    "dependencies": {
-        "body-parser": "^1.20.2",
-        "cors": "^2.8.5",
-        "dotenv": "^16.4.5",
-        "express": "^4.19.2",
-        "mongodb": "^6.8.0",
-        "mongoose": "^8.4.4",
-        "ws": "^8.17.1"
-    }
+  "name": "my-project",
+  "version": "1.0.0",
+  "scripts": {
+    "backend": "npm run start --prefix backend",
+    "customer-app": "npm run dev --prefix frontend/botekong_eats",
+    "it-app": "npm run dev --prefix frontend/it-department-dashboard",
+    "dev-customer-app": "concurrently \"npm run backend\" \"npm run customer-app\"",
+    "dev-it-app": "concurrently \"npm run backend\" \"npm run it-app\""
+
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongodb": "^6.8.0",
+    "mongoose": "^8.4.4",
+    "ws": "^8.17.1"
+  }
 }
