@@ -1,20 +1,25 @@
 import './styles/style.css';
-import './components/OrderList.js';
+import './src/components/OrderList.js';
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="./javascript.svg" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <ul id="order-list"></ul>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`;
+const app = document.querySelector('#app');
+
+const container = document.createElement('div');
+
+const header = document.createElement('h1');
+header.textContent = 'Boitekong Eats IT Dashboard';
+
+const hr = document.createElement('hr');
+
+const card = document.createElement('div');
+card.className = 'card';
+
+const orderList = document.createElement('ul');
+orderList.id = 'order-list';
+
+card.appendChild(orderList);
+
+container.appendChild(header);
+container.appendChild(hr);
+container.appendChild(card);
+
+app.appendChild(container);

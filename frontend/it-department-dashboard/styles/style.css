@@ -1,0 +1,18 @@
+/* CSS for styling the timestamp */
+.order-item {
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+.order-item h3 {
+  margin-bottom: 5px;
+}
+.order-item .timestamp {
+  color: #888;
+  font-size: 0.9rem;
+}
+.order-stats {
+  margin-top: 20px;
+  font-size: 1.2rem;
+}
