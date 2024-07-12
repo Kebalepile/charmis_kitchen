@@ -20,8 +20,18 @@ const app = document.querySelector("#app");
 const container = createSection();
 
 const header = createElement("h1", {
-  textContent: "Boitekong Eats IT Dashboard"
+  textContent: " Boitekong Eats IT Dashboard"
 });
+
+// Create the logo image element
+const logo = createElement("img", {
+  src: "/1.png",
+  alt: "Boitekong Eats Logo",
+  className: "logo"
+});
+
+// Append the logo to the header
+header.prepend(logo);
 
 const hr = createElement("hr");
 
