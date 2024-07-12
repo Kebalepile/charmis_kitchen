@@ -125,26 +125,30 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   // }
 
   const handleFormSubmit = e => {
-    e.preventDefault()
-    setLoading(true)
-    if (validateForm()) {
-      switch (paymentMethod) {
-        case 'online':
-        case 'online-delivery':
-          // handleYocoPayment()
-          break
-        default:
-         setTimeout(() => {
-          handleSubmitOrder()
-          resetOrderState()
-          resetPaymentState()
-          setLoading(false)
-          setShowPaymentForm(false)
-         },7000) //7 seconds
-          break
-      }
+    e.preventDefault();
+    setLoading(true);
+    if (!validateForm()) {
+      setLoading(false);
+      return; // Stop execution if the form is not valid
     }
-  }
+  
+    switch (paymentMethod) {
+      case 'online':
+      case 'online-delivery':
+        // handleYocoPayment()
+        break;
+      default:
+        setTimeout(() => {
+          handleSubmitOrder();
+          resetOrderState();
+          resetPaymentState();
+          setLoading(false);
+          setShowPaymentForm(false);
+        }, 7000); // 7 seconds
+        break;
+    }
+  };
+  
 
   const closePopup = () => {
     setShowPopup(false)

@@ -1,25 +1,39 @@
-import './styles/style.css';
-import './src/components/OrderList.js';
+import "./styles/style.css";
+import "./src/components/OrderList.js";
 
-const app = document.querySelector('#app');
+const createElement = (tagName, attributes = {}) => {
+  const element = document.createElement(tagName);
+  Object.assign(element, attributes);
+  return element;
+};
 
-const container = document.createElement('div');
+const createSection = (className = "") => {
+  const section = createElement("section");
+  if (className) {
+    section.className = className;
+  }
+  return section;
+};
 
-const header = document.createElement('h1');
-header.textContent = 'Boitekong Eats IT Dashboard';
+const app = document.querySelector("#app");
 
-const hr = document.createElement('hr');
+const container = createSection();
 
-const card = document.createElement('div');
-card.className = 'card';
+const header = createElement("h1", {
+  textContent: "Boitekong Eats IT Dashboard"
+});
 
-const orderList = document.createElement('ul');
-orderList.id = 'order-list';
+const hr = createElement("hr");
+
+const card = createSection("card");
+
+const orderList = createSection();
+orderList.id = "order-list";
+
+const orderStats = createSection();
+orderStats.id = "order-stats";
 
 card.appendChild(orderList);
-
-container.appendChild(header);
-container.appendChild(hr);
-container.appendChild(card);
+container.append(header, hr, orderStats, card);
 
 app.appendChild(container);
