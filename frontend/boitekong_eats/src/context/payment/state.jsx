@@ -225,7 +225,7 @@ function PaymentProvider ({ children }) {
     const { deliveryType, deliver } = getDeliveryInfo(paymentMethod)
 
     const customerMessage = [
-      `B-town Bites ORDER NOTIFICATION: Order: ${orderNumber}`,
+      `Boitekong Eats order notification: Order: ${orderNumber}`,
       `Name: ${name}`,
       phone ? `Phone: ${phone}` : null,
       streetAddress ? `Address: ${streetAddress}, House: ${houseNumber}` : null,
@@ -242,7 +242,7 @@ function PaymentProvider ({ children }) {
       .join('. ')
 
     const storeMessage = [
-      `New order received! Order: ${orderNumber}`,
+      `Boitekong Eats, order received! Order: ${orderNumber}`,
       `Name: ${name}`,
       phone ? `Phone: ${phone}` : null,
       streetAddress ? `Address: ${streetAddress}, House: ${houseNumber}` : null,
