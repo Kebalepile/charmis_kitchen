@@ -12,14 +12,11 @@ import {
   SET_STREET_ADDRESS,
   SET_HOUSENUMBER,
   REST_PAYMENT_STATE,
-  // WebSocketURL,
   ServerDomain,
-  API_KEY,
   storePhoneNumber,
   STORE_ADDRESS
 } from '../types'
 import { generateOrderNumber, checkTime } from '../../utils/Utils'
-// import useWebSocket from '../../hooks/useWebSocket'
 
 function PaymentProvider ({ children }) {
   const initialState = {
@@ -46,15 +43,6 @@ function PaymentProvider ({ children }) {
     paymentItems,
     orderSubmitted
   } = state
-
-  // const handleWebSocketMessage = message => {
-  //   // handle the incoming WebSocket message here
-  //   console.log('Received WebSocket message:', message)
-
-  //   // For example, you could dispatch an action based on the message content
-  // }
-
-  // useWebSocket(WebSocketURL, handleWebSocketMessage)
 
   const resetPaymentState = () => {
     dispatch({ type: REST_PAYMENT_STATE, payload: initialState })
@@ -84,7 +72,7 @@ function PaymentProvider ({ children }) {
       payload: method === 'cash' ? 10 : method === 'online-delivery' ? 15 : 0
     })
   }
-  //    get order items from order state write method that does so.
+
   const handlePaymentItems = items => {
     let paymentTotal = items.reduce((acc, cur) => {
       acc += cur.total
@@ -116,42 +104,35 @@ function PaymentProvider ({ children }) {
    * @param {string} storeMessage
    * @description Send SMS using the backend API
    */
+
   const orderNotification = async (customerMessage, storeMessage) => {
     try {
       const customerNumber = formatCellNumber(state.phone)
       const storeNumber = formatCellNumber(`${storePhoneNumber}`)
 
-      const clickTelApi = (phone, message, apiKey) => {
-        return new Promise((resolve, reject) => {
-          try {
-            const xhr = new XMLHttpRequest()
-            xhr.open(
-              'GET',
-              `https://platform.clickatell.com/messages/http/send?apiKey=${apiKey}&to=${phone}&content=${message}`,
-              true
-            )
-            xhr.onreadystatechange = function () {
-              if (xhr.readyState == 4) {
-                if (xhr.status == 200 || xhr.status == 202) {
-                  resolve(xhr.status)
-                } else {
-                  reject(xhr.status)
-                }
-              }
-            }
-            xhr.send()
-          } catch (error) {
-            reject(error)
+      const sendSms = async (phone, message) => {
+        try {
+          const response = await fetch(`${ServerDomain}/send-sms`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ to: phone, message })
+          })
+          const data = await response.json()
+          if (data.success) {
+            return true
+          } else {
+            throw new Error('Failed to send SMS')
           }
-        })
+        } catch (error) {
+          console.error('Error sending SMS:', error)
+          throw error
+        }
       }
 
-      const customerPromise = clickTelApi(
-        customerNumber,
-        customerMessage,
-        API_KEY
-      )
-      const storePromise = clickTelApi(storeNumber, storeMessage, API_KEY)
+      const customerPromise = sendSms(customerNumber, customerMessage)
+      const storePromise = sendSms(storeNumber, storeMessage)
 
       Promise.all([customerPromise, storePromise])
         .then(() => {
@@ -166,16 +147,6 @@ function PaymentProvider ({ children }) {
   }
 
   const handleSubmitOrder = async () => {
-    let paymentItemsDescriptions = paymentItems
-      .map(({ foodMenu, itemName, quantity, selectedSize, total }) => {
-        return `${foodMenu}: ${itemName} ( Qty: ${quantity}, Total: R${total}${
-          selectedSize ? `, Size: ${selectedSize}` : ''
-        })`
-      })
-      .join('; ')
-
-    const orderNumber = generateOrderNumber() // Generate unique order number
-    const [customerMessage, storeMessage] = initOrderMessages(orderNumber)
     const { startTime, endTime, currentTime } = checkTime()
 
     switch (currentTime < startTime || currentTime > endTime) {
@@ -183,17 +154,60 @@ function PaymentProvider ({ children }) {
         alert('⚠️ Rebereka gare ga 6:30 AM le 18:30 PM. 🌞')
         break
       case false:
-        // console.log("send SMS & update database")
-        orderNotification(customerMessage, storeMessage)
-        updateOrderBoard(orderNumber, paymentItemsDescriptions)
+        updateOrderBoard(generateOrderNumber())
         break
+    }
+  }
+
+  /**
+   *
+   * @param {number} orderNumber
+   * @descirption send new order to order database.
+   */
+  const updateOrderBoard = async orderNumber => {
+    const paymentItemsDescriptions = paymentItems
+      .map(({ foodMenu, itemName, quantity, selectedSize, total }) => {
+        return `${foodMenu}: ${itemName} ( Qty: ${quantity}, Total: R${total}${
+          selectedSize ? `, Size: ${selectedSize}` : ''
+        })`
+      })
+      .join('; ')
+
+    const newOrder = {
+      orderNumber,
+      name,
+      phone,
+      streetAddress,
+      houseNumber,
+      paymentMethod,
+      paymentTotal,
+      deliveryCharge,
+      paymentItemsDescriptions
+    }
+
+    try {
+      const response = await fetch(`${ServerDomain}/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newOrder)
+      })
+
+      if (response.ok) {
+        const [customerMessage, storeMessage] = initOrderMessages(orderNumber)
+        orderNotification(customerMessage, storeMessage)
+      } else {
+        console.error('Error submitting order:', response.statusText)
+      }
+    } catch (error) {
+      console.error('Error submitting order:', error)
     }
   }
 
   /**
    * @description create sms to send alert customer and store respectivly of new order being submitted.
    * @param {number} orderNumber
-   * @param {string} paymentItemsDescriptions
    * @returns array of sms strings
    */
   const initOrderMessages = orderNumber => {
@@ -240,47 +254,6 @@ function PaymentProvider ({ children }) {
       .join('. ')
 
     return [customerMessage, storeMessage]
-  }
-
-  /**
-   *
-   * @param {number} orderNumber
-   * @param {string} paymentItemsDescriptions
-   * @descirption send new order to order database.
-   */
-  const updateOrderBoard = async (orderNumber, paymentItemsDescriptions) => {
-    const newOrder = {
-      orderNumber,
-      name,
-      phone,
-      streetAddress,
-      houseNumber,
-      paymentMethod,
-      paymentTotal,
-      deliveryCharge,
-      paymentItemsDescriptions
-    }
-
-    try {
-      const response = await fetch(`${ServerDomain}/orders`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newOrder)
-      })
-
-      if (response.ok) {
-        await response.json()
-        // const result = await response.json()
-        // console.log('Order submitted:', result)
-        // Optionally reset form or display a success message
-      } else {
-        console.error('Error submitting order:', response.statusText)
-      }
-    } catch (error) {
-      console.error('Error submitting order:', error)
-    }
   }
 
   return (

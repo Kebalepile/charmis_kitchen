@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "backend": "npm run start --prefix backend",
-    "customer-app": "npm run dev --prefix frontend/botekong_eats",
+    "customer-app": "npm run dev --prefix frontend/boitekong_eats",
     "it-app": "npm run dev --prefix frontend/it-department-dashboard",
     "dev-customer-app": "concurrently \"npm run backend\" \"npm run customer-app\"",
     "dev-it-app": "concurrently \"npm run backend\" \"npm run it-app\""
