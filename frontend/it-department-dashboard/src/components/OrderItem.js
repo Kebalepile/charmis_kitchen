@@ -1,3 +1,5 @@
+import {updateOrder, deleteOrder} from "../hooks/OrderService"
+
 /**
  * @description Renders a single order item.
  * 
