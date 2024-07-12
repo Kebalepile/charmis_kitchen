@@ -58,7 +58,7 @@ export const renderOrderItem = order => {
     },
     {
       label: "Payment Total",
-      value: `R${order.paymentTotal}`,
+      value: `R${order.paymentTotal}.00`,
       className: "order-detail-payment-total"
     }
   ];
