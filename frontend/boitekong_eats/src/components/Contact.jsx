@@ -39,7 +39,7 @@ export default function Contact () {
         are here to help!
       </p>
       <p className='vendor-inquiry'>
-        If you want to become a vendor via Julia's Kitchen and sell food,
+        If you want to become a vendor via Boitekong Eats and sell food,
         contact us at the above details.
       </p>
     </section>
