@@ -1,85 +1,50 @@
-const cacheName = "Boitekong Eats";
+/**
+ @description This service worker handles the caching of assets dynamically.
+ @installEvent Caches the assets dynamically as they are fetched.
+ @activateEvent Clears old caches when a new version is activated.
+ @fetchEvent Serves cached assets if available, otherwise fetches from the network and caches them dynamically.
 
-self.addEventListener("install", e => {
-  e.waitUntil(
-    (async function() {
-      try {
-        const values = await Promise.all([
-          getMatchingFiles(
-            "./assets/icons",
-            /href\s*=\s*['"]([^'"]*\.(jpg|jpeg|png))['"]/gi
-          ),
-          getMatchingFiles(
-            "./assets/images",
-            /href\s*=\s*['"]([^'"]*\.(jpg|jpeg|png))['"]/gi
-          ),
-          getMatchingFiles(
-            "./assets/images/pizza",
-            /href\s*=\s*['"]([^'"]*\.(jpg|jpeg|png))['"]/gi
-          ),
-          getMatchingFiles(
-            "./assets/images/chicken",
-            /href\s*=\s*['"]([^'"]*\.(jpg|jpeg|png))['"]/gi
-          ),
-          getMatchingFiles(
-            "./assets/images/chips",
-            /href\s*=\s*['"]([^'"]*\.(jpg|jpeg|png))['"]/gi
-          ),
-          getMatchingFiles(
-            "./assets/images/dikuku",
-            /href\s*=\s*['"]([^'"]*\.(jpg|jpeg|png))['"]/gi
-          ),
-          getMatchingFiles(
-            "./assets/images/magwinya",
-            /href\s*=\s*['"]([^'"]*\.(jpg|jpeg|png))['"]/gi
-          ),
-          getMatchingFiles("./assets", /href\s*=\s*['"]([^'"]*\.(css|js))['"]/gi),
-          getMatchingFiles("/", /href\s*=\s*['"]([^'"]*\.(json))['"]/gi)
-        ]);
-
-        let cacheItems = ["/"];
-        cacheItems = cacheItems.concat(...values);
-        let uniqueRequests = [...new Set(cacheItems)];
-
-        const cache = await caches.open(cacheName);
-        await cache.addAll(uniqueRequests);
-      } catch (err) {
-        console.error(err);
-      }
-    })()
-  );
-
+ */
+const cacheName = "BoitekongEats@v1";
+self.addEventListener("install", event => {
   self.skipWaiting();
 });
 
-self.addEventListener("activate", () => {
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(name => {
+          if (name !== cacheName) {
+            return caches.delete(name);
+          }
+        })
+      );
+    })
+  );
   console.log("Service worker is active!");
 });
 
-self.addEventListener("fetch", e => {
-  e.respondWith(
-    caches.match(e.request).then(response => {
-      return response || fetch(e.request);
-    })
+self.addEventListener("fetch", event => {
+  event.respondWith(
+    caches
+      .match(event.request)
+      .then(response => {
+        if (response) {
+          return response;
+        }
+        return fetch(event.request).then(networkResponse => {
+          return caches.open(cacheName).then(cache => {
+            // Cache the new file dynamically
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
+        });
+      })
+      .catch(error => {
+        console.error("Fetching failed:", error);
+        throw error;
+      })
   );
   console.log("Service worker ready to fetch data.");
 });
-
-async function getMatchingFiles(directory, regex) {
-  try {
-    const response = await fetch(directory);
-    if (!response.ok) {
-      throw new Error("Failed to fetch directory");
-    }
-    const html = await response.text();
-    const fileMatches = html.match(regex);
-
-    if (!fileMatches || fileMatches.length === 0) {
-      return [];
-    }
-    return fileMatches.map(match => match.replace(/.*href="(.*)"/i, "$1"));
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
-}
