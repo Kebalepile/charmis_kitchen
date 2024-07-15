@@ -1,4 +1,4 @@
-import { SERVER_DOMAIN } from './types.js';
+import { SERVER_DOMAIN } from "./types.js";
 
 /**
  * Fetch all orders from the server.
@@ -8,7 +8,7 @@ import { SERVER_DOMAIN } from './types.js';
 export const fetchOrders = async () => {
   const response = await fetch(`${SERVER_DOMAIN}/orders`);
   if (!response.ok) {
-    throw new Error('Failed to fetch orders');
+    throw new Error("Failed to fetch orders");
   }
   return response.json();
 };
@@ -19,10 +19,10 @@ export const fetchOrders = async () => {
  * @param {string} orderNumber - The order number.
  * @returns {Promise<Order>} A promise that resolves to the order object.
  */
-export const fetchOrderByOrderNumber = async (orderNumber) => {
+export const fetchOrderByOrderNumber = async orderNumber => {
   const response = await fetch(`${SERVER_DOMAIN}/orders/${orderNumber}`);
   if (!response.ok) {
-    throw new Error('Failed to fetch order');
+    throw new Error("Failed to fetch order");
   }
   return response.json();
 };
@@ -31,21 +31,22 @@ export const fetchOrderByOrderNumber = async (orderNumber) => {
  * Update an order by ID.
  * 
  * @param {string} id - The order ID.
- * @param {Object} updateData - The update data.
- * @param {string} token - The JWT token.
+ * @param {Object} updates - The update data.
+ 
  * @returns {Promise<Order>} A promise that resolves to the updated order object.
  */
-export const updateOrder = async (id, updateData, token) => {
+export const updateOrder = async (id, updates) => {
+  const token = sessionStorage.getItem("token");
   const response = await fetch(`${SERVER_DOMAIN}/orders/${id}`, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
     },
-    body: JSON.stringify(updateData)
+    body: JSON.stringify(updates)
   });
   if (!response.ok) {
-    throw new Error('Failed to update order');
+    throw new Error("Failed to update order");
   }
   return response.json();
 };
@@ -54,21 +55,21 @@ export const updateOrder = async (id, updateData, token) => {
  * Delete an order by ID.
  * 
  * @param {string} id - The order ID.
- * @param {string} token - The JWT token.
+ 
  * @returns {Promise<void>} A promise that resolves when the order is deleted.
  */
-export const deleteOrder = async (id, token) => {
+export const deleteOrder = async id => {
+  const token = sessionStorage.getItem("token");
   const response = await fetch(`${SERVER_DOMAIN}/orders/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`
     }
   });
   if (!response.ok) {
-    throw new Error('Failed to delete order');
+    throw new Error("Failed to delete order");
   }
 };
-
 
 /**
  * Log in a user to obtain a JWT token.
@@ -78,29 +79,28 @@ export const deleteOrder = async (id, token) => {
  * @returns {Promise<string>} A promise that resolves to the JWT token.
  */
 export const login = async (username, pin) => {
-   // Generate salt
-   const salt = bcrypt.genSaltSync(10);
+  try {
+    const response = await fetch(`${SERVER_DOMAIN}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ username, pin })
+    });
 
-   // Hash the PIN
-   const hashedPin = bcrypt.hashSync(pin, salt);
- 
-   const response = await fetch(`${SERVER_DOMAIN}/login`, {
-     method: 'POST',
-     headers: {
-       'Content-Type': 'application/json'
-     },
-     body: JSON.stringify({ username, pin: hashedPin })
-   });
- 
-   if (!response.ok) {
-     throw new Error('Failed to log in');
-   }
- 
-   const data = await response.json();
- 
-   // Save the token in session storage
-   sessionStorage.setItem('token', data.token);
- 
-   return data.token;
- }
+    const data = await response.json();
 
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to log in");
+    }
+
+    // Save the token in session storage if login is successful
+    if (data.token) {
+      sessionStorage.setItem("token", data.token);
+    }
+
+    return data;
+  } catch (error) {
+    throw new Error(error.message || "Failed to log in. Please try again.");
+  }
+};

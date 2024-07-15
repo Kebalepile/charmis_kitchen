@@ -2,13 +2,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const bcrypt = require('bcrypt'); // Install and use bcrypt for hashing PINs (optional but recommended)
-const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt"); // Install and use bcrypt for hashing PINs (optional but recommended)
+const jwt = require("jsonwebtoken");
 const Order = require("./models/order");
 const Login = require("./models/login"); // Import the login model
 const WebSocket = require("ws");
 const http = require("http");
 const axios = require("axios");
+const { hashPassword, comparePassword } = require("./utils/bcryptUtils");
 const authenticate = require("./middleware/auth"); // Import the authentication middleware
 const generateUniquePin = require("./utils/generateUniquePin"); // Import the PIN generator function
 const formatCellNumber = require("./utils/formatCellNumber");
@@ -283,8 +284,8 @@ app.post("/signup", async (req, res) => {
     const pin = await generateUniquePin();
 
     // Hash the PIN before saving
-    const salt = await bcrypt.genSalt(10);
-    const hashedPin = await bcrypt.hash(pin, salt);
+
+    const hashedPin = await hashPassword(pin);
 
     // Create a new user with username and hashed PIN
     const newUser = new Login({ username, pin: hashedPin });
@@ -293,15 +294,18 @@ app.post("/signup", async (req, res) => {
     await newUser.save();
 
     // Generate a JWT token
-    const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ username }, process.env.JWT_SECRET, {
+      expiresIn: "1h"
+    });
 
-    res.status(201).json({ message: "User signed up successfully", username, pin, token });
+    res
+      .status(201)
+      .json({ message: "User signed up successfully", username, pin, token });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Failed to sign up user" });
   }
 });
-
 
 app.post("/login", async (req, res) => {
   const { username, pin } = req.body;
@@ -313,14 +317,15 @@ app.post("/login", async (req, res) => {
       return res.status(400).json({ error: "Invalid username or PIN" });
     }
 
-    // Validate the PIN by comparing it with the stored hash
-    const isPinValid = await bcrypt.compare(pin, user.pin);
+    const isPinValid = await comparePassword(pin, user.pin);
     if (!isPinValid) {
       return res.status(400).json({ error: "Invalid username or PIN" });
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ username }, process.env.JWT_SECRET, {
+      expiresIn: "1h"
+    });
 
     res.status(200).json({ message: "Login successful", token });
   } catch (error) {
@@ -328,7 +333,6 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ error: "Failed to login user" });
   }
 });
-
 
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);

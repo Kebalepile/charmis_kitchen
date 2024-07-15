@@ -1,4 +1,5 @@
 import { createWebSocket } from "../hooks/useWebSocket.js";
+import { renderLoginForm } from "./src/components/Login.js";
 import { renderOrderItem } from "./OrderItem.js";
 import { updateOrderStats } from "./OrderStats.js";
 import { fetchOrders } from "../hooks/OrderService.js";
@@ -6,6 +7,8 @@ import { fetchOrders } from "../hooks/OrderService.js";
 const url = "ws://localhost:5000"; // Replace with your WebSocket server URL
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const loginForm = renderLoginForm();
+  document.body.appendChild(loginForm);
   const orderListElement = document.body.querySelector("#order-list");
   const orderStatsElement = document.body.querySelector("#order-stats");
 
