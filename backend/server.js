@@ -2,11 +2,16 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const Order = require("./models/order"); // Import the order model
+const bcrypt = require('bcrypt'); // Install and use bcrypt for hashing PINs (optional but recommended)
+const jwt = require('jsonwebtoken');
+const Order = require("./models/order");
+const Login = require("./models/login"); // Import the login model
 const WebSocket = require("ws");
 const http = require("http");
 const axios = require("axios");
-
+const authenticate = require("./middleware/auth"); // Import the authentication middleware
+const generateUniquePin = require("./utils/generateUniquePin"); // Import the PIN generator function
+const formatCellNumber = require("./utils/formatCellNumber");
 require("dotenv").config();
 
 const app = express();
@@ -162,7 +167,7 @@ app.get("/orders/:orderNumber", async (req, res) => {
   }
 });
 
-app.put("/orders/:id", async (req, res) => {
+app.put("/orders/:id", authenticate, async (req, res) => {
   const { id } = req.params;
   const updateData = req.body;
 
@@ -182,7 +187,7 @@ app.put("/orders/:id", async (req, res) => {
   }
 });
 
-app.delete("/orders/:id", async (req, res) => {
+app.delete("/orders/:id", authenticate, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -201,7 +206,7 @@ app.delete("/orders/:id", async (req, res) => {
     const phone = formatCellNumber(originalPhone);
 
     const message = `Dear ${name}, your order no: ${orderNumber} has been fulfilled. Boitekong Eats 😋`;
-    
+
     const data = await sendSMS(phone, message);
 
     if (data.messages && data.messages[0].accepted) {
@@ -263,18 +268,68 @@ app.post("/send-sms", async (req, res) => {
   }
 });
 
+// Endpoint to handle user signup
+app.post("/signup", async (req, res) => {
+  const { username } = req.body;
+
+  try {
+    // Check if the username already exists
+    const existingUser = await Login.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ error: "Username already exists" });
+    }
+
+    // Generate a unique PIN
+    const pin = await generateUniquePin();
+
+    // Hash the PIN before saving
+    const salt = await bcrypt.genSalt(10);
+    const hashedPin = await bcrypt.hash(pin, salt);
+
+    // Create a new user with username and hashed PIN
+    const newUser = new Login({ username, pin: hashedPin });
+
+    // Save the new user
+    await newUser.save();
+
+    // Generate a JWT token
+    const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    res.status(201).json({ message: "User signed up successfully", username, pin, token });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Failed to sign up user" });
+  }
+});
+
+
+app.post("/login", async (req, res) => {
+  const { username, pin } = req.body;
+
+  try {
+    // Find the user by username
+    const user = await Login.findOne({ username });
+    if (!user) {
+      return res.status(400).json({ error: "Invalid username or PIN" });
+    }
+
+    // Validate the PIN by comparing it with the stored hash
+    const isPinValid = await bcrypt.compare(pin, user.pin);
+    if (!isPinValid) {
+      return res.status(400).json({ error: "Invalid username or PIN" });
+    }
+
+    // Generate a JWT token
+    const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    res.status(200).json({ message: "Login successful", token });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Failed to login user" });
+  }
+});
+
+
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
-
-/**
-   * @description format phone numbers
-   * @param {string} number
-   * @returns string
-   */
-function formatCellNumber(number) {
-  if (number.startsWith("0")) {
-    return "27" + number.slice(1);
-  }
-  return number;
-}
