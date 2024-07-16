@@ -18,7 +18,7 @@ import {
 } from '../types'
 import { generateOrderNumber, checkTime } from '../../utils/Utils'
 
-function PaymentProvider({ children }) {
+function PaymentProvider ({ children }) {
   const initialState = {
     name: '',
     phone: '',
@@ -92,59 +92,74 @@ function PaymentProvider({ children }) {
    * @param {string} number
    * @returns string
    */
-  function formatCellNumber(number) {
+  function formatCellNumber (number) {
     if (number.startsWith('0')) {
       return '27' + number.slice(1)
     }
     return number
   }
+
   /**
-   *
+   * @description sends an SMS to a given phone number.
+   * @param {string} phone
+   * @param {string} message
+   * @returns returns a promise
+   */
+  const sendSms = async (phone, message) => {
+    try {
+      const response = await fetch(`${ServerDomain}/send-sms`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ to: phone, message })
+      })
+      const data = await response.json()
+      if (data.success) {
+        return true
+      } else {
+        throw new Error('Failed to send SMS')
+      }
+    } catch (error) {
+      console.error('Error sending SMS:', error)
+      throw error
+    }
+  }
+
+  /**
+   * @description  ensures that SMS messages are sent to all required recipients in parallel
    * @param {string} customerMessage
    * @param {string} storeMessage
-   * @description Send SMS using the backend API
+   * @param {array} supportPhones
+   * @param {array} cookPhones
    */
 
-  const orderNotification = async (customerMessage, storeMessage, supportPhones,cookPhones) => {
+  const orderNotification = async (
+    customerMessage,
+    storeMessage,
+    supportPhones,
+    cookPhones
+  ) => {
     try {
-
+      // Format all phone numbers
       supportPhones = supportPhones.map(phone => formatCellNumber(phone))
       cookPhones = cookPhones.map(phone => formatCellNumber(phone))
-
       const customerNumber = formatCellNumber(state.phone)
-      // const storeNumber = formatCellNumber(`${storePhoneNumber}`)
 
-      const sendSms = async (phone, message) => {
-        try {
-          const response = await fetch(`${ServerDomain}/send-sms`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ to: phone, message })
-          })
-          const data = await response.json()
-          if (data.success) {
-            return true
-          } else {
-            throw new Error('Failed to send SMS')
-          }
-        } catch (error) {
-          console.error('Error sending SMS:', error)
-          throw error
-        }
-      }
-
+      // Send SMS to customer
       const customerPromise = sendSms(customerNumber, customerMessage)
-      // const storePromise = sendSms(storeNumber, storeMessage)
 
-      Promise.all([customerPromise, storePromise])
-        .then(() => {
-          restPunchedOrder()
-        })
-        .catch(error => {
-          console.error('Error sending SMS:', error)
-        })
+      // Send SMS to all support and cook phone numbers
+      const supportPromises = supportPhones.map(phone =>
+        sendSms(phone, storeMessage)
+      )
+      const cookPromises = cookPhones.map(phone => sendSms(phone, storeMessage))
+
+      // Wait for all promises to resolve
+      await Promise.all([customerPromise, ...supportPromises, ...cookPromises])
+
+      // Call restPunchedOrder() after all SMSs are sent
+      restPunchedOrder()
     } catch (error) {
       console.error('Error preparing SMS:', error)
     }
@@ -166,29 +181,27 @@ function PaymentProvider({ children }) {
   /**
    *
    * @param {number} orderNumber
-   * @descirption send new order to order database.
+   * @descirption send new order to order collection.
    */
   const updateOrderBoard = async orderNumber => {
-
-
-    const supportPhones = new Set();
-    const cookPhones = new Set();
+    const supportPhones = new Set()
+    const cookPhones = new Set()
 
     const paymentItemsDescriptions = paymentItems
       .map(({ foodMenu, itemName, quantity, selectedSize, total, item }) => {
         // Add support and cook phone numbers to respective sets
         if (item.support_phone) {
-          supportPhones.add(item.support_phone);
+          supportPhones.add(item.support_phone)
         }
         if (item.cook_phone) {
-          cookPhones.add(item.cook_phone);
+          cookPhones.add(item.cook_phone)
         }
 
-        return `${foodMenu}: ${itemName} (Qty: ${quantity}, Total: R${total}${selectedSize ? `, Size: ${selectedSize}` : ''
-          })`;
+        return `${foodMenu}: ${itemName} (Qty: ${quantity}, Total: R${total}${
+          selectedSize ? `, Size: ${selectedSize}` : ''
+        })`
       })
-      .join('; ');
-
+      .join('; ')
 
     const newOrder = {
       orderNumber,
@@ -213,9 +226,12 @@ function PaymentProvider({ children }) {
 
       if (response.ok) {
         const [customerMessage, storeMessage] = initOrderMessages(orderNumber)
-        orderNotification(customerMessage, storeMessage,
+        orderNotification(
+          customerMessage,
+          storeMessage,
           Array.from(supportPhones),
-          Array.from(cookPhones))
+          Array.from(cookPhones)
+        )
       } else {
         console.error('Error submitting order:', response.statusText)
       }
@@ -225,9 +241,9 @@ function PaymentProvider({ children }) {
   }
 
   /**
-   * @description create sms to send alert customer and store respectivly of new order being submitted.
+   * @description creat text emessages.
    * @param {number} orderNumber
-   * @returns array of sms strings
+   * @returns array of strings
    */
   const initOrderMessages = orderNumber => {
     const getDeliveryInfo = type => {

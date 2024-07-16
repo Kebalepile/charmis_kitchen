@@ -12,7 +12,7 @@
           "medium": "R40",
           "large": "R75"
         },
-        "cook_phone": "",
+        "cook_phone": "0633343249",
         "support_phone": "0672718374"
       },
       {
@@ -25,7 +25,7 @@
           "medium": "R40",
           "large": "R75"
         },
-        "cook_phone": "",
+        "cook_phone": "0633343249",
         "support_phone": "0672718374"
       },
       {
@@ -38,7 +38,7 @@
           "medium": "R40",
           "large": "R75"
         },
-        "cook_phone": "",
+        "cook_phone": "0633343249",
         "support_phone": "0672718374"
       }
     ]
@@ -51,7 +51,7 @@
         "price": "R25",
         "image_url": "./assets/images/chicken/3.jpg",
         "alt": "4 Wings image",
-        "cook_phone": "",
+        "cook_phone": "0633343249",
         "support_phone": "0672718374"
       },
       {
@@ -59,7 +59,7 @@
         "price": "R38",
         "image_url": "./assets/images/chicken/3.jpg",
         "alt": "6 Wings image",
-        "cook_phone": "",
+        "cook_phone": "0633343249",
         "support_phone": "0672718374"
       },
       {
@@ -67,7 +67,7 @@
         "price": "R75",
         "image_url": "./assets/images/chicken/1.jpg",
         "alt": "12 Wings image",
-        "cook_phone": "",
+        "cook_phone": "0633343249",
         "support_phone": "0672718374"
       },
       {
@@ -75,7 +75,7 @@
         "price": "R35",
         "image_url": "../assets/images/chips/2.jpg",
         "alt": "Combo: 4 Wings and Chips image",
-        "cook_phone": "",
+        "cook_phone": "0633343249",
         "support_phone": "0672718374"
       },
       {
@@ -83,7 +83,7 @@
         "price": "R45",
         "image_url": "../assets/images/chips/2.jpg",
         "alt": "Combo: 6 Wings and Chips image",
-        "cook_phone": "",
+        "cook_phone": "0633343249",
         "support_phone": "0672718374"
       }
     ]
@@ -96,7 +96,7 @@
         "price": "R15",
         "image_url": "./assets/images/chips/1.jpeg",
         "alt": "Small Pack image",
-        "cook_phone": "",
+        "cook_phone": "0633343249",
         "support_phone": "0672718374"
       }
     ]
