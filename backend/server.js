@@ -2,17 +2,20 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt"); // Install and use bcrypt for hashing PINs (optional but recommended)
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Order = require("./models/order");
-const Login = require("./models/login"); // Import the login model
+const TokenBlacklist = require("./models/tokenBlacklist");
+const Login = require("./models/login");
 const WebSocket = require("ws");
 const http = require("http");
 const axios = require("axios");
 const { hashPassword, comparePassword } = require("./utils/bcryptUtils");
-const authenticate = require("./middleware/auth"); // Import the authentication middleware
-const generateUniquePin = require("./utils/generateUniquePin"); // Import the PIN generator function
+const authenticate = require("./middleware/auth");
+const generateUniquePin = require("./utils/generateUniquePin");
 const formatCellNumber = require("./utils/formatCellNumber");
+
+// load .env file to be used
 require("dotenv").config();
 
 const app = express();
@@ -26,7 +29,7 @@ const allowedOrigins =
   process.env.NODE_ENV === "production" ? prodUrls : devUrls;
 
 const corsOptions = {
-  origin: function(origin, callback) {
+  origin: function (origin, callback) {
     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
@@ -56,6 +59,15 @@ wss.on("connection", async ws => {
   } catch (error) {
     ws.send(JSON.stringify({ type: "error", message: error.message }));
   }
+});
+
+const redisClient = redis.createClient({
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+});
+
+redisClient.on('error', (err) => {
+  console.error('Redis error:', err);
 });
 
 const notifyClients = data => {
@@ -331,6 +343,23 @@ app.post("/login", async (req, res) => {
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Failed to login user" });
+  }
+});
+
+
+
+app.post("/logout", authenticate, async (req, res) => {
+  const token = req.headers['authorization'].split(" ")[1];
+
+  try {
+    // Add the token to the blacklist
+    const blacklistedToken = new TokenBlacklist({ token });
+    await blacklistedToken.save();
+
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Failed to logout user" });
   }
 });
 
