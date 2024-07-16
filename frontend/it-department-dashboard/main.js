@@ -1,5 +1,5 @@
-import "./styles/style.css";
-import "./src/components/App..js";
+import "./styles/App.css";
+import "./src/components/App.js"
 
 const createElement = (tagName, attributes = {}) => {
   const element = document.createElement(tagName);

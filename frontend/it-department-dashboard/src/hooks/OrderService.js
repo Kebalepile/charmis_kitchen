@@ -98,9 +98,35 @@ export const login = async (username, pin) => {
     if (data.token) {
       sessionStorage.setItem("token", data.token);
     }
+    console.log(data.message)
 
     return data;
   } catch (error) {
     throw new Error(error.message || "Failed to log in. Please try again.");
   }
 };
+
+export const signup = async (username) => {
+  try {
+    let response = await fetch(`${SERVER_DOMAIN}/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ username })
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error || "Username already exists");
+    }
+
+    console.log(data.message)
+    console.log(data)
+    sessionStorage.setItem("token", data.token);
+    return data
+  } catch (err) {
+
+    throw new Error(err.message || "Username already exists. Please try again.");
+  }
+}

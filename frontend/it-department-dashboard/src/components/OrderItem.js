@@ -1,3 +1,5 @@
+import "../../styles/order.css"
+
 import {updateOrder, deleteOrder} from "../hooks/OrderService"
 
 /**
