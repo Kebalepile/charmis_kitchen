@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import MenuContext from '../../../context/menu/context';
 import { MENU, CHIPS_MENU } from '../../../context/types';
-import { GiFrenchFries } from 'react-icons/gi';
 
 export default function ChipsMenu() {
   const { OpenMenu, ChooseMenu } = useContext(MenuContext);
@@ -10,8 +9,15 @@ export default function ChipsMenu() {
     ChooseMenu(CHIPS_MENU);
   };
   return (
-    <button className='menu-btn' onClick={handleClick}>
-      <GiFrenchFries /> Chips
-    </button>
+    <div className='menu-card'>
+      <img
+        src='./assets/images/chips/2.jpg'
+        alt='Magwinya'
+        className='menu-card-img'
+      />
+      <button className='menu-btn' onClick={handleClick}>
+        chips
+      </button>
+    </div>
   );
 }

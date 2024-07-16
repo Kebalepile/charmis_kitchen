@@ -4,13 +4,13 @@ import OrderContext from '../context/order/context'
 import { MdOutlineRestaurantMenu } from 'react-icons/md'
 import MagwinyaMenu from './food/magwinya/MagwinyaMenu'
 import DikukuMenu from './food/dikuku/DikukuMenu'
-// import PizzaMenu from './food/pizza/PizzaMenu'
-// import ChickenMenu from './food/chicken/ChickenMenu'
-// import ChipsMenu from './food/chips/ChipsMenu'
+import PizzaMenu from './food/pizza/PizzaMenu'
+import ChickenMenu from './food/chicken/ChickenMenu'
+import ChipsMenu from './food/chips/ChipsMenu'
 import ReadMenu from './ReadMenu'
 import OrderBasket from './food/OrderBasket'
 
-export default function Menu () {
+export default function Menu() {
   const { MENU: _menu_ } = useContext(MenuContext)
   const {
     basket,
@@ -36,7 +36,7 @@ export default function Menu () {
         />
       )}
       {_menu_ && <ReadMenu />}
-     
+
       <MdOutlineRestaurantMenu className='menu-icon' />
       <h1>Menu</h1>
       <hr className='sm-hr' />
@@ -45,7 +45,7 @@ export default function Menu () {
           <MagwinyaMenu />
         </div>
 
-        {/* <div className='menu-item'>
+        <div className='menu-item'>
           <ChipsMenu />
         </div>
         <div className='menu-item'>
@@ -54,7 +54,7 @@ export default function Menu () {
 
         <div className='menu-item'>
           <PizzaMenu />
-        </div> */}
+        </div>
 
         <div className='menu-item'>
           <DikukuMenu />

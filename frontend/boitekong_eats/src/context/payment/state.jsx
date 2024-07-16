@@ -18,7 +18,7 @@ import {
 } from '../types'
 import { generateOrderNumber, checkTime } from '../../utils/Utils'
 
-function PaymentProvider ({ children }) {
+function PaymentProvider({ children }) {
   const initialState = {
     name: '',
     phone: '',
@@ -92,7 +92,7 @@ function PaymentProvider ({ children }) {
    * @param {string} number
    * @returns string
    */
-  function formatCellNumber (number) {
+  function formatCellNumber(number) {
     if (number.startsWith('0')) {
       return '27' + number.slice(1)
     }
@@ -105,10 +105,14 @@ function PaymentProvider ({ children }) {
    * @description Send SMS using the backend API
    */
 
-  const orderNotification = async (customerMessage, storeMessage) => {
+  const orderNotification = async (customerMessage, storeMessage, supportPhones,cookPhones) => {
     try {
+
+      supportPhones = supportPhones.map(phone => formatCellNumber(phone))
+      cookPhones = cookPhones.map(phone => formatCellNumber(phone))
+
       const customerNumber = formatCellNumber(state.phone)
-      const storeNumber = formatCellNumber(`${storePhoneNumber}`)
+      // const storeNumber = formatCellNumber(`${storePhoneNumber}`)
 
       const sendSms = async (phone, message) => {
         try {
@@ -132,7 +136,7 @@ function PaymentProvider ({ children }) {
       }
 
       const customerPromise = sendSms(customerNumber, customerMessage)
-      const storePromise = sendSms(storeNumber, storeMessage)
+      // const storePromise = sendSms(storeNumber, storeMessage)
 
       Promise.all([customerPromise, storePromise])
         .then(() => {
@@ -165,13 +169,26 @@ function PaymentProvider ({ children }) {
    * @descirption send new order to order database.
    */
   const updateOrderBoard = async orderNumber => {
+
+
+    const supportPhones = new Set();
+    const cookPhones = new Set();
+
     const paymentItemsDescriptions = paymentItems
-      .map(({ foodMenu, itemName, quantity, selectedSize, total }) => {
-        return `${foodMenu}: ${itemName} ( Qty: ${quantity}, Total: R${total}${
-          selectedSize ? `, Size: ${selectedSize}` : ''
-        })`
+      .map(({ foodMenu, itemName, quantity, selectedSize, total, item }) => {
+        // Add support and cook phone numbers to respective sets
+        if (item.support_phone) {
+          supportPhones.add(item.support_phone);
+        }
+        if (item.cook_phone) {
+          cookPhones.add(item.cook_phone);
+        }
+
+        return `${foodMenu}: ${itemName} (Qty: ${quantity}, Total: R${total}${selectedSize ? `, Size: ${selectedSize}` : ''
+          })`;
       })
-      .join('; ')
+      .join('; ');
+
 
     const newOrder = {
       orderNumber,
@@ -196,7 +213,9 @@ function PaymentProvider ({ children }) {
 
       if (response.ok) {
         const [customerMessage, storeMessage] = initOrderMessages(orderNumber)
-        orderNotification(customerMessage, storeMessage)
+        orderNotification(customerMessage, storeMessage,
+          Array.from(supportPhones),
+          Array.from(cookPhones))
       } else {
         console.error('Error submitting order:', response.statusText)
       }

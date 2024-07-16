@@ -211,18 +211,30 @@ footer > p {
   margin: 30px auto;
 }
 
+
 .menu-grid {
-  width: 80%;
+  width: 100%;
   display: flex;
-  /* flex-direction: column; */
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-wrap: nowrap; /* Prevents wrapping, ensures horizontal layout */
+  justify-content: flex-start; /* Aligns items to the start */
+  overflow-x: auto; /* Enables horizontal scrolling */
+  overflow-y: hidden; /* Prevents vertical scrolling */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
 }
+
+
+/* Ensuring the children items are properly displayed */
+.menu-grid > * {
+  flex: 0 0 auto; /* Prevent children from shrinking or growing */
+  margin: 10px; /* Add some spacing between items */
+}
+
 
 .menu-item {
   flex: 1 1 30%; /* Allow flex items to grow and shrink, setting an initial basis of 30% */
   margin: 10px; /* Add some margin for spacing between items */
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
+
 }
 
 #contact,
@@ -281,6 +293,7 @@ footer > p {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   background-color: #ffffff;
   transition: transform 0.2s;
+  width:200px;
 }
 
 .menu-card:hover {
@@ -358,16 +371,21 @@ footer > p {
 }
 
 .image-container {
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 80%;
+  max-height: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .image-container img {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 60%;
+  max-height: 60%;
   border-radius: 4px;
   cursor: pointer;
 }
+
 
 .order-form,
 .read-menu {
@@ -918,6 +936,12 @@ button.pop {
     width: 90px;
     height: 90px;
     border-radius: 3px;
+  }
+
+  .image-container img {
+    max-width: 80%;
+    max-height: 80%;
+    
   }
 }
 .search-order-container {
