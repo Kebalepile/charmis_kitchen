@@ -106,6 +106,38 @@ export const login = async (username, pin) => {
   }
 };
 
+/**
+ * @description logout an end-user pcurrently logged in.
+ */
+
+export const logout = async () => {
+  try {
+    const token = sessionStorage.getItem("token");
+    const response = await fetch(`${SERVER_DOMAIN}/logout`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to logout");
+    }
+    sessionStorage.removeItem('token')
+    console.log(data.message)
+
+    return data;
+  } catch (error) {
+    throw new Error(error.message || "Failed to logout");
+  }
+}
+
+/**
+ * @description create login details for new end-user
+ * @param {string} username
+ */
 export const signup = async (username) => {
   try {
     let response = await fetch(`${SERVER_DOMAIN}/signup`, {

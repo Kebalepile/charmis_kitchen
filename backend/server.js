@@ -61,15 +61,6 @@ wss.on("connection", async ws => {
   }
 });
 
-const redisClient = redis.createClient({
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
-});
-
-redisClient.on('error', (err) => {
-  console.error('Redis error:', err);
-});
-
 const notifyClients = data => {
   wss.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN) {
