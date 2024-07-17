@@ -31,9 +31,9 @@ export const SET_STREET_ADDRESS = "SET_STREET_ADDRESS";
 export const SET_HOUSENUMBER = "SET_HOUSENUMBER";
 export const REST_PAYMENT_STATE = "REST_PAYMENT_STATE";
 
-export const WebSocketURL = "ws://localhost:5000";
-export const ServerDomain = "http://localhost:5000";
-// export const WebSocketURL = "ws://b-town-bites.onrender.com";
-// export const ServerDomain = "https://b-town-bites.onrender.com";
+// export const WebSocketURL = "ws://localhost:5000";
+// export const ServerDomain = "http://localhost:5000";
+export const WebSocketURL = "ws://b-town-bites.onrender.com";
+export const ServerDomain = "https://b-town-bites.onrender.com";
 export const storePhoneNumber = "0737757160";
 export const STORE_ADDRESS = "2379 Windsa St, Boitekong Ext 2";

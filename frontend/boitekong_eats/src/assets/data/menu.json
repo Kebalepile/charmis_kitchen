@@ -13,7 +13,7 @@
           "large": "R75"
         },
         "cook_phone": "0633343249",
-        "support_phone": "0672718374"
+        "support_phone": "0737757160"
       },
       {
         "name": "BBQ Chicken",
@@ -26,7 +26,7 @@
           "large": "R75"
         },
         "cook_phone": "0633343249",
-        "support_phone": "0672718374"
+        "support_phone": "0737757160"
       },
       {
         "name": "Russian & Cheese Bacon and Cheese",
@@ -39,7 +39,7 @@
           "large": "R75"
         },
         "cook_phone": "0633343249",
-        "support_phone": "0672718374"
+        "support_phone": "0737757160"
       }
     ]
   },
@@ -52,7 +52,7 @@
         "image_url": "./assets/images/chicken/3.jpg",
         "alt": "4 Wings image",
         "cook_phone": "0633343249",
-        "support_phone": "0672718374"
+        "support_phone": "0737757160"
       },
       {
         "name": "6 Wings",
@@ -60,7 +60,7 @@
         "image_url": "./assets/images/chicken/3.jpg",
         "alt": "6 Wings image",
         "cook_phone": "0633343249",
-        "support_phone": "0672718374"
+        "support_phone": "0737757160"
       },
       {
         "name": "12 Wings",
@@ -68,7 +68,7 @@
         "image_url": "./assets/images/chicken/1.jpg",
         "alt": "12 Wings image",
         "cook_phone": "0633343249",
-        "support_phone": "0672718374"
+        "support_phone": "0737757160"
       },
       {
         "name": "Combo: 4 Wings and Chips",
@@ -76,7 +76,7 @@
         "image_url": "../assets/images/chips/2.jpg",
         "alt": "Combo: 4 Wings and Chips image",
         "cook_phone": "0633343249",
-        "support_phone": "0672718374"
+        "support_phone": "0737757160"
       },
       {
         "name": "Combo: 6 Wings and Chips",
@@ -84,7 +84,7 @@
         "image_url": "../assets/images/chips/2.jpg",
         "alt": "Combo: 6 Wings and Chips image",
         "cook_phone": "0633343249",
-        "support_phone": "0672718374"
+        "support_phone": "0737757160"
       }
     ]
   },
@@ -97,7 +97,7 @@
         "image_url": "./assets/images/chips/1.jpeg",
         "alt": "Small Pack image",
         "cook_phone": "0633343249",
-        "support_phone": "0672718374"
+        "support_phone": "0737757160"
       }
     ]
   },
@@ -110,7 +110,7 @@
         "image_url": "./assets/images/magwinya/4.jpg",
         "alt": "Magwinya image",
         "cook_phone": "0737757160",
-        "support_phone": "0672718374"
+        "support_phone": "0737757160"
       },
       {
         "name": "Magwinya (8 x R3 per fresh pack)",
@@ -118,7 +118,7 @@
         "image_url": "./assets/images/magwinya/4.jpg",
         "alt": "Magwinya image",
         "cook_phone": "0737757160",
-        "support_phone": "0672718374"
+        "support_phone": "0737757160"
       }
     ]
   },
@@ -131,7 +131,7 @@
         "image_url": "./assets/images/dikuku/3.jpg",
         "alt": "Dikuku image",
         "cook_phone": "0737757160",
-        "support_phone": "0672718374"
+        "support_phone": "0737757160"
       }
     ]
   }

@@ -11,7 +11,9 @@
           "miniMedium": "R35",
           "medium": "R40",
           "large": "R75"
-        }
+        },
+        "cook_phone": "0633343249",
+        "support_phone": "0672718374"
       },
       {
         "name": "BBQ Chicken",
@@ -22,7 +24,9 @@
           "miniMedium": "R35",
           "medium": "R40",
           "large": "R75"
-        }
+        },
+        "cook_phone": "0633343249",
+        "support_phone": "0672718374"
       },
       {
         "name": "Russian & Cheese Bacon and Cheese",
@@ -33,7 +37,9 @@
           "miniMedium": "R35",
           "medium": "R40",
           "large": "R75"
-        }
+        },
+        "cook_phone": "0633343249",
+        "support_phone": "0672718374"
       }
     ]
   },
@@ -44,31 +50,41 @@
         "name": "4 Wings",
         "price": "R25",
         "image_url": "./assets/images/chicken/3.jpg",
-        "alt": "4 Wings image"
+        "alt": "4 Wings image",
+        "cook_phone": "0633343249",
+        "support_phone": "0672718374"
       },
       {
         "name": "6 Wings",
         "price": "R38",
         "image_url": "./assets/images/chicken/3.jpg",
-        "alt": "6 Wings image"
+        "alt": "6 Wings image",
+        "cook_phone": "0633343249",
+        "support_phone": "0672718374"
       },
       {
         "name": "12 Wings",
         "price": "R75",
         "image_url": "./assets/images/chicken/1.jpg",
-        "alt": "12 Wings image"
+        "alt": "12 Wings image",
+        "cook_phone": "0633343249",
+        "support_phone": "0672718374"
       },
       {
         "name": "Combo: 4 Wings and Chips",
         "price": "R35",
         "image_url": "../assets/images/chips/2.jpg",
-        "alt": "Combo: 4 Wings and Chips image"
+        "alt": "Combo: 4 Wings and Chips image",
+        "cook_phone": "0633343249",
+        "support_phone": "0672718374"
       },
       {
         "name": "Combo: 6 Wings and Chips",
         "price": "R45",
         "image_url": "../assets/images/chips/2.jpg",
-        "alt": "Combo: 6 Wings and Chips image"
+        "alt": "Combo: 6 Wings and Chips image",
+        "cook_phone": "0633343249",
+        "support_phone": "0672718374"
       }
     ]
   },
@@ -79,7 +95,9 @@
         "name": "Small Pack",
         "price": "R15",
         "image_url": "./assets/images/chips/1.jpeg",
-        "alt": "Small Pack image"
+        "alt": "Small Pack image",
+        "cook_phone": "0633343249",
+        "support_phone": "0672718374"
       }
     ]
   },
@@ -90,24 +108,30 @@
         "name": "Magwinya (5 x R3 per fresh pack)",
         "price": "R15",
         "image_url": "./assets/images/magwinya/4.jpg",
-        "alt": "Magwinya image"
+        "alt": "Magwinya image",
+        "cook_phone": "0737757160",
+        "support_phone": "0672718374"
       },
       {
         "name": "Magwinya (8 x R3 per fresh pack)",
         "price": "R24",
         "image_url": "./assets/images/magwinya/4.jpg",
-        "alt": "Magwinya image"
+        "alt": "Magwinya image",
+        "cook_phone": "0737757160",
+        "support_phone": "0672718374"
       }
     ]
   },
   "dikukuMenu": {
-    "name": "dikuku menu",
+    "name": "Dikuku menu",
     "items": [
       {
         "name": "Dikuku (5 liter)",
         "price": "R120",
         "image_url": "./assets/images/dikuku/3.jpg",
-        "alt": "dikuku image"
+        "alt": "Dikuku image",
+        "cook_phone": "0737757160",
+        "support_phone": "0672718374"
       }
     ]
   }
