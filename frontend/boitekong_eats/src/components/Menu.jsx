@@ -10,7 +10,7 @@ import ChipsMenu from './food/chips/ChipsMenu'
 import ReadMenu from './ReadMenu'
 import OrderBasket from './food/OrderBasket'
 
-export default function Menu() {
+export default function Menu () {
   const { MENU: _menu_ } = useContext(MenuContext)
   const {
     basket,
@@ -42,18 +42,17 @@ export default function Menu() {
       <hr className='sm-hr' />
       <div className='menu-grid'>
         <div className='menu-item'>
-          <MagwinyaMenu />
+          <PizzaMenu />
         </div>
 
         <div className='menu-item'>
-          <ChipsMenu />
+          <MagwinyaMenu />
         </div>
         <div className='menu-item'>
           <ChickenMenu />
         </div>
-
         <div className='menu-item'>
-          <PizzaMenu />
+          <ChipsMenu />
         </div>
 
         <div className='menu-item'>
