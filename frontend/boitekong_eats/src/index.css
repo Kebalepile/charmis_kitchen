@@ -222,6 +222,24 @@ footer > p {
   -webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
 }
 
+/* Hide the scrollbar for WebKit browsers (Chrome, Safari) */
+.menu-grid::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+/* Hide the scrollbar for Firefox */
+.menu-grid {
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide the scrollbar for IE, Edge */
+.menu-grid {
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+}
+
+
+
 
 /* Ensuring the children items are properly displayed */
 .menu-grid > * {
