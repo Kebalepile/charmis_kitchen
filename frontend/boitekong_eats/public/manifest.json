@@ -11,19 +11,19 @@
     "display": "standalone",
     "icons": [
       {
-        "src": "./assets/icons/144.png",
+        "src": "./assets/icons/144.jpeg",
         "type": "image/png",
         "sizes": "144x144",
         "purpose": "maskable any"
       },
       {
-        "src": "./assets/icons/192.png",
+        "src": "./assets/icons/192.jpeg",
         "type": "image/png",
         "sizes": "192x192",
         "purpose": "maskable any"
       },
       {
-        "src": "./assets/icons/512.png",
+        "src": "./assets/icons/512.jpeg",
         "type": "image/png",
         "sizes": "512x512",
         "purpose": "maskable any"
