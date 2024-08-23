@@ -19,10 +19,24 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
   const [prompt, setPrompt] = useState(null)
 
   useEffect(() => {
+    const handleClickOutside = event => {
+      if (
+        isSidebarVisible &&
+        !event.target.closest('.sidebar-nav ') &&
+        !event.target.closest('#side-bar')
+      ) {
+        toggleSidebar()
+      }
+    }
     if (sessionStorage.getItem('deferredPrompt')) {
       setPrompt(deferredPrompt)
     }
-  }, [])
+    document.addEventListener('click', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [isSidebarVisible])
 
   const handleClick = id => {
     toggleSidebar()
