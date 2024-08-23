@@ -5,10 +5,10 @@ import {
   Routes,
   Navigate
 } from 'react-router-dom'
-import Navbar from './components/Navbar'
-import Home from './components/Home'
-import About from './components/About'
-import Contact from './components/Contact'
+import Navbar from './components/navigation/Navbar'
+import Home from './components/home/Home'
+import About from './components/about/About'
+import Contact from './components/contacts/Contact'
 import Popup from './components/Popup'
 import NotFound from './components/NotFound'
 import { checkTime } from './utils/Utils'
