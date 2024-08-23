@@ -7,15 +7,15 @@ const images = [
   //   text: 'Goodness Awaits!'
   // },
   {
-    src: './assets/images/magwinya/1.jpg',
-    text: 'Crispy Delights, Savory Bites!'
+    src: './assets/images/chips/1.jpeg',
+    text: 'Crispy Delights !'
   },
   {
     src: './assets/images/pizza/1.jpg',
     text: 'Sizzling Hot Pizza Just For You!'
   },
   {
-    src: './assets/images/pizza/4.jpg',
+    src: './assets/images/pizza/5.jpg',
     text: 'Indulge in Our Cheesy Delight!'
   },
   {
@@ -23,7 +23,7 @@ const images = [
     text: 'Your Perfect Slice of Happiness!'
   },
   {
-    src: './assets/images/chicken/1.jpg',
+    src: './assets/images/chicken/6.jpg',
     text: 'Unforgettable Flavor!'
   },
   {

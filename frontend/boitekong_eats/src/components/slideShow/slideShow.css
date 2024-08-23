@@ -1,9 +1,9 @@
 .slideshow {
   position: relative;
   overflow: hidden;
-  width:inherit;
+  width: inherit;
   max-width: 700px;
-  height: 30vh;
+  height: 40vh;
   border-radius: 0 0 5px 5px;
   padding: 0;
   /* margin: auto; Center horizontally */
@@ -15,7 +15,6 @@
   background-size: cover;
   background-position: center;
   position: relative;
-  background-size: cover;
   background-position: center;
   animation: zoom 5s ease-in-out infinite;
 }
@@ -28,7 +27,6 @@
     transform: scale(1.1);
   }
 }
-
 
 .slide-text {
   position: absolute;

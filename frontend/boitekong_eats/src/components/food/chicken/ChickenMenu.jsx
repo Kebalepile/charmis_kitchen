@@ -10,7 +10,7 @@ export default function ChickenMenu () {
     OpenMenu(MENU, true)
     ChooseMenu(CHICKEN_MENU)
   }
-  const imageUrl = './assets/images/chicken/3.jpg'
+  const imageUrl = './assets/images/chicken/8.jpg'
   return (
     <div
       className='menu-card'

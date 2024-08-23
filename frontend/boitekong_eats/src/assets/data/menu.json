@@ -4,7 +4,7 @@
     "items": [
       {
         "name": "Russian & Cheese",
-        "image_url": "./assets/images/pizza/2.jpg",
+        "image_url": "./assets/images/pizza/6.jpg",
         "alt": "Russian & Cheese image",
         "prices": {
           "small": "R40",
@@ -16,7 +16,7 @@
       },
       {
         "name": "Bacon & Cheese",
-        "image_url": "./assets/images/pizza/1.jpg",
+        "image_url": "./assets/images/pizza/5.jpg",
         "alt": "Bacon & Cheese image",
         "prices": {
           "small": "R40",
@@ -42,7 +42,7 @@
       {
         "name": "6 Wings",
         "price": "R50",
-        "image_url": "./assets/images/chicken/3.jpg",
+        "image_url": "./assets/images/chicken/4.jpg",
         "alt": "6 Wings image",
         "cook_phone": "0633343249",
         "support_phone": "0737757160"
@@ -50,7 +50,7 @@
       {
         "name": "8 Wings",
         "price": "R70",
-        "image_url": "./assets/images/chicken/1.jpg",
+        "image_url": "./assets/images/chicken/6.jpg",
         "alt": "8 Wings image",
         "cook_phone": "0633343249",
         "support_phone": "0737757160"
@@ -58,7 +58,7 @@
       {
         "name": "12 Wings",
         "price": "R95",
-        "image_url": "./assets/images/chicken/1.jpg",
+        "image_url": "./assets/images/chicken/8.jpg",
         "alt": "12 Wings image",
         "cook_phone": "0633343249",
         "support_phone": "0737757160"
@@ -95,7 +95,7 @@
       {
         "name": "Small Chips",
         "price": "R20",
-        "image_url": "./assets/images/chips/1.jpeg",
+        "image_url": "./assets/images/chips/4.jfif",
         "alt": "Small Chips image",
         "cook_phone": "0633343249",
         "support_phone": "0737757160"

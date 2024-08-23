@@ -9,7 +9,7 @@ export default function ChipsMenu () {
     ChooseMenu(CHIPS_MENU)
   }
 
-  const imageUrl = './assets/images/chips/2.jpg'
+  const imageUrl = './assets/images/chips/4.jfif'
   return (
     <div
       className='menu-card'

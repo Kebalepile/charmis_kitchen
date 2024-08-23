@@ -10,8 +10,14 @@
   text-align: justify;
   padding: 20px;
   max-width: 700px;
-}
 
+  background: radial-gradient(
+    circle,
+    #f4f5d4,
+    #d1d498,
+    #edf0a9
+  ); /* Radial gradient background */
+}
 #share-btn {
   height: 40px;
   width: 80px;
@@ -20,22 +26,19 @@
   color: var(--light-color);
   background-color: var(--accent-color);
   border: none;
-  margin: auto;
+  margin-top: 50px;
   border-radius: 5px;
   position: relative;
-  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   cursor: pointer;
 }
-
 .lang-button {
-    border: none;
-    height: 40px;
-    margin: 5px;
-    background: rgb(75, 73, 73);
-    border-radius: 4px;
-    color: var(--light-color);
-    cursor: pointer;
-  }
-  
+  border: none;
+  height: 40px;
+  margin: 5px;
+  background: rgb(75, 73, 73);
+  border-radius: 4px;
+  color: var(--light-color);
+  cursor: pointer;
+}
