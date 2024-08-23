@@ -18,7 +18,7 @@
   font-size: 15px;
   border-radius: 4%;
   color: var(--light-color);
-  background-color: #007bff;
+  background-color: var(--accent-color);
   border: none;
   margin: auto;
   border-radius: 5px;

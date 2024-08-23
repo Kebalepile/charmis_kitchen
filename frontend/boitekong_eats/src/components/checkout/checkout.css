@@ -1,40 +1,50 @@
 .order-basket {
   background-color: var(--secondary-color);
   width: 400px;
-  border-radius: 5px 5px 1px 1px;
+  border-radius: 2px;
   padding: 5px;
   max-height: 500px; /* Set the maximum height */
   overflow-y: auto; /* Enable vertical scrolling */
+  position: relative; /* Create a stacking context */
 }
+
 .sticky-top {
   position: sticky;
   top: 0;
-  background-color: var(
-    --secondary-color
-  ); /* Same as the order-basket background */
-  z-index: 1; /* Ensure it stays on top of other content */
+  background-color: var(--secondary-color); /* Match the order-basket background */
+  z-index: 10; /* Ensure it stays above the other content */
   padding: 5px;
+  margin: 0; /* Remove any margin that could cause gaps */
+
+  margin-bottom: 10px; /* Add more space between items */
 }
-.menu-btn.order-btn {
-  height: 40px;
-  width: 80px;
-  font-size: 15px;
-  border-radius: 4%;
-  color: var(--light-color);
-  background-color: #007bff;
-}
+
 .order-item {
   background: #f9fddfda;
   backdrop-filter: blur(3px);
   display: grid;
-  grid-template-areas: "img quantity remove" "img size remove" "img total total"
+  grid-template-areas: 
+    "img quantity remove" 
+    "img size remove" 
+    "img total total" 
     "img name name";
   grid-template-columns: 100px 1fr auto;
   grid-template-rows: auto auto auto auto;
   padding: 10px;
-  border-radius: 5px;
-  border-bottom: 2px solid #1d89ee;
-  margin-bottom: 5px;
+  border-radius: 3px;
+  box-shadow: 0 4px 8px #c7c7c7;
+  margin-bottom: 10px; /* Add more space between items */
+}
+
+
+
+.menu-btn.order-btn {
+  height: 40px;
+  width: 80px;
+  font-size: 15px;
+  border-radius: 50px;
+  color: var(--light-color);
+  background-color: #007bff;
 }
 .order-item * {
   margin: 0;
@@ -43,7 +53,7 @@
 .order-img {
   width: 150px;
   height: 150px;
-  border-radius: 3px;
+  border-radius: 5px;
   grid-area: img;
   object-fit: cover;
 }
@@ -63,7 +73,8 @@
 .order-total {
   grid-area: total;
   align-self: center;
-  justify-self: end;
+  justify-self: center;
+
 }
 .checkout-button {
   width: 120px;
@@ -71,10 +82,11 @@
   background-color: #f77f00;
   background-image: linear-gradient(45deg, #f77f00, #ff9b32);
   color: white;
-  font-size: large;
-  font-weight: bold;
+  padding:5px;
+  /* font-size: large; */
+  /* font-weight: bold; */
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: all 0.3s ease;

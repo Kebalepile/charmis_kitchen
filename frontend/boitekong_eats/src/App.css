@@ -1,8 +1,13 @@
 #root {
   max-width: 700px;
   margin: 0 auto;
+  padding:0 20px;
 }
-
+@media only screen and (max-width: 425px) {
+  #root{
+    padding:0;
+  }
+}
 /* Scrollbar Styles */
 ::-webkit-scrollbar {
   height: 0;

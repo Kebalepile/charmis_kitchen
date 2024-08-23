@@ -40,7 +40,7 @@ export default function Menu () {
 
       <MdOutlineRestaurantMenu className='menu-icon' />
       <h1>Menu</h1>
-      <hr className='sm-hr' />
+      {/* <hr className='sm-hr' /> */}
       <div className='menu-grid'>
         <div className='menu-item'>
           <PizzaMenu />

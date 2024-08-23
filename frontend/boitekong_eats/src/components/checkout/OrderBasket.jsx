@@ -40,7 +40,7 @@ const OrderBasket = ({ basketItems, updateBasketItems, resetOrderState }) => {
       )}
       <section className='order-basket'>
         <div className='sticky-top'>
-          <hr />
+          {/* <hr /> */}
           <h3>Pending orders</h3>
           <button
             className='menu-btn checkout-button'
@@ -50,9 +50,9 @@ const OrderBasket = ({ basketItems, updateBasketItems, resetOrderState }) => {
           </button>
 
           <p className='total-amount'>
-            Total Amount to be paid is:<strong> R {total()}.00</strong>
+            Total Amount to be paid <br/><strong> R {total()}.00</strong>
           </p>
-          <hr />
+          {/* <hr /> */}
         </div>
         {basketItems.map((order, index) => (
           <article key={index} className='order-item'>

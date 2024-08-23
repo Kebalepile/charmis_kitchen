@@ -76,7 +76,7 @@
   backdrop-filter: blur(10px);
   z-index: 13;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   max-height: 80vh;
   width: 320px;
@@ -110,7 +110,7 @@
 
 #close-menu {
   background-color: #fa1f3c;
-  border-radius: 8px;
+  border-radius: 5px;
   height: 50px;
   width: 50px;
   font-weight: bold;
@@ -118,7 +118,7 @@
   z-index: 1;
   float: left;
   border: none;
-  border-radius: 30%;
+  border-radius: 5px;
   color: var(--light-color);
 }
 

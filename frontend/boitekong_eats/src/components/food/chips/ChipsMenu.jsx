@@ -1,23 +1,24 @@
-import React, { useContext } from 'react';
-import MenuContext from '../../../context/menu/context';
-import { MENU, CHIPS_MENU } from '../../../context/types';
+import React, { useContext } from 'react'
+import MenuContext from '../../../context/menu/context'
+import { MENU, CHIPS_MENU } from '../../../context/types'
 
-export default function ChipsMenu() {
-  const { OpenMenu, ChooseMenu } = useContext(MenuContext);
+export default function ChipsMenu () {
+  const { OpenMenu, ChooseMenu } = useContext(MenuContext)
   const handleClick = () => {
-    OpenMenu(MENU, true);
-    ChooseMenu(CHIPS_MENU);
-  };
+    OpenMenu(MENU, true)
+    ChooseMenu(CHIPS_MENU)
+  }
+
+  const imageUrl = './assets/images/chips/2.jpg'
   return (
-    <div className='menu-card'>
-      <img
-        src='./assets/images/chips/2.jpg'
-        alt='Magwinya'
-        className='menu-card-img'
-      />
-      <button className='menu-btn' onClick={handleClick}>
-        Chips
-      </button>
+    <div
+      className='menu-card'
+      style={{ backgroundImage: `url(${imageUrl})` }}
+      onClick={handleClick}
+    >
+      <div className='overlay'></div> {/* Overlay for the blur effect */}
+      <img src={imageUrl} alt='Chicken Wings' className='menu-card-img' />
+      <div className='caption'>Chips</div>
     </div>
-  );
+  )
 }

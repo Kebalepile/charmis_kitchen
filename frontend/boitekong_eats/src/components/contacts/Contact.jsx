@@ -1,49 +1,46 @@
-import React from 'react'
-import { HiMegaphone } from 'react-icons/hi2'
-import { FaPhone, FaEnvelope } from 'react-icons/fa'
+import React from 'react';
+import { HiMegaphone } from 'react-icons/hi2';
+import { FaWhatsapp } from 'react-icons/fa'; // Import WhatsApp icon
+import { MdEmail } from 'react-icons/md'; // Import a better-looking email icon
 
-import "./contact.css"
+import './contact.css';
 
-export default function Contact () {
+export default function Contact() {
   return (
     <section id='contact'>
-      <hr className='bg-hr' />
+  
       <HiMegaphone />
       <h3>Contact</h3>
       <p>
-        For inquiries, please call or WhatsApp:
+        For Inquiries, Please Call or WhatsApp:
         <br />
         <br />
-        <FaPhone
-          style={{
-            color: 'green',
-            marginRight: '5px',
-            transform: 'rotate(90deg)'
-          }}
-        />{' '}
-        <strong> 073 775 7160</strong>
-        <br />
-        <FaPhone
-          style={{
-            color: 'green',
-            marginRight: '5px',
-            transform: 'rotate(90deg)'
-          }}
-        />{' '}
-        <strong>067 271 8347</strong>
+        <ul>
+          <li>
+            <FaWhatsapp
+              style={{
+                color: '#25D366', // WhatsApp green color
+                marginRight: '5px'
+              }}
+            />{' '}
+            <strong>+(27) 67 271 8347</strong>
+          </li>
+          <li>
+            {' '}
+            <MdEmail style={{ color: 'gray', marginRight: '5px' }} />
+            <a href='mailto:boitekongeats@gmail.com'>boitekongeats@gmail.com</a>
+          </li>
+        </ul>
       </p>
-      <p>
-        <FaEnvelope style={{ color: 'gray' }} /> Email us at:
-        <br /> <a href='mailto:kmotshoana@gmail.com'>kmotshoana@gmail.com</a>
-      </p>
+
       <p>
         Feel free to reach out for orders, feedback, or any other questions. We
         are here to help!
       </p>
       <p className='vendor-inquiry'>
-        If you want to become a vendor via Boitekong Eats and sell food,
-        contact us at the above details.
+        If you want to become a vendor via Boitekong Eats and sell food, contact
+        us at the above details.
       </p>
     </section>
-  )
+  );
 }

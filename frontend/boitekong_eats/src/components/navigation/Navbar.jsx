@@ -1,26 +1,26 @@
-import React, { useState } from 'react'
-import { MdMenuBook } from 'react-icons/md'
-import logo from '../../assets/1.png'
-import Sidebar from './Sidebar'
+import React, { useState } from 'react';
+import { FaBars } from 'react-icons/fa'; // Updated icon
+import logo from '../../assets/1.png';
+import Sidebar from './Sidebar';
 
-import './nav.css'
+import './nav.css';
 
-export default function Navbar () {
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false)
+export default function Navbar() {
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
   const toggleSidebar = () => {
-    setIsSidebarVisible(!isSidebarVisible)
-  }
+    setIsSidebarVisible(!isSidebarVisible);
+  };
 
   return (
     <>
-      <nav className='navbar'>
-        <MdMenuBook
-          id='side-bar'
-          title='checkout menu'
+      <nav className="navbar">
+        <FaBars
+          id="side-bar"
+          title="Toggle menu"
           onClick={toggleSidebar}
         />
-        <img src={logo} alt='logo' id='logo' title="charmi's kitchen" />
+        <img src={logo} alt="logo" id="logo" title="charmi's kitchen" />
       </nav>
       {isSidebarVisible && (
         <Sidebar
@@ -29,5 +29,5 @@ export default function Navbar () {
         />
       )}
     </>
-  )
+  );
 }

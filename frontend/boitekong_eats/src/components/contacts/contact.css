@@ -1,12 +1,63 @@
-#contact{
-    text-align: justify;
-    padding: 20px;
-    max-width: 700px;
-  }
+#contact {
+  text-align: justify;
+  padding: 20px;
+  max-width: 700px;
+  background: radial-gradient(
+    circle,
+    #000000,
+    #242121,
+    #131010
+  ); /* Radial gradient background */
+  color: white;
+  border-radius: 3px;
+}
 
-  .vendor-inquiry {
-    margin-top: 20px;
-    font-weight: bold;
-    color: var(--dark-color); /* Adjust color as needed */
-    text-align: center; /* Ensure consistent alignment */
-  }
+#contact ul {
+  list-style-type: none; /* Remove default bullet points */
+  padding-left: 20px; /* Indentation */
+  margin-bottom: 20px; /* Space between list and other content */
+}
+
+#contact li {
+  font-family: 'Arial', sans-serif; /* Choose a better font family */
+  font-size: clamp(0.2rem); /* Responsive font size */
+  margin-bottom: 10px; /* Space between list items */
+  line-height: 1.5; /* Improve readability */
+  padding-left: 25px; /* Additional indentation */
+  text-indent: -15px; /* Create hanging indent effect */
+  display: flex;
+  align-items: center;
+}
+#contact li > *:first-child {
+  margin-right: 50px;
+  width: 30px;
+  height: 30px;
+}
+#contact li > *:nth-child(2) {
+  margin-left: 20px;
+}
+
+#contact li::before {
+  content: '•'; /* Custom bullet point */
+  color: var(--accent-color); /* Use your preferred accent color */
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+#contact a {
+  text-decoration: none;
+  color: var(--primary-color); /* Set consistent link color */
+  font-weight: bold;
+}
+
+#contact a:hover {
+  color: var(--accent-color); /* Change link color on hover */
+}
+
+.vendor-inquiry {
+  margin-top: 20px;
+  font-weight: bold;
+  /* color: var(--dark-color); */
+  text-align: left;
+}

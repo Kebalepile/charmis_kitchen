@@ -42,39 +42,6 @@ body {
   border-color: var(--light-color);
 }
 
-
-
-@keyframes zoom {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1.1);
-  }
-}
-
-@keyframes rollDown {
-  from {
-    height: 0;
-    opacity: 0;
-  }
-  to {
-    height: 320px;
-    opacity: 1;
-  }
-}
-
-@keyframes rollUp {
-  from {
-    height: 320px;
-    opacity: 1;
-  }
-  to {
-    height: 0;
-    opacity: 0;
-  }
-}
-
 .overlay {
   position: fixed;
   top: 0;
@@ -90,7 +57,6 @@ body {
   display: block;
 }
 
-
 .order-form {
   position: fixed;
   top: 50%;
@@ -100,7 +66,7 @@ body {
   backdrop-filter: blur(10px);
   z-index: 13;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   max-height: 80vh;
   width: 320px;
@@ -125,7 +91,7 @@ button.pop {
   color: var(--light-color);
   width: 40px;
   height: 40px;
-  border-radius: 30% 50% 50% 30%;
+  border-radius: 7px;
   cursor: pointer;
 }
 
@@ -139,16 +105,6 @@ button.pop {
     opacity: 1;
     transform: translate(-50%, -50%);
   }
-}
-
-@media only screen and (max-width: 425px) {
-  /* .menu-item {
-    margin: 3px;
-  }
-
-  .order-form {
-    width: 270px;
-  } */
 }
 
 /* yoc form styling */
