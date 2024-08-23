@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from 'react'
 import MenuContext from '../context/menu/context'
 import OrderContext from '../context/order/context'
 import { MdOutlineRestaurantMenu } from 'react-icons/md'
-import MagwinyaMenu from './food/magwinya/MagwinyaMenu'
-import DikukuMenu from './food/dikuku/DikukuMenu'
+// import MagwinyaMenu from './food/magwinya/MagwinyaMenu'
+// import DikukuMenu from './food/dikuku/DikukuMenu'
 import PizzaMenu from './food/pizza/PizzaMenu'
 import ChickenMenu from './food/chicken/ChickenMenu'
 import ChipsMenu from './food/chips/ChipsMenu'
@@ -45,9 +45,9 @@ export default function Menu () {
           <PizzaMenu />
         </div>
 
-        <div className='menu-item'>
+        {/* <div className='menu-item'>
           <MagwinyaMenu />
-        </div>
+        </div> */}
         <div className='menu-item'>
           <ChickenMenu />
         </div>
@@ -55,9 +55,9 @@ export default function Menu () {
           <ChipsMenu />
         </div>
 
-        <div className='menu-item'>
+        {/* <div className='menu-item'>
           <DikukuMenu />
-        </div>
+        </div> */}
       </div>
     </section>
   )

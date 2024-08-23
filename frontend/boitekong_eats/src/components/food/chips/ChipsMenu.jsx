@@ -16,7 +16,7 @@ export default function ChipsMenu() {
         className='menu-card-img'
       />
       <button className='menu-btn' onClick={handleClick}>
-        chips
+        Chips
       </button>
     </div>
   );

@@ -16,7 +16,7 @@ export default function ChickenMenu() {
       className='menu-card-img'
     />
     <button className='menu-btn' onClick={handleClick}>
-      Chicken
+      Wings
     </button>
   </div>
   );
