@@ -1,0 +1,52 @@
+#menu {
+  width: 96dvw;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 700px;
+  margin: 30px auto;
+}
+
+.menu-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.menu-grid {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap; /* Prevents wrapping, ensures horizontal layout */
+  justify-content: flex-start; /* Aligns items to the start */
+  overflow-x: auto; /* Enables horizontal scrolling */
+  overflow-y: hidden; /* Prevents vertical scrolling */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
+}
+
+/* Hide the scrollbar for WebKit browsers (Chrome, Safari) */
+.menu-grid::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+/* Hide the scrollbar for Firefox */
+.menu-grid {
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide the scrollbar for IE, Edge */
+.menu-grid {
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+}
+
+/* Ensuring the children items are properly displayed */
+.menu-grid > * {
+  flex: 0 0 auto; /* Prevent children from shrinking or growing */
+  margin: 10px; /* Add some spacing between items */
+}
+
+.menu-item {
+  flex: 1 1 30%; /* Allow flex items to grow and shrink, setting an initial basis of 30% */
+  margin: 10px; /* Add some margin for spacing between items */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}

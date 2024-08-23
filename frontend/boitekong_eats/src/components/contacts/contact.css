@@ -1,0 +1,12 @@
+#contact{
+    text-align: justify;
+    padding: 20px;
+    max-width: 700px;
+  }
+
+  .vendor-inquiry {
+    margin-top: 20px;
+    font-weight: bold;
+    color: var(--dark-color); /* Adjust color as needed */
+    text-align: center; /* Ensure consistent alignment */
+  }

@@ -1,0 +1,41 @@
+.founder-img {
+  float: left;
+  margin: 0 20px 20px 0;
+  width: 150px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 6px;
+}
+
+#about {
+  text-align: justify;
+  padding: 20px;
+  max-width: 700px;
+}
+
+#share-btn {
+  height: 40px;
+  width: 80px;
+  font-size: 15px;
+  border-radius: 4%;
+  color: var(--light-color);
+  background-color: #007bff;
+  border: none;
+  margin: auto;
+  border-radius: 5px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.lang-button {
+    border: none;
+    height: 40px;
+    margin: 5px;
+    background: rgb(75, 73, 73);
+    border-radius: 4px;
+    color: var(--light-color);
+    cursor: pointer;
+  }
+  

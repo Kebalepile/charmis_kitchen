@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { GoShareAndroid } from 'react-icons/go'
 import { GrContact } from 'react-icons/gr'
-import founderImg from '../assets/images/julia.jpg'
-import { Share } from '../utils/Utils'
+import founderImg from '../../assets/images/julia.jpg'
+import { Share } from '../../utils/Utils'
+
+import "./about.css"
 
 export default function About () {
   const [language, setLanguage] = useState('setswana')
@@ -53,7 +55,7 @@ export default function About () {
       <button
         id='share-btn'
         className='apply share'
-        title="shaere this site"
+        title="share this food ordering web-app"
         onClick={() => {
           Share({
             title: 'B-Town Bites',

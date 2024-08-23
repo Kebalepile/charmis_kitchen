@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import MenuContext from '../context/menu/context'
 import { MENU } from '../context/types'
 import Loading from './Loading'
-import OrderForm from './OrderForm'
+import OrderForm from './order/OrderForm'
 
 export default function ReadMenu () {
   const { ReadMenu: RM, CloseMenu } = useContext(MenuContext)

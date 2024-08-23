@@ -2,6 +2,8 @@ import React from 'react'
 import { HiMegaphone } from 'react-icons/hi2'
 import { FaPhone, FaEnvelope } from 'react-icons/fa'
 
+import "./contact.css"
+
 export default function Contact () {
   return (
     <section id='contact'>

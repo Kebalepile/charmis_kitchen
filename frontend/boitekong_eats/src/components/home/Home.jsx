@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react'
-import Menu from './Menu'
-import Slideshow from './Slideshow'
-import SearchOrder from './SearchOrder'
-import PaymentContext from '../context/payment/context'
-import Popup from './Popup'
+import Menu from '../menu/Menu'
+import Slideshow from '../Slideshow'
+import SearchOrder from '../search/SearchOrder'
+import PaymentContext from '../../context/payment/context'
+import Popup from '../Popup'
+
+import "./home.css"
 
 export default function Home () {
   const [showPopup, setShowPopup] = useState(false)

@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Footer from './Footer';
+import Footer from '../footer/Footer.jsx';
 import PropTypes from 'prop-types';
 import { GiSlicedBread } from 'react-icons/gi';
-import OrderContext from '../context/order/context';
-import { deferredPrompt } from '../main.jsx'; // Import the deferredPrompt
+import OrderContext from '../../context/order/context.jsx';
+import { deferredPrompt } from '../../main.jsx'; // Import the deferredPrompt
+
+import "./side_nav.css"
 
 const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
   const { setIsSearchOrderVisible } = useContext(OrderContext);

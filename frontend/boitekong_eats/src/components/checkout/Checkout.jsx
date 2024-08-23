@@ -1,4 +1,5 @@
 import React from 'react'
+import './checkout.css'
 export default function Checkout () {
   return (
     <section id='checkout'>

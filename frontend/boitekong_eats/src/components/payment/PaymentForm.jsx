@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import PaymentContext from '../context/payment/context'
-import Loading from './Loading'
-import Popup from './Popup'
+import PaymentContext from '../../context/payment/context'
+import Loading from '../Loading'
+import Popup from '../Popup'
 // import { ServerDomain } from '../context/types'
 
+import "./payment.css"
 const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const {
     name = '', // Ensure name is defined

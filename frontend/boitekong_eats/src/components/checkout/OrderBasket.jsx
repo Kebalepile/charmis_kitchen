@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import PaymentForm from '../PaymentForm'
+import PaymentForm from '../payment/PaymentForm'
+
+import "./checkout.css"
 
 const OrderBasket = ({ basketItems, updateBasketItems, resetOrderState }) => {
   const [showPaymentForm, setShowPaymentForm] = useState(false)

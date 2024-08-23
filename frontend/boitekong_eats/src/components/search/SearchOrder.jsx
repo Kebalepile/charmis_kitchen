@@ -1,8 +1,10 @@
 import React, { useContext, useState } from 'react'
-import OrderContext from '../context/order/context'
-import Loading from './Loading'
-import Popup from './Popup'
-import OrderDisplay from './OrderDisplay'; 
+import OrderContext from '../../context/order/context'
+import Loading from '../Loading'
+import Popup from '../Popup'
+import OrderDisplay from '../OrderDisplay'; 
+
+import "./search.css"
 
 export default function SearchOrder () {
   const { getOrder, orders, searchOrderFormVisible, setIsSearchOrderVisible } =

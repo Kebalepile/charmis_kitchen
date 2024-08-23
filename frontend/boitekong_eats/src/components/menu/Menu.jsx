@@ -1,15 +1,16 @@
 import React, { useContext, useEffect } from 'react'
-import MenuContext from '../context/menu/context'
-import OrderContext from '../context/order/context'
+import MenuContext from '../../context/menu/context'
+import OrderContext from '../../context/order/context'
 import { MdOutlineRestaurantMenu } from 'react-icons/md'
 // import MagwinyaMenu from './food/magwinya/MagwinyaMenu'
 // import DikukuMenu from './food/dikuku/DikukuMenu'
-import PizzaMenu from './food/pizza/PizzaMenu'
-import ChickenMenu from './food/chicken/ChickenMenu'
-import ChipsMenu from './food/chips/ChipsMenu'
-import ReadMenu from './ReadMenu'
-import OrderBasket from './food/OrderBasket'
+import PizzaMenu from '../food/pizza/PizzaMenu'
+import ChickenMenu from '../food/chicken/ChickenMenu'
+import ChipsMenu from '../food/chips/ChipsMenu'
+import ReadMenu from '../ReadMenu'
+import OrderBasket from '../checkout/OrderBasket'
 
+import "./menu.css"
 export default function Menu () {
   const { MENU: _menu_ } = useContext(MenuContext)
   const {
