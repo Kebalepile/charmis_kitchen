@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Menu from '../menu/Menu'
-import Slideshow from '../Slideshow'
+import Slideshow from '../slideShow/Slideshow'
 import SearchOrder from '../search/SearchOrder'
 import PaymentContext from '../../context/payment/context'
-import Popup from '../Popup'
+import Popup from '../popup/Popup'
 
 import "./home.css"
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import "./popup.css"
 const Popup = ({ message, onClose }) => {
   return (
     <div id='popup-overlay'>

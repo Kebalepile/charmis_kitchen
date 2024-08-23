@@ -1,3 +1,5 @@
+
+
 #menu {
   width: 96dvw;
   display: flex;
@@ -49,4 +51,119 @@
   flex: 1 1 30%; /* Allow flex items to grow and shrink, setting an initial basis of 30% */
   margin: 10px; /* Add some margin for spacing between items */
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* Read menu compnent */
+#image-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 14;
+}
+
+.read-menu {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ffffffcc;
+  backdrop-filter: blur(10px);
+  z-index: 13;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-height: 80vh;
+  width: 320px;
+  overflow-y: auto;
+}
+
+.read-menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.read-menu li {
+  margin-bottom: 10px;
+}
+
+.read-menu img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.read-menu button:hover {
+  background-color: #0056b3;
+}
+
+#read-menu-nav {
+  position: sticky;
+  top: 0;
+  right: 0;
+}
+
+#close-menu {
+  background-color: #fa1f3c;
+  border-radius: 8px;
+  height: 50px;
+  width: 50px;
+  font-weight: bold;
+  font-size: large;
+  z-index: 1;
+  float: left;
+  border: none;
+  border-radius: 30%;
+  color: var(--light-color);
+}
+
+.menu-btn {
+  height: 50px;
+  width: 110px;
+  border: none;
+  background-color: var(--accent-color);
+  border-radius: 3px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  color: var(--light-color);
+  font-size: 18px;
+  font-weight: bolder;
+}
+.menu-img {
+  border-radius: 3px;
+}
+
+.image-container {
+  max-width: 80%;
+  max-height: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container img {
+  max-width: 60%;
+  max-height: 60%;
+  border-radius: 4px;
+  cursor: pointer;
+}
+@media only screen and (max-width: 425px) {
+  .read-menu {
+    width: 270px;
+  }
+
+  .menu-btn {
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .image-container img {
+    max-width: 80%;
+    max-height: 80%;
+  }
 }

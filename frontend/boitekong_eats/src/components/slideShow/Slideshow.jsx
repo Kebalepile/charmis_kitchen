@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import p1 from '../assets/images/pizza/1.jpg'
-import p2 from '../assets/images/pizza/4.jpg'
-import p3 from '../assets/images/pizza/3.jpg'
-import c1 from '../assets/images/chicken/1.jpg'
-import c2 from '../assets/images/chicken/3.jpg'
-import a1 from '../assets/images/dikuku/2.jpg'
-import b1 from '../assets/images/magwinya/1.jpg'
+import p1 from '../../assets/images/pizza/1.jpg'
+import p2 from '../../assets/images/pizza/4.jpg'
+import p3 from '../../assets/images/pizza/3.jpg'
+import c1 from '../../assets/images/chicken/1.jpg'
+import c2 from '../../assets/images/chicken/3.jpg'
+import a1 from '../../assets/images/dikuku/2.jpg'
+import b1 from '../../assets/images/magwinya/1.jpg'
 
+import './slideShow.css'
 const images = [
   {
     src: a1,
@@ -39,7 +40,6 @@ const images = [
   // Add more images as needed
 ]
 
-
 const Slideshow = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
@@ -56,7 +56,9 @@ const Slideshow = () => {
   return (
     <div className='slideshow'>
       <div className='slide' style={{ backgroundImage: `url(${src})` }}>
-        <div className='slide-text'><p>{text}</p></div>
+        <div className='slide-text'>
+          <p>{text}</p>
+        </div>
       </div>
     </div>
   )

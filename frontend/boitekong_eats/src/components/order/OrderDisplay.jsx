@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
-import OrderContext from '../context/order/context'
+import OrderContext from '../../context/order/context'
 
+import './order.css'
 const OrderDisplay = () => {
   const { orders, clearOrders } = useContext(OrderContext)
   const [isVisible, setIsVisible] = useState(true)

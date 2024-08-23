@@ -7,7 +7,7 @@ import { MdOutlineRestaurantMenu } from 'react-icons/md'
 import PizzaMenu from '../food/pizza/PizzaMenu'
 import ChickenMenu from '../food/chicken/ChickenMenu'
 import ChipsMenu from '../food/chips/ChipsMenu'
-import ReadMenu from '../ReadMenu'
+import ReadMenu from './ReadMenu'
 import OrderBasket from '../checkout/OrderBasket'
 
 import "./menu.css"

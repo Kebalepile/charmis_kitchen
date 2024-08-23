@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import PaymentContext from '../../context/payment/context'
-import Loading from '../Loading'
-import Popup from '../Popup'
+import Loading from '../loading/Loading'
+import Popup from '../popup/Popup'
 // import { ServerDomain } from '../context/types'
 
 import "./payment.css"

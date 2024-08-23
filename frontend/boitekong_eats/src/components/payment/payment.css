@@ -127,6 +127,33 @@
   background-color: #007bff;
   border: 2px solid var(--light-color);
 }
+
+.pay-button {
+  width: 100px;
+  height: 45px;
+  background-color: #029e24;
+  background-image: linear-gradient(45deg, #029e24, #05c846);
+  color: white;
+  font-size: large;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pay-button:hover {
+  background-image: linear-gradient(45deg, #05c846, #029e24);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.pay-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 @media only screen and (max-width: 425px) {
   #payment-form .payment-details {
     width: 260px;

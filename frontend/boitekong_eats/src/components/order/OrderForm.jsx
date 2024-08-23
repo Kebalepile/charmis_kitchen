@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import OrderContext from '../../context/order/context'
 import PropTypes from 'prop-types'
-import Popup from '../Popup'
+import Popup from '../popup/Popup'
 
 import "./order.css"
 const OrderForm = ({ item, onClose, menuName }) => {

@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { TbError404 } from 'react-icons/tb'
+
+import './notFound.css'
 function NotFound () {
   const navigate = useNavigate()
 

@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react'
 import OrderContext from '../../context/order/context'
-import Loading from '../Loading'
-import Popup from '../Popup'
-import OrderDisplay from '../OrderDisplay'; 
+import Loading from '../loading/Loading'
+import Popup from '../popup/Popup'
+import OrderDisplay from '../order/OrderDisplay'; 
 
 import "./search.css"
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import PaymentForm from '../payment/PaymentForm'
 
-import "./checkout.css"
+import './checkout.css'
 
 const OrderBasket = ({ basketItems, updateBasketItems, resetOrderState }) => {
   const [showPaymentForm, setShowPaymentForm] = useState(false)
@@ -48,7 +48,7 @@ const OrderBasket = ({ basketItems, updateBasketItems, resetOrderState }) => {
           >
             <span>Checkout</span> 🛒
           </button>
-          {/* <hr  /> */}
+
           <p className='total-amount'>
             Total Amount to be paid is:<strong> R {total()}.00</strong>
           </p>
