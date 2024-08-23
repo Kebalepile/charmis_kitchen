@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
-import OrderContext from '../../context/order/context'
-import PropTypes from 'prop-types'
-import Popup from '../popup/Popup'
+import React, { useContext, useEffect, useState } from 'react';
+import OrderContext from '../../context/order/context';
+import PropTypes from 'prop-types';
+import Popup from '../popup/Popup';
+import './order.css';
 
-import "./order.css"
 const OrderForm = ({ item, onClose, menuName }) => {
   const {
     quantity,
@@ -14,64 +14,88 @@ const OrderForm = ({ item, onClose, menuName }) => {
     calculateTotal,
     handleSubmit,
     handleRest
-  } = useContext(OrderContext)
+  } = useContext(OrderContext);
 
-  const [quantityInput, setQuantityInput] = useState(quantity)
-  const [showPopup, setShowPopup] = useState(false)
-  const [popupMessage, setPopupMessage] = useState('')
+  const [quantityInput, setQuantityInput] = useState(quantity);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (item && (item.price || (item.prices && selectedSize))) {
-      calculateTotal(item)
+      calculateTotal(item);
     }
-  }, [item, selectedSize, quantity])
+  }, [item, selectedSize, quantity]);
 
-  const handleFormSubmit = e => {
-    e.preventDefault()
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    
+    // Validation check for selectedSize
+    if (item?.prices && (selectedSize === undefined || selectedSize === '' || parseFloat(selectedSize) <= 0)) {
+      setPopupMessage('Please select a valid size before adding to the basket.');
+      setShowPopup(true);
+      return; // Prevent submission
+    }
+
     setPopupMessage(
       "🛒 Order added to cart! Check your basket when you're done ordering."
-    )
-    setShowPopup(true)
+    );
+    setShowPopup(true);
 
     setTimeout(() => {
-      handleSubmit(e, menuName, item, onClose)
-    }, 3000)
-  }
+      handleSubmit(e, menuName, item, onClose);
+    }, 3000);
+  };
 
-  const handleQuantityInputChange = e => {
-    const value = e.target.value
-    setQuantityInput(value)
-    handleQuantityChange(e)
-  }
+  const handleQuantityInputChange = (e) => {
+    const value = e.target.value;
+    setQuantityInput(value);
+    handleQuantityChange(e);
+  };
 
   const closePopup = () => {
-    setShowPopup(false)
-    setPopupMessage('')
-  }
+    setShowPopup(false);
+    setPopupMessage('');
+  };
+
   const handleClose = () => {
-    handleRest()
-    onClose()
-  }
+    handleRest();
+    onClose();
+  };
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleSelect = (size) => {
+    handleSizeChange({ target: { value: size } });
+    setIsOpen(false);
+  };
 
   return (
     <div id='price-form'>
       <div className='overlay show' onClick={handleClose}></div>
-
       <div>
         <form onSubmit={handleFormSubmit} className='select-order'>
           <h3>{item?.name}</h3>
           <hr className='bg-hr' />
           {item?.prices ? (
             <div className='form-group size-select'>
-              <label>Select Size:</label>
-              <select value={selectedSize} onChange={handleSizeChange} required>
-                <option value=''>Select Size</option>
-                {Object.entries(item.prices).map(([size, price]) => (
-                  <option key={size} value={size}>
-                    {size} - {price}
-                  </option>
-                ))}
-              </select>
+              {/* <label>Select Size:</label> */}
+              <div className='custom-select'>
+                <div className='select-selected' onClick={toggleDropdown}>
+                  {selectedSize || 'Select Size'}
+                </div>
+                {isOpen && (
+                  <div className='select-items'>
+                    {Object.entries(item.prices).map(([size, price]) => (
+                      <div key={size} className='select-item' onClick={() => handleSelect(size)}>
+                        {size} - {price}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           ) : (
             <p>
@@ -79,8 +103,8 @@ const OrderForm = ({ item, onClose, menuName }) => {
             </p>
           )}
           <div className='form-group'>
-            <label>
-              Quantity:
+            <label className='quantity-question'>
+              {item.quantity_question}
               <input
                 type='number'
                 value={quantityInput}
@@ -92,14 +116,12 @@ const OrderForm = ({ item, onClose, menuName }) => {
               />
             </label>
           </div>
-
           <p>
             <strong>Total Amount: R{total}.00</strong>
           </p>
           <button type='submit' className='basket-btn'>
             Add to Basket
           </button>
-
           <button type='button' className='cancel' onClick={handleClose}>
             Close
           </button>
@@ -107,13 +129,13 @@ const OrderForm = ({ item, onClose, menuName }) => {
       </div>
       {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
     </div>
-  )
-}
+  );
+};
 
 OrderForm.propTypes = {
   item: PropTypes.object,
   onClose: PropTypes.func.isRequired,
   menuName: PropTypes.string.isRequired
-}
+};
 
-export default OrderForm
+export default OrderForm;

@@ -18,16 +18,16 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
   const { setIsSearchOrderVisible } = useContext(OrderContext)
   const [prompt, setPrompt] = useState(null)
 
-  useEffect(() => {
-    const handleClickOutside = event => {
-      if (
-        isSidebarVisible &&
-        !event.target.closest('.sidebar-nav ') &&
-        !event.target.closest('#side-bar')
-      ) {
-        toggleSidebar()
-      }
+  const handleClickOutside = event => {
+    if (
+      isSidebarVisible &&
+      !event.target.closest('.sidebar-nav ') &&
+      !event.target.closest('#side-bar')
+    ) {
+      toggleSidebar()
     }
+  }
+  useEffect(() => {
     if (sessionStorage.getItem('deferredPrompt')) {
       setPrompt(deferredPrompt)
     }
