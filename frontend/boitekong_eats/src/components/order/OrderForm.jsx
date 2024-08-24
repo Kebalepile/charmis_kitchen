@@ -20,6 +20,7 @@ const OrderForm = ({ item, onClose, menuName }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null)
 
   useEffect(() => {
     if (item && (item.price || (item.prices && selectedSize))) {
@@ -27,6 +28,14 @@ const OrderForm = ({ item, onClose, menuName }) => {
     }
   }, [item, selectedSize, quantity]);
 
+ 
+  const handleImageClick = imageUrl => {
+    setSelectedImage(imageUrl)
+  }
+
+  const handleOverlayClick = () => {
+    setSelectedImage(null)
+  }
   const handleFormSubmit = (e) => {
     e.preventDefault();
     
@@ -77,11 +86,16 @@ const OrderForm = ({ item, onClose, menuName }) => {
       <div className='overlay show' onClick={handleClose}></div>
       <div>
         <form onSubmit={handleFormSubmit} className='select-order'>
+        <img
+                      src={item.image_url}
+                      alt={item.alt}
+                      className='menu-img select'
+                      onClick={() => handleImageClick(item.image_url)}
+                    />
           <h3>{item?.name}</h3>
           <hr className='bg-hr' />
           {item?.prices ? (
             <div className='form-group size-select'>
-              {/* <label>Select Size:</label> */}
               <div className='custom-select'>
                 <div className='select-selected' onClick={toggleDropdown}>
                   {selectedSize || 'Select Size'}
@@ -119,14 +133,23 @@ const OrderForm = ({ item, onClose, menuName }) => {
           <p>
             <strong>Total Amount: R{total}.00</strong>
           </p>
+          <section className="buttons">
           <button type='submit' className='basket-btn'>
-            Add to Basket
+          Add to Cart
           </button>
           <button type='button' className='cancel' onClick={handleClose}>
-            Close
+            Cancel
           </button>
+          </section>
         </form>
       </div>
+      {selectedImage && (
+        <div id='image-overlay' onClick={handleOverlayClick}>
+          <div className='image-container'>
+            <img src={selectedImage} alt='Enlarged' />
+          </div>
+        </div>
+      )}
       {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
     </div>
   );

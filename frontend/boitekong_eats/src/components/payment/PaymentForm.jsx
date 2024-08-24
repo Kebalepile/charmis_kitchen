@@ -5,7 +5,7 @@ import Loading from '../loading/Loading'
 import Popup from '../popup/Popup'
 // import { ServerDomain } from '../context/types'
 
-import "./payment.css"
+import './payment.css'
 const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const {
     name = '', // Ensure name is defined
@@ -126,30 +126,29 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   // }
 
   const handleFormSubmit = e => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault()
+    setLoading(true)
     if (!validateForm()) {
-      setLoading(false);
-      return; // Stop execution if the form is not valid
+      setLoading(false)
+      return // Stop execution if the form is not valid
     }
-  
+
     switch (paymentMethod) {
       case 'online':
       case 'online-delivery':
         // handleYocoPayment()
-        break;
-      default:
+        break
+      default: // 7 seconds
         setTimeout(() => {
-          handleSubmitOrder();
-          resetOrderState();
-          resetPaymentState();
-          setLoading(false);
-          setShowPaymentForm(false);
-        }, 7000); // 7 seconds
-        break;
+          handleSubmitOrder()
+          resetOrderState()
+          resetPaymentState()
+          setLoading(false)
+          setShowPaymentForm(false)
+        }, 7000)
+        break
     }
-  };
-  
+  }
 
   const closePopup = () => {
     setShowPopup(false)
@@ -263,7 +262,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
           {renderAddressInputs()}
 
           <button type='submit' className='basket-btn'>
-            Pay
+            Place Order
           </button>
 
           <button type='button' className='cancel' onClick={handleCloseForm}>
@@ -273,7 +272,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
       </div>
       {loading && (
         <div id='payment-overlay'>
-       
           <Loading />
         </div>
       )}
