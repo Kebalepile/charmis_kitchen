@@ -41,62 +41,62 @@ const OrderDisplay = () => {
           <div key={index} className='order-display-details'>
             {order.orderNumber && (
               <p>
-                <strong>Order Number: </strong> <i>{order.orderNumber}</i>
+                <strong>Order Number: </strong> {order.orderNumber}
               </p>
             )}
             {order.name && (
               <p>
                 <strong>Name: </strong>
-                <i>{order.name}</i>
+                {order.name}
               </p>
             )}
             {order.phone && (
               <p>
                 <strong>Phone: </strong>{' '}
-                <i>{`***-*-${order.phone.slice(-4)}`}</i>
+                {`***-*-${order.phone.slice(-4)}`}
               </p>
             )}
             {order.streetAddress && (
               <p>
-                <strong>Street Address: </strong> <i>{order.streetAddress}</i>
+                <strong>Street Address: </strong> {order.streetAddress}
               </p>
             )}
             {order.houseNumber && (
               <p>
-                <strong>House Number: </strong> <i>{order.houseNumber}</i>
+                <strong>House Number: </strong> {order.houseNumber}
               </p>
             )}
             {order.paymentMethod && (
               <p>
-                <strong>Payment Method: </strong> <i>{order.paymentMethod}</i>
+                <strong>Payment Method: </strong> {order.paymentMethod}
               </p>
             )}
             {order.paymentTotal !== undefined && (
               <p>
                 <strong>Payment Total: </strong>{' '}
-                <i>R {order.paymentTotal.toFixed(2)}</i>
+                R {order.paymentTotal.toFixed(2)}
               </p>
             )}
             {order.deliveryCharge !== undefined && (
               <p>
                 <strong>Delivery Charge: </strong>{' '}
-                <i>R {order.deliveryCharge.toFixed(2)}</i>
+                R {order.deliveryCharge.toFixed(2)}
               </p>
             )}
             {order.paymentItemsDescriptions && (
               <p>
-                <strong>Items: </strong> <i>{order.paymentItemsDescriptions}</i>
+                <strong>Items: </strong> {order.paymentItemsDescriptions}
               </p>
             )}
             {order.status && (
               <p>
-                <strong>Status: </strong> <i>{order.status}</i>
+                <strong>Status: </strong> {order.status}
               </p>
             )}
             {order.timestamp && (
               <p>
                 <strong>Timestamp: </strong>{' '}
-                <i>{new Date(order.timestamp).toLocaleString()}</i>
+                {new Date(order.timestamp).toLocaleString()}
               </p>
             )}
           </div>

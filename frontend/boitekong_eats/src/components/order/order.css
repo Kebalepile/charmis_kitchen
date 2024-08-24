@@ -67,20 +67,6 @@
   outline: none;
 }
 
-/* Button styles */
-/* .select-order .basket-btn,
-.select-order .cancel {
-  width: 50%;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  background-color: #1164ff;
-  color: #fff;
-  font-size: 13px;
-  cursor: pointer;
-  margin-bottom: 10px;
-} */
-
 .select-order .cancel {
   background-color: var(--danger-color);
   width: 30%;
@@ -90,55 +76,6 @@
 .select-order .cancel:hover {
   opacity: 0.8;
 }
-
-/* Order form styles */
-/* .order-form {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-} */
-
-/* .order-form .form-group {
-  display: flex;
-  flex-direction: column;
-} */
-
-/* .order-form label {
-  font-weight: bold;
-  margin-bottom: 5px;
-} */
-
-/* .order-form input,
-.order-form select {
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  font-size: 15px;
-} */
-
-/* .order-form button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: var(--light-color);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  width: 100px;
-} */
-
-/* .order-form button:hover {
-  background-color: #0056b3;
-} */
-
-/* .order-form button.cancel {
-  background-color: #f71848 !important;
-} */
-
-/* .order-form button[type="submit"].basket-btn {
-  width: 150px;
-  background-color: #09d424 !important;
-} */
 
 .size-select {
   width: 60%;
@@ -155,40 +92,35 @@
 .order-dialog {
   border: none;
   border-radius: 3px;
+  background: radial-gradient(circle at top, #f4f5d4, #d7dc70, #edf0a9);
 }
-
 .order-display-close-button {
   border: none;
-  font-size: 16px;
+  font-size: 15px;
   cursor: pointer;
-  color: var(--accent-color);
-  background-color: rgba(255, 255, 255, 0);
-  border-radius: 3px;
+  color: white;
+  background-color: rgb(243, 88, 88);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   margin: 5px;
-  font-size: 30px;
-  font-weight: bolder;
+  text-align: center;
+  font-weight: bold;
 }
-
 .order-display-container {
   margin-top: 20px;
 }
-
 .order-display-details {
   margin-bottom: 15px;
-  background: radial-gradient(
-    circle,
-    #000000,
-    #242121,
-    #131010
-  ); /* Radial gradient background */
-  color: white;
+  border-radius: 3px;
+  background-color: white;
+  color: black;
   padding: 15px;
   display: flex;
   flex-flow: column wrap;
   justify-content: flex-start;
   align-items: flex-start;
 }
-
 .order-display-details p {
   margin-bottom: 5px;
 }
@@ -203,11 +135,9 @@
   z-index: 12;
   display: none;
 }
-
 .overlay.show {
   display: block;
 }
-
 /* Select order modal */
 .select-order {
   width: 320px;
@@ -235,10 +165,10 @@
   margin-bottom: 5px;
   font-weight: bold;
 }
-
 .custom-select {
   position: relative;
   display: inline-block;
+
   width: 100%;
 }
 .select-selected {
@@ -254,7 +184,6 @@
 .select-items {
   position: absolute;
   background: radial-gradient(circle at right, #dfdfdd, #fdfdfd, #fffffff8);
-
   border: 1px solid rgb(108, 105, 105);
   border-radius: 4px;
   width: 100%;
@@ -288,11 +217,9 @@
   color: #fff;
   font-size: 13px;
   cursor: pointer;
-  /* margin: 0px; */
 }
 .select-order .basket-btn {
   border-radius: 4px 0px 0px 4px;
-  /* background-color: #038230; */
   background: radial-gradient(circle, #0e981c, #0e7f37, #095a2cf8);
 }
 .select-order .cancel {
@@ -358,23 +285,11 @@ form .buttons {
 .size-select {
   width: 60%;
 }
-.order-dialog {
-  border: none;
-  border-radius: 3px;
-}
-.order-display-close-button {
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  color: var(--accent-color);
-  background-color: rgba(255, 255, 255, 0);
-  border-radius: 3px;
-  margin: 5px;
-}
 .quantity-question {
   text-align: left;
   padding: 5px;
 }
+
 /* Media query for responsive design */
 @media only screen and (max-width: 425px) {
   .select-order {

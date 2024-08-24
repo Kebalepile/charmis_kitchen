@@ -19,11 +19,11 @@
 }
 .search-order-container .overlay.show {
   background: radial-gradient(
-    circle,
-    #000000,
-    #242121,
-    #131010
-  ); /* Radial gradient background */
+    circle at top,
+    #f4f5d4,
+    #d7dc70,
+    #edf0a9
+  ); 
   backdrop-filter: blur(6px);
 }
 
