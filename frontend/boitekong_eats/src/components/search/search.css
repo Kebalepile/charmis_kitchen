@@ -22,9 +22,8 @@
     circle,
     #000000,
     #242121,
-    #131010,
-    #000000
-  ); 
+    #131010
+  ); /* Radial gradient background */
   backdrop-filter: blur(6px);
 }
 

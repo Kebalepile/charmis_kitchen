@@ -47,7 +47,7 @@ const OrderForm = ({ item, onClose, menuName }) => {
     }
 
     setPopupMessage(
-      "🛒 Order added to cart! Check your basket when you're done ordering."
+      "🛒 Order added to cart!\n checkout pending orders when done here"
     );
     setShowPopup(true);
 

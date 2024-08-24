@@ -175,7 +175,12 @@
 
 .order-display-details {
   margin-bottom: 15px;
-  background-color: #242424da;
+  background: radial-gradient(
+    circle,
+    #000000,
+    #242121,
+    #131010
+  ); /* Radial gradient background */
   color: white;
   padding: 15px;
   display: flex;
