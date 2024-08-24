@@ -55,7 +55,7 @@
   justify-content: space-between;
   align-items: center;
 }
-.sidebar-list-item:hover {
+.shortcut:hover {
   border-bottom: 2px dashed black;
   padding-bottom: 3px;
   border-radius: 2px;

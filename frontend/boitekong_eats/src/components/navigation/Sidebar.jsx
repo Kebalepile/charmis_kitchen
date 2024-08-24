@@ -70,25 +70,25 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
         <ul className='sidebar-list'>
           <li
             onClick={() => handleClick('#menu')}
-            className='sidebar-list-item'
+            className='sidebar-list-item shortcut'
           >
             <FaUtensils className='icon' />
             <span>Food</span>
           </li>
-          <li onClick={handleSearchOrderClick} className='sidebar-list-item'>
+          <li onClick={handleSearchOrderClick} className='sidebar-list-item shortcut'>
             <FaSearch className='icon' />
             <span>Search Order</span>
           </li>
           <li
             onClick={() => handleClick('#about')}
-            className='sidebar-list-item'
+            className='sidebar-list-item shortcut'
           >
             <FaInfoCircle className='icon' />
             <span>About Us</span>
           </li>
           <li
             onClick={() => handleClick('#contact')}
-            className='sidebar-list-item'
+            className='sidebar-list-item shortcut'
           >
             <FaPhone className='icon icon-inverted' />
             <span>Contact Us</span>
