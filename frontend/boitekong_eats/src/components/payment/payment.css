@@ -46,7 +46,6 @@
   padding: 10px;
   border: none; /* Remove default border */
   border-bottom: 2px dashed #918e8e; /* Green underline */
-  border-radius: 0 0 0 15%; /* Border radius for bottom-right corner */
   box-sizing: border-box;
   font-size: 14px;
   color: #333;
@@ -62,8 +61,7 @@
 /* Remove underline on focus */
 #payment-form .form-group input:focus,
 #payment-form .form-group select:focus {
-  outline: none; /* Remove default focus outline */
-  /* border-bottom-color: transparent; Transparent underline on focus */
+  outline: none;
 }
 
 /* Button styling */
@@ -101,7 +99,7 @@
 
 /* Additional styles for the form */
 #payment-form hr {
-  width: 80%;
+  width: 60%;
 }
 .select-payment {
   width: 270px;

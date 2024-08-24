@@ -49,8 +49,7 @@
   width: 100%;
   padding: 8px;
   border: none;
-  border-bottom: 1px solid rgb(108, 105, 105); /* Bottom border */
-  border-radius: 4px; /* Rounded corners */
+  border-bottom: 1px solid rgb(108, 105, 105);
   background: none; /* Transparent background */
   text-align: center;
   font-size: 15px;
