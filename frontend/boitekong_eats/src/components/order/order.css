@@ -248,9 +248,8 @@
 }
 .select-items {
   position: absolute;
-  background: radial-gradient(circle at right,
-   #dfdfdd, #fdfdfd, #fffffff8);
- 
+  background: radial-gradient(circle at right, #dfdfdd, #fdfdfd, #fffffff8);
+
   border: 1px solid rgb(108, 105, 105);
   border-radius: 4px;
   width: 100%;
@@ -265,39 +264,31 @@
 }
 .select-item:hover,
 .select-item.selected {
- 
   color: black;
 }
-
 .select-order .form-group input[type='number'] {
   width: 50px;
   font-weight: bold;
-  color:black;
+  color: black;
 }
-
 .select-order .form-group select:focus,
 .select-order .form-group input[type='number']:focus {
   outline: none;
 }
-
 .select-order .basket-btn,
 .select-order .cancel {
   width: 50%;
   padding: 10px;
   border: none;
-  
   color: #fff;
   font-size: 13px;
   cursor: pointer;
   /* margin: 0px; */
 }
-.select-order .basket-btn{
+.select-order .basket-btn {
   border-radius: 4px 0px 0px 4px;
-  
   /* background-color: #038230; */
-  background: radial-gradient(circle ,
-   #0e981c, #0e7f37, #095a2cf8);
- 
+  background: radial-gradient(circle, #0e981c, #0e7f37, #095a2cf8);
 }
 .select-order .cancel {
   background-color: var(--danger-color);
@@ -307,21 +298,18 @@
 .select-order .cancel:hover {
   opacity: 0.9;
 }
-
 .menu-img.select {
   width: 80%;
   height: 100px;
   object-fit: cover;
   border-radius: 4px;
 }
-
 form .buttons {
-  width:80%;
-  display:flex;
+  width: 80%;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .order-form {
   display: flex;
   flex-direction: column;
@@ -382,8 +370,7 @@ form .buttons {
   text-align: left;
   padding: 5px;
 }
-
-/* Media query for responsive design*/
+/* Media query for responsive design */
 @media only screen and (max-width: 425px) {
   .select-order {
     width: 270px;

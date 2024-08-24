@@ -1,14 +1,13 @@
 .navbar {
   position: sticky;
   top: 0;
-  height: 100px; /* Default height */
-  border-radius: 3px;
+  height: 100px;
   display: grid;
   grid-template-columns: 1fr 100px 1fr; /* Create three columns */
   align-items: center; /* Center items vertically */
-  background-color: var(--primary-bg);
+  background-color: #f3f5cc;
   z-index: 12; /* Ensure it's above other content */
-  border-bottom: 1px solid var(--light-color);
+  border-bottom: 1px solid black;
   transition: height 0.3s ease; /* Smooth transition for height change */
 }
 
@@ -18,7 +17,7 @@
   width: 25px;
   height: 25px;
   cursor: pointer;
-  color: #fdfdfd;
+  color: #0f0f0f;
   margin-left: 15px;
 }
 

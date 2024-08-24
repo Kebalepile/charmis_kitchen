@@ -1,26 +1,23 @@
-import React, { useState } from 'react';
-import { FaBars } from 'react-icons/fa'; // Updated icon
-import logo from '../../assets/1.png';
-import Sidebar from './Sidebar';
+import React, { useState } from 'react'
+import { FaBars } from 'react-icons/fa' // Updated icon
 
-import './nav.css';
+import Sidebar from './Sidebar'
 
-export default function Navbar() {
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+import './nav.css'
+
+export default function Navbar () {
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false)
 
   const toggleSidebar = () => {
-    setIsSidebarVisible(!isSidebarVisible);
-  };
+    setIsSidebarVisible(!isSidebarVisible)
+  }
+  const logo = './assets/images/boitekong-eats-logo.png'
 
   return (
     <>
-      <nav className="navbar">
-        <FaBars
-          id="side-bar"
-          title="Toggle menu"
-          onClick={toggleSidebar}
-        />
-        <img src={logo} alt="logo" id="logo" title="boitekong eats" />
+      <nav className='navbar'>
+        <FaBars id='side-bar' title='Toggle menu' onClick={toggleSidebar} />
+        <img src={logo} alt='logo' id='logo' title='boitekong eats' />
       </nav>
       {isSidebarVisible && (
         <Sidebar
@@ -29,5 +26,5 @@ export default function Navbar() {
         />
       )}
     </>
-  );
+  )
 }

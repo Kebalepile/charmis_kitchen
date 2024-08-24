@@ -8,7 +8,7 @@ import './about.css'
 export default function About () {
   const [language, setLanguage] = useState('setswana')
 
-  const founderImg = './assets/images/1.png'
+  const founderImg = './assets/images/boitekong-eats-logo.png'
   const englishContent = (
     <section>
       <img src={founderImg} alt="founder's image" className='founder-img' />
