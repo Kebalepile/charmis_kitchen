@@ -1,46 +1,65 @@
-import React from 'react';
-import { HiMegaphone } from 'react-icons/hi2';
-import { FaWhatsapp } from 'react-icons/fa'; // Import WhatsApp icon
-import { MdEmail } from 'react-icons/md'; // Import a better-looking email icon
+import React, { useState } from 'react'
+import { HiMegaphone } from 'react-icons/hi2'
+import { FaWhatsapp } from 'react-icons/fa'
+import { MdEmail } from 'react-icons/md'
+import Popup from '../popup/Popup'
+import termsAndConditions from '../../assets/policies/termsAndConditions'
 
-import './contact.css';
+import './contact.css'
 
-export default function Contact() {
+export default function Contact () {
+  const [popupMessage, setPopupMessage] = useState('')
+  const [showPopup, setShowPopup] = useState(false)
+
+  const closePopup = () => setShowPopup(false)
+
   return (
     <section id='contact'>
-  
-      <HiMegaphone />
-      <h3>Contact</h3>
+      <HiMegaphone id="megaphone" />
+      <h3>Contact Us</h3>
       <p>
-        For Inquiries, Please Call or WhatsApp:
-        <br />
-        <br />
-        <ul>
-          <li>
-            <FaWhatsapp
-              style={{
-                color: '#25D366', // WhatsApp green color
-                marginRight: '5px'
-              }}
-            />{' '}
-            <strong>+(27) 67 271 8347</strong>
-          </li>
-          <li>
-            {' '}
-            <MdEmail style={{ color: 'gray', marginRight: '5px' }} />
-            <a href='mailto:boitekongeats@gmail.com'>boitekongeats@gmail.com</a>
-          </li>
-        </ul>
+        For any inquiries or immediate assistance, please reach out to us via
+        WhatsApp or email:
       </p>
-
+      <ul id='contact-details'>
+        <li>
+          <FaWhatsapp
+            style={{
+              color: '#25D366',
+              marginRight: '10px',
+              fontSize: '24px'
+            }}
+          />
+          <strong>+(27) 67 271 8347</strong>
+        </li>
+        <li>
+          <MdEmail
+            style={{
+              color: 'gray',
+              marginRight: '10px',
+              fontSize: '24px'
+            }}
+          />
+          <a href='mailto:boitekongeats@gmail.com'>boitekongeats@gmail.com</a>
+        </li>
+      </ul>
+      <br />
       <p>
-        Feel free to reach out for orders, feedback, or any other questions. We
-        are here to help!
+        We’re here to help with your orders, feedback, or any questions you
+        might have. Feel free to contact us! Want to sell food with Boitekong
+        Eats? Just use the contact details above to get in touch with us.
       </p>
-      <p className='vendor-inquiry'>
-        If you want to become a vendor via Boitekong Eats and sell food, contact
-        us at the above details.
-      </p>
+      <button
+        id='read_terms'
+        type='button'
+        onClick={() => {
+          setPopupMessage(termsAndConditions)
+          setShowPopup(true)
+        }}
+      >
+        Read Terms & Conditions
+      </button>
+      {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
     </section>
-  );
+  )
 }

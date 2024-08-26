@@ -1,48 +1,52 @@
 #contact {
-  text-align: justify;
+  text-align: left;
   padding: 20px;
   max-width: 700px;
   background: radial-gradient(
-    circle,
+    circle at top,
     #000000,
-    #242121,
+    rgb(36, 35, 35),
     #131010
   ); /* Radial gradient background */
   color: white;
-  border-radius: 3px;
+  border-radius: 8px; /* More rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slight shadow for depth */
+  display: flex;
+  flex-direction: column;
+}
+
+#contact .popup {
+  color: black;
+}
+#megaphone{
+  height:30px;
+  width:30px;
+  margin:15px;
+}
+#contact h3 {
+  margin-top: 0;
+  font-size: 1.5rem; /* Larger font size for headings */
+}
+
+#contact p {
+  margin: 10px 0;
+  font-size: 1rem; /* Base font size for paragraphs */
 }
 
 #contact ul {
   list-style-type: none; /* Remove default bullet points */
-  padding-left: 20px; /* Indentation */
-  margin-bottom: 20px; /* Space between list and other content */
+  margin: 10px 0; /* Space between list and other content */
 }
 
-#contact li {
-  font-family: 'Arial', sans-serif; /* Choose a better font family */
-  font-size: clamp(0.2rem); /* Responsive font size */
+#contact-details li {
+  font-family: 'Arial', sans-serif; /* Font family */
+  font-size: 1rem; /* Base font size for list items */
   margin-bottom: 10px; /* Space between list items */
   line-height: 1.5; /* Improve readability */
-  padding-left: 25px; /* Additional indentation */
-  text-indent: -15px; /* Create hanging indent effect */
+  padding-left: 40px; /* Indentation for list items */
+  position: relative; /* Required for custom positioning */
   display: flex;
   align-items: center;
-}
-#contact li > *:first-child {
-  margin-right: 50px;
-  width: 30px;
-  height: 30px;
-}
-#contact li > *:nth-child(2) {
-  margin-left: 20px;
-}
-
-#contact li::before {
-  content: '•'; /* Custom bullet point */
-  color: var(--accent-color); /* Use your preferred accent color */
-  position: absolute;
-  left: 0;
-  top: 0;
 }
 
 #contact a {
@@ -56,8 +60,26 @@
 }
 
 .vendor-inquiry {
-  margin-top: 20px;
-  font-weight: bold;
-  /* color: var(--dark-color); */
-  text-align: left;
+  color: whitesmoke; /* Add color to improve visibility */
+  font-size: 1rem; /* Ensure consistent font size */
+}
+
+#read_terms {
+  background: none; /* No background */
+  border: none; /* Remove default border */
+  color: #fbfbfb; /* Button text color */
+  text-decoration: underline; /* Underline the text */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 14px;
+  display: block; /* Make button block-level */
+  margin: 20px auto; /* Center button and add margin */
+  transition: color 0.3s ease; /* Smooth color transition */
+}
+
+#read_terms:hover {
+  color: rgb(1, 162, 255); /* Darker blue on hover */
+}
+
+#read_terms:focus {
+  outline: none; /* Remove default outline */
 }

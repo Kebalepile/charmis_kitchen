@@ -4,8 +4,8 @@ import "./popup.css"
 
 const Popup = ({ message, onClose }) => {
   return (
-    <div id='popup-overlay'>
-      <div id='popup'>
+    <div className='popup-overlay'>
+      <div className='popup'>
         <div
           dangerouslySetInnerHTML={{ __html: message }}
         />

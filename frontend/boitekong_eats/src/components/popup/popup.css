@@ -1,4 +1,4 @@
-#popup-overlay {
+.popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -11,7 +11,7 @@
   z-index: 20;
 }
 
-#popup {
+.popup {
   background-color: #f3f5cc;
   padding: 30px;
   border-radius: 10px;
@@ -26,13 +26,13 @@
   align-items: center; /* Center content horizontally */
 }
 
-#popup p {
+.popup p {
   font-size: 1rem;
   line-height: 1.5;
   margin: 0;
 }
 
-#popup button {
+.popup button {
   margin-top: 10px; /* Margin on top to separate from content */
   padding: 10px 20px;
   background-color: #007bff;
@@ -42,6 +42,6 @@
   cursor: pointer;
 }
 
-#popup button:hover {
+.popup button:hover {
   background-color: #0056b3;
 }
