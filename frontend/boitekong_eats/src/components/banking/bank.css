@@ -14,7 +14,7 @@
 
 /* Main bank details container */
 .bank-details {
-  background-color: #f3f5cc;
+  background: radial-gradient(circle at right, #f4f5d4, #d1d498, #edf0a9);
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -39,10 +39,17 @@
 .bank-details p {
   font-size: 1rem;
   line-height: 1.5;
-  margin: 0;
+  margin: 2px;
 }
 
 /* Button styling for copying text */
+#proceed {
+  margin: 10px auto;
+  padding: 10px;
+  background-color: #00984a;
+  border: 2px solid white;
+  border-radius: 4px;
+}
 .bank-details button {
   margin-left: 10px; /* Add margin to the left of buttons */
   padding: 5px;
@@ -65,11 +72,15 @@
 
 /* Close button styling */
 .close-button {
-  position: fixed;
   background: none;
   border: none;
   cursor: pointer;
   color: #000;
   font-size: 24px;
   display: flex;
+}
+
+strong {
+  text-transform: uppercase;
+  word-break: normal;
 }

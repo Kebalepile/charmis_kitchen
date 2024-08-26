@@ -21,7 +21,6 @@ function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
       })
   }
 
-
   return (
     <div className='bank-overlay'>
       <div className='bank-details'>
@@ -33,7 +32,14 @@ function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
           <strong>Bank:</strong> Capitec Bank
         </p>
         <p>
-          <strong>Account Holder:</strong> K MOTSHOANA
+          <strong>Account Holder:</strong>{' '}
+          <span id='accountHolder'>K MOTSHOANA</span>
+          <button
+            id='copyAccountHolder'
+            onClick={() => copyText('accountHolder', 'copyAccountHolder')}
+          >
+            {copiedButtonId === 'copyAccountHolder' ? 'Copied' : 'Copy'}
+          </button>
         </p>
         <p>
           <strong>Account Number:</strong>
@@ -66,7 +72,7 @@ function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
           </button>
         </p>
         <p>
-          <strong>Payment Total: </strong>R{paymentTotal}
+          <strong>Payment Total: </strong>R {paymentTotal}
         </p>
         <h3>Choose Payment method of your choice</h3>
         <hr />
@@ -94,13 +100,13 @@ function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
         </ol>
 
         <p>
-          <strong>Please note:</strong> Time is limited. Payment must be made
+          <strong>Please note:</strong> {" "}Time is limited. Payment must be made
           within 30 minutes to avoid order cancellation.
         </p>
 
         <p>
           <strong>Confirmation:</strong>
-          You’ll receive an SMS confirmation within 10 minutes after payment. If
+          {" "} You’ll receive an SMS confirmation within 10 minutes after payment. If
           you don’t, contact us at
           <span id='contactNumber'> {phone}</span>
           <button
@@ -112,10 +118,11 @@ function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
           .
         </p>
 
-        <p>
+        {/* <p>
           <strong>Thank you for your payment!</strong> Your order is being
           processed.
-        </p>
+        </p> */}
+        <button id="proceed"onClick={onClose}>I understand</button>
       </div>
     </div>
   )

@@ -29,7 +29,7 @@ export const PAYMENT_FORM_INFO = "PAYMENT_FORM_INFO";
 export const ORDER_PUNCHED = "ORDER_PUNCED";
 export const SET_STREET_ADDRESS = "SET_STREET_ADDRESS";
 export const SET_HOUSENUMBER = "SET_HOUSENUMBER";
-export const REST_PAYMENT_STATE = "REST_PAYMENT_STATE";
+export const RESET_PAYMENT_STATE = "RESET_PAYMENT_STATE";
 export const ORDER_NUMBER = "ORDER_NUMBER";
 
 // export const WebSocketURL = "ws://localhost:5000";

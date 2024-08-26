@@ -9,10 +9,10 @@ import {
   SET_PAYMENT_METHOD,
   SET_DELIVERY_CHARGE,
   SET_TOTAL,
-  REST_PAYMENT_STATE
+  RESET_PAYMENT_STATE
 } from '../types'
 
-export default function PaymenReducer (state, action) {
+export default function PaymentReducer (state, action) {
   switch (action.type) {
     case ORDER_NUMBER:
       return {
@@ -64,7 +64,7 @@ export default function PaymenReducer (state, action) {
         ...state,
         orderSubmitted: action.payload
       }
-    case REST_PAYMENT_STATE:
+    case RESET_PAYMENT_STATE:
       return { ...action.payload }
     default:
       return state

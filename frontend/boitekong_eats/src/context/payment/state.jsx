@@ -12,7 +12,7 @@ import {
   SET_DELIVERY_CHARGE,
   SET_STREET_ADDRESS,
   SET_HOUSENUMBER,
-  REST_PAYMENT_STATE,
+  RESET_PAYMENT_STATE,
   ServerDomain,
   storePhoneNumber,
   STORE_ADDRESS
@@ -48,7 +48,7 @@ function PaymentProvider ({ children }) {
   } = state
 
   const resetPaymentState = () => {
-    dispatch({ type: REST_PAYMENT_STATE, payload: initialState })
+    dispatch({ type: RESET_PAYMENT_STATE, payload: initialState })
   }
   const handleNameChange = e => {
     dispatch({ type: SET_NAME, payload: e.target.value })
@@ -75,7 +75,10 @@ function PaymentProvider ({ children }) {
       payload: method === 'cash' ? 10 : method === 'online-delivery' ? 10 : 0
     })
   }
-
+/**
+ * @description Get sum of all items
+ * @param {array} items 
+ */
   const handlePaymentItems = items => {
     let paymentTotal = items.reduce((acc, cur) => {
       acc += cur.total
@@ -92,7 +95,9 @@ function PaymentProvider ({ children }) {
   }
 
   const initOrderNumber = () => {
+    // const orderNumber;
     dispatch({ type: ORDER_NUMBER, payload: generateOrderNumber() })
+    return orderNumber;
   }
   /**
    * @description format phone numbers

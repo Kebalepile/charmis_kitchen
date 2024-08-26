@@ -10,14 +10,14 @@ import './payment.css'
 
 const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const {
-    name = '', // Ensure name is defined
-    phone = '', // Ensure phone is defined
+    name = '',
+    phone = '',
     paymentMethod,
     deliveryCharge,
     paymentTotal,
     orderNumber,
-    streetAddress = '', // Ensure streetAddress is defined
-    houseNumber = '', // Ensure houseNumber is defined
+    streetAddress = '',
+    houseNumber = '',
     handleNameChange,
     handlePhoneChange,
     handlePaymentChange,
@@ -32,8 +32,8 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const [loading, setLoading] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
-  const [showBankingDetails, setShowBankingDetails] = useState(false) // To toggle BankingDetails component
-  const [orderId, setOrderId] = useState('') // To store the orderId
+  const [showBankingDetails, setShowBankingDetails] = useState(false)
+  const [orderId, setOrderId] = useState('')
 
   const onlinePaymentIsRequired = paymentTotal => {
     if (paymentTotal > 50) {
@@ -49,13 +49,15 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const BankAccountDetails = () => {
     setShowBankingDetails(true)
   }
+  
   const toggleBankingDetailsComponent = () => {
     setShowBankingDetails(!showBankingDetails)
   }
+
   useEffect(() => {
-    onlinePaymentIsRequired(paymentTotal)
     handlePaymentItems(paymentItems)
-  }, [paymentItems, paymentTotal]) // Added paymentTotal to the dependency array
+    initOrderNumber()
+  }, [paymentItems, paymentTotal, deliveryCharge])
 
   const validateForm = () => {
     const phoneRegex = /^0[0-9]{9}$/
@@ -77,24 +79,16 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
 
     return true
   }
-  /***
-   * @description Check to see if paymentTotal plus delivery charge exceed R50
-   * @param {number} paymentTotal
-   * @param {string} paymentMethod
-   * @return {undefined}
-   */
+
   const lastAmountCheck = (paymentTotal, paymentMethod) => {
     const yes = onlinePaymentIsRequired(paymentTotal)
     if (yes) {
-      // <option value='self-collect'>Self Collect (Free)</option>
-      // <option value='online'>Pay Online</option>
-      // <option value='cash'>Cash on Delivery (+R10.00)</option>
       switch (paymentMethod) {
         case 'self-collect':
         case 'cash':
           setPopupMessage(
-            `Sorry, your payment total is R${paymentTotal} which exceeds eligble cash payment amount (R50).
-           For this order to be succesful you need to pay via online.`
+            `Order total is R ${paymentTotal} which exceeds eligible cash payment amount (R50).
+           For this order to be successful you need to pay via online or bank transfer.`
           )
           setShowPopup(true)
           BankAccountDetails()
@@ -102,36 +96,26 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
       }
     }
   }
-  const handleFormSubmit = e => {
+
+  const handleFormSubmit = async e => {
     console.log('submit order')
     e.preventDefault()
 
     if (!validateForm()) {
       setLoading(false)
-      return // Stop execution if the form is not valid
+      return
     }
 
-    // Generate orderId
-    initOrderNumber()
+    
     setOrderId(orderNumber)
 
     switch (paymentMethod) {
       case 'online':
       case 'online-delivery':
         BankAccountDetails()
-        // handleYocoPayment()
         break
       default:
-        lastAmountCheck(paymentTotal + deliveryCharge, paymentMethod)
-
-        // setTimeout(() => {
-        // setLoading(true)
-        //   handleSubmitOrder()
-        //   resetOrderState()
-        //   resetPaymentState()
-        //   setLoading(false)
-        //   setShowPaymentForm(false)
-        // }, 7000)
+        lastAmountCheck(paymentTotal, paymentMethod)
         break
     }
   }
@@ -228,7 +212,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
                   handlePaymentChange(e)
                 }}
               >
-                <option value='self-collect'>Self Collect (Free)</option>
+                <option value='self-collect'>Pay on Collection</option>
                 <option value='online'>Pay Online</option>
                 <option value='cash'>Cash on Delivery (+R10.00)</option>
 
@@ -243,7 +227,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
           </p>
           <p>
             Required Payment Total:
-            <strong> R{paymentTotal + deliveryCharge}</strong>
+            <strong> R{paymentTotal}</strong>
           </p>
 
           {renderAddressInputs()}
@@ -253,7 +237,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
             <button
               type='button'
               onClick={() => {
-                // pass the Terms and Conditions to the popup component
                 setPopupMessage(termsAndConditions)
                 setShowPopup(true)
               }}
