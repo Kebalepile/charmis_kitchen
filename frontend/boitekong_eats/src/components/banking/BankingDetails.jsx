@@ -3,7 +3,7 @@ import { MdClose } from 'react-icons/md'; // Import the close icon
 import PropTypes from 'prop-types'; // Import PropTypes
 import './bank.css';
 
-function BankDetails({ orderId }) {
+function BankDetails({ orderId , phone, paymentTotal}) {
   const [copiedButtonId, setCopiedButtonId] = useState(null);
   const [isVisible, setIsVisible] = useState(true); // State to toggle visibility
 
@@ -68,6 +68,9 @@ function BankDetails({ orderId }) {
             {copiedButtonId === 'copyReference' ? 'Copied' : 'Copy'}
           </button>
         </p>
+        <p>
+          <strong>Payment Total: </strong>R{paymentTotal}
+        </p>
         <h3>Choose Payment method of your choice</h3>
         <hr />
         <h3>Via Banking App</h3>
@@ -102,7 +105,7 @@ function BankDetails({ orderId }) {
           <strong>Confirmation:</strong>
           You’ll receive an SMS confirmation within 10 minutes after payment. If
           you don’t, contact us at
-          <span id='contactNumber'> 555 555 555</span>
+          <span id='contactNumber'> {phone}</span>
           <button
             id='copyContactNumber'
             onClick={() => copyText('contactNumber', 'copyContactNumber')}

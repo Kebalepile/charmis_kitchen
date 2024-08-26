@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import PaymentContext from '../../context/payment/context'
 import Loading from '../loading/Loading'
 import Popup from '../popup/Popup'
-// import { ServerDomain } from '../context/types'
 import termsAndConditions from '../../assets/policies/termsAndConditions'
+import BankingDetails from '../banking/BankingDetails'
+
 import './payment.css'
 
 const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
@@ -29,27 +30,19 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const [loading, setLoading] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
-  // const [yocoSdkLoaded, setYocoSdkLoaded] = useState(false)
+  const [showBankingDetails, setShowBankingDetails] = useState(false) // To toggle BankingDetails component
+  const [orderId, setOrderId] = useState('') // To store the orderId
 
   useEffect(() => {
+    console.log(paymentTotal)
+    if (paymentTotal > 50) {
+      setPopupMessage(
+        'Order total exceeds R50. You have to pay via online payment or cash transfer after clicking "Place Order".'
+      )
+      setShowPopup(true)
+    }
     handlePaymentItems(paymentItems)
-    // Load Yoco script
-    // const script = document.createElement('script')
-    // script.src = 'https://js.yoco.com/sdk/v1/yoco-sdk-web.js'
-    // script.async = true
-    // script.onload = () => {
-    //   console.log('Yoco SDK loaded successfully')
-    //   setYocoSdkLoaded(true)
-    // }
-    // script.onerror = () => {
-    //   console.error('Failed to load Yoco SDK')
-    // }
-    // document.body.appendChild(script)
-
-    // return () => {
-    //   document.body.removeChild(script)
-    // }
-  }, [paymentItems])
+  }, [paymentItems, paymentTotal]) // Added paymentTotal to the dependency array
 
   const validateForm = () => {
     const phoneRegex = /^0[0-9]{9}$/
@@ -72,81 +65,34 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     return true
   }
 
-  // const handleYocoPayment = (additionalCharge = 0) => {
-  //   if (yocoSdkLoaded) {
-  //     const yoco = new window.YocoSDK({
-  //       publicKey: '' // Replace with your actual public key
-  //     })
-
-  //     yoco.showPopup({
-  //       amountInCents: (paymentTotal + deliveryCharge + additionalCharge) * 100, // Convert to cents
-  //       currency: 'ZAR',
-  //       name: 'B-town Bites',
-  //       description: 'Order Payment',
-  //       callback: async result => {
-  //         if (result.error) {
-  //           setPopupMessage('Error: ' + result.error.message)
-  //           setShowPopup(true)
-  //         } else {
-  //           try {
-  //             const developmentServer = 'http://localhost:5000'
-  //             const response = await fetch(
-  //               `${developmentServer}/process-payment`,
-  //               {
-  //                 method: 'POST',
-  //                 headers: {
-  //                   'Content-Type': 'application/json'
-  //                 },
-  //                 body: JSON.stringify({
-  //                   token: result.id,
-  //                   paymentTotal: paymentTotal + additionalCharge,
-  //                   deliveryCharge
-  //                 })
-  //               }
-  //             )
-  //             const data = await response.json()
-  //             console.log(data)
-  //             if (data.success) {
-  //               handleSubmitOrder()
-  //               resetOrderState()
-  //               resetPaymentState()
-  //               setShowPaymentForm(false)
-  //             } else {
-  //               setPopupMessage('Payment failed.')
-  //               setShowPopup(true)
-  //             }
-  //           } catch (error) {
-  //             console.error('Fetch error:', error)
-  //             setPopupMessage('Payment failed.')
-  //             setShowPopup(true)
-  //           }
-  //         }
-  //       }
-  //     })
-  //   }
-  // }
-
   const handleFormSubmit = e => {
     e.preventDefault()
     setLoading(true)
+
     if (!validateForm()) {
       setLoading(false)
       return // Stop execution if the form is not valid
     }
 
+    // Generate orderId
+    const generatedOrderId = `${name}_${phone}`
+    setOrderId(generatedOrderId)
+
     switch (paymentMethod) {
       case 'online':
       case 'online-delivery':
+        setShowBankingDetails(true)
         // handleYocoPayment()
         break
-      default: // 7 seconds
-        setTimeout(() => {
-          handleSubmitOrder()
-          resetOrderState()
-          resetPaymentState()
-          setLoading(false)
-          setShowPaymentForm(false)
-        }, 7000)
+      default:
+        setShowBankingDetails(true)
+        // setTimeout(() => {
+        //   handleSubmitOrder()
+        //   resetOrderState()
+        //   resetPaymentState()
+        //   setLoading(false)
+        //   setShowPaymentForm(false)
+        // }, 7000)
         break
     }
   }
@@ -244,11 +190,12 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
                 }}
               >
                 <option value='self-collect'>Self Collect (Free)</option>
+                <option value='online'>Pay Online</option>
                 <option value='cash'>Cash on Delivery (+R10.00)</option>
-                {/* <option value='online'>Pay Online</option>
+
                 <option value='online-delivery'>
-                  Pay Online + Delivery (+R15.00)
-                </option> */}
+                  Pay Online + Delivery (+R10.00)
+                </option>
               </select>
             </label>
           </div>
@@ -290,6 +237,13 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
         </div>
       )}
       {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
+      {showBankingDetails && (
+        <BankingDetails
+          phone={phone}
+          orderId={orderId}
+          paymentTotal={paymentTotal}
+        />
+      )}
     </div>
   )
 }
