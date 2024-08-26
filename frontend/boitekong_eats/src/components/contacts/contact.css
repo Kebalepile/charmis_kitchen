@@ -2,12 +2,7 @@
   text-align: left;
   padding: 20px;
   max-width: 700px;
-  background: radial-gradient(
-    circle at top,
-    #000000,
-    #242323,
-    #131010
-  ); /* Radial gradient background */
+  background: radial-gradient(circle at top, #000000, #242323, #131010);
   color: white;
   border-radius: 8px 8px 0px 0px; /* More rounded corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slight shadow for depth */
@@ -28,9 +23,9 @@
 }
 #contact p {
   margin: 10px 0;
-  font-size: 1rem; /* Base font size for paragraphs */
+  font-size: 1rem;
+  /* Base font size for paragraphs */
 }
-
 #contact ul {
   list-style-type: none; /* Remove default bullet points */
   margin: 10px 0; /* Space between list and other content */
@@ -56,11 +51,9 @@
   color: var(--accent-color); /* Change link color on hover */
 }
 .vendor-inquiry {
-  color: whitesmoke;
-  /* Add color to improve visibility */
+  color: whitesmoke; /* Add color to improve visibility */
   font-size: 1rem; /* Ensure consistent font size */
 }
-
 #read_terms {
   background: none; /* No background */
   border: none; /* Remove default border */
@@ -89,4 +82,27 @@
   #contact p {
     padding: 10px;
   }
+}
+#bank_account {
+  margin-top: 10px;
+  background: radial-gradient(circle at right, #ffffff, #f0f0f0);
+  border-radius: 2px;
+  padding: 5px 5px 5px 30px;
+  color: black; /* Change text color to black */
+}
+
+#bank_account hr {
+  width: 60%;
+  margin-left: 0; /* Align to the left */
+  margin-bottom: 30px;
+  border: 1px dashed black; /* Customize the line style */
+  border-radius: 3px;
+}
+#bank_account strong {
+  color: #333333; /* A darker shade for emphasis */
+}
+#capitecLogo {
+  width: 120px;
+  height: 120px;
+  display: block;
 }

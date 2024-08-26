@@ -4,6 +4,7 @@ import { FaWhatsapp } from 'react-icons/fa'
 import { MdEmail } from 'react-icons/md'
 import Popup from '../popup/Popup'
 import termsAndConditions from '../../assets/policies/termsAndConditions'
+import capitecLogo from '../../assets/images/capitec-logo.svg'
 
 import './contact.css'
 
@@ -15,7 +16,7 @@ export default function Contact () {
 
   return (
     <section id='contact'>
-      <HiMegaphone id="megaphone" />
+      <HiMegaphone id='megaphone' />
       <h3>Contact Us</h3>
       <p>
         For any inquiries or immediate assistance, please reach out to us via
@@ -49,6 +50,26 @@ export default function Contact () {
         might have. Feel free to contact us! Want to sell food with Boitekong
         Eats? Just use the contact details above to get in touch with us.
       </p>
+      <section id='bank_account'>
+        <img src={capitecLogo} alt='Capitec Bank Logo' id='capitecLogo' />
+       <hr/>
+        <strong>Banking Details</strong>
+        <p>
+          <strong>Bank:</strong> Capitec Bank
+        </p>
+        <p>
+          <strong>Account Holder:</strong>
+          <span id='accountHolder'>K MOTSHOANA</span>
+        </p>
+        <p>
+          <strong>Account Number:</strong>
+          <span id='accountNumber'>1761303595</span>
+        </p>
+        <p>
+          <strong>Branch Code:</strong>
+          <span id='branchCode'>470010</span>
+        </p>
+      </section>
       <button
         id='read_terms'
         type='button'
