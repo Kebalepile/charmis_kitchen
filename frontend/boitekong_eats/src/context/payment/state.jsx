@@ -75,10 +75,10 @@ function PaymentProvider ({ children }) {
       payload: method === 'cash' ? 10 : method === 'online-delivery' ? 10 : 0
     })
   }
-/**
- * @description Get sum of all items
- * @param {array} items 
- */
+  /**
+   * @description Get sum of all items
+   * @param {array} items
+   */
   const handlePaymentItems = items => {
     let paymentTotal = items.reduce((acc, cur) => {
       acc += cur.total
@@ -97,7 +97,7 @@ function PaymentProvider ({ children }) {
   const initOrderNumber = () => {
     // const orderNumber;
     dispatch({ type: ORDER_NUMBER, payload: generateOrderNumber() })
-    return orderNumber;
+    return orderNumber
   }
   /**
    * @description format phone numbers
@@ -258,44 +258,39 @@ function PaymentProvider ({ children }) {
    * @returns array of strings
    */
   const initOrderMessages = orderNumber => {
-    const getDeliveryInfo = type => {
-      type = type.trim()
-      if (['online-delivery', 'cash'].includes(type)) {
-        return { deliveryType: 'delivery', deliver: 'yes' }
+    const baseMessage = `hey ${name}, `
+    let customerMessage = ''
+
+    const paymentPendingMessage = `${baseMessage}your placed order at BoitekongEats is pending. Pay R ${paymentTotal} to account number details found on the web-app. Use ${orderNumber} as reference. Once payment is successful, your order will be processed.`
+    const selfCollectMessage = `${baseMessage}your order is being processed at BoitekongEats. You'll be notified to come and collect once done. The total is R ${paymentTotal}. Track your order with ${orderNumber} on the web-app.`
+    const cashDeliveryMessage = `${baseMessage}your order is being processed at BoitekongEats. Pay R ${paymentTotal} on delivery. Track your order with ${orderNumber} on the web-app.`
+
+    if (
+      paymentMethod === 'online-delivery' ||
+      paymentMethod === 'online' ||
+      paymentTotal > 50
+    ) {
+      customerMessage = paymentPendingMessage
+    } else if (paymentTotal <= 50) {
+      if (paymentMethod === 'self-collect') {
+        customerMessage = selfCollectMessage
+      } else if (paymentMethod === 'cash') {
+        customerMessage = cashDeliveryMessage
       }
-      if (['online', 'online-self-collect', 'self-collect'].includes(type)) {
-        return { deliveryType: 'self-collect', deliver: 'self-collect' }
-      }
-      return { deliveryType: 'unknown', deliver: 'unknown' }
     }
-
-    const { deliveryType, deliver } = getDeliveryInfo(paymentMethod)
-
-    const customerMessage = [
-      `Boitekong Eats order notification: Order: ${orderNumber}`,
-      `Name: ${name}`,
-      phone ? `Phone: ${phone}` : null,
-      streetAddress ? `Address: ${streetAddress}, House: ${houseNumber}` : null,
-      `Delivery: ${deliver}`,
-      `Total: R${paymentTotal + deliveryCharge}`,
-      deliveryCharge
-        ? `Deliver to ${streetAddress}, ${houseNumber}`
-        : `Collection at ${STORE_ADDRESS}`,
-      `You will be notified via SMS when the order is ready.`,
-      `Call ${storePhoneNumber} for queries.`,
-      `Track your order via search order with order number ${orderNumber}.`
-    ]
-      .filter(Boolean)
-      .join('. ')
 
     const storeMessage = [
       `Boitekong Eats, order received! Order: ${orderNumber}`,
       `Name: ${name}`,
       phone ? `Phone: ${phone}` : null,
       streetAddress ? `Address: ${streetAddress}, House: ${houseNumber}` : null,
-      `Delivery: ${deliver}`,
+      `Delivery: ${
+        paymentMethod.includes('delivery') ? 'yes' : 'self-collect'
+      }`,
       `Total: R${paymentTotal + deliveryCharge}`,
-      `Notify ${name} at ${phone} when the order is ready for ${deliveryType}.`
+      `Notify ${name} at ${phone} when the order is ready for ${
+        paymentMethod.includes('delivery') ? 'delivery' : 'self-collect'
+      }.`
     ]
       .filter(Boolean)
       .join('. ')
