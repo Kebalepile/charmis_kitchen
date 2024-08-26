@@ -9,25 +9,23 @@
     #131010
   ); /* Radial gradient background */
   color: white;
-  border-radius: 8px; /* More rounded corners */
+  border-radius: 8px 8px 0px 0px; /* More rounded corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slight shadow for depth */
   display: flex;
   flex-direction: column;
 }
-
 #contact .popup {
   color: black;
 }
-#megaphone{
-  height:30px;
-  width:30px;
-  margin:15px;
+#megaphone {
+  height: 30px;
+  width: 30px;
+  margin: 15px;
 }
 #contact h3 {
   margin-top: 0;
   font-size: 1.5rem; /* Larger font size for headings */
 }
-
 #contact p {
   margin: 10px 0;
   font-size: 1rem; /* Base font size for paragraphs */
@@ -43,24 +41,23 @@
   font-size: 1rem; /* Base font size for list items */
   margin-bottom: 10px; /* Space between list items */
   line-height: 1.5; /* Improve readability */
-  padding-left: 40px; /* Indentation for list items */
+  padding-left: 40px;
+  /* Indentation for list items */
   position: relative; /* Required for custom positioning */
   display: flex;
   align-items: center;
 }
-
 #contact a {
   text-decoration: none;
   color: var(--primary-color); /* Set consistent link color */
   font-weight: bold;
 }
-
 #contact a:hover {
   color: var(--accent-color); /* Change link color on hover */
 }
-
 .vendor-inquiry {
-  color: whitesmoke; /* Add color to improve visibility */
+  color: whitesmoke;
+  /* Add color to improve visibility */
   font-size: 1rem; /* Ensure consistent font size */
 }
 
@@ -75,11 +72,21 @@
   margin: 20px auto; /* Center button and add margin */
   transition: color 0.3s ease; /* Smooth color transition */
 }
-
 #read_terms:hover {
   color: rgb(1, 162, 255); /* Darker blue on hover */
 }
-
 #read_terms:focus {
   outline: none; /* Remove default outline */
+}
+@media screen and (max-width: 320px) {
+  #contact-details li {
+    padding: 0;
+  }
+  #contact-details p {
+    margin: 0;
+    text-align: justify;
+  }
+  #contact p {
+    padding: 10px;
+  }
 }

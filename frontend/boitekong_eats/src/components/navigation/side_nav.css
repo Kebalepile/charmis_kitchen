@@ -102,3 +102,14 @@
     opacity: 0;
   }
 }
+
+@media screen and (max-width: 320px) {
+  #side-bar {
+    margin: auto;
+  }
+  .sidebar-nav {
+    left: 1px;
+    border-left: none;
+    border-radius: 0 0 5px 0;
+  }
+}

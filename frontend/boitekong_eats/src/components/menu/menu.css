@@ -157,3 +157,9 @@
     max-height: 80%;
   }
 }
+
+@media screen and (max-width: 320px) {
+  #menu {
+    padding: 0;
+  }
+}
