@@ -4,8 +4,9 @@ import PaymentContext from '../../context/payment/context'
 import Loading from '../loading/Loading'
 import Popup from '../popup/Popup'
 // import { ServerDomain } from '../context/types'
-
+import termsAndConditions from '../../assets/policies/termsAndConditions'
 import './payment.css'
+
 const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const {
     name = '', // Ensure name is defined
@@ -260,7 +261,20 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
           </p>
 
           {renderAddressInputs()}
-
+          <label htmlFor='termsCheckbox' id='terms'>
+            <input type='checkbox' name='terms' id='termsCheckbox' required />I
+            agree with the Terms and Conditions
+            <button
+              type='button'
+              onClick={() => {
+                // pass the Terms and Conditions to the popup component
+                setPopupMessage(termsAndConditions)
+                setShowPopup(true)
+              }}
+            >
+              See Terms and Conditions
+            </button>
+          </label>
           <button type='submit' className='basket-btn'>
             Place Order
           </button>

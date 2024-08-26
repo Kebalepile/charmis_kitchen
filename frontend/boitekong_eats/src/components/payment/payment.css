@@ -157,3 +157,43 @@
     width: 260px;
   }
 }
+/* Styles for the terms checkbox container */
+#payment-form #terms {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Styles for the checkbox input */
+#payment-form #terms input[type='checkbox'] {
+  margin-right: 10px;
+  accent-color: #0077b6; /* Custom color for the checkbox */
+}
+
+/* Styles for the terms label text */
+#payment-form #terms {
+  font-weight: normal; /* Change font weight if needed */
+}
+
+/* Styles for the 'See Terms and Conditions' button */
+#payment-form #terms button {
+  background: none; /* No background */
+  border: none; /* Remove default border */
+  color: #0077b6; /* Button text color */
+  text-decoration: underline; /* Underline the text */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 14px;
+  margin-left: 10px;
+  transition: color 0.3s ease; /* Smooth color transition */
+}
+
+#payment-form #terms button:hover {
+  color: #005f99; /* Darker blue on hover */
+}
+
+#payment-form #terms button:focus {
+  outline: none; /* Remove default outline */
+}
+
