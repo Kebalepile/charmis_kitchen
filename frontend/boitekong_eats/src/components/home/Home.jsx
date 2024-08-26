@@ -4,7 +4,7 @@ import Slideshow from '../slideShow/Slideshow'
 import SearchOrder from '../search/SearchOrder'
 import PaymentContext from '../../context/payment/context'
 import Popup from '../popup/Popup'
-
+import BankDetails from '../banking/BankingDetails'
 import "./home.css"
 
 export default function Home () {
@@ -32,6 +32,7 @@ export default function Home () {
     <>
       <section id='home'>
         <Slideshow />
+        <BankDetails orderId="keba"/>
         {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
       </section>
       <SearchOrder />
