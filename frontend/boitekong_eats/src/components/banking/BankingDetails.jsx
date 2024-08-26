@@ -1,43 +1,40 @@
-import React, { useState } from 'react';
-import { MdClose } from 'react-icons/md'; // Import the close icon
-import PropTypes from 'prop-types'; // Import PropTypes
-import './bank.css';
+import React, { useState } from 'react'
+import { MdClose } from 'react-icons/md' // Import the close icon
+import PropTypes from 'prop-types' // Import PropTypes
+import './bank.css'
 
-function BankDetails({ orderId , phone, paymentTotal}) {
-  const [copiedButtonId, setCopiedButtonId] = useState(null);
-  const [isVisible, setIsVisible] = useState(true); // State to toggle visibility
+function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
+  const [copiedButtonId, setCopiedButtonId] = useState(null)
 
   const copyText = (elementId, buttonId) => {
-    const textToCopy = document.getElementById(elementId).innerText;
-    navigator.clipboard.writeText(textToCopy)
+    const textToCopy = document.getElementById(elementId).innerText
+    navigator.clipboard
+      .writeText(textToCopy)
       .then(() => {
-        setCopiedButtonId(buttonId);
+        setCopiedButtonId(buttonId)
         setTimeout(() => {
-          setCopiedButtonId(null);
-        }, 4000);
+          setCopiedButtonId(null)
+        }, 4000)
       })
       .catch(err => {
-        console.error('Failed to copy text: ', err);
-      });
-  };
-
-  const handleClose = () => {
-    setIsVisible(false); // Set visibility to false when close button is clicked
-  };
-
-  if (!isVisible) {
-    return null; // Render nothing if not visible
+        console.error('Failed to copy text: ', err)
+      })
   }
+
 
   return (
     <div className='bank-overlay'>
       <div className='bank-details'>
-        <button className='close-button' onClick={handleClose}>
+        <button className='close-button' onClick={onClose}>
           <MdClose size={24} />
         </button>
         <h2>Banking Details</h2>
-        <p><strong>Bank:</strong> Capitec Bank</p>
-        <p><strong>Account Holder:</strong> K MOTSHOANA</p>
+        <p>
+          <strong>Bank:</strong> Capitec Bank
+        </p>
+        <p>
+          <strong>Account Holder:</strong> K MOTSHOANA
+        </p>
         <p>
           <strong>Account Number:</strong>
           <span id='accountNumber'> 1761303595</span>
@@ -76,7 +73,7 @@ function BankDetails({ orderId , phone, paymentTotal}) {
         <h3>Via Banking App</h3>
         <ol>
           <li>Open your app</li>
-          <li>Select "Transfer"</li>
+          <li>Select &ldquo;Transfer&ldquo;</li>
           <li>Enter the account details and Reference Number</li>
           <li>Complete the payment</li>
         </ol>
@@ -84,7 +81,7 @@ function BankDetails({ orderId , phone, paymentTotal}) {
         <h3>Via ATM</h3>
         <ol>
           <li>Visit the nearest ATM</li>
-          <li>Choose "Deposit" or "Transfer"</li>
+          <li>Choose &ldquo;Deposit&ldquo; or &ldquo;Transfer&ldquo;</li>
           <li>Enter the account details and Reference Number</li>
           <li>Complete the payment</li>
         </ol>
@@ -121,12 +118,14 @@ function BankDetails({ orderId , phone, paymentTotal}) {
         </p>
       </div>
     </div>
-  );
+  )
 }
 
-// Define PropTypes for the component
 BankDetails.propTypes = {
-  orderId: PropTypes.string.isRequired, // orderId is required and should be a string
-};
+  orderId: PropTypes.number.isRequired,
+  phone: PropTypes.string.isRequired,
+  paymentTotal: PropTypes.number.isRequired,
+  onClose: PropTypes.func.isRequired
+}
 
-export default BankDetails;
+export default BankDetails

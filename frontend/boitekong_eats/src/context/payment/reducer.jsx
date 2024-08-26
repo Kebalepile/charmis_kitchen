@@ -1,6 +1,6 @@
 import {
   PAYMENT,
-  // PAYMENT_FORM_INFO,
+  ORDER_NUMBER,
   SET_STREET_ADDRESS,
   SET_HOUSENUMBER,
   ORDER_PUNCHED,
@@ -14,6 +14,11 @@ import {
 
 export default function PaymenReducer (state, action) {
   switch (action.type) {
+    case ORDER_NUMBER:
+      return {
+        ...state,
+        orderNumber: action.payload
+      }
     case SET_TOTAL:
       return {
         ...state,

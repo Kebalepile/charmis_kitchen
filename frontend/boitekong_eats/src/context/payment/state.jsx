@@ -3,6 +3,7 @@ import PaymentContext from './context'
 import PaymentReducer from './reducer'
 import PropTypes from 'prop-types'
 import {
+  ORDER_NUMBER,
   PAYMENT,
   ORDER_PUNCHED,
   SET_NAME,
@@ -28,7 +29,8 @@ function PaymentProvider ({ children }) {
     deliveryCharge: 0,
     paymentTotal: 0,
     paymentItems: [],
-    orderSubmitted: false
+    orderSubmitted: false,
+    orderNumber: 0
   }
 
   const [state, dispatch] = useReducer(PaymentReducer, initialState)
@@ -41,7 +43,8 @@ function PaymentProvider ({ children }) {
     deliveryCharge,
     paymentTotal,
     paymentItems,
-    orderSubmitted
+    orderSubmitted,
+    orderNumber
   } = state
 
   const resetPaymentState = () => {
@@ -69,7 +72,7 @@ function PaymentProvider ({ children }) {
     dispatch({ type: SET_PAYMENT_METHOD, payload: method })
     dispatch({
       type: SET_DELIVERY_CHARGE,
-      payload: method === 'cash' ? 10 : method === 'online-delivery' ? 15 : 0
+      payload: method === 'cash' ? 10 : method === 'online-delivery' ? 10 : 0
     })
   }
 
@@ -86,6 +89,10 @@ function PaymentProvider ({ children }) {
   }
   const restPunchedOrder = () => {
     dispatch({ type: ORDER_PUNCHED, payload: !orderSubmitted })
+  }
+
+  const initOrderNumber = () => {
+    dispatch({ type: ORDER_NUMBER, payload: generateOrderNumber() })
   }
   /**
    * @description format phone numbers
@@ -173,7 +180,7 @@ function PaymentProvider ({ children }) {
         alert('⚠️ Rebereka gare ga 6:30 AM le 18:30 PM. 🌞')
         break
       case false:
-        updateOrderBoard(generateOrderNumber())
+        updateOrderBoard(orderNumber)
         break
     }
   }
@@ -302,6 +309,7 @@ function PaymentProvider ({ children }) {
         deliveryCharge,
         paymentTotal,
         orderSubmitted,
+        orderNumber,
         handleNameChange,
         handlePhoneChange,
         handlePaymentChange,
@@ -310,7 +318,8 @@ function PaymentProvider ({ children }) {
         handleHouseNumbersChange,
         handleStreetAddressChange,
         restPunchedOrder,
-        resetPaymentState
+        resetPaymentState,
+        initOrderNumber
       }}
     >
       {children}
