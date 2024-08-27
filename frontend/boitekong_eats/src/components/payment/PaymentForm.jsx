@@ -50,9 +50,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     setShowBankingDetails(true)
   }
 
-  const toggleBankingDetailsComponent = () => {
-    setShowBankingDetails(!showBankingDetails)
-  }
+  
 
   useEffect(() => {
     handlePaymentItems(paymentItems)
@@ -96,36 +94,50 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
       }
     }
   }
+// Method to handle the delayed submission and state reset
+const delayedSubmit = () => {
+  setTimeout(() => {
+    setLoading(true)
+    handleSubmitOrder()
+    resetOrderState()
+    resetPaymentState()
+    setLoading(false)
+    setShowPaymentForm(false)
+  }, 7000)
+}
 
-  const handleFormSubmit = async e => {
-    
-    e.preventDefault()
+const toggleBankingDetailsComponent = () => {
+  setShowBankingDetails(!showBankingDetails)
 
-    if (!validateForm()) {
-      setLoading(false)
-      return
-    }
-
-    setOrderId(orderNumber)
-
-    switch (paymentMethod) {
-      case 'online':
-      case 'online-delivery':
-        BankAccountDetails()
-        break
-      default:
-        lastAmountCheck(paymentTotal, paymentMethod)
-        setTimeout(() => {
-          setLoading(true)
-          handleSubmitOrder()
-          resetOrderState()
-          resetPaymentState()
-          setLoading(false)
-          setShowPaymentForm(false)
-        }, 7000)
-        break
-    }
+  if (showBankingDetails) { // Runs when BankingDetails is being closed
+    delayedSubmit() // Run the delayed submit after closing BankingDetails
   }
+}
+
+const handleFormSubmit = async e => {
+  e.preventDefault()
+
+  if (!validateForm()) {
+    setLoading(false)
+    return
+  }
+
+  setOrderId(orderNumber)
+
+  switch (paymentMethod) {
+    case 'online':
+    case 'online-delivery':
+      BankAccountDetails()
+      break
+    default:
+      lastAmountCheck(paymentTotal, paymentMethod)
+      if (!showBankingDetails) {
+        delayedSubmit() // Run the delayed submit immediately if BankingDetails is not shown
+      }
+      break
+  }
+}
+
 
   const closePopup = () => {
     setShowPopup(false)
