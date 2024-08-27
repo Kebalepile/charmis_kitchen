@@ -49,7 +49,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const BankAccountDetails = () => {
     setShowBankingDetails(true)
   }
-  
+
   const toggleBankingDetailsComponent = () => {
     setShowBankingDetails(!showBankingDetails)
   }
@@ -98,7 +98,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   }
 
   const handleFormSubmit = async e => {
-    console.log('submit order')
+    
     e.preventDefault()
 
     if (!validateForm()) {
@@ -106,7 +106,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
       return
     }
 
-    
     setOrderId(orderNumber)
 
     switch (paymentMethod) {
@@ -116,6 +115,14 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
         break
       default:
         lastAmountCheck(paymentTotal, paymentMethod)
+        setTimeout(() => {
+          setLoading(true)
+          handleSubmitOrder()
+          resetOrderState()
+          resetPaymentState()
+          setLoading(false)
+          setShowPaymentForm(false)
+        }, 7000)
         break
     }
   }

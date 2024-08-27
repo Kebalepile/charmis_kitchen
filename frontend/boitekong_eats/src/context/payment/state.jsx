@@ -13,9 +13,7 @@ import {
   SET_STREET_ADDRESS,
   SET_HOUSENUMBER,
   RESET_PAYMENT_STATE,
-  ServerDomain,
-  storePhoneNumber,
-  STORE_ADDRESS
+  ServerDomain
 } from '../types'
 import { generateOrderNumber, checkTime } from '../../utils/Utils'
 
@@ -139,13 +137,12 @@ function PaymentProvider ({ children }) {
   }
 
   /**
-   * @description  ensures that SMS messages are sent to all required recipients in parallel
-   * @param {string} customerMessage
-   * @param {string} storeMessage
+   * @description ensures that SMS messages are sent to all required recipients in parallel
+   * @param {string|null} customerMessage
+   * @param {string|null} storeMessage
    * @param {array} supportPhones
    * @param {array} cookPhones
    */
-
   const orderNotification = async (
     customerMessage,
     storeMessage,
@@ -158,17 +155,29 @@ function PaymentProvider ({ children }) {
       cookPhones = cookPhones.map(phone => formatCellNumber(phone))
       const customerNumber = formatCellNumber(state.phone)
 
-      // Send SMS to customer
-      const customerPromise = sendSms(customerNumber, customerMessage)
+      // Prepare promises array
+      const promises = []
 
-      // Send SMS to all support and cook phone numbers
-      const supportPromises = supportPhones.map(phone =>
-        sendSms(phone, storeMessage)
-      )
-      const cookPromises = cookPhones.map(phone => sendSms(phone, storeMessage))
+      // If customerMessage is neither null nor an empty string, send SMS to customer
+      if (customerMessage && customerMessage.trim()) {
+        const customerPromise = sendSms(customerNumber, customerMessage)
+        promises.push(customerPromise)
+      }
+
+      // If storeMessage is neither null nor an empty string, send SMS to all support and cook phone numbers
+      if (storeMessage && storeMessage.trim()) {
+        const supportPromises = supportPhones.map(phone =>
+          sendSms(phone, storeMessage)
+        )
+        const cookPromises = cookPhones.map(phone =>
+          sendSms(phone, storeMessage)
+        )
+
+        promises.push(...supportPromises, ...cookPromises)
+      }
 
       // Wait for all promises to resolve
-      await Promise.all([customerPromise, ...supportPromises, ...cookPromises])
+      await Promise.all(promises)
 
       // Call restPunchedOrder() after all SMSs are sent
       restPunchedOrder()
@@ -237,7 +246,10 @@ function PaymentProvider ({ children }) {
       })
 
       if (response.ok) {
-        const [customerMessage, storeMessage] = initOrderMessages(orderNumber)
+        // Destructure with default values
+        const [customerMessage = null, storeMessage = null] =
+          initOrderMessages(orderNumber)
+
         orderNotification(
           customerMessage,
           storeMessage,
@@ -253,7 +265,7 @@ function PaymentProvider ({ children }) {
   }
 
   /**
-   * @description creat text emessages.
+   * @description create text messages.
    * @param {number} orderNumber
    * @returns array of strings
    */
@@ -287,7 +299,7 @@ function PaymentProvider ({ children }) {
       `Delivery: ${
         paymentMethod.includes('delivery') ? 'yes' : 'self-collect'
       }`,
-      `Total: R${paymentTotal + deliveryCharge}`,
+      `Total: R${paymentTotal}`,
       `Notify ${name} at ${phone} when the order is ready for ${
         paymentMethod.includes('delivery') ? 'delivery' : 'self-collect'
       }.`
@@ -295,7 +307,17 @@ function PaymentProvider ({ children }) {
       .filter(Boolean)
       .join('. ')
 
-    return [customerMessage, storeMessage]
+    // Return both customerMessage and storeMessage if customerMessage
+    // is either selfCollectMessage or cashDeliveryMessage
+    if (
+      customerMessage === selfCollectMessage ||
+      customerMessage === cashDeliveryMessage
+    ) {
+      return [customerMessage, storeMessage]
+    }
+
+    // Return customerMessage normally
+    return [customerMessage]
   }
 
   return (
