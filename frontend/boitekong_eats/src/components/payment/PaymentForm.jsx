@@ -94,17 +94,24 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
       }
     }
   }
-// Method to handle the delayed submission and state reset
+/**
+ * @description Method to handle the delayed submission and state reset
+ */
 const delayedSubmit = () => {
+  setLoading(true)
+  
   setTimeout(() => {
-    setLoading(true)
     handleSubmitOrder()
     resetOrderState()
-    resetPaymentState()
-    setLoading(false)
-    setShowPaymentForm(false)
+    const done = resetPaymentState()
+    
+    if (done) {
+      setLoading(false)
+      setShowPaymentForm(false)
+    }
   }, 7000)
 }
+
 
 const toggleBankingDetailsComponent = () => {
   setShowBankingDetails(!showBankingDetails)

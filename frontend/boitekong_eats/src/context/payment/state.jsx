@@ -47,6 +47,7 @@ function PaymentProvider ({ children }) {
 
   const resetPaymentState = () => {
     dispatch({ type: RESET_PAYMENT_STATE, payload: initialState })
+    return true
   }
   const handleNameChange = e => {
     dispatch({ type: SET_NAME, payload: e.target.value })
