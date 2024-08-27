@@ -50,8 +50,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     setShowBankingDetails(true)
   }
 
-  
-
   useEffect(() => {
     handlePaymentItems(paymentItems)
     initOrderNumber()
@@ -90,61 +88,64 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
           )
           setShowPopup(true)
           BankAccountDetails()
-          break
+          return true
       }
     }
+
+    return false
   }
-/**
- * @description Method to handle the delayed submission and state reset
- */
-const delayedSubmit = () => {
-  setLoading(true)
-  
-  setTimeout(() => {
-    handleSubmitOrder()
-    resetOrderState()
-    const done = resetPaymentState()
-    
-    if (done) {
+  /**
+   * @description Method to handle the delayed submission and state reset
+   */
+  const delayedSubmit = () => {
+    setLoading(true)
+
+    setTimeout(() => {
+      handleSubmitOrder()
+      resetOrderState()
+      const done = resetPaymentState()
+
+      if (done) {
+        setLoading(false)
+        setShowPaymentForm(false)
+      }
+    }, 7000)
+  }
+
+  const toggleBankingDetailsComponent = () => {
+    setShowBankingDetails(!showBankingDetails)
+
+    if (showBankingDetails) {
+      // Runs when BankingDetails is being closed
+      delayedSubmit() // Run the delayed submit after closing BankingDetails
+    }
+  }
+
+  const handleFormSubmit = async e => {
+    e.preventDefault()
+
+    if (!validateForm()) {
       setLoading(false)
-      setShowPaymentForm(false)
+      return
     }
-  }, 7000)
-}
 
+    setOrderId(orderNumber)
 
-const toggleBankingDetailsComponent = () => {
-  setShowBankingDetails(!showBankingDetails)
+    switch (paymentMethod) {
+      case 'online':
+      case 'online-delivery':
+        BankAccountDetails()
+        break
 
-  if (showBankingDetails) { // Runs when BankingDetails is being closed
-    delayedSubmit() // Run the delayed submit after closing BankingDetails
+      default:
+        !lastAmountCheck(paymentTotal, paymentMethod) &&
+        !showPopup &&
+        !showBankingDetails
+          ? delayedSubmit()
+          : null
+        break
+    }
   }
-}
-
-const handleFormSubmit = async e => {
-  e.preventDefault()
-
-  if (!validateForm()) {
-    setLoading(false)
-    return
-  }
-
-  setOrderId(orderNumber)
-
-  switch (paymentMethod) {
-    case 'online':
-    case 'online-delivery':
-      BankAccountDetails()
-      break
-    default:
-      lastAmountCheck(paymentTotal, paymentMethod)
-      if (!showBankingDetails) {
-        delayedSubmit() // Run the delayed submit immediately if BankingDetails is not shown
-      }
-      break
-  }
-}
-
 
   const closePopup = () => {
     setShowPopup(false)
