@@ -46,3 +46,31 @@
 .popup button:hover {
   background-color: #0056b3;
 }
+
+.clause {
+  counter-reset: main-counter; /* Reset the main counter */
+  list-style: none;
+  padding-left: 20px;
+  margin-left: 20px; /* Add indentation to the left */
+}
+
+.clause > li {
+  counter-increment: main-counter; /* Increment the main counter */
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 40px; /* Add left padding for indentation */
+}
+
+.clause > li::before {
+  content: counter(main-counter) ". "; /* Display the main counter */
+
+  position: absolute;
+  left: 0px; /* Position numbering at the start of the item */
+}
+
+.clause > li {
+  counter-reset: sub-counter; /* Reset the sub counter for nested list */
+  list-style: none;
+  padding-left: 20px;
+  margin-left: 20px; /* Add indentation to the nested list */
+}
