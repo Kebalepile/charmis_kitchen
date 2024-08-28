@@ -72,47 +72,45 @@ function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
           </button>
         </p>
         <p>
-          <strong>Payment Total: </strong>R {paymentTotal}
+          <strong>Payment Total: </strong>R{paymentTotal}
         </p>
         <h3>Choose Payment method of your choice</h3>
         <hr />
         <h3>Via Banking App</h3>
-        <ol>
-          <li>Open your app</li>
+        <ul>
           <li>
-            For Capitec Banking App:
+            <strong>For Capitec Banking App</strong>
             <hr />
-            <ol>
+            <ul>
               <li>Select Pay Beneficiary</li>
               <li>Click Add Benficiary</li>
               <li>
                 Select Bank Account & Add Beneficiary Details using above
                 mentioned banking details
               </li>
-            </ol>
+            </ul>
+            <br />
           </li>
-          <li>For other Banking Apps</li>
-          <hr />
-          <li>Select &ldquo;Transfer&ldquo;</li>
-          <li>Enter the account details and Reference Number</li>
-          <li>Complete the payment</li>
-        </ol>
+          <li>
+            <strong>For other Banking Apps</strong>
+            <hr />
+            <ul>
+              <li>Select &ldquo;Transfer&ldquo;</li>
+              <li>Enter the account details and Reference Number</li>
+              <li>Complete the payment</li>
+            </ul>
+          </li>
+        </ul>
 
         <h3>Via ATM</h3>
-        <ol>
+        <hr />
+        <ul>
           <li>Visit the nearest ATM</li>
           <li>Choose &ldquo;Deposit&ldquo; or &ldquo;Transfer&ldquo;</li>
           <li>Enter the account details and Reference Number</li>
           <li>Complete the payment</li>
-        </ol>
-
-        <h3>Via USSD</h3>
-        <ol>
-          <li>Dial *120*3279# (Capitec) or your bank’s code</li>
-          <li>Follow prompts to complete the payment</li>
-          <li>Use the Reference Number when prompted</li>
-        </ol>
-
+        </ul>
+        <br />
         <p>
           <strong>Please note:</strong> Time is limited. Payment must be made
           within 30 minutes to avoid order cancellation.
@@ -120,21 +118,19 @@ function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
 
         <p>
           <strong>Confirmation:</strong> You’ll receive an SMS confirmation
-          within 10 minutes after payment. If you don’t, contact us at
-          <span id='contactNumber'> {phone}</span>
-          <button
-            id='copyContactNumber'
-            onClick={() => copyText('contactNumber', 'copyContactNumber')}
-          >
-            {copiedButtonId === 'copyContactNumber' ? 'Copied' : 'Copy'}
-          </button>
-          .
+          within 10 minutes after payment. If not, please contact us at
+          <span id='contactNumber'>
+            <ul>
+              <li>+(27) 67 271 8347 ( available on WhatsApp )</li>
+              <li>
+                <a href='mailto:boitekongeats@gmail.com'>
+                  boitekongeats@gmail.com
+                </a>
+              </li>
+            </ul>
+          </span>
         </p>
 
-        {/* <p>
-          <strong>Thank you for your payment!</strong> Your order is being
-          processed.
-        </p> */}
         <button id='proceed' onClick={onClose}>
           I understand
         </button>
