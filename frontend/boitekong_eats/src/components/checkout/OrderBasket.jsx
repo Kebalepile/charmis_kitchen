@@ -16,9 +16,6 @@ const OrderBasket = ({ basketItems, updateBasketItems, resetOrderState }) => {
   }
 
   const handlePaymentType = () => {
-    // console.log(
-    //   'load form to fill payment details and select payment type, calculate amount needed to pay'
-    // )
     setShowPaymentForm(true)
   }
 

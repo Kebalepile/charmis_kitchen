@@ -193,10 +193,12 @@ function PaymentProvider ({ children }) {
     switch (currentTime < startTime || currentTime > endTime) {
       case true:
         alert('⚠️ Rebereka gare ga 6:30 AM le 18:30 PM. 🌞')
-        break
+        return false
       case false:
         updateOrderBoard(orderNumber)
-        break
+        return true
+      default:
+        return false
     }
   }
 

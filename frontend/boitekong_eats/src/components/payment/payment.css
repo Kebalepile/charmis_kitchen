@@ -121,7 +121,7 @@
 #payment-overlay .loading-dot {
   width: 30px;
   height: 30px;
-  border-radius: 40% 40% 20% 20%;
+  
   background-color: #007bff;
   border: 2px solid var(--light-color);
 }
