@@ -29,11 +29,11 @@ function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
         </button>
         <h2>Banking Details</h2>
         <p>
-          <strong>Bank:</strong> Capitec Bank
+          <strong>Bank Name:</strong> Capitec Business
         </p>
         <p>
-          <strong>Account Holder:</strong>{' '}
-          <span id='accountHolder'>K MOTSHOANA</span>
+          <strong>Account Holder (Name):</strong>
+          <span id='accountHolder'> BoitekongEats</span>
           <button
             id='copyAccountHolder'
             onClick={() => copyText('accountHolder', 'copyAccountHolder')}
@@ -42,8 +42,8 @@ function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
           </button>
         </p>
         <p>
-          <strong>Account Number:</strong>
-          <span id='accountNumber'> 1761303595</span>
+          <strong>Account Number: </strong>
+          <span id='accountNumber'>1052595359</span>
           <button
             id='copyAccountNumber'
             onClick={() => copyText('accountNumber', 'copyAccountNumber')}
@@ -52,8 +52,8 @@ function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
           </button>
         </p>
         <p>
-          <strong>Branch Code:</strong>
-          <span id='branchCode'> 470010</span>
+          <strong>Branch Code: </strong>
+          <span id='branchCode'>450105</span>
           <button
             id='copyBranchCode'
             onClick={() => copyText('branchCode', 'copyBranchCode')}
@@ -62,7 +62,7 @@ function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
           </button>
         </p>
         <p>
-          <strong>Reference:</strong>
+          <strong>Reference (Beneficiary Reference): </strong>
           <span id='reference'> {orderId}</span>
           <button
             id='copyReference'
@@ -79,6 +79,20 @@ function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
         <h3>Via Banking App</h3>
         <ol>
           <li>Open your app</li>
+          <li>
+            For Capitec Banking App:
+            <hr />
+            <ol>
+              <li>Select Pay Beneficiary</li>
+              <li>Click Add Benficiary</li>
+              <li>
+                Select Bank Account & Add Beneficiary Details using above
+                mentioned banking details
+              </li>
+            </ol>
+          </li>
+          <li>For other Banking Apps</li>
+          <hr />
           <li>Select &ldquo;Transfer&ldquo;</li>
           <li>Enter the account details and Reference Number</li>
           <li>Complete the payment</li>
@@ -100,14 +114,13 @@ function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
         </ol>
 
         <p>
-          <strong>Please note:</strong> {" "}Time is limited. Payment must be made
+          <strong>Please note:</strong> Time is limited. Payment must be made
           within 30 minutes to avoid order cancellation.
         </p>
 
         <p>
-          <strong>Confirmation:</strong>
-          {" "} You’ll receive an SMS confirmation within 10 minutes after payment. If
-          you don’t, contact us at
+          <strong>Confirmation:</strong> You’ll receive an SMS confirmation
+          within 10 minutes after payment. If you don’t, contact us at
           <span id='contactNumber'> {phone}</span>
           <button
             id='copyContactNumber'
@@ -122,7 +135,9 @@ function BankDetails ({ orderId, phone, paymentTotal, onClose }) {
           <strong>Thank you for your payment!</strong> Your order is being
           processed.
         </p> */}
-        <button id="proceed"onClick={onClose}>I understand</button>
+        <button id='proceed' onClick={onClose}>
+          I understand
+        </button>
       </div>
     </div>
   )

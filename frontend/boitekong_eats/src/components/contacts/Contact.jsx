@@ -52,22 +52,22 @@ export default function Contact () {
       </p>
       <section id='bank_account'>
         <img src={capitecLogo} alt='Capitec Bank Logo' id='capitecLogo' />
-       <hr/>
+        <hr />
         <strong>Banking Details</strong>
         <p>
-          <strong>Bank:</strong> Capitec Bank
+          <strong>Bank Name: </strong> Capitec Business
         </p>
         <p>
-          <strong>Account Holder:</strong>
-          <span id='accountHolder'>K MOTSHOANA</span>
+          <strong>Account Holder (Name): </strong>
+          <span id='accountHolder'>BoitekongEats</span>
         </p>
         <p>
-          <strong>Account Number:</strong>
-          <span id='accountNumber'>1761303595</span>
+          <strong>Account Number: </strong>
+          <span id='accountNumber'>1052595359</span>
         </p>
         <p>
-          <strong>Branch Code:</strong>
-          <span id='branchCode'>470010</span>
+          <strong>Branch Code: </strong>
+          <span id='branchCode'>450105</span>
         </p>
       </section>
       <button
