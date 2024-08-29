@@ -38,7 +38,7 @@ function App () {
     const { startTime, endTime, currentTime } = checkTime()
 
     if (currentTime < startTime || currentTime > endTime) {
-      setPopupMessage('⚠️ Rebereka gare ga 07:00 AM le 18:30 PM. 🌞')
+      setPopupMessage('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
       setIsPopupVisible(true)
     }
   }, [])

@@ -11,7 +11,7 @@ export default function Navbar () {
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible)
   }
-  const logo = './assets/images/boitekong-eats-logo.png'
+  const logo =  './assets/images/boitekong-eats-logo.png'
 
   return (
     <>

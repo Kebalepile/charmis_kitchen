@@ -165,16 +165,18 @@ function PaymentProvider ({ children }) {
         promises.push(customerPromise)
       }
 
-      // If storeMessage is neither null nor an empty string, send SMS to all support and cook phone numbers
+      // If storeMessage is neither null nor an empty string, 
+      // send SMS to all support and cook phone numbers
       if (storeMessage && storeMessage.trim()) {
-        const supportPromises = supportPhones.map(phone =>
-          sendSms(phone, storeMessage)
-        )
+        // const supportPromises = supportPhones.map(phone =>
+        //   sendSms(phone, storeMessage)
+        // )
         const cookPromises = cookPhones.map(phone =>
           sendSms(phone, storeMessage)
         )
 
-        promises.push(...supportPromises, ...cookPromises)
+        // promises.push(...supportPromises, ...cookPromises)
+        promises.push( ...cookPromises)
       }
 
       // Wait for all promises to resolve
@@ -192,7 +194,7 @@ function PaymentProvider ({ children }) {
 
     switch (currentTime < startTime || currentTime > endTime) {
       case true:
-        alert('⚠️ Rebereka gare ga 6:30 AM le 18:30 PM. 🌞')
+        alert('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
         return false
       case false:
         updateOrderBoard(orderNumber)
@@ -276,9 +278,9 @@ function PaymentProvider ({ children }) {
     const baseMessage = `hey ${name}, `
     let customerMessage = ''
 
-    const paymentPendingMessage = `${baseMessage}your placed order at BoitekongEats is pending. Pay R ${paymentTotal} to account number details found on the web-app. Use ${orderNumber} as reference. Once payment is successful, your order will be processed.`
-    const selfCollectMessage = `${baseMessage}your order is being processed at BoitekongEats. You'll be notified to come and collect once done. The total is R ${paymentTotal}. Track your order with ${orderNumber} on the web-app.`
-    const cashDeliveryMessage = `${baseMessage}your order is being processed at BoitekongEats. Pay R ${paymentTotal} on delivery. Track your order with ${orderNumber} on the web-app.`
+    const paymentPendingMessage = `${baseMessage}your placed order at BoitekongEats is pending. Pay R${paymentTotal} to account number details found on the web-app. Use ${orderNumber} as reference. Once payment is successful, your order will be processed.`
+    const selfCollectMessage = `${baseMessage}your order is being processed at BoitekongEats. You'll be notified to come and collect once done. The total is R${paymentTotal}. Track your order with ${orderNumber} on the web-app.`
+    const cashDeliveryMessage = `${baseMessage}your order is being processed at BoitekongEats. Pay R${paymentTotal} on delivery. Track your order with ${orderNumber} on the web-app.`
 
     if (
       paymentMethod === 'online-delivery' ||
