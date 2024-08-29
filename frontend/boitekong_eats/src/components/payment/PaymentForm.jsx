@@ -83,7 +83,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
         case 'self-collect':
         case 'cash':
           setPopupMessage(
-            `Order total is R ${paymentTotal} which exceeds eligible cash payment amount (R50).
+            `Order total is R${paymentTotal} which exceeds eligible cash payment amount (R50).
            For this order to be successful you need to pay via online or bank transfer.`
           )
           setShowPopup(true)
@@ -231,7 +231,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
                     case 'online-delivery':
                     case 'cash':
                       setPopupMessage(
-                        '🚚 Delivery is currently limited to 📍 Boitekong Ext 2, 4, 5, 6, and 8'
+                        '🚚 Delivery is currently limited to 📍 Boitekong Ext 2, 4, 5, 6 & 8'
                       )
                       setShowPopup(true)
                       break
@@ -241,10 +241,10 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
               >
                 <option value='self-collect'>Pay on Collection</option>
                 <option value='online'>Pay Online</option>
-                <option value='cash'>Cash on Delivery (+R10.00)</option>
+                <option value='cash'>Cash on Delivery (+R20.00)</option>
 
                 <option value='online-delivery'>
-                  Pay Online + Delivery (+R10.00)
+                  Pay Online + Delivery (+R20.00)
                 </option>
               </select>
             </label>

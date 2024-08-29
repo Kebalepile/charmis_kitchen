@@ -71,7 +71,7 @@ function PaymentProvider ({ children }) {
     dispatch({ type: SET_PAYMENT_METHOD, payload: method })
     dispatch({
       type: SET_DELIVERY_CHARGE,
-      payload: method === 'cash' ? 10 : method === 'online-delivery' ? 10 : 0
+      payload: method === 'cash' ? 20 : method === 'online-delivery' ? 20 : 0
     })
   }
   /**
