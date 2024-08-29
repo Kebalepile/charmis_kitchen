@@ -17,7 +17,7 @@ export default function Navbar () {
     <>
       <nav className='navbar'>
         <FaBars id='side-bar' title='Toggle menu' onClick={toggleSidebar} />
-        <img src={logo} alt='logo' id='logo' title='boitekong eats' />
+        <img src={logo} alt='web-app logo' id='logo' title='boitekong eats' />
       </nav>
       {isSidebarVisible && (
         <Sidebar

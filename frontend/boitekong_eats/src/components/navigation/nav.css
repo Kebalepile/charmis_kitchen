@@ -26,4 +26,5 @@
   justify-self: center; /* Center the logo horizontally */
   width: 100px;
   height: 100px;
+  background:inherit;
 }
