@@ -1,10 +1,22 @@
-const axios = require("axios")
+const axios = require("axios");
 const WebSocketSingleton = require("./WebSocketSingleton");
 
-const notifyClients = data => {
+const DEFAULT_WHITELISTED_URLS = ["http://localhost:5173/"];
+
+/**
+ * @description Notify connected clients with WebSocket messages.
+ * @param {Object} data - The data to send to clients.
+ * @param {Array} [whitelistedUrls=DEFAULT_WHITELISTED_URLS] - Array of whitelisted origin URLs.
+ */
+
+const notifyClients = (data, whitelistedUrls = DEFAULT_WHITELISTED_URLS) => {
   const wss = WebSocketSingleton.getInstance();
+
   wss.clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
+    if (
+      client.readyState === WebSocket.OPEN &&
+      whitelistedUrls.includes(client.origin)
+    ) {
       client.send(JSON.stringify(data));
     }
   });

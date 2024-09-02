@@ -7,6 +7,7 @@ const generateUniquePin = require("../utils/generateUniquePin");
 const { hashPassword, comparePassword } = require("../utils/bcryptUtils");
 const TokenBlacklist = require("../models/tokenBlacklist");
 const LoginModel = require("../models/login");
+const { notifyClients } = require("../utils/helpers");
 
 const SignUp = async (req, res) => {
   const { username } = req.body;
@@ -22,11 +23,10 @@ const SignUp = async (req, res) => {
     const pin = await generateUniquePin();
 
     // Hash the PIN before saving
-
     const hashedPin = await hashPassword(pin);
 
     // Create a new user with username and hashed PIN
-    const newUser = new Login({ username, pin: hashedPin });
+    const newUser = new LoginModel({ username, pin: hashedPin });
 
     // Save the new user
     await newUser.save();
@@ -36,9 +36,11 @@ const SignUp = async (req, res) => {
       expiresIn: "1h"
     });
 
-    res
-      .status(201)
-      .json({ message: "User signed up successfully", username, pin, token });
+    // Send response
+    res.status(201).json({ message: "User signed up successfully", username, pin, token });
+
+    // Notify clients of a new signup
+    notifyClients({ type: "newSignup", user: { username,pin } });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Failed to sign up user" });
@@ -65,7 +67,11 @@ const Login = async (req, res) => {
       expiresIn: "1h"
     });
 
+    // Send response
     res.status(200).json({ message: "Login successful", token });
+
+    // Notify clients of a successful login
+    notifyClients({ type: "userLogin", user: { username } });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Failed to login user" });
@@ -80,7 +86,14 @@ const Logout = async (req, res) => {
     const blacklistedToken = new TokenBlacklist({ token });
     await blacklistedToken.save();
 
+    // Send response
     res.status(200).json({ message: "Logout successful" });
+
+    // Notify clients of a user logout
+    const decodedToken = jwt.decode(token);
+    if (decodedToken && decodedToken.username) {
+      notifyClients({ type: "userLogout", user: { username: decodedToken.username } });
+    }
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Failed to logout user" });
