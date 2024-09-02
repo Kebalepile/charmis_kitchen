@@ -212,9 +212,11 @@ function PaymentProvider ({ children }) {
   const updateOrderBoard = async orderNumber => {
     const supportPhones = new Set()
     const cookPhones = new Set()
+    const cookId = new Set()
 
     const paymentItemsDescriptions = paymentItems
       .map(({ foodMenu, itemName, quantity, selectedSize, total, item }) => {
+        cookId.add(item.cook_id)
         // Add support and cook phone numbers to respective sets
         if (item.support_phone) {
           supportPhones.add(item.support_phone)
@@ -230,6 +232,7 @@ function PaymentProvider ({ children }) {
       .join('; ')
 
     const newOrder = {
+      cookId: Array.from(cookId),
       orderNumber,
       name,
       phone,
