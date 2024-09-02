@@ -170,3 +170,11 @@ hr {
   align-items: center;
   justify-content: center;
 }
+.order-detail-cook-id {
+  margin: 10px;
+  font-weight: bold;
+  background-color: var(--semi-transparent-dark);
+  padding: 3px 8px;
+  color: var(--white);
+  border-radius: 4px;
+}
