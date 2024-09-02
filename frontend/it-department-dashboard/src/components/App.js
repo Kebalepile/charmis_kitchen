@@ -1,7 +1,7 @@
 import { createWebSocket } from "../hooks/useWebSocket.js";
-import { renderLoginForm } from "./Login.js";
-import { renderOrderItem } from "./OrderItem.js";
-import { updateOrderStats } from "./OrderStats.js";
+import { renderLoginForm } from "./login/Login.js";
+import { renderOrderItem } from "./orderItem/OrderItem.js";
+import { updateOrderStats } from "./orderStats/OrderStats.js";
 import { fetchOrders } from "../hooks/OrderService.js";
 
 const url = "ws://localhost:5000"; // Replace with your WebSocket server URL

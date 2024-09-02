@@ -1,5 +1,5 @@
-import "../../styles/login.css"
-import { login } from "../hooks/OrderService";
+import "./login.css"
+import { login } from "../../hooks/OrderService";
 
 export const renderLoginForm = () => {
   const form = document.createElement("form");

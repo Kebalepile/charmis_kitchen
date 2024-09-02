@@ -1,4 +1,4 @@
-import "../../styles/order.css"
+import "./orderStates.css"
 
 export const updateOrderStats = (orders, orderStatsElement) => {
   const pendingOrdersCount = orders.filter(order => order.status === "Pending").length;

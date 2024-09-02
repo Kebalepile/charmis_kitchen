@@ -1,6 +1,6 @@
-import "../../styles/order.css"
+import "./order.css"
 
-import {updateOrder, deleteOrder} from "../hooks/OrderService"
+import {updateOrder, deleteOrder} from "../../hooks/OrderService"
 
 /**
  * @description Renders a single order item.
