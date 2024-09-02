@@ -6,14 +6,14 @@ const jwt = require("jsonwebtoken");
 const generateUniquePin = require("../utils/generateUniquePin");
 const { hashPassword, comparePassword } = require("../utils/bcryptUtils");
 const TokenBlacklist = require("../models/tokenBlacklist");
-const Login = require("../models/login");
+const LoginModel = require("../models/login");
 
 const SignUp = async (req, res) => {
   const { username } = req.body;
 
   try {
     // Check if the username already exists
-    const existingUser = await Login.findOne({ username });
+    const existingUser = await LoginModel.findOne({ username });
     if (existingUser) {
       return res.status(400).json({ error: "Username already exists" });
     }
@@ -50,7 +50,7 @@ const Login = async (req, res) => {
 
   try {
     // Find the user by username
-    const user = await Login.findOne({ username });
+    const user = await LoginModel.findOne({ username });
     if (!user) {
       return res.status(400).json({ error: "Invalid username or PIN" });
     }

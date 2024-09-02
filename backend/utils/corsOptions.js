@@ -1,3 +1,6 @@
+
+// load .env file to be used
+require("dotenv").config();
 // Parse the URLs from the environment variables
 const devUrls = process.env.DEV_URLS.split(",");
 const prodUrls = process.env.PROD_URLS.split(",");

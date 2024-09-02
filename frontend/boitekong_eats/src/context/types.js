@@ -36,5 +36,5 @@ export const ORDER_NUMBER = "ORDER_NUMBER";
 // export const ServerDomain = "http://localhost:5000";
 export const WebSocketURL = "ws://b-town-bites.onrender.com";
 export const ServerDomain = "https://b-town-bites.onrender.com";
-export const storePhoneNumber = "0737757160";
+export const storePhoneNumber = "0672718374";
 export const STORE_ADDRESS = "2379 Windsa St, Boitekong Ext 2";

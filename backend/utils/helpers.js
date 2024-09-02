@@ -1,3 +1,4 @@
+const axios = require("axios")
 const WebSocketSingleton = require("./WebSocketSingleton");
 
 const notifyClients = data => {

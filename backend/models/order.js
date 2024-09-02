@@ -2,11 +2,7 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
   {
-    cookId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Cook",
-      required: true
-    },
+    cookId: [String], // Array of strings
     orderNumber: { type: String, unique: true, required: true },
     name: { type: String, required: true },
     phone: { type: String, required: true, match: /^\d{10}$/ },

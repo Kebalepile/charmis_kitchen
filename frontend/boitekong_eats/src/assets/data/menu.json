@@ -12,8 +12,8 @@
           "large": "R90"
         },
         "cook_phone": "0813310276",
-        "cook_id": "charmi",
-        "support_phone": "0737757160",
+        "cook_id": "charmaine",
+        "support_phone": "0698488813",
         "quantity_question": "How many Russian & Cheese pizzas would you like?"
       },
       {
@@ -26,8 +26,8 @@
           "large": "R90"
         },
         "cook_phone": "0813310276",
-        "cook_id": "charmi",
-        "support_phone": "0737757160",
+        "cook_id": "charmaine",
+        "support_phone": "0698488813",
         "quantity_question": "How many Bacon & Cheese pizzas would you like?"
       }
     ]
@@ -41,8 +41,8 @@
         "image_url": "./assets/images/chicken/3.jpg",
         "alt": "4 Wings image",
         "cook_phone": "0813310276",
-        "cook_id": "charmi",
-        "support_phone": "0737757160",
+        "cook_id": "charmaine",
+        "support_phone": "0698488813",
         "quantity_question": "How many takeaway(s) of 4 wings would you like?"
       },
       {
@@ -51,8 +51,8 @@
         "image_url": "./assets/images/chicken/4.jpg",
         "alt": "6 Wings image",
         "cook_phone": "0813310276",
-        "cook_id": "charmi",
-        "support_phone": "0737757160",
+        "cook_id": "charmaine",
+        "support_phone": "0698488813",
         "quantity_question": "How many takeaway(s) of 6 wings would you like?"
       },
       {
@@ -61,8 +61,8 @@
         "image_url": "./assets/images/chicken/6.jpg",
         "alt": "8 Wings image",
         "cook_phone": "0813310276",
-        "cook_id": "charmi",
-        "support_phone": "0737757160",
+        "cook_id": "charmaine",
+        "support_phone": "0698488813",
         "quantity_question": "How many takeaway(s) of 8 wings would you like?"
       },
       {
@@ -71,8 +71,8 @@
         "image_url": "./assets/images/chicken/8.jpg",
         "alt": "12 Wings image",
         "cook_phone": "0813310276",
-        "cook_id": "charmi",
-        "support_phone": "0737757160",
+        "cook_id": "charmaine",
+        "support_phone": "0698488813",
         "quantity_question": "How many takeaway(s) of 12 wings would you like?"
       },
       {
@@ -81,8 +81,8 @@
         "image_url": "../assets/images/chips/2.jpg",
         "alt": "Combo: 4 Wings and Chips image",
         "cook_phone": "0813310276",
-        "cook_id": "charmi",
-        "support_phone": "0737757160",
+        "cook_id": "charmaine",
+        "support_phone": "0698488813",
         "quantity_question": "How many combos of 4 wings and chips would you like?"
       },
       {
@@ -91,8 +91,8 @@
         "image_url": "../assets/images/chips/2.jpg",
         "alt": "Combo: 6 Wings and Chips image",
         "cook_phone": "0813310276",
-        "cook_id": "charmi",
-        "support_phone": "0737757160",
+        "cook_id": "charmaine",
+        "support_phone": "0698488813",
         "quantity_question": "How many combos of 6 wings and chips would you like?"
       },
       {
@@ -101,8 +101,8 @@
         "image_url": "../assets/images/chips/2.jpg",
         "alt": "Combo: 8 Wings and Chips image",
         "cook_phone": "0813310276",
-        "cook_id": "charmi",
-        "support_phone": "0737757160",
+        "cook_id": "charmaine",
+        "support_phone": "0698488813",
         "quantity_question": "How many combos of 8 wings and chips would you like?"
       }
     ]
@@ -116,8 +116,8 @@
         "image_url": "./assets/images/chips/1.jpeg",
         "alt": "Small Chips Box image",
         "cook_phone": "0813310276",
-        "cook_id": "charmi",
-        "support_phone": "0737757160",
+        "cook_id": "charmaine",
+        "support_phone": "0698488813",
         "quantity_question": "How many small chips takeaway(s) would you like?"
       },
       {
@@ -126,8 +126,8 @@
         "image_url": "./assets/images/chips/1.jpeg",
         "alt": "Large Chips Box image",
         "cook_phone": "0813310276",
-        "cook_id": "charmi",
-        "support_phone": "0737757160",
+        "cook_id": "charmaine",
+        "support_phone": "0698488813",
         "quantity_question": "How many large chips takeaway(s) would you like?"
       }
     ]
@@ -140,9 +140,9 @@
         "price": "R15",
         "image_url": "./assets/images/magwinya/4.jpg",
         "alt": "Magwinya image",
-        "cook_phone": "0737757160",
+        "cook_phone": "0698488813",
         "cook_id": "julia",
-        "support_phone": "0737757160",
+        "support_phone": "0698488813",
         "quantity_question": "How many packs of 5 magwinya would you like?"
       },
       {
@@ -150,9 +150,9 @@
         "price": "R24",
         "image_url": "./assets/images/magwinya/4.jpg",
         "alt": "Magwinya image",
-        "cook_phone": "0737757160",
+        "cook_phone": "0698488813",
         "cook_id": "julia",
-        "support_phone": "0737757160",
+        "support_phone": "0698488813",
         "quantity_question": "How many packs of 8 magwinya would you like?"
       }
     ]
@@ -165,9 +165,9 @@
         "price": "R120",
         "image_url": "./assets/images/dikuku/3.jpg",
         "alt": "Dikuku image",
-        "cook_phone": "0737757160",
+        "cook_phone": "0698488813",
         "cook_id": "julia",
-        "support_phone": "0737757160",
+        "support_phone": "0698488813",
         "quantity_question": "How many 5-liter containers of dikuku would you like?"
       }
     ]

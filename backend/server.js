@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const { corsOptions } = require("./utils/corsOptions");
 const mongoose = require("mongoose");
-const Order = require("./models/order");
 const WebSocket = require("ws");
 // Store wss in a singleton object
 const WebSocketSingleton = require("./utils/WebSocketSingleton");
@@ -39,11 +38,13 @@ const wss = new WebSocket.Server({ server });
 WebSocketSingleton.setInstance(wss);
 
 wss.on("connection", async ws => {
-  console.log("New WebSocket connection");
-
   try {
-    const orders = await Order.find({});
-    ws.send(JSON.stringify({ type: "initialData", orders }));
+    ws.send(
+      JSON.stringify({
+        type: "connected",
+        message: "connect to BoitekongEats server"
+      })
+    );
   } catch (error) {
     ws.send(JSON.stringify({ type: "error", message: error.message }));
   }

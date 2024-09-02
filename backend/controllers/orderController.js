@@ -4,8 +4,8 @@
  * updating, and deleting orders.
  */
 
+const mongoose = require("mongoose");
 const formatCellNumber = require("../utils/formatCellNumber");
-
 const Order = require("../models/order");
 const {
   notifyClients,
@@ -16,7 +16,7 @@ const {
 } = require("../utils/helpers");
 
 const createOrder = async (req, res) => {
-  const {
+  let {
     cookId,
     name,
     phone,
@@ -28,7 +28,11 @@ const createOrder = async (req, res) => {
     paymentItemsDescriptions,
     orderNumber
   } = req.body;
-
+   // Ensure cookId is always an array
+   if (!Array.isArray(cookId)) {
+    cookId = [cookId];
+  }
+  
   if (!validateOrderFields(req.body)) {
     return sendResponse(res, 400, { error: "Missing required fields" });
   }
