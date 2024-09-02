@@ -17,6 +17,7 @@ const {
 
 const createOrder = async (req, res) => {
   const {
+    cookId,
     name,
     phone,
     streetAddress,
@@ -33,6 +34,7 @@ const createOrder = async (req, res) => {
   }
 
   const newOrder = new Order({
+    cookId,
     orderNumber,
     name,
     phone,
