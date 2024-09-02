@@ -12,7 +12,7 @@ const {
   sendResponse,
   handleError,
   validateOrderFields,
-  sendSMS
+  clickatellApi
 } = require("../utils/helpers");
 
 const createOrder = async (req, res) => {
@@ -120,7 +120,7 @@ const deleteOrder = async (req, res) => {
 
     const message = `Dear ${name}, your order no: ${orderNumber} has been fulfilled. Boitekong Eats 😋`;
 
-    const data = await sendSMS(phone, message);
+    const data = await clickatellApi(phone, message);
 
     if (data.messages && data.messages[0].accepted) {
       console.log("SMS sent successfully");

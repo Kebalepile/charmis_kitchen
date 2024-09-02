@@ -1,4 +1,7 @@
+const WebSocketSingleton = require("./WebSocketSingleton");
+
 const notifyClients = data => {
+  const wss = WebSocketSingleton.getInstance();
   wss.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(data));
@@ -31,7 +34,13 @@ const validateOrderFields = ({
   );
 };
 
-const sendSMS = async (phone, message) => {
+/**
+ * @description send sms to phone number via clickatell api
+ * @param {string} phone 
+ * @param {string} message 
+ * @returns 
+ */
+const clickatellApi = async (phone, message) => {
   const response = await axios.get(
     `https://platform.clickatell.com/messages/http/send`,
     {
@@ -50,5 +59,5 @@ module.exports = {
   sendResponse,
   handleError,
   validateOrderFields,
-  sendSMS
+  clickatellApi
 };

@@ -1,11 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const { corsOptions } = require("./utils/corsOptions");
 const mongoose = require("mongoose");
-
 const Order = require("./models/order");
-
 const WebSocket = require("ws");
+// Store wss in a singleton object
+const WebSocketSingleton = require("./utils/WebSocketSingleton");
 const http = require("http");
 
 // load .env file to be used
@@ -19,23 +20,6 @@ const smsRoutes = require("./routes/smsRoutes");
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Parse the URLs from the environment variables
-const devUrls = process.env.DEV_URLS.split(",");
-const prodUrls = process.env.PROD_URLS.split(",");
-
-const allowedOrigins =
-  process.env.NODE_ENV === "production" ? prodUrls : devUrls;
-
-const corsOptions = {
-  origin: function(origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  }
-};
-
 // Middleware setup
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
@@ -47,9 +31,12 @@ mongoose.connection.on("connected", () => {
   console.log("Connected to MongoDB");
 });
 
-// WebSocket setup
+// Server setup
 const server = http.createServer(app);
+// WebSocket setup
 const wss = new WebSocket.Server({ server });
+
+WebSocketSingleton.setInstance(wss);
 
 wss.on("connection", async ws => {
   console.log("New WebSocket connection");
