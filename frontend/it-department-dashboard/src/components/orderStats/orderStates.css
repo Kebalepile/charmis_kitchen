@@ -1,11 +1,8 @@
-
-/* Scoped styles for the order stats component */
 .order-stats {
-  margin-top: 20px;
+  margin: 20px;
   font-size: 1.2rem;
 }
 
-/* Scoped styles for the pending orders component */
 .pending-orders {
   background: #d8ca01b4;
   font-weight: bolder;
@@ -16,4 +13,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 20px;
 }

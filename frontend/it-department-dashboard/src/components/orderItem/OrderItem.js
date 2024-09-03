@@ -1,3 +1,4 @@
+import "./order.css"
 export const renderOrderItem = (order) => {
   // console.log(order);
 

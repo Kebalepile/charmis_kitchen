@@ -1,21 +1,26 @@
 
 .header-nav {
     display: flex;
-    justify-content: space-between;
+  
+    border-bottom: 1px solid var(--border-color);
+    position: sticky; /* Make the element sticky */
+    top: 0; /* Stick to the top of the viewport */
+    z-index: 1000; /* Ensure it stays on top of other content */
+  }
+  
+  
+  .header-content {
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     align-items: center;
     padding: 10px 20px;
     background-color: var(--app-background);
-    border-bottom: 1px solid var(--border-color);
   }
   
-  .header-content {
-    display: flex;
-    align-items: center;
-  }
-  
-  h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
+  .header-content h1 {
+    margin: 10px;
     display: flex;
     align-items: center;
   }

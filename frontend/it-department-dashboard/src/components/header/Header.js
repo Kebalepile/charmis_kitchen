@@ -27,11 +27,15 @@ export const createHeaderComponent = () => {
     logoutButton.onclick = async () => {
         const data = await logout();
         console.log(data)
+        // Reload the page after 2 seconds (2000 milliseconds)
+        setTimeout(function() {
+            location.reload();
+        }, 2000);
     }; 
-  
+    headerContent.appendChild(logoutButton);
     // Append elements to the header
     header.appendChild(headerContent);
-    header.appendChild(logoutButton);
+    
   
     return header;
   };

@@ -1,10 +1,10 @@
-/* Scoped styles for the order item component */
 .order-item {
   margin-bottom: 20px;
-  border: 1px solid #ccc; /* Use specific color code instead of variable */
-  padding: 10px;
-  background-color: #fff; /* Use specific color code instead of variable */
-  color: #fff; /* Use specific color code instead of variable */
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  background: radial-gradient(circle at right, #000000, #302f2f, #1b1b1b);
+  color: #fff;
 }
 
 .order-item h3 {
@@ -50,8 +50,8 @@
 
 .order-detail-timestamp,
 .order-detail-cook-id {
-  color: #fff; /* Use specific color code instead of variable */
-  background-color: rgba(43, 39, 39, 0.6); /* Use specific color code instead of variable */
+  color: #fff;
+  background-color: rgba(53, 51, 51, 0.6);
   padding: 3px 8px;
   border-radius: 4px;
 }
@@ -59,23 +59,30 @@
 .order-item .status-text {
   margin-top: 10px;
   font-weight: bold;
-  color: #fff; /* Use specific color code instead of variable */
-  background-color: #2b2727; /* Use specific color code instead of variable */
+  color: #fff;
+  background-color: #3b3b3b;
   padding: 3px 8px;
 }
 
 .order-item .delete-button,
 .order-item .edit-button {
   margin-right: 10px;
-  margin-top: 10px;
+  margin-top: 20px;
   padding: 5px 10px;
   border: none;
   cursor: pointer;
-  background-color: #007bff; /* Use specific color code instead of variable */
-  color: #fff; /* Use specific color code instead of variable */
+  background-color: #007bff;
+  color: #fff;
 }
 
-.order-item .delete-button:hover,
+.order-item .delete-button {
+  background-color: #cd1e3b;
+}
+
 .order-item .edit-button:hover {
-  background-color: #0056b3; /* Use specific color code instead of variable */
+  background-color: #0056b3;
+}
+
+.order-item .delete-button:hover {
+  background-color: #f63c5b;
 }
