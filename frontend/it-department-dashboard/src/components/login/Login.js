@@ -156,6 +156,10 @@ export const renderLoginForm = () => {
         message.textContent = data.message;
         message.classList.add("success");
         message.classList.remove("error");
+        // Reload the page after 2 seconds (2000 milliseconds)
+          setTimeout(function() {
+            location.reload();
+        }, 2000);
 
         // Show new login details if in signup mode
         if (!isLoginMode && data.username && data.pin) {

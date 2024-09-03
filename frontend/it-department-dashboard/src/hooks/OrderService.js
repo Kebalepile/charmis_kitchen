@@ -1,18 +1,30 @@
 import { SERVER_DOMAIN } from "./types.js";
 
 /**
- * Fetch all orders from the server.
+ * Fetch all orders from the server with a specified cookId.
  * 
+ * @param {string} cookId - The cook ID.
  * @returns {Promise<Array<Order>>} A promise that resolves to an array of orders.
  */
-export const fetchOrders = async () => {
-  const response = await fetch(`${SERVER_DOMAIN}/orders`);
+export const fetchOrders = async (cookId = sessionStorage.getItem("cookId")) => {
+  const token = sessionStorage.getItem("token");
+  
+  // Ensure the URL is correct
+  const response = await fetch(`${SERVER_DOMAIN}/orders/by-cook`, {
+    method: "POST", // Correctly use POST as expected by the backend
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({ cookId })
+  });
+
   if (!response.ok) {
     throw new Error("Failed to fetch orders");
   }
+
   return response.json();
 };
-
 /**
  * Fetch an order by order number.
  * 
@@ -20,10 +32,20 @@ export const fetchOrders = async () => {
  * @returns {Promise<Order>} A promise that resolves to the order object.
  */
 export const fetchOrderByOrderNumber = async orderNumber => {
-  const response = await fetch(`${SERVER_DOMAIN}/orders/${orderNumber}`);
+  const token = sessionStorage.getItem("token");
+  const response = await fetch(
+    `${SERVER_DOMAIN}/orders/cooks_order/${orderNumber}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
   if (!response.ok) {
     throw new Error("Failed to fetch order");
   }
+
   return response.json();
 };
 
@@ -97,8 +119,9 @@ export const login = async (username, pin) => {
     // Save the token in session storage if login is successful
     if (data.token) {
       sessionStorage.setItem("token", data.token);
+      sessionStorage.setItem("cookId", username);
     }
-    console.log(data.message)
+    // console.log(data)
 
     return data;
   } catch (error) {
@@ -125,20 +148,21 @@ export const logout = async () => {
     if (!response.ok) {
       throw new Error(data.error || "Failed to logout");
     }
-    sessionStorage.removeItem('token')
-    console.log(data.message)
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("cookId");
+    // console.log(data.message)
 
     return data;
   } catch (error) {
     throw new Error(error.message || "Failed to logout");
   }
-}
+};
 
 /**
  * @description create login details for new end-user
  * @param {string} username
  */
-export const signup = async (username) => {
+export const signup = async username => {
   try {
     let response = await fetch(`${SERVER_DOMAIN}/signup`, {
       method: "POST",
@@ -153,12 +177,13 @@ export const signup = async (username) => {
       throw new Error(data.error || "Username already exists");
     }
 
-    console.log(data.message)
-    console.log(data)
-    sessionStorage.setItem("token", data.token);
-    return data
+    // console.log(data.message)
+    // console.log(data)
+    // sessionStorage.setItem("token", data.token);
+    return data;
   } catch (err) {
-
-    throw new Error(err.message || "Username already exists. Please try again.");
+    throw new Error(
+      err.message || "Username already exists. Please try again."
+    );
   }
-}
+};

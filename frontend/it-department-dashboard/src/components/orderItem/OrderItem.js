@@ -94,7 +94,5 @@ export const renderOrderItem = (order) => {
   });
   article.appendChild(editButton);
 
-  
-
   return article;
 };

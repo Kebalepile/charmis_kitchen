@@ -28,11 +28,11 @@ const createOrder = async (req, res) => {
     paymentItemsDescriptions,
     orderNumber
   } = req.body;
-   // Ensure cookId is always an array
-   if (!Array.isArray(cookId)) {
+  // Ensure cookId is always an array
+  if (!Array.isArray(cookId)) {
     cookId = [cookId];
   }
-  
+
   if (!validateOrderFields(req.body)) {
     return sendResponse(res, 400, { error: "Missing required fields" });
   }
@@ -64,6 +64,31 @@ const createOrder = async (req, res) => {
 const getOrders = async (req, res) => {
   try {
     const orders = await Order.find({});
+    console.log(orders)
+    if (!orders || orders.length === 0) {
+      return sendResponse(res, 404, {
+        message: "No orders found for this cook"
+      });
+    }
+    sendResponse(res, 200, orders);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+const getCookOrders = async (req, res) => {
+  try {
+    const { cookId } = req.body;
+
+    // Find orders where the cookId array includes the cookId from req.body
+    const orders = await Order.find({ cookId: { $in: [cookId] } });
+
+    if (!orders || orders.length === 0) {
+      return sendResponse(res, 404, {
+        message: "No orders found for this cook"
+      });
+    }
+
     sendResponse(res, 200, orders);
   } catch (error) {
     handleError(res, error);
@@ -138,4 +163,12 @@ const deleteOrder = async (req, res) => {
     handleError(res, error);
   }
 };
-module.exports = { createOrder, getOrders, getOrder, updateOrder, deleteOrder };
+
+module.exports = {
+  createOrder,
+  getOrders,
+  getCookOrders,
+  getOrder,
+  updateOrder,
+  deleteOrder
+};
