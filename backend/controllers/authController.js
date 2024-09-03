@@ -35,12 +35,15 @@ const SignUp = async (req, res) => {
     const token = jwt.sign({ username }, process.env.JWT_SECRET, {
       expiresIn: "1h"
     });
-
-    // Send response
-    res.status(201).json({ message: "🎉signed up successfully 🎉", username, pin, token });
-
     // Notify clients of a new signup
-    notifyClients({ type: "newSignup", user: { username,pin } });
+    // Get the origin URL from the request
+    const origin = req.get("origin");
+
+    notifyClients(origin, { type: "newSignup", user: { username, pin } });
+    // Send response
+    res
+      .status(201)
+      .json({ message: "🎉signed up successfully 🎉", username, pin, token });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Failed to sign up user 🥺" });
@@ -54,12 +57,12 @@ const Login = async (req, res) => {
     // Find the user by username
     const user = await LoginModel.findOne({ username });
     if (!user) {
-      return res.status(400).json({ error: "Invalid username or PIN 🥺" });
+      return res.status(400).json({ error: "Invalid NAME or PIN 🥺" });
     }
 
     const isPinValid = await comparePassword(pin, user.pin);
     if (!isPinValid) {
-      return res.status(400).json({ error: "Invalid username or PIN 🥺" });
+      return res.status(400).json({ error: "Invalid NAME or PIN 🥺" });
     }
 
     // Generate a JWT token
@@ -67,11 +70,12 @@ const Login = async (req, res) => {
       expiresIn: "1h"
     });
 
+    // Notify clients of a successful login
+    // Get the origin URL from the request
+    const origin = req.get("origin");
+    notifyClients(origin, { type: "userLogin", user: { username } });
     // Send response
     res.status(200).json({ message: "🎉 Login successful🎉", token });
-
-    // Notify clients of a successful login
-    notifyClients({ type: "userLogin", user: { username } });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Failed to login user" });
@@ -86,14 +90,18 @@ const Logout = async (req, res) => {
     const blacklistedToken = new TokenBlacklist({ token });
     await blacklistedToken.save();
 
-    // Send response
-    res.status(200).json({ message: "🎉 Logout successful 🎉" });
-
     // Notify clients of a user logout
     const decodedToken = jwt.decode(token);
     if (decodedToken && decodedToken.username) {
-      notifyClients({ type: "userLogout", user: { username: decodedToken.username } });
+      // Get the origin URL from the request
+      const origin = req.get("origin");
+      notifyClients(origin, {
+        type: "userLogout",
+        user: { username: decodedToken.username }
+      });
     }
+    // Send response
+    res.status(200).json({ message: "🎉 Logout successful 🎉" });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Failed to logout user" });

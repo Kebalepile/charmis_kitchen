@@ -8,41 +8,42 @@
  * @returns {function} return.closeWebSocket - Function to close the WebSocket connection.
  */
 export const createWebSocket = (url, onMessage) => {
-    let socket = new WebSocket(url);
-  
-    socket.onopen = () => {
-      console.log('WebSocket connection established');
-    };
-  
-    socket.onmessage = (event) => {
-      onMessage(JSON.parse(event.data));
-    };
-  
-    socket.onclose = () => {
-      console.log('WebSocket connection closed');
-    };
-  
-    socket.onerror = (error) => {
-      console.error('WebSocket error:', error);
-    };
-  
-    const closeWebSocket = () => {
-      if (socket) {
-        socket.close();
-      }
-    };
-  
-    return {
-      socket,
-      closeWebSocket
-    };
+  let socket = new WebSocket(url);
+
+  socket.onopen = () => {
+    console.log("WebSocket connection established");
   };
-  
+
+  socket.onmessage = event => {
+    const data = JSON.parse(event.data);
+
+    onMessage(data);
+  };
+
+  socket.onclose = () => {
+    console.log("WebSocket connection closed");
+  };
+
+  socket.onerror = error => {
+    console.error("WebSocket error:", error);
+  };
+
+  const closeWebSocket = () => {
+    if (socket) {
+      socket.close();
+    }
+  };
+
+  return {
+    socket,
+    closeWebSocket
+  };
+};
 
 //   import { createWebSocket } from './utils/websocket.js';
 
 //     const url = 'wss://example.com/socket';
-    
+
 //     const onMessage = (data) => {
 //       console.log('Received data:', data);
 //     };

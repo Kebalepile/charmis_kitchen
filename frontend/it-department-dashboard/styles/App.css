@@ -42,6 +42,12 @@ body {
   font-family: Arial, sans-serif;
   background-color: var(--background-color);
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
 #app {
@@ -64,15 +70,8 @@ body {
 
 /* Styles for the error message */
 .error-message {
-  position: absolute; /* Position it relative to the page */
-  top: 50%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Adjust for centering */
   padding: 20px;
-  /* background-color: #ffcccc; Light red background for visibility */
   color: #a94442; /* Dark red text for contrast */
-  /* border: 1px solid #a94442; Border to match text color */
-  /* border-radius: 8px; Rounded corners */
   font-size: 1.2rem; /* Larger text size */
   font-weight: bold;
   text-align: center; /* Center text inside the box */

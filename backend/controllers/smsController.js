@@ -16,24 +16,27 @@ const SendSms = async (req, res) => {
     const data = await clickatellApi(to, message);
 
     if (data.messages && data.messages[0].accepted) {
-      sendResponse(res, 200, { success: true });
-
       // Notify clients that SMS was sent successfully
-      notifyClients({ type: "smsSent", info: { to, message } });
+      // Get the origin URL from the request
+      const origin = req.get("origin");
+      notifyClients(origin, { type: "smsSent", info: { to, message } });
+      sendResponse(res, 200, { success: true });
     } else {
-      sendResponse(res, 500, { success: false, error: "Failed to send SMS" });
-
       // Notify clients that SMS failed to send
-      notifyClients({ type: "smsFailed", info: { to, message } });
+      // Get the origin URL from the request
+      const origin = req.get("origin");
+      notifyClients(origin, { type: "smsFailed", info: { to, message } });
+      sendResponse(res, 500, { success: false, error: "Failed to send SMS" });
     }
   } catch (error) {
-    handleError(res, error);
-
     // Notify clients that an error occurred while sending SMS
-    notifyClients({
+    // Get the origin URL from the request
+    const origin = req.get("origin");
+    notifyClients(origin, {
       type: "smsError",
       info: { to, message, error: error.message }
     });
+    handleError(res, error);
   }
 };
 

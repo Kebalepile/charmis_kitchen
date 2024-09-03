@@ -54,8 +54,10 @@ const createOrder = async (req, res) => {
 
   try {
     const savedOrder = await newOrder.save();
+    // Get the origin URL from the request
+    const origin = req.get("origin");
+    notifyClients(origin, { type: "newOrder", order: newOrder });
     sendResponse(res, 201, newOrder);
-    notifyClients({ type: "newOrder", order: newOrder });
   } catch (error) {
     handleError(res, error);
   }
@@ -121,9 +123,10 @@ const updateOrder = async (req, res) => {
     if (!updatedOrder) {
       return sendResponse(res, 404, { message: "🚫 Order not found" });
     }
-
+    // Get the origin URL from the request
+    const origin = req.get("origin");
+    notifyClients(origin, { type: "updateOrder", order: updatedOrder });
     sendResponse(res, 200, updatedOrder);
-    notifyClients({ type: "updateOrder", order: updatedOrder });
   } catch (error) {
     handleError(res, error);
   }
@@ -157,8 +160,10 @@ const deleteOrder = async (req, res) => {
       console.error("Failed to send SMS");
     }
 
+    // Get the origin URL from the request
+    const origin = req.get("origin");
+    notifyClients(origin, { type: "deleteOrder", orderId: id });
     sendResponse(res, 200, { message: "Order deleted successfully" });
-    notifyClients({ type: "deleteOrder", orderId: id });
   } catch (error) {
     handleError(res, error);
   }

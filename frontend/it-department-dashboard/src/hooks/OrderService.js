@@ -15,9 +15,9 @@ export const fetchOrders = async (
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     },
-    body: JSON.stringify({ cookId }),
+    body: JSON.stringify({ cookId })
   });
 
   if (!response.ok) {
@@ -129,7 +129,7 @@ export const login = async (username, pin) => {
 
     return data;
   } catch (error) {
-    throw new Error(error.message || "Failed to log in. Please try again.");
+    throw new Error("Failed to log in. Please try again.");
   }
 };
 
@@ -166,7 +166,7 @@ export const logout = async () => {
  * @param {string} username
  */
 export const signup = async username => {
-  username = username.toLowerCase()
+  username = username.toLowerCase();
   try {
     let response = await fetch(`${SERVER_DOMAIN}/signup`, {
       method: "POST",

@@ -1,28 +1,19 @@
-/* Define specific color codes instead of using :root variables */
-.login-form-container {
-  font-family: 'Playfair Display', serif;
-  color: #8b5266; /* Warm, muted plum text */
-  background: radial-gradient(circle at top left, #ffe4e9, #f9f0f4); /* Radial gradient background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-}
-
 .login-form {
+  font-family: 'Playfair Display', serif;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center; /* Center items horizontally */
   padding: 25px;
-  border: 2px solid #f2a6b3; /* Light pink border */
-  background-color: #ffffff; /* White background for the form */
+  border: 2px solid #f2a6b3;
+  background-color: #ffffff;
   border-radius: 5px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   width: 310px;
-  max-width: 320px;
+  max-width: 100%;
   box-sizing: border-box;
-  background: linear-gradient(to bottom right, #ffe4e9, #f9f0f4); /* Linear gradient background */
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .login-form label {
@@ -39,12 +30,12 @@
   margin-left: 5px;
   border: 1px solid #f2a6b3; /* Light pink border */
   border-radius: 4px;
-  box-sizing: border-box;
   font-family: 'Playfair Display', serif;
   font-size: 12px;
   height: 30px;
   padding: 10px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 #login-btn {
@@ -93,67 +84,11 @@ button {
   transition: background-color 0.3s ease;
 }
 
-/* Direct colors for other buttons */
-#reset-btn {
-  background-color: #e0726c; /* Coral */
-  color: #fff; /* White text */
-}
-
-#reset-btn:hover {
-  background-color: #c5615b; /* Darker coral for hover */
-}
-
-#register-btn {
-  background-color: #8b677b; /* Plum */
-  color: #fff; /* White text */
-}
-
-#register-btn:hover {
-  background-color: #735066; /* Darker plum for hover */
-}
-
-.new-login-details {
-  border: 2px solid black;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin: 10px auto;
-  padding: 5px;
-  border-radius: 4px;
-}
-
-.detail-group {
-  display: flex;
-  flex-direction: row;
-  padding: 10px;
-  border-radius: 4px;
-}
-
-.new-detail-label {
-  padding: 8px;
-  margin-bottom: 8px;
-  font-weight: bold;
-  border-radius: 4px;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center; /* Horizontal centering */
-  align-items: center; /* Vertical centering */
-}
-
-.new-detail-value {
-  width: 25%;
-  text-align: center; /* Center text content */
-  margin: 0 auto;
-  display: flex;
-  justify-content: center; /* Horizontal centering */
-  align-items: center; /* Vertical centering */
-}
-
 /* Responsive design for smaller screens */
 @media (max-width: 600px) {
   .login-form {
     padding: 15px;
-    width: 90%;
+    width: 100%;
     max-width: none;
   }
 

@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let orders = [];
   const processedOrderIds = new Set(); // Set to store processed order IDs
 
-  const handleWebSocketMessage = (data) => {
+  const handleWebSocketMessage = data => {
     const handlers = {
       connected: () => console.log(data.message),
       newOrder: () => {
@@ -55,19 +55,29 @@ document.addEventListener("DOMContentLoaded", async () => {
       userLogout: () => console.log(data.user),
       smsSent: () => console.log(data.info),
       smsFailed: () => console.log(data.info),
-      smsError: () => console.log(data.info),
+      smsError: () => console.log(data.info)
     };
+
+    // Check for a specific channel if needed
+    if (data.channel) {
+      // Handle messages based on channel
+      console.log(`Received message on channel: ${data.channel}`);
+    }
 
     // Call the appropriate handler based on the data type, if it exists
     const handler = handlers[data.type];
-    if (handler) handler();
+
+    handler();
 
     // Re-render orders and update stats after handling any WebSocket message
     renderOrders();
     updateOrderStats(orders, orderStatsElement);
   };
 
-  const { socket, closeWebSocket } = createWebSocket(url, handleWebSocketMessage);
+  const { socket, closeWebSocket } = createWebSocket(
+    url,
+    handleWebSocketMessage
+  );
 
   const renderOrders = () => {
     orderListElement.innerHTML = "";
@@ -77,7 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   };
 
-  const showError = (message) => {
+  const showError = message => {
     let messageElement = document.querySelector(".error-message");
 
     if (!messageElement) {
