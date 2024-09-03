@@ -1,5 +1,6 @@
 import "./styles/App.css";
-import "./src/App.js"
+import "./src/App.js";
+import { createHeaderComponent } from "./src/components/header/Header.js"; 
 
 const createElement = (tagName, attributes = {}) => {
   const element = document.createElement(tagName);
@@ -19,19 +20,8 @@ const app = document.querySelector("#app");
 
 const container = createSection();
 
-const header = createElement("h1", {
-  textContent: " Boitekong Eats IT Dashboard"
-});
-
-// Create the logo image element
-const logo = createElement("img", {
-  src: "/1.png",
-  alt: "Boitekong Eats Logo",
-  className: "logo"
-});
-
-// Append the logo to the header
-header.prepend(logo);
+// Use the Nav component
+const header = createHeaderComponent();
 
 const hr = createElement("hr");
 

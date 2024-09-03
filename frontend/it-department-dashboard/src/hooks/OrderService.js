@@ -11,23 +11,23 @@ export const fetchOrders = async (
 ) => {
   const token = sessionStorage.getItem("token");
 
-  // Ensure the URL is correct
   const response = await fetch(`${SERVER_DOMAIN}/orders/by-cook`, {
-    method: "POST", // Correctly use POST as expected by the backend
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ cookId })
+    body: JSON.stringify({ cookId }),
   });
 
   if (!response.ok) {
-    console.log(await response.json())
-    throw new Error("Failed to fetch orders");
+    const errorData = await response.json();
+    return { error: errorData.message || "An error occurred" };
   }
 
   return response.json();
 };
+
 /**
  * Fetch an order by order number.
  * 

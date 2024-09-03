@@ -8,10 +8,10 @@ const url = "ws://localhost:5000"; // Replace with your WebSocket server URL
 
 document.addEventListener("DOMContentLoaded", async () => {
   const appContainer = document.body;
-  
+
   // Check if the token exists in session storage
   const token = sessionStorage.getItem("token");
-  
+
   if (!token) {
     // If no token, render the login form
     const loginForm = renderLoginForm();
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     appContainer.appendChild(loginForm);
     return;
   }
-  
+
   // Token exists, continue with fetching orders and handling WebSocket connection
   const orderListElement = appContainer.querySelector("#order-list");
   const orderStatsElement = appContainer.querySelector("#order-stats");
@@ -77,10 +77,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   };
 
+  const showError = (message) => {
+    let messageElement = document.querySelector(".error-message");
+
+    if (!messageElement) {
+      messageElement = document.createElement("p");
+      messageElement.className = "error-message";
+      appContainer.appendChild(messageElement);
+    }
+
+    messageElement.textContent = message;
+  };
+
+  const hideError = () => {
+    const messageElement = document.querySelector(".error-message");
+    if (messageElement) {
+      messageElement.remove();
+    }
+  };
+
   try {
-    orders = await fetchOrders();
-    renderOrders();
-    updateOrderStats(orders, orderStatsElement);
+    hideError(); // Hide any existing error message
+    const result = await fetchOrders();
+
+    if (result.error) {
+      showError(result.error); // Show error message
+    } else {
+      orders = result;
+      renderOrders();
+      updateOrderStats(orders, orderStatsElement);
+    }
   } catch (error) {
     console.error("Error fetching orders:", error);
   }

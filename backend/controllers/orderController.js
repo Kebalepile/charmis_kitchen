@@ -85,7 +85,7 @@ const getCookOrders = async (req, res) => {
 
     if (!orders || orders.length === 0) {
       return sendResponse(res, 404, {
-        message: "No orders found for this cook"
+        message: " 🍽️, No orders found for this cook"
       });
     }
 
@@ -101,7 +101,7 @@ const getOrder = async (req, res) => {
   try {
     const order = await Order.findOne({ orderNumber });
     if (!order) {
-      return sendResponse(res, 404, { message: "Order not found" });
+      return sendResponse(res, 404, { message: "🚫 Order not found" });
     }
     sendResponse(res, 200, order);
   } catch (error) {
@@ -119,7 +119,7 @@ const updateOrder = async (req, res) => {
     });
 
     if (!updatedOrder) {
-      return sendResponse(res, 404, { message: "Order not found" });
+      return sendResponse(res, 404, { message: "🚫 Order not found" });
     }
 
     sendResponse(res, 200, updatedOrder);
@@ -135,13 +135,13 @@ const deleteOrder = async (req, res) => {
   try {
     const order = await Order.findById(id);
     if (!order) {
-      return sendResponse(res, 404, { message: "Order not found" });
+      return sendResponse(res, 404, { message: "🚫 Order not found" });
     }
 
     const deletedOrder = await Order.findByIdAndDelete(id);
 
     if (!deletedOrder) {
-      return sendResponse(res, 404, { message: "Order not found" });
+      return sendResponse(res, 404, { message: "🚫 Order not found" });
     }
 
     const { phone: originalPhone, name, orderNumber } = order;

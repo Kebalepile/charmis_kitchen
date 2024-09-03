@@ -53,3 +53,24 @@ body {
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+/* Styles for the error message */
+.error-message {
+    position: absolute; /* Position it relative to the page */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for centering */
+    padding: 20px;
+    /* background-color: #ffcccc; Light red background for visibility */
+    color: #a94442; /* Dark red text for contrast */
+    /* border: 1px solid #a94442; Border to match text color */
+    /* border-radius: 8px; Rounded corners */
+    font-size: 1.2rem; /* Larger text size */
+    font-weight: bold;
+    text-align: center; /* Center text inside the box */
+    z-index: 1000; /* High z-index to appear above other elements */
+    max-width: 80%; /* Limit maximum width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    min-height: 50px; /* Minimum height */
+  }
+  

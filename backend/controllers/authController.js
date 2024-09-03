@@ -16,7 +16,7 @@ const SignUp = async (req, res) => {
     // Check if the username already exists
     const existingUser = await LoginModel.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ error: "Username already exists" });
+      return res.status(400).json({ error: "Username already exists 😕" });
     }
 
     // Generate a unique PIN
@@ -37,13 +37,13 @@ const SignUp = async (req, res) => {
     });
 
     // Send response
-    res.status(201).json({ message: "User signed up successfully", username, pin, token });
+    res.status(201).json({ message: "🎉signed up successfully 🎉", username, pin, token });
 
     // Notify clients of a new signup
     notifyClients({ type: "newSignup", user: { username,pin } });
   } catch (error) {
     console.error("Error:", error);
-    res.status(500).json({ error: "Failed to sign up user" });
+    res.status(500).json({ error: "Failed to sign up user 🥺" });
   }
 };
 
@@ -54,12 +54,12 @@ const Login = async (req, res) => {
     // Find the user by username
     const user = await LoginModel.findOne({ username });
     if (!user) {
-      return res.status(400).json({ error: "Invalid username or PIN" });
+      return res.status(400).json({ error: "Invalid username or PIN 🥺" });
     }
 
     const isPinValid = await comparePassword(pin, user.pin);
     if (!isPinValid) {
-      return res.status(400).json({ error: "Invalid username or PIN" });
+      return res.status(400).json({ error: "Invalid username or PIN 🥺" });
     }
 
     // Generate a JWT token
@@ -68,7 +68,7 @@ const Login = async (req, res) => {
     });
 
     // Send response
-    res.status(200).json({ message: "Login successful", token });
+    res.status(200).json({ message: "🎉 Login successful🎉", token });
 
     // Notify clients of a successful login
     notifyClients({ type: "userLogin", user: { username } });
@@ -87,7 +87,7 @@ const Logout = async (req, res) => {
     await blacklistedToken.save();
 
     // Send response
-    res.status(200).json({ message: "Logout successful" });
+    res.status(200).json({ message: "🎉 Logout successful 🎉" });
 
     // Notify clients of a user logout
     const decodedToken = jwt.decode(token);

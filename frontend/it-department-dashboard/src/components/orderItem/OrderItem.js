@@ -1,5 +1,5 @@
 export const renderOrderItem = (order) => {
-  console.log(order);
+  // console.log(order);
 
   // Use createdAt for the timestamp
   const formattedTimestamp = new Date(order.createdAt).toLocaleString("en-US", {
