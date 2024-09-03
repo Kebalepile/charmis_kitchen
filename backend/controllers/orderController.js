@@ -64,7 +64,7 @@ const createOrder = async (req, res) => {
 const getOrders = async (req, res) => {
   try {
     const orders = await Order.find({});
-    console.log(orders)
+
     if (!orders || orders.length === 0) {
       return sendResponse(res, 404, {
         message: "No orders found for this cook"
@@ -79,9 +79,9 @@ const getOrders = async (req, res) => {
 const getCookOrders = async (req, res) => {
   try {
     const { cookId } = req.body;
-
-    // Find orders where the cookId array includes the cookId from req.body
-    const orders = await Order.find({ cookId: { $in: [cookId] } });
+    const orders = await Order.find({
+      cookId: { $in: [cookId.toLowerCase()] }
+    });
 
     if (!orders || orders.length === 0) {
       return sendResponse(res, 404, {

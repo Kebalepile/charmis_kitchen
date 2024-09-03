@@ -6,9 +6,11 @@ import { SERVER_DOMAIN } from "./types.js";
  * @param {string} cookId - The cook ID.
  * @returns {Promise<Array<Order>>} A promise that resolves to an array of orders.
  */
-export const fetchOrders = async (cookId = sessionStorage.getItem("cookId")) => {
+export const fetchOrders = async (
+  cookId = sessionStorage.getItem("cookId")
+) => {
   const token = sessionStorage.getItem("token");
-  
+
   // Ensure the URL is correct
   const response = await fetch(`${SERVER_DOMAIN}/orders/by-cook`, {
     method: "POST", // Correctly use POST as expected by the backend
@@ -20,6 +22,7 @@ export const fetchOrders = async (cookId = sessionStorage.getItem("cookId")) => 
   });
 
   if (!response.ok) {
+    console.log(await response.json())
     throw new Error("Failed to fetch orders");
   }
 
@@ -101,6 +104,7 @@ export const deleteOrder = async id => {
  * @returns {Promise<string>} A promise that resolves to the JWT token.
  */
 export const login = async (username, pin) => {
+  username = username.toLocaleLowerCase();
   try {
     const response = await fetch(`${SERVER_DOMAIN}/login`, {
       method: "POST",
@@ -150,7 +154,6 @@ export const logout = async () => {
     }
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("cookId");
-    // console.log(data.message)
 
     return data;
   } catch (error) {
@@ -163,6 +166,7 @@ export const logout = async () => {
  * @param {string} username
  */
 export const signup = async username => {
+  username = username.toLowerCase()
   try {
     let response = await fetch(`${SERVER_DOMAIN}/signup`, {
       method: "POST",
@@ -177,9 +181,6 @@ export const signup = async username => {
       throw new Error(data.error || "Username already exists");
     }
 
-    // console.log(data.message)
-    // console.log(data)
-    // sessionStorage.setItem("token", data.token);
     return data;
   } catch (err) {
     throw new Error(
