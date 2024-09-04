@@ -88,7 +88,7 @@ button {
 @media (max-width: 600px) {
   .login-form {
     padding: 15px;
-    width: 100%;
+    width: 80%;
     max-width: none;
   }
 

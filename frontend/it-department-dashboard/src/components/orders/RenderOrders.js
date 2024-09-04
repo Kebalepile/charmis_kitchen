@@ -68,7 +68,7 @@ export const OrderFilter = (orders, orderListElement) => {
         displayOrders(filteredOrders, orderListElement);
 
         // Hide the loading spinner
-        // toggleLoadingSpinner(false); // Hide the spinner
+        toggleLoadingSpinner(false); // Hide the spinner
       }, 2000);
     });
 
