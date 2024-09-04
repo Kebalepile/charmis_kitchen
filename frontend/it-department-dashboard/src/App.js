@@ -1,7 +1,7 @@
 import { createWebSocket } from "./hooks/useWebSocket.js";
 import { renderLoginForm } from "./components/login/Login.js";
-import { renderOrderItem } from "./components/orderItem/OrderItem.js";
 import { updateOrderStats } from "./components/orderStats/OrderStats.js";
+import { displayOrders } from "./components/orders/RenderOrders.js";
 import { fetchOrders } from "./hooks/OrderService.js";
 
 const url = "ws://localhost:5000"; // Replace with your WebSocket server URL
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     handler();
 
     // Re-render orders and update stats after handling any WebSocket message
-    renderOrders();
+    displayOrders(orders, orderListElement);
     updateOrderStats(orders, orderStatsElement);
   };
 
@@ -78,14 +78,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     url,
     handleWebSocketMessage
   );
-
-  const renderOrders = () => {
-    orderListElement.innerHTML = "";
-    orders.forEach(order => {
-      const orderItemElement = renderOrderItem(order);
-      orderListElement.appendChild(orderItemElement);
-    });
-  };
 
   const showError = message => {
     let messageElement = document.querySelector(".error-message");
@@ -114,7 +106,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       showError(result.error); // Show error message
     } else {
       orders = result;
-      renderOrders();
+      displayOrders(orders, orderListElement);
       updateOrderStats(orders, orderStatsElement);
     }
   } catch (error) {
