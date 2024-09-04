@@ -171,11 +171,7 @@ export const renderLoginForm = () => {
         message.textContent = data.message;
         message.classList.add("success");
         message.classList.remove("error");
-        toggleLoadingSpinner(true)
-        setTimeout(() => {
-          toggleLoadingSpinner(false);
-          location.reload()
-        }, 2000);
+        location.reload();
 
         if (!isLoginMode && data.username && data.pin) {
           newUsernameSpan.textContent = data.username;

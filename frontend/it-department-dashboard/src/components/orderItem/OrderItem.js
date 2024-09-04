@@ -1,5 +1,6 @@
-import "./order.css"
-export const renderOrderItem = (order) => {
+import { updateOrder } from "../../hooks/OrderService";
+import "./order.css";
+export const renderOrderItem = order => {
   // console.log(order);
 
   // Use createdAt for the timestamp
@@ -8,7 +9,7 @@ export const renderOrderItem = (order) => {
     month: "short",
     day: "numeric",
     hour: "2-digit",
-    minute: "2-digit",
+    minute: "2-digit"
   });
 
   const article = document.createElement("article");
@@ -24,46 +25,46 @@ export const renderOrderItem = (order) => {
     {
       label: "Street Address",
       value: order.streetAddress,
-      className: "order-detail-address",
+      className: "order-detail-address"
     },
     {
       label: "House Number",
       value: order.houseNumber,
-      className: "order-detail-house-number",
+      className: "order-detail-house-number"
     },
     {
       label: "Payment Method",
       value: order.paymentMethod,
-      className: "order-detail-payment-method",
+      className: "order-detail-payment-method"
     },
     {
       label: "Delivery Charge",
       value: `R${order.deliveryCharge}.00`,
-      className: "order-detail-delivery-charge",
+      className: "order-detail-delivery-charge"
     },
     {
       label: "Payment Items",
       value: order.paymentItemsDescriptions,
-      className: "order-detail-payment-items",
+      className: "order-detail-payment-items"
     },
     {
       label: "Timestamp",
       value: formattedTimestamp,
-      className: "order-detail-timestamp",
+      className: "order-detail-timestamp"
     },
     {
       label: "Payment Total",
       value: `R${order.paymentTotal}.00`,
-      className: "order-detail-payment-total",
+      className: "order-detail-payment-total"
     },
     {
       label: "Chef",
       value: order.cookId.join(", "), // Displaying cookId array as a comma-separated string
-      className: "order-detail-cook-id",
-    },
+      className: "order-detail-cook-id"
+    }
   ];
 
-  details.forEach((detail) => {
+  details.forEach(detail => {
     const p = document.createElement("p");
     p.textContent = `${detail.label}: ${detail.value}`;
     p.className = `order-detail ${detail.className}`;
@@ -74,26 +75,48 @@ export const renderOrderItem = (order) => {
   pStatus.className = "status-text";
   pStatus.textContent = `Status: ${order.status}`;
   article.appendChild(pStatus);
-  
-  // Button for deleting the order
-  const deleteButton = document.createElement("button");
-  deleteButton.textContent = "Delete Order";
-  deleteButton.className = "delete-button";
-  deleteButton.addEventListener("click", () => {
-    // Logic for deleting the order goes here
-    console.log(`Deleting order: ${order.orderNumber}`);
-  });
-  article.appendChild(deleteButton);
 
-  // Button for editing the order
-  const editButton = document.createElement("button");
-  editButton.textContent = "Edit Order";
-  editButton.className = "edit-button";
-  editButton.addEventListener("click", () => {
-    // Logic for editing the order goes here
-    console.log(`Editing order: ${order.orderNumber}`);
+  // Button for canceling the order
+  const cancelButton = document.createElement("button");
+  cancelButton.textContent = "Cancel Order";
+  cancelButton.className = "cancel-button";
+  cancelButton.addEventListener("click", async () => {
+    try {
+      // Logic for fulfilling the order goes here
+
+      const id = order["_id"];
+      const update = {
+        ...order,
+        status: "Cancelled"
+      };
+      const res = await updateOrder(id, update);
+      console.log(res);
+    } catch (error) {
+      console.error(err);
+    }
   });
-  article.appendChild(editButton);
+  article.appendChild(cancelButton);
+
+  // Button for fulfilling the order
+  const fulfillButton = document.createElement("button");
+  fulfillButton.textContent = "Fulfill Order";
+  fulfillButton.className = "fulfill-button";
+  fulfillButton.addEventListener("click", async () => {
+    try {
+      // Logic for fulfilling the order goes here
+
+      const id = order["_id"];
+      const update = {
+        ...order,
+        status: "Ready"
+      };
+      const res = await updateOrder(id, update);
+      console.log(res);
+    } catch (error) {
+      console.error(err);
+    }
+  });
+  article.appendChild(fulfillButton);
 
   return article;
 };

@@ -64,8 +64,8 @@
   padding: 3px 8px;
 }
 
-.order-item .delete-button,
-.order-item .edit-button {
+.order-item .cancel-button,
+.order-item .fulfill-button {
   margin-right: 10px;
   margin-top: 20px;
   padding: 5px 10px;
@@ -75,14 +75,14 @@
   color: #fff;
 }
 
-.order-item .delete-button {
+.order-item .cancel-button {
   background-color: #cd1e3b;
 }
 
-.order-item .edit-button:hover {
+.order-item .fulfill-button:hover {
   background-color: #0056b3;
 }
 
-.order-item .delete-button:hover {
+.order-item .cancel-button:hover {
   background-color: #f63c5b;
 }

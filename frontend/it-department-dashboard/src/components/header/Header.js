@@ -57,13 +57,27 @@ export const createHeaderComponent = () => {
   logoutButton.className = "logout-button";
 
   logoutButton.onclick = async () => {
-    const data = await logout();
+   // Disable the button to prevent multiple clicks
+   logoutButton.disabled = true;
 
-    // Reload the page after 2 seconds (2000 milliseconds)
-    setTimeout(() => {
-      location.reload();
-    }, 2000);
-  };
+   try {
+       const data = await logout();
+
+       // Reload the page after 2 seconds (2000 milliseconds)
+       setTimeout(() => {
+           // Re-enable the button
+           logoutButton.disabled = false;
+
+           // Reload the page
+           location.reload();
+       }, 2000);
+   } catch (error) {
+       console.error('Logout failed:', error);
+       // Re-enable the button immediately if there's an error
+       logoutButton.disabled = false;
+   }
+};
+
 
   // Append the logout button to the header content container
   headerContent.appendChild(logoutButton);
