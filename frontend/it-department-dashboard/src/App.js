@@ -1,7 +1,7 @@
 import { createWebSocket } from "./hooks/useWebSocket.js";
 import { renderLoginForm } from "./components/login/Login.js";
 import { updateOrderStats } from "./components/orderStats/OrderStats.js";
-import { displayOrders } from "./components/orders/RenderOrders.js";
+import { OrderFilter } from "./components/orders/RenderOrders.js";
 import { refresh } from "./utils/helper.js";
 import { fetchOrders } from "./hooks/OrderService.js";
 
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     handler();
 
     // Re-render orders and update stats after handling any WebSocket message
-    displayOrders(orders, orderListElement);
+    OrderFilter(orders, orderListElement);
     updateOrderStats(orders, orderStatsElement);
   };
 
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", async () => {
      refresh(3000, () => sessionStorage.clear())
     } else {
       orders = result;
-      displayOrders(orders, orderListElement);
+      OrderFilter(orders, orderListElement);
       updateOrderStats(orders, orderStatsElement);
     }
   } catch (error) {

@@ -1,0 +1,37 @@
+/* Container for the filter buttons */
+.order-filter-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Style each filter button */
+  .filter-button {
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding for size */
+    margin: 0 5px; /* Space between buttons */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition */
+  }
+  
+  /* Hover effect for buttons */
+  .filter-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  /* Active button style */
+  .filter-button.active {
+    background-color: #28a745; /* Green background for active button */
+    color: white; /* Ensure the text stays white */
+  }
+  
+  /* Optional: add focus style for accessibility */
+  .filter-button:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Custom outline effect */
+  }
+  
+  
