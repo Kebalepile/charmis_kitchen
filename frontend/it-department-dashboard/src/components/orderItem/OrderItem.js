@@ -111,7 +111,9 @@ export const renderOrderItem = order => {
         status: "Ready"
       };
       const res = await updateOrder(id, update);
-      console.log(res);
+      if(res.status == "Ready"){
+        alert(`order ready & notification via sms is sent  to customer at ${res.phone}`)
+      }
     } catch (error) {
       console.error(err);
     }
