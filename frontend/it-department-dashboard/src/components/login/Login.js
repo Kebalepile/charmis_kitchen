@@ -1,7 +1,7 @@
 import "./login.css";
 import { login, signup } from "../../hooks/OrderService";
 import { renderLoadingSpinner } from "../loading/LoadingSpinner";
-
+import { refresh } from "../../utils/helper";
 /***
  * @description Creates a label and input element with the specified attributes.
  * @param {string} labelText - The text for the label element.
@@ -148,7 +148,7 @@ export const renderLoginForm = () => {
       .then(() => {
         message.textContent = "Copied to clipboard!";
         message.classList.add("success");
-        setTimeout(() => (message.textContent = ""), 2000);
+        refresh(2000, () => (message.textContent = ""));
       })
       .catch(err => console.error("Could not copy text:", err));
   };
@@ -179,8 +179,7 @@ export const renderLoginForm = () => {
         message.classList.add("success");
         message.classList.remove("error");
 
-        // setTimeout(() => location.reload(), 2000)
-        location.reload();
+        refresh();
 
         if (!isLoginMode && data.username && data.pin) {
           newUsernameSpan.textContent = data.username;

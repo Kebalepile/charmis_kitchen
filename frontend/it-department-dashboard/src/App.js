@@ -2,6 +2,7 @@ import { createWebSocket } from "./hooks/useWebSocket.js";
 import { renderLoginForm } from "./components/login/Login.js";
 import { updateOrderStats } from "./components/orderStats/OrderStats.js";
 import { displayOrders } from "./components/orders/RenderOrders.js";
+import { refresh } from "./utils/helper.js";
 import { fetchOrders } from "./hooks/OrderService.js";
 
 const url = "ws://localhost:5000"; // Replace with your WebSocket server URL
@@ -104,6 +105,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (result.error) {
       showError(result.error); // Show error message
+      
+     refresh(3000, () => sessionStorage.clear())
     } else {
       orders = result;
       displayOrders(orders, orderListElement);
