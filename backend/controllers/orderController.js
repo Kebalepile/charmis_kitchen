@@ -123,44 +123,52 @@ const updateOrder = async (req, res) => {
     if (!updatedOrder) {
       return sendResponse(res, 404, { message: "🚫 Order not found" });
     }
-    const smsNotitfication = async order => {
-      if (order.status.toLowerCase() == "ready") {
-        const baseMessage = `hey ${order.name}, `;
-        let customerMessage = "";
-        const collectionLocation = {
-          charmi: "2278 Betlhakwe St, Boitekong Ext2, Rustenburg",
-          charmaine: "2278 Betlhakwe St, Boitekong Ext2, Rustenburg",
-          boitekongEats: "2379 Windsa St, Boitekong Ext2, Rustenburg"
-        };
-        const paymentMethod = order.paymentMethod.tolowerCase();
-
-        if (["online", "self-collect"].includes(paymentMethod)) {
-          customerMessage = `${baseMessage}your order ${order.orderNumber} at BoitekongEats is Ready for self-collection, collect at ${collectionLocation[
-            order.cookId[0]
-          ]}. Total is ${order.paymentTotal}`;
-        } else if (["cash", "online-delivery"].includes(paymentMethod)) {
-          customerMessage = `${baseMessage}your order ${order.orderNumber} at BoitekongEats is out on delivery to ${order.streetAddress}, house number:${order.houseNumber}`;
+    const smsNotification = async (order) => {
+      const baseMessage = `Hey ${order.name}, `;
+      let customerMessage = "";
+      
+      const collectionLocation = {
+        charmi: "2278 Betlhakwe St, Boitekong Ext2, Rustenburg",
+        charmaine: "2278 Betlhakwe St, Boitekong Ext2, Rustenburg",
+        boitekongEats: "2379 Windsa St, Boitekong Ext2, Rustenburg",
+      };
+      
+      const paymentMethod = order.paymentMethod.toLowerCase();
+      const cookLocation = collectionLocation[order.cookId[0]];
+    
+      if (order.deliveryCharge > 0) {
+        const deliveryMessage = `BoitekongEats order:${order.orderNumber} is ready for delivery!`;
+        const deliveryPhone = formatCellNumber("0698488813");
+        const deliveryResponse = await clickatellApi(deliveryPhone, deliveryMessage);
+    
+        if (!deliveryResponse.messages || !deliveryResponse.messages[0].accepted) {
+          return [503, { message: "🚫 Failed to send SMS to delivery team" }];
         }
-        
-        const phone = formatCellNumber(order.phone);
-        if(order.deliveryCharge > 0){
-          const deliveryMessage = `BoitekongEats order:${order.orderNumber} is ready for delivery!`
-          const deliveryPhone = formatCellNumber("0698488813");
-          const data = await clickatellApi(deliveryPhone, deliveryMessage);
-        }
-        if(customerMessage.length > 0){
-          const data = await clickatellApi(phone, message);
-          if (data.messages && data.messages[0].accepted) {
-            return [200, {message:`sent sms for order ${order.orderNumber}`}]
-          } else {
-            return [ 503, { message: "🚫 failed to send sms" }]
-          }
-        }
-
       }
+    
+      // Prepare customer message based on payment method
+      if (["online", "self-collect"].includes(paymentMethod)) {
+        customerMessage = `${baseMessage}your order ${order.orderNumber} at BoitekongEats is ready for self-collection. Collect at ${cookLocation}. Total is R${order.paymentTotal}.`;
+      } else if (["cash", "online-delivery"].includes(paymentMethod)) {
+        customerMessage = `${baseMessage}your order ${order.orderNumber} at BoitekongEats is out on delivery to ${order.streetAddress}, house number: ${order.houseNumber}.`;
+      }
+    
+      // Send SMS only if there's a customer message to send
+      if (customerMessage.length > 0) {
+        const phone = formatCellNumber(order.phone);
+        const customerResponse = await clickatellApi(phone, customerMessage);
+    
+        if (!customerResponse.messages || !customerResponse.messages[0].accepted) {
+          return [503, { message: "🚫 Failed to send SMS to customer" }];
+        }
+      }
+    
+      // Final return if everything went smoothly
+      return [200, { message: `Sent SMS notifications for order ${order.orderNumber}` }];
     };
+    
 
-    const [statusCode, statusMessage] = await smsNotitfication(order)
+    const [statusCode, statusMessage] = await smsNotification(order)
 
     if(statusCode === 503){
       return sendResponse(res, 503, statusMessage);
