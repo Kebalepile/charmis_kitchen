@@ -95,7 +95,8 @@ export const renderLoginForm = () => {
   modeToggle.type = "button";
   modeToggle.className = "mode-toggle";
   modeToggle.textContent = "Signup";
-  form.appendChild(modeToggle);
+  modeToggle.disabled = true; // Disable the signup button
+  // form.appendChild(modeToggle);
 
   // Create and append the message paragraph
   const message = document.createElement("p");
@@ -157,20 +158,28 @@ export const renderLoginForm = () => {
   copyPinButton.onclick = () => copyToClipboard(newPinSpan.textContent);
 
   form.onsubmit = async event => {
-    toggleLoadingSpinner(true); // Show the spinner when the form is submitted
+    toggleLoadingSpinner(true);
     event.preventDefault();
 
     const username = usernameInput.value;
     const pin = pinInput.value;
 
     try {
+      // const data = isLoginMode
+      //   ? await login(username, pin)
+      //   : await signup(username);
       const data = isLoginMode
         ? await login(username, pin)
-        : await signup(username);
+        : (() => {
+            alert("You're not authorized!");
+            return "Not Allowed";
+          })();
       if (data.message) {
         message.textContent = data.message;
         message.classList.add("success");
         message.classList.remove("error");
+
+        // setTimeout(() => location.reload(), 2000)
         location.reload();
 
         if (!isLoginMode && data.username && data.pin) {
@@ -186,7 +195,7 @@ export const renderLoginForm = () => {
       message.classList.add("error");
       message.classList.remove("success");
     } finally {
-      toggleLoadingSpinner(false); // Hide the spinner when the operation is complete
+      toggleLoadingSpinner(false);
     }
   };
 
