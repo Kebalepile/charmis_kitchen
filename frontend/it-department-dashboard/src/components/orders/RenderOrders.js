@@ -32,9 +32,10 @@ export const OrderFilter = (orders, orderListElement) => {
   filterContainer.className = "order-filter-container";
 
   // Define the statuses and count orders for each status
-  const statuses = ["Ready", "Pending", "Cancelled", "All"];
+  const statuses = ["Ready","Process", "Pending", "Cancelled", "All"];
   const statusCounts = {
     Ready: orders.filter(order => order.status.toLowerCase() === "ready").length,
+    Process: orders.filter(order => order.status.toLowerCase() === "process").length,
     Pending: orders.filter(order => order.status.toLowerCase() === "pending").length,
     Cancelled: orders.filter(order => order.status.toLowerCase() === "cancelled").length,
     All: orders.length,
@@ -67,7 +68,7 @@ export const OrderFilter = (orders, orderListElement) => {
         displayOrders(filteredOrders, orderListElement);
 
         // Hide the loading spinner
-        toggleLoadingSpinner(false); // Hide the spinner
+        // toggleLoadingSpinner(false); // Hide the spinner
       }, 2000);
     });
 
