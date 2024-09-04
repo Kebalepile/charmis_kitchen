@@ -1,5 +1,6 @@
 import "./login.css";
 import { login, signup } from "../../hooks/OrderService";
+import { renderLoadingSpinner } from "../loading/LoadingSpinner";
 
 /***
  * @description Creates a label and input element with the specified attributes.
@@ -59,6 +60,7 @@ const createDetailGroup = (labelText, buttonText) => {
  * @description Renders the login/signup form and handles form submission, mode toggling, and copying details to clipboard.
  * @returns {HTMLFormElement} The created login/signup form element.
  */
+
 export const renderLoginForm = () => {
   const form = document.createElement("form");
   form.className = "login-form";
@@ -112,24 +114,23 @@ export const renderLoginForm = () => {
   const {
     detailGroup: usernameDetailGroup,
     valueSpan: newUsernameSpan,
-    copyButton: copyUsernameButton,
+    copyButton: copyUsernameButton
   } = createDetailGroup("NAME: ", "📋 Copy");
   newDetailsContainer.appendChild(usernameDetailGroup);
 
   const {
     detailGroup: pinDetailGroup,
     valueSpan: newPinSpan,
-    copyButton: copyPinButton,
+    copyButton: copyPinButton
   } = createDetailGroup("PIN: ", "📋 Copy");
   newDetailsContainer.appendChild(pinDetailGroup);
 
   form.appendChild(newDetailsContainer);
 
+  const { toggleLoadingSpinner } = renderLoadingSpinner();
+
   let isLoginMode = true;
 
-  /**
-   * @description Toggles between login and signup modes.
-   */
   modeToggle.onclick = () => {
     isLoginMode = !isLoginMode;
     submitButton.textContent = isLoginMode ? "Login" : "Signup";
@@ -140,11 +141,7 @@ export const renderLoginForm = () => {
     newDetailsContainer.style.display = "none";
   };
 
-  /**
-   * @description Copies the given text to the clipboard and shows a success message.
-   * @param {string} text - The text to copy to the clipboard.
-   */
-  const copyToClipboard = (text) => {
+  const copyToClipboard = text => {
     navigator.clipboard
       .writeText(text)
       .then(() => {
@@ -152,19 +149,17 @@ export const renderLoginForm = () => {
         message.classList.add("success");
         setTimeout(() => (message.textContent = ""), 2000);
       })
-      .catch((err) => console.error("Could not copy text:", err));
+      .catch(err => console.error("Could not copy text:", err));
   };
 
   copyUsernameButton.onclick = () =>
     copyToClipboard(newUsernameSpan.textContent);
   copyPinButton.onclick = () => copyToClipboard(newPinSpan.textContent);
 
-  /**
-   * @description Handles form submission for login or signup.
-   * @param {Event} event - The form submission event.
-   */
-  form.onsubmit = async (event) => {
+  form.onsubmit = async event => {
+    toggleLoadingSpinner(true); // Show the spinner when the form is submitted
     event.preventDefault();
+
     const username = usernameInput.value;
     const pin = pinInput.value;
 
@@ -176,8 +171,11 @@ export const renderLoginForm = () => {
         message.textContent = data.message;
         message.classList.add("success");
         message.classList.remove("error");
-
-        setTimeout(() => location.reload(), 2000);
+        toggleLoadingSpinner(true)
+        setTimeout(() => {
+          toggleLoadingSpinner(false);
+          location.reload()
+        }, 2000);
 
         if (!isLoginMode && data.username && data.pin) {
           newUsernameSpan.textContent = data.username;
@@ -191,6 +189,8 @@ export const renderLoginForm = () => {
         `Failed to ${isLoginMode ? "log in" : "sign up"}. Please try again.`;
       message.classList.add("error");
       message.classList.remove("success");
+    } finally {
+      toggleLoadingSpinner(false); // Hide the spinner when the operation is complete
     }
   };
 
