@@ -1,24 +1,23 @@
 /* Container for the filter buttons */
 .order-filter-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap; /* Allows buttons to wrap onto the next line if needed */
   margin-bottom: 20px;
-  gap: 10px; /* Space between buttons */
-  /* width:inherit; */
+  gap: 2px; /* Space between buttons */
+
 }
 
-
 /* Style each filter button */
-.filter-button {
+button.filter-button {
   background-color: #007bff; /* Blue background */
   color: white; /* White text */
   border: none; /* No border */
-  padding: 10px 20px; /* Padding for size */
-  margin: 0 5px; /* Space between buttons */
+  padding: 10px; /* Padding for size */
   border-radius: 5px; /* Rounded corners */
   cursor: pointer; /* Pointer cursor on hover */
   transition: background-color 0.3s ease; /* Smooth transition */
+  font-size: 14px; /* Default font size */
 }
 
 /* Hover effect for buttons */
@@ -38,3 +37,18 @@
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Custom outline effect */
 }
 
+/* Media Queries */
+
+/* For tablets and smaller screens */
+@media (max-width: 768px) {
+  .filter-button {
+      padding: 8px; /* Adjust padding for better responsiveness */
+  }
+}
+
+/* For mobile screens */
+@media (max-width: 480px) {
+  .filter-button {
+     padding: 6px; /* Adjust padding for mobile screens */
+  }
+}

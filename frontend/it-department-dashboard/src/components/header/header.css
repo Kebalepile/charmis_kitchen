@@ -1,54 +1,148 @@
+/* Container for the filter buttons */
+.order-filter-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Allows buttons to wrap onto the next line if needed */
+  margin-bottom: 20px;
+  gap: 10px; /* Space between buttons */
+}
 
+/* Style each filter button */
+.filter-button {
+  background-color: #007bff; /* Blue background */
+  color: white; /* White text */
+  border: none; /* No border */
+  padding: 8px 16px; /* Adjust padding for better responsiveness */
+  margin: 0 5px; /* Space between buttons */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth transition */
+  font-size: 14px; /* Adjust font size */
+}
+
+/* Hover effect for buttons */
+.filter-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Active button style */
+.filter-button.active {
+  background-color: #28a745; /* Green background for active button */
+  color: white; /* Ensure the text stays white */
+}
+
+/* Optional: add focus style for accessibility */
+.filter-button:focus {
+  outline: none; /* Remove default outline */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Custom outline effect */
+}
+
+/* Header navigation styling */
 .header-nav {
-    display: flex;
-  
-    border-bottom: 1px solid var(--border-color);
-    position: sticky; /* Make the element sticky */
-    top: 0; /* Stick to the top of the viewport */
-    z-index: 1000; /* Ensure it stays on top of other content */
-  }
-  
-  
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky; /* Make the element sticky */
+  top: 0; /* Stick to the top of the viewport */
+  z-index: 1000; /* Ensure it stays on top of other content */
+  flex-wrap: wrap; /* Ensure items wrap if necessary */
+  padding: 10px; /* Add padding */
+
+  background-color: white;
+}
+
+/* Header content styling */
+.header-content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Adjust alignment */
+  padding: 10px 20px;
+  background-color: var(--app-background);
+  flex-wrap: wrap; /* Allow items to wrap */
+}
+
+/* Heading styling */
+.header-content h1 {
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem; /* Adjust font size */
+}
+
+/* Logo styling */
+.logo {
+  width: 80px; /* Adjust width for responsiveness */
+  height: 80px; /* Adjust height for responsiveness */
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Logout button styling */
+.logout-button {
+  background-color: var(--button-background);
+  color: var(--white);
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  font-size: 14px; /* Adjust font size */
+}
+
+/* Logout button hover effect */
+.logout-button:hover {
+  background-color: var(--button-hover-background);
+}
+
+/* Horizontal rule styling */
+hr {
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Media Queries */
+
+/* For tablets and smaller screens */
+@media (max-width: 768px) {
   .header-content {
-    width:100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: var(--app-background);
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items */
+    padding: 10px;
   }
-  
+
   .header-content h1 {
-    margin: 10px;
-    display: flex;
-    align-items: center;
+    font-size: 1.25rem; /* Adjust font size */
   }
-  
+
   .logo {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-right: 10px;
+    width: 60px; /* Adjust width for smaller screens */
+    height: 60px; /* Adjust height for smaller screens */
   }
-  
-  .logout-button {
-    background-color: var(--button-background);
-    color: var(--white);
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+
+  .filter-button {
+    font-size: 12px; /* Adjust font size */
+    padding: 6px 12px; /* Adjust padding */
   }
-  
-  .logout-button:hover {
-    background-color: var(--button-hover-background);
+}
+
+/* For mobile screens */
+@media (max-width: 480px) {
+  .header-content {
+    padding: 10px 5px; /* Adjust padding */
   }
-  
-  hr {
-    margin-bottom: 20px;
-    border: 0;
-    border-top: 1px solid var(--border-color);
+
+  .header-content h1 {
+    font-size: 1rem; /* Adjust font size */
   }
-  
+
+  .logo {
+    width: 50px; /* Adjust width for mobile screens */
+    height: 50px; /* Adjust height for mobile screens */
+  }
+
+  .filter-button {
+    font-size: 10px; /* Adjust font size */
+    padding: 4px 8px; /* Adjust padding */
+  }
+}

@@ -1,6 +1,6 @@
 import { createWebSocket } from "./hooks/useWebSocket.js";
 import { renderLoginForm } from "./components/login/Login.js";
-import { updateOrderStats } from "./components/orderStats/OrderStats.js";
+// import { updateOrderStats } from "./components/orderStats/OrderStats.js";
 import { OrderFilter } from "./components/orders/RenderOrders.js";
 import { refresh } from "./utils/helper.js";
 import { fetchOrders } from "./hooks/OrderService.js";
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Re-render orders and update stats after handling any WebSocket message
     OrderFilter(orders, orderListElement);
-    updateOrderStats(orders, orderStatsElement);
+    // updateOrderStats(orders, orderStatsElement);
   };
 
   const { socket, closeWebSocket } = createWebSocket(
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
       orders = result;
       OrderFilter(orders, orderListElement);
-      updateOrderStats(orders, orderStatsElement);
+      // updateOrderStats(orders, orderStatsElement);
     }
   } catch (error) {
     console.error("Error fetching orders:", error);
