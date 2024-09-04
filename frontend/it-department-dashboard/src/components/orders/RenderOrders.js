@@ -1,7 +1,9 @@
 import { renderOrderItem } from "../orderItem/OrderItem.js";
-import "./orderFilter.css"
+import { renderLoadingSpinner } from "../loading/LoadingSpinner.js"; // Import the loading spinner component
+import "./orderFilter.css";
+
 /**
- * @description Display orders placed, waiting to be fulfilled or cancelled based on their status.
+ * @description Display orders placed, waiting to be fulfilled, or canceled based on their status.
  * @param {array} orders - The list of all orders.
  * @param {HTMLElement} orderListElement - The element where orders will be displayed.
  */
@@ -18,7 +20,6 @@ export const displayOrders = (orders, orderListElement) => {
  * @param {array} orders - The list of all orders.
  * @param {HTMLElement} orderListElement - The element where filtered orders will be displayed.
  */
-
 export const OrderFilter = (orders, orderListElement) => {
   // Remove existing filter buttons if present
   const existingFilterContainer = document.querySelector(".order-filter-container");
@@ -53,11 +54,21 @@ export const OrderFilter = (orders, orderListElement) => {
       // Add active class to the clicked button
       button.classList.add('active');
 
-      // Filter and display the orders
-      const filteredOrders = status === "All"
-        ? orders
-        : orders.filter(order => order.status.toLowerCase() === status.toLowerCase());
-      displayOrders(filteredOrders, orderListElement);
+      // Show the loading spinner
+      const { toggleLoadingSpinner } = renderLoadingSpinner();
+      toggleLoadingSpinner(true); // Show the spinner
+
+      // Simulate a 2-second loading time
+      setTimeout(() => {
+        // Filter and display the orders
+        const filteredOrders = status === "All"
+          ? orders
+          : orders.filter(order => order.status.toLowerCase() === status.toLowerCase());
+        displayOrders(filteredOrders, orderListElement);
+
+        // Hide the loading spinner
+        toggleLoadingSpinner(false); // Hide the spinner
+      }, 2000);
     });
 
     filterContainer.appendChild(button);
