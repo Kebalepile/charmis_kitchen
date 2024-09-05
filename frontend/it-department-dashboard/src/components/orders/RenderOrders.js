@@ -48,44 +48,35 @@ export const OrderFilter = (orders, orderListElement) => {
     All: orders.length
   };
 
-  // Create buttons for each status
   statuses.forEach(status => {
     const button = document.createElement("button");
     button.textContent = `${status} (${statusCounts[status]})`; // Display the count in the button
-    button.className = "filter-button";
-
+    button.className = `filter-button filter-${status.toLowerCase()}`; // Assign unique class based on status
+  
     // Event listener to filter orders based on status
     button.addEventListener("click", () => {
-      // Remove active class from all buttons
-      document
-        .querySelectorAll(".filter-button")
-        .forEach(btn => btn.classList.remove("active"));
-
-      // Add active class to the clicked button
-      button.classList.add("active");
-
-      // Show the loading spinner
+      // document
+      //   .querySelectorAll(".filter-button")
+      //   .forEach(btn => btn.classList.remove("active"));
+  
+      // button.classList.add("active");
+  
       const { toggleLoadingSpinner } = renderLoadingSpinner();
-      toggleLoadingSpinner(true); // Show the spinner
-
-      // Simulate a 2-second loading time
+      toggleLoadingSpinner(true);
+  
       setTimeout(() => {
-        // Filter and display the orders
         const filteredOrders =
           status === "All"
             ? orders
-            : orders.filter(
-                order => order.status.toLowerCase() === status.toLowerCase()
-              );
+            : orders.filter(order => order.status.toLowerCase() === status.toLowerCase());
         displayOrders(filteredOrders, orderListElement);
-
-        // Hide the loading spinner
-        toggleLoadingSpinner(false); // Hide the spinner
+        toggleLoadingSpinner(false);
       }, 2000);
     });
-
+  
     filterContainer.appendChild(button);
   });
+  
 
   // Append the filter buttons to the DOM (at the top of the order list)
   orderListElement.parentElement.insertBefore(
