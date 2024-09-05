@@ -28,6 +28,7 @@ const createOrder = async (req, res) => {
     paymentItemsDescriptions,
     orderNumber
   } = req.body;
+
   // Ensure cookId is always an array
   if (!Array.isArray(cookId)) {
     cookId = [cookId];
@@ -36,6 +37,10 @@ const createOrder = async (req, res) => {
   if (!validateOrderFields(req.body)) {
     return sendResponse(res, 400, { error: "Missing required fields" });
   }
+
+  // Determine the status based on paymentTotal
+  // If paymentTotal is less than 50, set status to 'Process'
+  const status = paymentTotal < 50 ? "Process" : "Pending"; 
 
   const newOrder = new Order({
     cookId,
@@ -48,7 +53,7 @@ const createOrder = async (req, res) => {
     paymentTotal,
     deliveryCharge,
     paymentItemsDescriptions,
-    status: "Pending",
+    status, 
     timestamp: new Date()
   });
 
