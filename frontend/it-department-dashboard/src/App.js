@@ -4,8 +4,10 @@ import { renderLoginForm } from "./components/login/Login.js";
 import { OrderFilter } from "./components/orders/RenderOrders.js";
 import { refresh } from "./utils/helper.js";
 import { fetchOrders } from "./hooks/OrderService.js";
-
-const url = "ws://localhost:5000"; // Replace with your WebSocket server URL
+// development
+// const url = "ws://localhost:5000"; // Replace with your WebSocket server URL
+// production
+const url = "wss://b-town-bites.onrender.com"
 
 document.addEventListener("DOMContentLoaded", async () => {
   const appContainer = document.body;

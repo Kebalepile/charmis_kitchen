@@ -24,7 +24,7 @@ export const createHeaderComponent = () => {
      * @returns {HTMLImageElement} The logo image element for the header.
      */
   const logo = document.createElement("img");
-  logo.src = "/boitekong_eats_logo.png";
+  logo.src = "/assets/boitekong_eats_logo.png";
   logo.alt = "Boitekong Eats Logo";
   logo.className = "logo";
 
