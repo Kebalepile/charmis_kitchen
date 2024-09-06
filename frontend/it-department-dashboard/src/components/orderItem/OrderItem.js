@@ -1,9 +1,36 @@
 import { updateOrder } from "../../hooks/OrderService";
 import "./order.css";
-export const renderOrderItem = order => {
-  // console.log(order);
 
-  // Use createdAt for the timestamp
+/**
+ * Function to handle status updates for an order item.
+ * @param {Object} order - The order object containing order details.
+ * @param {string} newStatus - The new status to update the order to.
+ */
+const handleStatusUpdate = async (order, newStatus) => {
+  try {
+    const id = order["_id"];
+    const update = {
+      ...order,
+      status: newStatus
+    };
+    const res = await updateOrder(id, update);
+    if (newStatus === "Ready") {
+      alert(
+        `Order ready & notification via SMS is sent to the customer at ${res.phone}`
+      );
+    }
+    console.log(res);
+  } catch (error) {
+    console.error("Error updating order status:", error);
+  }
+};
+
+/**
+ * Function to render an order item in the DOM with dynamic status buttons.
+ * @param {Object} order - The order object containing order details.
+ * @returns {HTMLElement} - The rendered order item element.
+ */
+export const renderOrderItem = order => {
   const formattedTimestamp = new Date(order.createdAt).toLocaleString("en-US", {
     year: "numeric",
     month: "short",
@@ -15,10 +42,7 @@ export const renderOrderItem = order => {
   const article = document.createElement("article");
   article.className = "order-item";
 
-  const h3 = document.createElement("h3");
-  h3.textContent = `Order Number: ${order.orderNumber}`;
-  article.appendChild(h3);
-
+  // Order details
   const details = [
     { label: "Name", value: order.name, className: "order-detail-name" },
     { label: "Phone", value: order.phone, className: "order-detail-phone" },
@@ -59,9 +83,9 @@ export const renderOrderItem = order => {
     },
     {
       label: "Chef",
-      value: order.cookId.join(", "), // Displaying cookId array as a comma-separated string
+      value: order.cookId.join(", "),
       className: "order-detail-cook-id"
-    }
+    } // Display cookId as comma-separated
   ];
 
   details.forEach(detail => {
@@ -71,54 +95,61 @@ export const renderOrderItem = order => {
     article.appendChild(p);
   });
 
+  // Order status
   const pStatus = document.createElement("p");
   pStatus.className = "status-text";
   pStatus.textContent = `Status: ${order.status}`;
   article.appendChild(pStatus);
 
-  // Button for canceling the order
-  const cancelButton = document.createElement("button");
-  cancelButton.textContent = "Cancel Order";
-  cancelButton.className = "cancel-button";
-  cancelButton.addEventListener("click", async () => {
-    try {
-      // Logic for fulfilling the order goes here
+  // Conditionally rendering buttons based on order status
+  if (order.status === "Pending") {
+    const processButton = document.createElement("button");
+    processButton.textContent = "Move to Process";
+    processButton.className = "process-button";
+    processButton.addEventListener("click", () =>
+      handleStatusUpdate(order, "Process")
+    );
+    article.appendChild(processButton);
+  }
 
-      const id = order["_id"];
-      const update = {
-        ...order,
-        status: "Cancelled"
-      };
-      const res = await updateOrder(id, update);
-      console.log(res);
-    } catch (error) {
-      console.error(err);
-    }
-  });
-  article.appendChild(cancelButton);
+  if (order.status === "Process") {
+    const fulfillButton = document.createElement("button");
+    fulfillButton.textContent = "Fulfill Order";
+    fulfillButton.className = "fulfill-button";
+    fulfillButton.addEventListener("click", () =>
+      handleStatusUpdate(order, "Ready")
+    );
+    article.appendChild(fulfillButton);
+  }
 
-  // Button for fulfilling the order
-  const fulfillButton = document.createElement("button");
-  fulfillButton.textContent = "Fulfill Order";
-  fulfillButton.className = "fulfill-button";
-  fulfillButton.addEventListener("click", async () => {
-    try {
-      // Logic for fulfilling the order goes here
+  if (order.status === "Cancelled") {
+    const reinstatePendingButton = document.createElement("button");
+    reinstatePendingButton.textContent = "Reinstate to Pending";
+    reinstatePendingButton.className = "reinstate-pending-button";
+    reinstatePendingButton.addEventListener("click", () =>
+      handleStatusUpdate(order, "Pending")
+    );
+    article.appendChild(reinstatePendingButton);
 
-      const id = order["_id"];
-      const update = {
-        ...order,
-        status: "Ready"
-      };
-      const res = await updateOrder(id, update);
-      if(res.status == "Ready"){
-        alert(`order ready & notification via sms is sent  to customer at ${res.phone}`)
-      }
-    } catch (error) {
-      console.error(err);
-    }
-  });
-  article.appendChild(fulfillButton);
+    const reinstateProcessButton = document.createElement("button");
+    reinstateProcessButton.textContent = "Reinstate to Process";
+    reinstateProcessButton.className = "reinstate-process-button";
+    reinstateProcessButton.addEventListener("click", () =>
+      handleStatusUpdate(order, "Process")
+    );
+    article.appendChild(reinstateProcessButton);
+  }
+
+  // Cancel button (visible unless order is Ready)
+  if (order.status !== "Ready" && order.status !== "Cancelled") {
+    const cancelButton = document.createElement("button");
+    cancelButton.textContent = "Cancel Order";
+    cancelButton.className = "cancel-button";
+    cancelButton.addEventListener("click", () =>
+      handleStatusUpdate(order, "Cancelled")
+    );
+    article.appendChild(cancelButton);
+  }
 
   return article;
 };

@@ -64,25 +64,81 @@
   padding: 3px 8px;
 }
 
+/* Button styles */
 .order-item .cancel-button,
-.order-item .fulfill-button {
+.order-item .fulfill-button,
+.order-item .process-button {
   margin-right: 10px;
   margin-top: 20px;
-  padding: 5px 10px;
+  padding: 10px 15px;
   border: none;
   cursor: pointer;
-  background-color: #007bff;
-  color: #fff;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
 }
 
-.order-item .cancel-button {
-  background-color: #cd1e3b;
+/* Fulfill button styling */
+.order-item .fulfill-button {
+  background-color: #007bff;
+  color: #fff;
 }
 
 .order-item .fulfill-button:hover {
   background-color: #0056b3;
 }
 
+/* Cancel button styling */
+.order-item .cancel-button {
+  background-color: #cd1e3b;
+  color: #fff;
+}
+
 .order-item .cancel-button:hover {
   background-color: #f63c5b;
+}
+
+/* Shift to Process/Pending button styling */
+.order-item .process-button {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.order-item .process-button:hover {
+  background-color: #ffca2c;
+}
+/* Reinstate to Pending button styling */
+.order-item .reinstate-pending-button {
+  background-color: #28a745; /* Green for reinstating to pending */
+  color: #fff;
+  margin-right: 10px;
+  margin-top: 20px;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.order-item .reinstate-pending-button:hover {
+  background-color: #2ced55;
+}
+
+/* Reinstate to Process button styling */
+.order-item .reinstate-process-button {
+  background-color: #fcf800cc; /* Teal for reinstating to process */
+  color: #0c0c0c;
+  margin-right: 10px;
+  margin-top: 20px;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.order-item .reinstate-process-button:hover {
+  background-color: #af7405;
 }
