@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Call the appropriate handler based on the data type, if it exists
     const handler = handlers[data.type];
 
-    handler();
+    // handler();
 
     // Re-render orders and update stats after handling any WebSocket message
     OrderFilter(orders, orderListElement);
@@ -107,8 +107,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (result.error) {
       showError(result.error); // Show error message
-      
-     refresh(3000, () => sessionStorage.clear())
+      const cookError = result.error
+        .toLowerCase()
+        .includes("no orders found for this cook");
+
+      // If cookError is false (i.e., the error does not include that string), run the refresh function
+      if (!cookError) {
+        // Run the refresh function after 3 seconds and clear session storage
+        refresh(3000, () => sessionStorage.clear());
+      }
     } else {
       orders = result;
       OrderFilter(orders, orderListElement);
