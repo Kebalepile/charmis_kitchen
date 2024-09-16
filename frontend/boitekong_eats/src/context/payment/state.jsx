@@ -17,7 +17,7 @@ import {
 } from '../types'
 import { generateOrderNumber, checkTime } from '../../utils/Utils'
 
-function PaymentProvider ({ children }) {
+function PaymentProvider({ children }) {
   const initialState = {
     name: '',
     phone: '',
@@ -103,7 +103,7 @@ function PaymentProvider ({ children }) {
    * @param {string} number
    * @returns string
    */
-  function formatCellNumber (number) {
+  function formatCellNumber(number) {
     if (number.startsWith('0')) {
       return '27' + number.slice(1)
     }
@@ -176,7 +176,7 @@ function PaymentProvider ({ children }) {
         )
 
         // promises.push(...supportPromises, ...cookPromises)
-        promises.push( ...cookPromises)
+        promises.push(...cookPromises)
       }
 
       // Wait for all promises to resolve
@@ -191,8 +191,9 @@ function PaymentProvider ({ children }) {
 
   const handleSubmitOrder = async () => {
     const { startTime, endTime, currentTime } = checkTime()
+    const notWorkingHours = currentTime < startTime || currentTime > endTime
 
-    switch (currentTime < startTime || currentTime > endTime) {
+    switch (notWorkingHours) {
       case true:
         alert('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
         return false
@@ -225,9 +226,8 @@ function PaymentProvider ({ children }) {
           cookPhones.add(item.cook_phone)
         }
 
-        return `${foodMenu}: ${itemName} (Qty: ${quantity}, Total: R${total}${
-          selectedSize ? `, Size: ${selectedSize}` : ''
-        })`
+        return `${foodMenu}: ${itemName} (Qty: ${quantity}, Total: R${total}${selectedSize ? `, Size: ${selectedSize}` : ''
+          })`
       })
       .join('; ')
 
@@ -304,12 +304,10 @@ function PaymentProvider ({ children }) {
       `Name: ${name}`,
       phone ? `Phone: ${phone}` : null,
       streetAddress ? `Address: ${streetAddress}, House: ${houseNumber}` : null,
-      `Delivery: ${
-        paymentMethod.includes('delivery') ? 'yes' : 'self-collect'
+      `Delivery: ${paymentMethod.includes('delivery') ? 'yes' : 'self-collect'
       }`,
       `Total: R${paymentTotal}`,
-      `Notify ${name} at ${phone} when the order is ready for ${
-        paymentMethod.includes('delivery') ? 'delivery' : 'self-collect'
+      `Notify ${name} at ${phone} when the order is ready for ${paymentMethod.includes('delivery') ? 'delivery' : 'self-collect'
       }.`
     ]
       .filter(Boolean)
