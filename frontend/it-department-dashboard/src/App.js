@@ -5,9 +5,9 @@ import { OrderFilter } from "./components/orders/RenderOrders.js";
 import { refresh } from "./utils/helper.js";
 import { fetchOrders } from "./hooks/OrderService.js";
 // development
-// const url = "ws://localhost:5000"; // Replace with your WebSocket server URL
+const url = "ws://localhost:5000"; // Replace with your WebSocket server URL
 // production
-const url = "wss://b-town-bites.onrender.com"
+// const url = "wss://b-town-bites.onrender.com"
 
 document.addEventListener("DOMContentLoaded", async () => {
   const appContainer = document.body;

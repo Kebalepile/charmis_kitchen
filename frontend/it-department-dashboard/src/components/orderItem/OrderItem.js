@@ -44,6 +44,7 @@ export const renderOrderItem = order => {
 
   // Order details
   const details = [
+    { label: "Order", value: order.orderNumber, className: "order-detail-order-number" },
     { label: "Name", value: order.name, className: "order-detail-name" },
     { label: "Phone", value: order.phone, className: "order-detail-phone" },
     {
