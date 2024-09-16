@@ -24,7 +24,7 @@ import './App.css'
  * The App component uses state to manage the visibility of the popup
  * and the message to be displayed. The useEffect hook checks the current
  * time when the component mounts and shows the popup if the time is outside
- * the operating hours (6:30 AM to 6:30 PM).
+ * the operating hours (9:00 AM to 20:00 PM).
  *
  * The checkTime function is used to determine the current time and compare it
  * with the operating hours. If the current time is outside the specified range,
