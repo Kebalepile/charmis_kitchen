@@ -18,10 +18,13 @@
 
 /* Styling for the message paragraph */
 .alert-container p {
-  margin: 0;
-  margin-bottom: 15px;
+  margin: auto auto 10px auto;
   font-size: 16px;
-  color: #333;
+  text-align: left;
+  color: #000000;
+  background: #c2bfbfad;
+  border-radius: 5px;
+  padding: 20px;
 }
 
 /* Styling for the OK button */
