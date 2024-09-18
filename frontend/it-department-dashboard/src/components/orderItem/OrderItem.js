@@ -1,4 +1,5 @@
 import { updateOrder } from "../../hooks/OrderService";
+import { createCustomAlert } from '../alert/CustomAlert';
 import "./order.css";
 
 /**
@@ -7,6 +8,7 @@ import "./order.css";
  * @param {string} newStatus - The new status to update the order to.
  */
 const handleStatusUpdate = async (order, newStatus) => {
+  console.log(newStatus)
   try {
     const id = order["_id"];
     const update = {
@@ -14,12 +16,13 @@ const handleStatusUpdate = async (order, newStatus) => {
       status: newStatus
     };
     const res = await updateOrder(id, update);
-    if (newStatus === "Ready") {
-      alert(
-        `Order ready & notification via SMS is sent to the customer at ${res.phone}`
-      );
+    // Check if response contains the alert and pass it to createCustomAlert
+    if (res?.alert) {
+      createCustomAlert(res.alert);
+    }else{
+        location.reload()
     }
-    console.log(res);
+
   } catch (error) {
     console.error("Error updating order status:", error);
   }
