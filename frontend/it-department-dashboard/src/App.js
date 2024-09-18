@@ -1,17 +1,12 @@
 import { createWebSocket } from "./hooks/useWebSocket.js";
 import { renderLoginForm } from "./components/login/Login.js";
-// import { updateOrderStats } from "./components/orderStats/OrderStats.js";
 import { OrderFilter } from "./components/orders/RenderOrders.js";
 import { refresh } from "./utils/helper.js";
 import { fetchOrders } from "./hooks/OrderService.js";
-// development
-const url = "ws://localhost:5000"; // Replace with your WebSocket server URL
-// production
-// const url = "wss://b-town-bites.onrender.com"
+import { WEBSOCKET_URL } from "./hooks/types.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const appContainer = document.body;
-
   // Check if the token exists in session storage
   const token = sessionStorage.getItem("token");
 
@@ -74,13 +69,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Re-render orders and update stats after handling any WebSocket message
     OrderFilter(orders, orderListElement);
-    // updateOrderStats(orders, orderStatsElement);
   };
 
-  const { socket, closeWebSocket } = createWebSocket(
-    url,
-    handleWebSocketMessage
-  );
+  createWebSocket(WEBSOCKET_URL, handleWebSocketMessage);
 
   const showError = message => {
     let messageElement = document.querySelector(".error-message");
