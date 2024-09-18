@@ -8,6 +8,11 @@ import "./search.css";
 export function createSearchComponent() {
   if (document.getElementById("search-container")) return;
 
+  // Create backdrop container
+  const backdrop = document.createElement("div");
+  backdrop.id = "backdrop-container";
+
+  // Create search container
   const container = document.createElement("div");
   container.id = "search-container";
 
@@ -32,7 +37,7 @@ export function createSearchComponent() {
   button.onclick = handleSearch;
 
   const closeButton = document.createElement("button");
-  closeButton.innerText = "Close";
+  closeButton.innerText = "X";
   closeButton.id = "search-close-btn";
   closeButton.onclick = removeSearchComponent;
 
@@ -47,13 +52,17 @@ export function createSearchComponent() {
   resultContainer.id = "result-container";
   container.appendChild(resultContainer); // Append the result container to the main container
 
-  document.body.appendChild(container);
+  // Append search container to backdrop
+  backdrop.appendChild(container);
+
+  // Append backdrop to body
+  document.body.appendChild(backdrop);
 }
 
 function removeSearchComponent() {
-  const container = document.getElementById("search-container");
-  if (container) {
-    container.remove();
+  const backdrop = document.getElementById("backdrop-container");
+  if (backdrop) {
+    backdrop.remove();
     location.reload();
   }
 }

@@ -1,3 +1,17 @@
+#backdrop-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #00000080; /* Semi-transparent black background */
+  backdrop-filter: blur(5px); /* Apply blur effect to the backdrop */
+  z-index: 1000; /* Make sure it's behind the search container but in front of other elements */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 #search-container {
   display: flex;
   flex-direction: column;
@@ -6,10 +20,20 @@
   border: 1px solid #ddd;
   border-radius: 5px;
   width: 300px;
-  margin: 0 auto;
-  background-color: #f9f9f9;
-  position: fixed;
-  z-index: 1001;
+  background-color: #ffffffe6; /* Semi-transparent white background */
+  position: relative;
+  z-index: 1001; /* Make sure it's above the backdrop */
+  overflow-y: scroll;
+  height: 80vh;
+}
+/* Hide scrollbar for WebKit browsers */
+#search-container::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar width */
+  background: transparent; /* Optional: make scrollbar track transparent */
+}
+
+#search-container::-webkit-scrollbar-thumb {
+  background: transparent; /* Optional: make scrollbar thumb transparent */
 }
 
 #search-option,
@@ -21,12 +45,9 @@
   width: 100%;
 }
 
-#search-option {
-  margin-bottom: 10px;
-}
-
-#search-input {
-  margin-bottom: 10px;
+#search-option option {
+  background: rgb(133, 130, 130);
+  color: white;
 }
 
 button {
@@ -52,6 +73,10 @@ button:hover {
 #result-container {
   margin-top: 20px;
   width: 100%;
+  background-color: #ffffffe6; /* Semi-transparent white background */
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .order-card {
@@ -60,7 +85,7 @@ button:hover {
   border-radius: 5px;
   padding: 15px;
   margin-bottom: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px #0000001a;
 }
 
 .order-card p {

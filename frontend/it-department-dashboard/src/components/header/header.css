@@ -38,7 +38,7 @@
 }
 
 /* Search button styling */
-.search-button {
+button.search-button {
   background-color: #ff6b6b; /* Distinct red color */
   color: white;
   border: none;
@@ -51,7 +51,7 @@
 }
 
 /* Hover effect for search button */
-.search-button:hover {
+button.search-button:hover {
   background-color: #ff4c4c; /* Darker red on hover */
 }
 
@@ -96,7 +96,7 @@
 }
 
 /* Logout button styling */
-.logout-button {
+button.logout-button {
   background-color: var(--button-background);
   color: var(--white);
   border: none;
@@ -108,7 +108,7 @@
 }
 
 /* Logout button hover effect */
-.logout-button:hover {
+button.logout-button:hover {
   background-color: var(--button-hover-background);
 }
 
