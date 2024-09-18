@@ -73,7 +73,6 @@ async function handleSearch() {
           if (cleanedKey === option) {
             // Get the value of the key, trim spaces
             const value = order[key].toString().toLowerCase().trim();
-
             // If the value matches the constant value, return true
             if (value === input.toString().toLowerCase().trim()) {
               return true;
@@ -84,23 +83,22 @@ async function handleSearch() {
         return false;
       });
 
-      console.log(matches);
       if (orders.message) {
-        showCustomerAlert(orders.message);
+        createCustomAlert(orders.message);
       } else {
         if (matches.length > 0) {
           console.log("Orders:", matches);
         } else {
-          showCustomerAlert(`No orders found matching ${option}: ${input}`);
+          const formattedOption =
+            option === "ordernumber" ? "order number" : option;
+
+          const message = `No order(s) found matching ${formattedOption}: ${input}`;
+
+          createCustomAlert(message, false);
         }
       }
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
   }
-}
-
-// Function to show a custom alert message
-function showCustomerAlert(message) {
-  createCustomAlert(message, false);
 }
