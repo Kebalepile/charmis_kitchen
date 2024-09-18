@@ -37,6 +37,24 @@
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Custom outline effect */
 }
 
+/* Search button styling */
+.search-button {
+  background-color: #ff6b6b; /* Distinct red color */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+}
+
+/* Hover effect for search button */
+.search-button:hover {
+  background-color: #ff4c4c; /* Darker red on hover */
+}
+
 /* Header navigation styling */
 .header-nav {
   display: flex;
@@ -120,7 +138,7 @@ hr {
     height: 60px; /* Adjust height for smaller screens */
   }
 
-  .filter-button {
+  .filter-button, .search-button, .logout-button {
     font-size: 12px; /* Adjust font size */
     padding: 6px 12px; /* Adjust padding */
   }
@@ -141,7 +159,7 @@ hr {
     height: 50px; /* Adjust height for mobile screens */
   }
 
-  .filter-button {
+  .filter-button, .search-button, .logout-button {
     font-size: 10px; /* Adjust font size */
     padding: 4px 8px; /* Adjust padding */
   }

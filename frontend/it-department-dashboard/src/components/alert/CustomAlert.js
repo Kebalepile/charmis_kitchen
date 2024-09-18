@@ -5,7 +5,7 @@ import "./customerAlert.css"
  * @param {string} message 
  * @return undefined
  */
-export function createCustomAlert(message) {
+export function createCustomAlert(message, reload = true) {
     // Check if an alert is already there to avoid duplicates
     if (document.getElementById('customAlert')) {
       return;
@@ -34,7 +34,9 @@ export function createCustomAlert(message) {
     okButton.addEventListener('click', function () {
       document.body.removeChild(alertDiv); // Remove the alert from the DOM
       document.body.removeChild(backdropDiv); // Remove the backdrop from the DOM
-      location.reload() // reload current window or webpage
+      if(reload){
+        location.reload() // reload current window or webpage
+      }
     });
   
     alertDiv.appendChild(okButton);
