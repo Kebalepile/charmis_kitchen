@@ -17,7 +17,7 @@ import {
 } from '../types'
 import { generateOrderNumber, checkTime } from '../../utils/Utils'
 
-function PaymentProvider({ children }) {
+function PaymentProvider ({ children }) {
   const initialState = {
     name: '',
     phone: '',
@@ -103,7 +103,7 @@ function PaymentProvider({ children }) {
    * @param {string} number
    * @returns string
    */
-  function formatCellNumber(number) {
+  function formatCellNumber (number) {
     if (number.startsWith('0')) {
       return '27' + number.slice(1)
     }
@@ -140,12 +140,14 @@ function PaymentProvider({ children }) {
   /**
    * @description ensures that SMS messages are sent to all required recipients in parallel
    * @param {string|null} customerMessage
+   * @param {string|null} cookMessage
    * @param {string|null} storeMessage
    * @param {array} supportPhones
    * @param {array} cookPhones
    */
   const orderNotification = async (
     customerMessage,
+    cookMessage,
     storeMessage,
     supportPhones,
     cookPhones
@@ -165,18 +167,18 @@ function PaymentProvider({ children }) {
         promises.push(customerPromise)
       }
 
-      // If storeMessage is neither null nor an empty string, 
+      // If storeMessage is neither null nor an empty string,
       // send SMS to all support and cook phone numbers
       if (storeMessage && storeMessage.trim()) {
-        // const supportPromises = supportPhones.map(phone =>
-        //   sendSms(phone, storeMessage)
-        // )
-        const cookPromises = cookPhones.map(phone =>
+        const supportPromises = supportPhones.map(phone =>
           sendSms(phone, storeMessage)
         )
+        const cookPromises = cookPhones.map(phone =>
+          sendSms(phone, cookMessage)
+        )
 
-        // promises.push(...supportPromises, ...cookPromises)
-        promises.push(...cookPromises)
+        promises.push(...supportPromises, ...cookPromises)
+        // promises.push(...cookPromises)
       }
 
       // Wait for all promises to resolve
@@ -226,8 +228,9 @@ function PaymentProvider({ children }) {
           cookPhones.add(item.cook_phone)
         }
 
-        return `${foodMenu}: ${itemName} (Qty: ${quantity}, Total: R${total}${selectedSize ? `, Size: ${selectedSize}` : ''
-          })`
+        return `${foodMenu}: ${itemName} (Qty: ${quantity}, Total: R${total}${
+          selectedSize ? `, Size: ${selectedSize}` : ''
+        })`
       })
       .join('; ')
 
@@ -255,11 +258,16 @@ function PaymentProvider({ children }) {
 
       if (response.ok) {
         // Destructure with default values
-        const [customerMessage = null, storeMessage = null] =
-          initOrderMessages(orderNumber)
+        // customerMessage,cookMessage , storeMessage
+        const [
+          customerMessage = null,
+          cookMessage = null,
+          storeMessage = null
+        ] = initOrderMessages(orderNumber)
 
         orderNotification(
           customerMessage,
+          cookMessage,
           storeMessage,
           Array.from(supportPhones),
           Array.from(cookPhones)
@@ -281,17 +289,17 @@ function PaymentProvider({ children }) {
     const baseMessage = `hey ${name}, `
     let customerMessage = ''
 
-    const paymentPendingMessage = `${baseMessage}your placed order at BoitekongEats is pending. Pay R${paymentTotal} to account number details found on the web-app. Use ${orderNumber} as reference. Once payment is successful, your order will be processed.`
+    const paymentPendingMessage = `${baseMessage}your placed order at BoitekongEats is pending. Pay R${paymentTotal} to account number details found on the web-app. Use ${orderNumber} as reference. Once payment is successful, your order will be processed. WhatsApp +(27)67 271 8374`
     const selfCollectMessage = `${baseMessage}your order is being processed at BoitekongEats. You'll be notified to come and collect once done. The total is R${paymentTotal}. Track your order with ${orderNumber} on the web-app.`
     const cashDeliveryMessage = `${baseMessage}your order is being processed at BoitekongEats. Pay R${paymentTotal} on delivery. Track your order with ${orderNumber} on the web-app.`
 
     if (
       paymentMethod === 'online-delivery' ||
       paymentMethod === 'online' ||
-      paymentTotal > 50
+      paymentTotal > 200
     ) {
       customerMessage = paymentPendingMessage
-    } else if (paymentTotal <= 50) {
+    } else if (paymentTotal <= 200) {
       if (paymentMethod === 'self-collect') {
         customerMessage = selfCollectMessage
       } else if (paymentMethod === 'cash') {
@@ -299,16 +307,27 @@ function PaymentProvider({ children }) {
       }
     }
 
-    const storeMessage = [
+    const cookMessage = [
       `Boitekong Eats, order received! Order: ${orderNumber}`,
       `Name: ${name}`,
       phone ? `Phone: ${phone}` : null,
       streetAddress ? `Address: ${streetAddress}, House: ${houseNumber}` : null,
-      `Delivery: ${paymentMethod.includes('delivery') ? 'yes' : 'self-collect'
+      `Delivery: ${
+        paymentMethod.includes('delivery') ? 'yes' : 'self-collect'
       }`,
       `Total: R${paymentTotal}`,
-      `Notify ${name} at ${phone} when the order is ready for ${paymentMethod.includes('delivery') ? 'delivery' : 'self-collect'
+      `Notify ${name} at ${phone} when the order is ready for ${
+        paymentMethod.includes('delivery') ? 'delivery' : 'self-collect'
       }.`
+    ]
+      .filter(Boolean)
+      .join('. ')
+
+    // sms for boitekong eats
+    const storeMessage = [
+      `Boitekong Eats, order received! Order: ${orderNumber}`,
+      `Name: ${name}`,
+      phone ? `Phone: ${phone}` : null
     ]
       .filter(Boolean)
       .join('. ')
@@ -319,11 +338,11 @@ function PaymentProvider({ children }) {
       customerMessage === selfCollectMessage ||
       customerMessage === cashDeliveryMessage
     ) {
-      return [customerMessage, storeMessage]
+      return [customerMessage, cookMessage, storeMessage]
     }
 
     // Return customerMessage normally
-    return [customerMessage]
+    return [customerMessage, null, storeMessage]
   }
 
   return (

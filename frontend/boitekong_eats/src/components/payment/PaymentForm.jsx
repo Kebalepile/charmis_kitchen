@@ -36,9 +36,9 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const [orderId, setOrderId] = useState('')
 
   const onlinePaymentIsRequired = paymentTotal => {
-    if (paymentTotal > 50) {
+    if (paymentTotal > 200) {
       setPopupMessage(
-        'Order total exceeds R50. You have to pay via online payment or cash transfer after clicking "Place Order".'
+        'Order total exceeds R200. You have to pay via online payment or cash transfer after clicking "Place Order".'
       )
       setShowPopup(true)
       return true
@@ -83,7 +83,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
         case 'self-collect':
         case 'cash':
           setPopupMessage(
-            `Order total is R${paymentTotal} which exceeds eligible cash payment amount (R50).
+            `Order total is R${paymentTotal} which exceeds eligible cash payment amount (R200).
            For this order to be successful you need to pay via online or bank transfer.`
           )
           setShowPopup(true)
