@@ -290,8 +290,8 @@ function PaymentProvider ({ children }) {
     let customerMessage = ''
 
     const paymentPendingMessage = `${baseMessage}your placed order at BoitekongEats is pending. Pay R${paymentTotal} to account number details found on the web-app. Use ${orderNumber} as reference. Once payment is successful, your order will be processed. WhatsApp +(27)67 271 8374`
-    const selfCollectMessage = `${baseMessage}your order is being processed at BoitekongEats. You'll be notified to come and collect once done. The total is R${paymentTotal}. Track your order with ${orderNumber} on the web-app.`
-    const cashDeliveryMessage = `${baseMessage}your order is being processed at BoitekongEats. Pay R${paymentTotal} on delivery. Track your order with ${orderNumber} on the web-app.`
+    const selfCollectMessage = `${baseMessage}your order is being processed at BoitekongEats. You'll be notified to come and collect once done. The total is R${paymentTotal}, pay on collection. Track your order with ${orderNumber} on the web-app.`
+    const cashDeliveryMessage = `${baseMessage}your order is being processed at BoitekongEats. You'll be notified when order is ready for delivery. Pay R${paymentTotal} on delivery. Track your order with ${orderNumber} on the web-app.`
 
     if (
       paymentMethod === 'online-delivery' ||
@@ -313,14 +313,13 @@ function PaymentProvider ({ children }) {
       phone ? `Phone: ${phone}` : null,
       streetAddress ? `Address: ${streetAddress}, House: ${houseNumber}` : null,
       `Delivery: ${
-        paymentMethod.includes('delivery') ? 'yes' : 'self-collect'
+        paymentMethod === 'cash' || paymentMethod === 'online-delivery' ? 'yes' : 'self-collect'
       }`,
       `Total: R${paymentTotal}`,
       `Notify ${name} at ${phone} when the order is ready for ${
-        paymentMethod.includes('delivery') ? 'delivery' : 'self-collect'
+        paymentMethod === 'cash' || paymentMethod === 'online-delivery' ? 'delivery' : 'self-collect'
       }.`
-    ]
-      .filter(Boolean)
+    ] .filter(Boolean)
       .join('. ')
 
     // sms for boitekong eats
