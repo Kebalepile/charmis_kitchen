@@ -31,7 +31,7 @@ export default function Contact () {
               fontSize: '24px'
             }}
           />
-          <strong>+(27) 67 271 8347</strong>
+          <strong>+(27)69 848 8813</strong>
         </li>
         <li>
           <MdEmail
