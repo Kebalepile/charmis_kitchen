@@ -67,7 +67,7 @@ If you have any questions or concerns about these Terms and Conditions, please c
 
 Boitekong Eats<br/>
 Email: boitekongeats@gmail.com<br/>
-Phone: +(27) 67 271 8347
+Phone: +(27)69 848 8813
 `;
 
 export default termsAndConditions;

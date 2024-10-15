@@ -8,7 +8,7 @@ import './about.css'
 export default function About () {
   const [language, setLanguage] = useState('setswana')
 
-  const founderImg = './assets/images/boitekong-eats-logo.png'
+  const founderImg = './assets/images/boitekong-eats-logo-no-background.png'
   const englishContent = (
     <section>
       <img src={founderImg} alt="founder's image" className='founder-img' />
@@ -16,7 +16,7 @@ export default function About () {
         🍕 Welcome to Boitekong Eats, your go for homemade food! We specialize
         in offering a variety of delicious homemade dishes, drinks, all
         available for prepaid order.
-      </p>
+      </p> 
       <p>
         🍗 At Boitekong Eats, we pride ourselves on serving homemade African
         township cuisine. From magwinya and chicken wings to pizza and baked
