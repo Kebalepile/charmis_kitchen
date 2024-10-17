@@ -1,48 +1,79 @@
-/**
- * @description
- * Define the endpoints related to payment processing.
- */
 const express = require("express");
 const crypto = require("crypto");
 const webhook = express.Router();
+const Order = require("../models/order");
+
+// Function to find orders with checkoutId in the last 30 minutes
+async function findRecentOrdersWithCheckoutId(minutes = 30) {
+  const endTime = new Date();
+  const startTime = new Date(endTime.getTime() - minutes * 60000);
+
+  try {
+    const results = await Order.find({
+      checkoutId: { $exists: true, $ne: null },
+      createdAt: { $gte: startTime, $lte: endTime },
+    });
+
+    console.log("Recent orders with checkoutId:", results);
+    return results;
+  } catch (error) {
+    console.error("Error finding orders:", error);
+  }
+}
 
 // Middleware to parse raw body for signature verification
 const rawBodyMiddleware = (req, res, buf, encoding) => {
   if (buf && buf.length) {
-    req.rawBody = buf.toString(encoding || 'utf8');
+    req.rawBody = buf.toString(encoding || "utf8");
   }
 };
 
 const PaymentGateWay = async (req, res) => {
   try {
-    // Step 1: Read and verify the incoming webhook payload
-    const secret =process.env.YOCO_TEST_SECRET_KEY; 
-    const signature = req.headers["yoco-signature"]; // Header that contains the webhook signature
-    const expectedSignature = crypto
-      .createHmac("sha256", secret)
-      .update(req.rawBody)
-      .digest("hex");
+    // Step 1: Read the headers and raw body
+    const headers = req.headers;
+    const requestBody = req.rawBody;
+    
+    // Extract necessary headers
+    const id = headers["webhook-id"];
+    const timestamp = headers["webhook-timestamp"];
+    const signatureHeader = headers["webhook-signature"];
+    
+    // Construct the signed content
+    const signedContent = `${id}.${timestamp}.${requestBody}`;
 
-    // Step 2: Verify the event origin using the signature
-    if (signature !== expectedSignature) {
+    // Step 2: Calculate expected signature
+    const secret = process.env.YOCO_WEBHOOK_SECRET;
+    const secretBytes = new Buffer(secret.split("_")[1], "base64");
+    
+    const expectedSignature = crypto
+      .createHmac("sha256", secretBytes)
+      .update(signedContent)
+      .digest("base64");
+
+    // Step 3: Extract the signature from the header (v1 signature)
+    const signature = signatureHeader.split(" ")[0].split(",")[1];
+
+    // Step 4: Constant time comparison
+    if (!crypto.timingSafeEqual(Buffer.from(expectedSignature), Buffer.from(signature))) {
       console.error("Invalid signature received!");
       return res.status(400).send("Invalid signature");
     }
 
-    // Step 3: Extract and log the event payload
+    // Step 5: Log the event and verify the payment status
     const event = req.body;
     console.log("Webhook event received:", event);
 
-    // Step 4: Verify the payment status
     if (event.type === "payment.succeeded") {
       console.log("Payment succeeded!");
-      
-      // Step 5: Filter by checkoutId to ensure it's relevant
+      const orders = await findRecentOrdersWithCheckoutId(30);
+
+      // Step 6: Ensure the event's checkoutId matches the order's checkoutId
       const { checkoutId } = event.metadata; // Assuming metadata contains the checkoutId
-      if (checkoutId === "your-checkout-id") {  // Replace with your actual checkoutId
-        // Handle successful payment here
+      const matchingOrder = orders.find(order => order.checkoutId === checkoutId);
+
+      if (matchingOrder) {
         console.log("Payment matched the checkoutId, processing...");
-        
         // Process order fulfillment or update records as needed
       } else {
         console.log("Checkout ID did not match, skipping...");
@@ -62,6 +93,6 @@ const PaymentGateWay = async (req, res) => {
 
 // Register the rawBody middleware for the webhook route
 webhook.use(express.json({ verify: rawBodyMiddleware }));
-webhook.post("/webhook/", PaymentGateWay);
+webhook.post("/webhook/paymentgateway", PaymentGateWay);
 
 module.exports = webhook;

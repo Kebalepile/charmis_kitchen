@@ -284,13 +284,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
       )}
       {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
 
-      {showYocoPaymentGateWay && (
-        <YocoPayment
-          paymentTotal={paymentTotal}
-          toggleComponent={TogglePaymentGateWay}
-         
-        />
-      )}
+      {showYocoPaymentGateWay && <YocoPayment />}
     </div>
   )
 }

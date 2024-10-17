@@ -150,23 +150,23 @@ function PaymentProvider ({ children }) {
   /***
    * @description call server to use Yoco Payment GateWay
    */
-  const RedirectToCheckout = async paymentData => {
+  const RedirectToCheckout = async () => {
     try {
-      const notWorkingHours = operatingHours()
+      // const notWorkingHours = operatingHours()
 
-      if (notWorkingHours) {
-        alert('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
-        return
-      }
+      // if (notWorkingHours) {
+      //   alert('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
+      //   return
+      // }
 
       const [newOrder] = initOrderDetails()
-console.log("order",newOrder)
+      console.log('order', newOrder)
       const response = await fetch(`${ServerDomain}/process-payment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ paymentData,newOrder })
+        body: JSON.stringify({ newOrder })
       })
 
       const result = await response.json()
