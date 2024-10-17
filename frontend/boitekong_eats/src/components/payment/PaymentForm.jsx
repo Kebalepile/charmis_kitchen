@@ -4,7 +4,7 @@ import PaymentContext from '../../context/payment/context'
 import Loading from '../loading/Loading'
 import Popup from '../popup/Popup'
 import termsAndConditions from '../../assets/policies/termsAndConditions'
-import BankingDetails from '../banking/BankingDetails'
+import YocoPayment from './YocoPayment'
 
 import './payment.css'
 
@@ -32,7 +32,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const [loading, setLoading] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
-  const [showBankingDetails, setShowBankingDetails] = useState(false)
+  const [showYocoPaymentGateWay, setShowYocoPaymentGateWay] = useState(false)
   const [orderId, setOrderId] = useState('')
 
   const onlinePaymentIsRequired = paymentTotal => {
@@ -46,8 +46,8 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     return false
   }
 
-  const BankAccountDetails = () => {
-    setShowBankingDetails(true)
+  const PaymentGateWay = () => {
+    setShowYocoPaymentGateWay(true)
   }
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
            For this order to be successful you need to pay via online or bank transfer.`
           )
           setShowPopup(true)
-          BankAccountDetails()
+          PaymentGateWay()
           return true
       }
     }
@@ -95,7 +95,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     return false
   }
   /**
-   * @description Method to handle the delayed submission and state reset
+   * @description Wrapper Method to handle the delayed submission of data to the backend and state reset
    */
   const delayedSubmit = () => {
     setLoading(true)
@@ -112,13 +112,10 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     }, 7000)
   }
 
-  const toggleBankingDetailsComponent = () => {
-    setShowBankingDetails(!showBankingDetails)
-
-    if (showBankingDetails) {
-      // Runs when BankingDetails is being closed
-      delayedSubmit() // Run the delayed submit after closing BankingDetails
-    }
+  const TogglePaymentGateWay = () => {
+    setTimeout(() => {
+      setShowYocoPaymentGateWay(!showYocoPaymentGateWay)
+    }, 9000)
   }
 
   const handleFormSubmit = async e => {
@@ -134,13 +131,13 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     switch (paymentMethod) {
       case 'online':
       case 'online-delivery':
-        BankAccountDetails()
+        PaymentGateWay()
         break
 
       default:
         !lastAmountCheck(paymentTotal, paymentMethod) &&
         !showPopup &&
-        !showBankingDetails
+        !showYocoPaymentGateWay
           ? delayedSubmit()
           : null
         break
@@ -286,12 +283,12 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
         </div>
       )}
       {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
-      {showBankingDetails && (
-        <BankingDetails
-          phone={phone}
-          orderId={orderId}
+
+      {showYocoPaymentGateWay && (
+        <YocoPayment
           paymentTotal={paymentTotal}
-          onClose={toggleBankingDetailsComponent}
+          toggleComponent={TogglePaymentGateWay}
+         
         />
       )}
     </div>

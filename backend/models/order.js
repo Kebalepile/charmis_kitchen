@@ -6,6 +6,8 @@ const orderSchema = new mongoose.Schema(
     orderNumber: { type: String, unique: true, required: true },
     name: { type: String, required: true },
     phone: { type: String, required: true, match: /^\d{10}$/ },
+    checkoutId:{type:String},
+    redirectUrl:{type:String},
     streetAddress: { type: String },
     houseNumber: { type: String },
     paymentMethod: {
@@ -19,7 +21,7 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       default: "Pending",
-      enum: ["Pending", "Process","Ready", "Cancelled"]
+      enum: ["Pending", "Process","Ready", "Cancelled","Temp"]
     }
   },
   { timestamps: true }

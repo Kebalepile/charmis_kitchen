@@ -10,11 +10,13 @@ const http = require("http");
 
 // load .env file to be used
 require("dotenv").config();
-
+// routes
 const orderRoutes = require("./routes/orderRoutes");
 const authRoutes = require("./routes/authRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const smsRoutes = require("./routes/smsRoutes");
+// webhooks
+const paymentsWebhook = require("./webhooks/paymentsWebhook")
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -55,6 +57,9 @@ app.use(orderRoutes);
 app.use(authRoutes);
 app.use(paymentRoutes);
 app.use(smsRoutes);
+
+// Webhooks setup
+app.use("/", paymentsWebhook);
 
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);

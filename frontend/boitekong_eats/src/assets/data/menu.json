@@ -112,7 +112,7 @@
     "items": [
       {
         "name": "Small Chips Box",
-        "price": "R20",
+        "price": "R10",
         "image_url": "./assets/images/chips/1.jpeg",
         "alt": "Small Chips Box image",
         "cook_phone": "0813310276",

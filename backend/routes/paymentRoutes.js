@@ -4,8 +4,8 @@
  */
 const express = require("express");
 const router = express.Router();
-const { Payment } = require("../controllers/paymentController");
+const { PaymentGateWay } = require("../controllers/paymentController");
 
-router.post("/process-payment", Payment);
+router.post("/process-payment", PaymentGateWay);
 
 module.exports = router;

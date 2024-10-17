@@ -73,7 +73,7 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
             className='sidebar-list-item shortcut'
           >
             <FaUtensils className='icon' />
-            <span>Food</span>
+            <span>Food Menu</span>
           </li>
           <li onClick={handleSearchOrderClick} className='sidebar-list-item shortcut'>
             <FaSearch className='icon' />

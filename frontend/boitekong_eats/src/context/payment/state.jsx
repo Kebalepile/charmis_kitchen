@@ -110,6 +110,72 @@ function PaymentProvider ({ children }) {
     return number
   }
 
+  const initOrderDetails = () => {
+    const supportPhones = new Set()
+    const cookPhones = new Set()
+    const cookId = new Set()
+
+    const paymentItemsDescriptions = paymentItems
+      .map(({ foodMenu, itemName, quantity, selectedSize, total, item }) => {
+        cookId.add(item.cook_id)
+        // Add support and cook phone numbers to respective sets
+        if (item.support_phone) {
+          supportPhones.add(item.support_phone)
+        }
+        if (item.cook_phone) {
+          cookPhones.add(item.cook_phone)
+        }
+
+        return `${foodMenu}: ${itemName} (Qty: ${quantity}, Total: R${total}${
+          selectedSize ? `, Size: ${selectedSize}` : ''
+        })`
+      })
+      .join('; ')
+
+    const newOrder = {
+      cookId: Array.from(cookId),
+      orderNumber,
+      name,
+      phone,
+      streetAddress,
+      houseNumber,
+      paymentMethod,
+      paymentTotal,
+      deliveryCharge,
+      paymentItemsDescriptions
+    }
+    return [newOrder, supportPhones, cookPhones]
+  }
+
+  /***
+   * @description call server to use Yoco Payment GateWay
+   */
+  const RedirectToCheckout = async paymentData => {
+    try {
+      const notWorkingHours = operatingHours()
+
+      if (notWorkingHours) {
+        alert('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
+        return
+      }
+
+      const [newOrder] = initOrderDetails()
+console.log("order",newOrder)
+      const response = await fetch(`${ServerDomain}/process-payment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ paymentData,newOrder })
+      })
+
+      const result = await response.json()
+
+      return result
+    } catch (error) {
+      console.error('Error processing payment:', error)
+    }
+  }
   /**
    * @description sends an SMS to a given phone number.
    * @param {string} phone
@@ -192,8 +258,7 @@ function PaymentProvider ({ children }) {
   }
 
   const handleSubmitOrder = async () => {
-    const { startTime, endTime, currentTime } = checkTime()
-    const notWorkingHours = currentTime < startTime || currentTime > endTime
+    const notWorkingHours = operatingHours()
 
     switch (notWorkingHours) {
       case true:
@@ -207,45 +272,23 @@ function PaymentProvider ({ children }) {
     }
   }
 
+  /***
+   * @description determine if boitekong eats is open or closed
+   * @return {boolean}
+   */
+  const operatingHours = () => {
+    const { startTime, endTime, currentTime } = checkTime()
+    const notWorkingHours = currentTime < startTime || currentTime > endTime
+    return notWorkingHours
+  }
+
   /**
    *
    * @param {number} orderNumber
    * @descirption send new order to order collection.
    */
   const updateOrderBoard = async orderNumber => {
-    const supportPhones = new Set()
-    const cookPhones = new Set()
-    const cookId = new Set()
-
-    const paymentItemsDescriptions = paymentItems
-      .map(({ foodMenu, itemName, quantity, selectedSize, total, item }) => {
-        cookId.add(item.cook_id)
-        // Add support and cook phone numbers to respective sets
-        if (item.support_phone) {
-          supportPhones.add(item.support_phone)
-        }
-        if (item.cook_phone) {
-          cookPhones.add(item.cook_phone)
-        }
-
-        return `${foodMenu}: ${itemName} (Qty: ${quantity}, Total: R${total}${
-          selectedSize ? `, Size: ${selectedSize}` : ''
-        })`
-      })
-      .join('; ')
-
-    const newOrder = {
-      cookId: Array.from(cookId),
-      orderNumber,
-      name,
-      phone,
-      streetAddress,
-      houseNumber,
-      paymentMethod,
-      paymentTotal,
-      deliveryCharge,
-      paymentItemsDescriptions
-    }
+    const [newOrder, supportPhones, cookPhones] = initOrderDetails()
 
     try {
       const response = await fetch(`${ServerDomain}/orders`, {
@@ -313,13 +356,18 @@ function PaymentProvider ({ children }) {
       phone ? `Phone: ${phone}` : null,
       streetAddress ? `Address: ${streetAddress}, House: ${houseNumber}` : null,
       `Delivery: ${
-        paymentMethod === 'cash' || paymentMethod === 'online-delivery' ? 'yes' : 'self-collect'
+        paymentMethod === 'cash' || paymentMethod === 'online-delivery'
+          ? 'yes'
+          : 'self-collect'
       }`,
       `Total: R${paymentTotal}`,
       `Notify ${name} at ${phone} when the order is ready for ${
-        paymentMethod === 'cash' || paymentMethod === 'online-delivery' ? 'delivery' : 'self-collect'
+        paymentMethod === 'cash' || paymentMethod === 'online-delivery'
+          ? 'delivery'
+          : 'self-collect'
       }.`
-    ] .filter(Boolean)
+    ]
+      .filter(Boolean)
       .join('. ')
 
     // sms for boitekong eats
@@ -365,7 +413,8 @@ function PaymentProvider ({ children }) {
         handleStreetAddressChange,
         restPunchedOrder,
         resetPaymentState,
-        initOrderNumber
+        initOrderNumber,
+        RedirectToCheckout
       }}
     >
       {children}
