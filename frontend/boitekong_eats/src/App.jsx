@@ -11,6 +11,9 @@ import About from './components/about/About'
 import Contact from './components/contacts/Contact'
 import Popup from './components/popup/Popup'
 import NotFound from './components/notFound/NotFound'
+import OrderSuccess from './components/order/OrderSuccess'
+import CancelOrder from './components/order/CancelOrder'
+import FailedOrder from './components/order/FailedOrder'
 import { checkTime } from './utils/Utils'
 import './App.css'
 
@@ -64,9 +67,11 @@ function App () {
             </>
           }
         />
+        <Route path='/order-success' element={<OrderSuccess />} />
+        <Route path='/cancel-order' element={<CancelOrder />} />
+        <Route path='/failed-checkout' element={<FailedOrder />} />
         <Route path='/404' element={<NotFound />} />
         <Route path='*' element={<Navigate to='/404' replace />} />
-        {/* add success route with success componenet */}
       </Routes>
     </Router>
   )

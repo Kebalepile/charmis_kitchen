@@ -111,131 +111,144 @@ function PaymentProvider ({ children }) {
   }
 
   /**
- * @function initOrderDetails
- * @description Initializes order details by gathering information about the order, cook, and support contacts.
- *              This method processes the order items, extracts relevant phone numbers, and prepares the
- *              order details in a format suitable for submission.
- * @returns {[Object, Set, Set]} Returns an array containing:
- *  - `newOrder` (Object): The newly created order object with details such as cook IDs, customer info, and payment item descriptions.
- *  - `supportPhones` (Set): A set of phone numbers for support contacts related to the order.
- *  - `cookPhones` (Set): A set of phone numbers for the cooks associated with the order.
- * 
- * @example
- * const [newOrder, supportPhones, cookPhones] = initOrderDetails();
- * 
- * // Example of newOrder object
- * {
- *   cookId: ['cook_123', 'cook_456'],
- *   orderNumber: 98765,
- *   name: 'John Doe',
- *   phone: '1234567890',
- *   streetAddress: '123 Main St',
- *   houseNumber: '12A',
- *   paymentMethod: 'Cash',
- *   paymentTotal: 300,
- *   deliveryCharge: 50,
- *   paymentItemsDescriptions: 'Pizza: Margherita (Qty: 2, Total: R150, Size: Large); Burger: Cheeseburger (Qty: 1, Total: R100)'
- * }
- */
-const initOrderDetails = () => {
-  // Initialize sets to store unique phone numbers
-  const supportPhones = new Set();
-  const cookPhones = new Set();
-  const cookId = new Set();
+   * @function initOrderDetails
+   * @description Initializes order details by gathering information about the order, cook, and support contacts.
+   *              This method processes the order items, extracts relevant phone numbers, and prepares the
+   *              order details in a format suitable for submission.
+   * @returns {[Object, Set, Set]} Returns an array containing:
+   *  - `newOrder` (Object): The newly created order object with details such as cook IDs, customer info, and payment item descriptions.
+   *  - `supportPhones` (Set): A set of phone numbers for support contacts related to the order.
+   *  - `cookPhones` (Set): A set of phone numbers for the cooks associated with the order.
+   *
+   * @example
+   * const [newOrder, supportPhones, cookPhones] = initOrderDetails();
+   *
+   * // Example of newOrder object
+   * {
+   *   cookId: ['cook_123', 'cook_456'],
+   *   orderNumber: 98765,
+   *   name: 'John Doe',
+   *   phone: '1234567890',
+   *   streetAddress: '123 Main St',
+   *   houseNumber: '12A',
+   *   paymentMethod: 'Cash',
+   *   paymentTotal: 300,
+   *   deliveryCharge: 50,
+   *   paymentItemsDescriptions: 'Pizza: Margherita (Qty: 2, Total: R150, Size: Large); Burger: Cheeseburger (Qty: 1, Total: R100)'
+   * }
+   */
+  const initOrderDetails = () => {
+    // Initialize sets to store unique phone numbers
+    const supportPhones = new Set()
+    const cookPhones = new Set()
+    const cookId = new Set()
 
-  // Map over payment items and construct item descriptions
-  const paymentItemsDescriptions = paymentItems
-    .map(({ foodMenu, itemName, quantity, selectedSize, total, item }) => {
-      // Store cook ID from each item
-      cookId.add(item.cook_id);
+    // Map over payment items and construct item descriptions
+    const paymentItemsDescriptions = paymentItems
+      .map(({ foodMenu, itemName, quantity, selectedSize, total, item }) => {
+        // Store cook ID from each item
+        cookId.add(item.cook_id)
 
-      // Add support and cook phone numbers to respective sets
-      if (item.support_phone) {
-        supportPhones.add(item.support_phone);
-      }
-      if (item.cook_phone) {
-        cookPhones.add(item.cook_phone);
-      }
+        // Add support and cook phone numbers to respective sets
+        if (item.support_phone) {
+          supportPhones.add(item.support_phone)
+        }
+        if (item.cook_phone) {
+          cookPhones.add(item.cook_phone)
+        }
 
-      // Return formatted string for the item description
-      return `${foodMenu}: ${itemName} (Qty: ${quantity}, Total: R${total}${
-        selectedSize ? `, Size: ${selectedSize}` : ''
-      })`;
-    })
-    .join('; '); // Join all item descriptions into a single string
+        // Return formatted string for the item description
+        return `${foodMenu}: ${itemName} (Qty: ${quantity}, Total: R${total}${
+          selectedSize ? `, Size: ${selectedSize}` : ''
+        })`
+      })
+      .join('; ') // Join all item descriptions into a single string
 
-  // Construct the new order object
-  const newOrder = {
-    cookId: Array.from(cookId),  // Convert cookId Set to array
-    orderNumber,                 // Predefined order number
-    name,                        // Customer name
-    phone,                       // Customer phone number
-    streetAddress,               // Delivery address
-    houseNumber,                 // House number
-    paymentMethod,               // Payment method (e.g., Cash, Card)
-    paymentTotal,                // Total payment amount
-    deliveryCharge,              // Delivery fee
-    paymentItemsDescriptions     // Description of all items in the order
-  };
-
-  // Return the new order object along with the sets of support and cook phone numbers
-  return [newOrder, supportPhones, cookPhones];
-};
-
-
- /**
- * @function RedirectToCheckout
- * @description Initiates a payment process using the Yoco Payment Gateway. It checks the operating hours,
- *              stores the new order details, support phone numbers, and cook phone numbers in a single object 
- *              in local storage to ensure persistence across tabs/windows, and then makes a payment request to the server.
- * @returns {Promise<Object>} Returns the result of the payment request from the server.
- * 
- * @example
- * const paymentResult = await RedirectToCheckout();
- * if (paymentResult.success) {
- *   console.log('Payment was successful!');
- * }
- */
-const RedirectToCheckout = async () => {
-  try {
-    // Check if it's outside of operating hours
-    const notWorkingHours = operatingHours();
-
-    if (notWorkingHours) {
-      alert('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞');
-      return;
+    // Construct the new order object
+    const newOrder = {
+      cookId: Array.from(cookId), // Convert cookId Set to array
+      orderNumber, // Predefined order number
+      name, // Customer name
+      phone, // Customer phone number
+      streetAddress, // Delivery address
+      houseNumber, // House number
+      paymentMethod, // Payment method (e.g., Cash, Card)
+      paymentTotal, // Total payment amount
+      deliveryCharge, // Delivery fee
+      paymentItemsDescriptions // Description of all items in the order
     }
 
-    // Generate new order details and phone numbers
-    const [newOrder, supportPhones, cookPhones] = initOrderDetails();
-
-    // Combine all data into a single object
-    const orderData = {
-      newOrder,
-      supportPhones: Array.from(supportPhones),  // Convert Set to array
-      cookPhones: Array.from(cookPhones),        // Convert Set to array
-    };
-
-    // Store the object in local storage as a JSON string
-    localStorage.setItem('orderData', JSON.stringify(orderData));
-
-    // Send the new order to the server for processing payment
-    const response = await fetch(`${ServerDomain}/process-payment`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ newOrder }),
-    });
-
-    const result = await response.json();
-
-    return result; // Return the server response (e.g., payment link or confirmation)
-  } catch (error) {
-    console.error('Error processing payment:', error);
+    // Return the new order object along with the sets of support and cook phone numbers
+    return [newOrder, supportPhones, cookPhones]
   }
-};
 
+  /**
+   * @function RedirectToCheckout
+   * @description Initiates a payment process using the Yoco Payment Gateway. It checks the operating hours,
+   *              stores the new order details, support phone numbers, and cook phone numbers in a single object
+   *              in local storage to ensure persistence across tabs/windows, and then makes a payment request to the server.
+   * @returns {Promise<Object>} Returns the result of the payment request from the server.
+   *
+   * @example
+   * const paymentResult = await RedirectToCheckout();
+   * if (paymentResult.success) {
+   *   console.log('Payment was successful!');
+   * }
+   */
+  const RedirectToCheckout = async () => {
+    try {
+      // Check if it's outside of operating hours
+      const notWorkingHours = operatingHours()
+
+      if (notWorkingHours) {
+        alert('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
+        return
+      }
+
+      // Generate new order details and phone numbers
+      const [newOrder, supportPhones, cookPhones] = initOrderDetails()
+
+      // Combine all data into a single object
+      const orderData = {
+        newOrder,
+        supportPhones: Array.from(supportPhones), // Convert Set to array
+        cookPhones: Array.from(cookPhones) // Convert Set to array
+      }
+
+      // Store the object in local storage as a JSON string
+      localStorage.setItem('orderData', JSON.stringify(orderData))
+
+      // Get current base URL
+      const baseUrl = window.location.origin
+
+      // Create paths for success and cancel
+      const successUrl = `${baseUrl}/order-success`
+      const cancelUrl = `${baseUrl}/cancel-order`
+      const failureUrl = `${baseUrl}/failed-checkout`
+
+      // Send the new order to the server for processing payment
+      const response = await fetch(`${ServerDomain}/process-payment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          newOrder,
+          paths: {
+            successUrl,
+            cancelUrl,
+            failureUrl
+          }
+        })
+      })
+
+      const result = await response.json()
+
+      return result // Return the server response (e.g., payment link or confirmation)
+    } catch (error) {
+      console.error('Error processing payment:', error)
+    }
+  }
 
   /**
    * @description sends an SMS to a given phone number.
@@ -344,52 +357,60 @@ const RedirectToCheckout = async () => {
   }
 
   /**
- * @param {number} orderNumber - The order number.
- * @param {object} [newOrder] - Optional. The new order details, if already available.
- * @param {Array} [supportPhones] - Optional. Array of support phone numbers.
- * @param {Array} [cookPhones] - Optional. Array of cook phone numbers.
- * @description Sends new order to order collection and handles notifications.
- */
-const updateOrderBoard = async (orderNumber, newOrder, supportPhones, cookPhones) => {
-  // If newOrder, supportPhones, or cookPhones are not provided, get them from initOrderDetails
-  if (!newOrder || !supportPhones || !cookPhones) {
-    const [generatedNewOrder, generatedSupportPhones, generatedCookPhones] = initOrderDetails();
-    newOrder = newOrder || generatedNewOrder;
-    supportPhones = supportPhones || generatedSupportPhones;
-    cookPhones = cookPhones || generatedCookPhones;
-  }
-
-  try {
-    // Send the new order to the server
-    const response = await fetch(`${ServerDomain}/orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newOrder),
-    });
-
-    if (response.ok) {
-      // Destructure messages, default to null if messages are not available
-      const [customerMessage = null, cookMessage = null, storeMessage = null] =
-        initOrderMessages(orderNumber);
-
-      // Notify with messages and phone numbers
-      orderNotification(
-        customerMessage,
-        cookMessage,
-        storeMessage,
-        Array.from(supportPhones),
-        Array.from(cookPhones)
-      );
-    } else {
-      console.error('Error submitting order:', response.statusText);
+   * @param {number} orderNumber - The order number.
+   * @param {object} [newOrder] - Optional. The new order details, if already available.
+   * @param {Array} [supportPhones] - Optional. Array of support phone numbers.
+   * @param {Array} [cookPhones] - Optional. Array of cook phone numbers.
+   * @description Sends new order to order collection and handles notifications.
+   */
+  const updateOrderBoard = async (
+    orderNumber,
+    newOrder,
+    supportPhones,
+    cookPhones
+  ) => {
+    // If newOrder, supportPhones, or cookPhones are not provided, get them from initOrderDetails
+    if (!newOrder || !supportPhones || !cookPhones) {
+      const [generatedNewOrder, generatedSupportPhones, generatedCookPhones] =
+        initOrderDetails()
+      newOrder = newOrder || generatedNewOrder
+      supportPhones = supportPhones || generatedSupportPhones
+      cookPhones = cookPhones || generatedCookPhones
     }
-  } catch (error) {
-    console.error('Error submitting order:', error);
-  }
-};
 
+    try {
+      // Send the new order to the server
+      const response = await fetch(`${ServerDomain}/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newOrder)
+      })
+
+      if (response.ok) {
+        // Destructure messages, default to null if messages are not available
+        const [
+          customerMessage = null,
+          cookMessage = null,
+          storeMessage = null
+        ] = initOrderMessages(orderNumber)
+
+        // Notify with messages and phone numbers
+        orderNotification(
+          customerMessage,
+          cookMessage,
+          storeMessage,
+          Array.from(supportPhones),
+          Array.from(cookPhones)
+        )
+      } else {
+        console.error('Error submitting order:', response.statusText)
+      }
+    } catch (error) {
+      console.error('Error submitting order:', error)
+    }
+  }
 
   /**
    * @description create text messages.

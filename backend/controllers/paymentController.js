@@ -6,7 +6,7 @@ const Order = require("../models/order");
  * @description payment processing logic using YOCO custom payment gateway
  */
 const PaymentGateWay = async (req, res) => {
-  const { newOrder } = req.body;
+  const { newOrder, paths } = req.body;
 
   if (!newOrder) {
     return sendResponse(res, 400, { message: "Order data is missing." });
@@ -14,7 +14,10 @@ const PaymentGateWay = async (req, res) => {
 
   const postData = {
     amount: newOrder.paymentTotal * 100, // YOCO uses cents, multiply by 100
-    currency: "ZAR"
+    currency: "ZAR",
+    cancelUrl:paths.cancelUrl,
+    successUrl: paths.successUrl,
+    failureUrl: paths.failureUrl
   };
 
   try {
