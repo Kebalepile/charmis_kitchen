@@ -1,9 +1,144 @@
 const axios = require("axios");
-const { sendResponse, handleError } = require("../utils/helpers");
+const mongoose = require("mongoose");
+const formatCellNumber = require("../utils/formatCellNumber");
 const Order = require("../models/order");
+const {
+  sendResponse,
+  handleError,
+  clickatellApi
+} = require("../utils/helpers");
+/**
+ * @description Sends SMS notifications to support and cook phone numbers about an order's status.
+ * @param {Object} order - The order object containing order details.
+ * @param {Array} supportPhones - Array of phone numbers for support team.
+ * @param {Array} cookPhones - Array of phone numbers for the cook team.
+ * @returns {Promise<Boolean>} - Returns true if all notifications are successfully sent, otherwise handles the error.
+ */
+const smsNotification = async (order, supportPhones, cookPhones) => {
+  const promises = [];
+  if (order.status.trim().toLowerCase() === "process") {
+    supportPhones = supportPhones.map(phone => formatCellNumber(phone));
+    cookPhones = cookPhones.map(phone => formatCellNumber(phone));
+
+    const cookMessage = `new at Boitekong Eats: ${order}`;
+    const supportMessage = `new order ready for process order number ${order.orderNumber}`;
+
+    const supportPromises = supportPhones.map(phone =>
+      clickatellApi(phone, supportMessage)
+    );
+    const cookPromises = cookPhones.map(phone =>
+      clickatellApi(phone, cookMessage)
+    );
+
+    promises.push(...supportPromises, ...cookPromises);
+  }
+  try {
+    await Promise.all(promises);
+    return true;
+  } catch (err) {
+    handleError(res, err);
+  }
+};
 
 /**
- * @description payment processing logic using YOCO custom payment gateway
+ * @description Handles the checkout failure scenario by finding and deleting the order.
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void} - Sends a response indicating the order was deleted or not found.
+ */
+const FailureOrderCheckout = async (req, res) => {
+  const { newOrder } = req.body;
+  try {
+    const deletedOrder = await Order.findOneAndDelete({
+      orderNumber: newOrder.orderNumber
+    });
+
+    if (!deletedOrder) {
+      return sendResponse(res, 404, {
+        success: false,
+        message: `🚫 Order not found`
+      });
+    }
+
+    return sendResponse(res, 200, {
+      success: true,
+      message: `Order: ${newOrder.orderNumber} checkout failure`
+    });
+  } catch (err) {
+    handleError(res, err);
+  }
+};
+
+/**
+ * @description Cancels an order by finding and deleting it based on the order number.
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void} - Sends a response indicating the order was deleted or not found.
+ */
+const CancelOrderPurchase = async (req, res) => {
+  const { newOrder } = req.body;
+  try {
+    const deletedOrder = await Order.findOneAndDelete({
+      orderNumber: newOrder.orderNumber
+    });
+
+    if (!deletedOrder) {
+      return sendResponse(res, 404, {
+        success: false,
+        message: `🚫 Order not found`
+      });
+    }
+
+    return sendResponse(res, 200, {
+      success: true,
+      message: `Order: ${newOrder.orderNumber} canceled`
+    });
+  } catch (err) {
+    handleError(res, err);
+  }
+};
+
+/**
+ * @description Marks an order as "Processed" and sends notifications to support and cook teams.
+ * @param {Object} req - Express request object containing order, supportPhones, and cookPhones.
+ * @param {Object} res - Express response object.
+ * @returns {void} - Sends a response indicating the order was updated or not found.
+ */
+const SuccessfulOrderPurchase = async (req, res) => {
+  const { newOrder, supportPhones, cookPhones } = req.body;
+  newOrder.status = "Process";
+  try {
+    const updatedOrder = await Order.findOneAndUpdate(
+      { orderNumber: newOrder.orderNumber },
+      newOrder,
+      { new: true }
+    );
+
+    if (!updatedOrder) {
+      return sendResponse(res, 404, { message: "🚫 Order not found" });
+    }
+
+    const sentNotifications = await smsNotification(
+      updatedOrder,
+      supportPhones,
+      cookPhones
+    );
+    if (sentNotifications) {
+      sendResponse(res, 200, {
+        success: true,
+        message: "Order updated successfully!"
+      });
+    }
+  } catch (err) {
+    handleError(res, err);
+  }
+};
+
+/**
+ * @description Handles payment processing using the YOCO payment gateway.
+ * @param {Object} req - Express request object containing the order and payment paths.
+ * @param {Object} res - Express response object.
+ * @returns {void} - Sends a response with payment information or an error message.
  */
 const PaymentGateWay = async (req, res) => {
   const { newOrder, paths } = req.body;
@@ -13,15 +148,14 @@ const PaymentGateWay = async (req, res) => {
   }
 
   const postData = {
-    amount: newOrder.paymentTotal * 100, // YOCO uses cents, multiply by 100
+    amount: newOrder.paymentTotal * 100, // YOCO uses cents
     currency: "ZAR",
-    cancelUrl:paths.cancelUrl,
+    cancelUrl: paths.cancelUrl,
     successUrl: paths.successUrl,
     failureUrl: paths.failureUrl
   };
 
   try {
-    // YOCO checkouts API call
     const checkoutsAPI = await axios.post(
       "https://payments.yoco.com/api/checkouts",
       postData,
@@ -33,22 +167,16 @@ const PaymentGateWay = async (req, res) => {
       }
     );
 
-    const info = {
-      id: null,
-      redirectUrl: null
-    };
+    const info = { id: null, redirectUrl: null };
 
-    // If YOCO checkout creation is successful
     if (checkoutsAPI.status === 200) {
       info.id = checkoutsAPI.data.id;
       info.redirectUrl = checkoutsAPI.data.redirectUrl;
 
-      // Ensure cookId is an array
       if (!Array.isArray(newOrder.cookId)) {
         newOrder.cookId = [newOrder.cookId];
       }
 
-      // Create a temporary order object
       const tempOrder = new Order({
         ...newOrder,
         checkoutId: checkoutsAPI.data.id,
@@ -57,25 +185,24 @@ const PaymentGateWay = async (req, res) => {
         timestamp: new Date()
       });
 
-      // Save temporary order
       await tempOrder.save();
-
-      // Send response with payment info
       sendResponse(res, checkoutsAPI.status, info);
     } else {
-      sendResponse(res, checkoutsAPI.status, { message: "Failed to create payment." });
+      sendResponse(res, checkoutsAPI.status, {
+        message: "Failed to create payment."
+      });
     }
   } catch (error) {
-    // Handle MongoDB duplicate key errors or API errors
     if (error.code === 11000) {
       return sendResponse(res, 409, { message: "Duplicate order detected." });
     }
-
-    // Log any other error and send a response
     handleError(res, error);
   }
 };
 
 module.exports = {
-  PaymentGateWay
+  PaymentGateWay,
+  SuccessfulOrderPurchase,
+  FailureOrderCheckout,
+  CancelOrderPurchase
 };

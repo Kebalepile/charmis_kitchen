@@ -1,24 +1,32 @@
-import React from 'react';
-import { getStoredOrderData, clearStoredOrderData } from '../../utils/localStorageUtils';
-
+import React, { useContext } from 'react'
+import OrderContext from '../../context/order/context'
+import { useNavigate } from 'react-router-dom'
+import { getStoredOrderData } from '../../utils/localStorageUtils'
 
 const OrderSuccess = () => {
-    const orderData = getStoredOrderData();
-  
-    if (!orderData) {
-      return <p>No order data found.</p>;
+  const { SuccessfulOrderPurchase } = useContext(OrderContext)
+  const navigate = useNavigate() // Initialize the navigate hook
+  const orderData = getStoredOrderData()
+  const { newOrder } = orderData
+  SuccessfulOrderPurchase().then(ok => {
+    if (ok) {
+      // Redirect to home URL after the order has been canceled
+      navigate('/')
     }
-  
-    const { newOrder } = orderData;
-  
-    return (
-      <div>
-        <h1>Order Successful</h1>
-        <p>Order Number: {newOrder.orderNumber}</p>
-        <p>Total Payment: R{newOrder.paymentTotal}</p>
-        {/* You can display more order details here as needed */}
-      </div>
-    );
-  };
-  
-  export default OrderSuccess;
+  })
+  return (
+    <div>
+      {!orderData ? (
+        <p>No order data found.</p>
+      ) : (
+        <>
+          <h1>Order Successful</h1>
+          <p>Order Number: {newOrder.orderNumber}</p>
+          <p>Total Payment: R{newOrder.paymentTotal}</p>
+        </>
+      )}{' '}
+    </div>
+  )
+}
+
+export default OrderSuccess

@@ -1,36 +1,33 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getStoredOrderData, clearStoredOrderData } from '../../utils/localStorageUtils';
+import React, { useContext } from 'react'
+import OrderContext from '../../context/order/context'
+import { useNavigate } from 'react-router-dom'
+import { getStoredOrderData } from '../../utils/localStorageUtils'
 
 const CancelOrder = () => {
-    const navigate = useNavigate(); // Initialize the navigate hook
-    const orderData = getStoredOrderData();
-    
-    if (!orderData) {
-      return <p>No order data available to cancel.</p>;
-    }
-  
-    const { newOrder } = orderData;
-  
-    const cancelOrder = () => {
-      // Logic to cancel the order (e.g., send cancel request to server)
-      console.log('Cancelling order:', newOrder.orderNumber);
-      
-      // Clear the order data from localStorage after cancellation
-      clearStoredOrderData();
-      alert(`Order ${newOrder.orderNumber} has been canceled.`);
-      
+  const { OrderCanceled } = useContext(OrderContext)
+  const navigate = useNavigate() // Initialize the navigate hook
+  const orderData = getStoredOrderData()
+
+  const { newOrder } = orderData
+  OrderCanceled().then(ok => {
+    if (ok) {
       // Redirect to home URL after the order has been canceled
-      navigate('/');
-    };
-  
-    return (
-      <div>
-        <h1>Cancel Order</h1>
-        <p>Are you sure you want to cancel order {newOrder.orderNumber}?</p>
-        <button onClick={cancelOrder}>Cancel Order</button>
-      </div>
-    );
-  };
-  
-  export default CancelOrder;
+      navigate('/')
+    }
+  })
+
+  return (
+    <div>
+      {!orderData ? (
+        <p>No order data available to cancel.</p>
+      ) : (
+        <>
+          <h1>`Order ${newOrder.orderNumber} has been canceled.</h1>{' '}
+          <p>your being redirected to home page</p>
+        </>
+      )}
+    </div>
+  )
+}
+
+export default CancelOrder
