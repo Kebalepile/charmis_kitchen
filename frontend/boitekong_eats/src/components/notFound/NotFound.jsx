@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import Spinner from "../loading/Spinner"
 import { useNavigate } from 'react-router-dom'
 import { TbError404 } from 'react-icons/tb'
 
@@ -20,6 +21,7 @@ function NotFound () {
       <TbError404 className='img-404' />
       <h1>tlhogela go kgotlakgotla!</h1>
       <p>Redirecting to home page...</p>
+      {<Spinner/>}
     </div>
   )
 }

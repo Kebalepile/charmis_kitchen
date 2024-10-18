@@ -1,30 +1,55 @@
-import React, { useContext, useEffect } from 'react'
-import OrderContext from '../../context/order/context'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getStoredOrderData } from '../../utils/localStorageUtils'
-import Spinner from "../loading/Spinner"
+import {
+  getStoredOrderData,
+  clearStoredOrderData
+} from '../../utils/localStorageUtils'
+import { ServerDomain } from '../../context/types'
+import Spinner from '../loading/Spinner'
 import './order.css'
 
+const SuccessfulOrderPurchase = async () => {
+  try {
+    const orderData = getStoredOrderData()
+
+    const response = await fetch(`${ServerDomain}/checkout-successful`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderData)
+    })
+
+    const data = await response.json()
+
+    if (data.success) {
+      clearStoredOrderData()
+      return true
+    } else {
+      throw new Error('Failed to send SMS')
+    }
+  } catch (error) {
+    console.error('Error sending SMS:', error)
+    throw error
+  }
+}
 const OrderSuccess = () => {
-  const { SuccessfulOrderPurchase } = useContext(OrderContext)
+  // const { SuccessfulOrderPurchase } = useContext(OrderContext)
   const navigate = useNavigate() // Initialize the navigate hook
   const orderData = getStoredOrderData() // Get stored order data
   const image = './assets/images/qr_code.png'
 
-  // Check if orderData exists before calling the SuccessfulOrderPurchase
-  useEffect(() => {
-    if (!orderData) {
-      // If no orderData, navigate to home after 5 seconds
-      setTimeout(() => {
-        navigate('/')
-      }, 5000)
-    } else {
-      // If orderData exists, call SuccessfulOrderPurchase and then navigate
-      SuccessfulOrderPurchase().then(() => {
-        navigate('/')
-      })
-    }
-  }, [orderData, SuccessfulOrderPurchase, navigate])
+  if (!orderData) {
+    // If no orderData, navigate to home after 5 seconds
+    setTimeout(() => {
+      navigate('/')
+    }, 9000)
+  } else {
+    // If orderData exists, call SuccessfulOrderPurchase and then navigate
+    SuccessfulOrderPurchase().then(() => {
+      navigate('/')
+    })
+  }
 
   // If orderData doesn't exist, display a message
   if (!orderData) {
@@ -33,7 +58,7 @@ const OrderSuccess = () => {
         <h2>No order data found</h2>
         <p>You'll be redirected to the home page in a sec...</p>
         <img alt='qr code image' src={image} className='qrcode-img' />
-        {<Spinner/>}
+        {<Spinner />}
       </div>
     )
   }
@@ -49,7 +74,7 @@ const OrderSuccess = () => {
       <br />
       <p>You'll be redirected to the home page in a sec...</p>
       <img alt='qr code image' src={image} className='qrcode-img' />
-      {<Spinner/>}
+      {<Spinner />}
     </div>
   )
 }

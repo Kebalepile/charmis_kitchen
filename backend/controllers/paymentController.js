@@ -16,13 +16,21 @@ const {
  */
 const smsNotification = async (order, supportPhones, cookPhones) => {
   const promises = [];
-  if (order.status.trim().toLowerCase() === "process") {
+  // Prevent sending multiple notifications for the same order status
+  if (
+    order.status.trim().toLowerCase() === "process" &&
+    !order.notificationsSent
+  ) {
     supportPhones = supportPhones.map(phone => formatCellNumber(phone));
     cookPhones = cookPhones.map(phone => formatCellNumber(phone));
+    const { orderNumber, name, phone, paymentItemsDescriptions } = order;
+    const cookMessage = `new order at Boitekong Eats: ${orderNumber}, ${name}, ${phone}, ${paymentItemsDescriptions}`;
+    const supportMessage = `new order ready for process order number ${orderNumber}`;
+    const customerMessage = `Hi ${name}, your order is being processed at BoitekongEats. You'll be notified via SMS when order is ready. Track your order ${orderNumber} on the web-app.`;
 
-    const cookMessage = `new at Boitekong Eats: ${order}`;
-    const supportMessage = `new order ready for process order number ${order.orderNumber}`;
-
+    const customerPromises = [
+      clickatellApi(formatCellNumber(phone), customerMessage)
+    ];
     const supportPromises = supportPhones.map(phone =>
       clickatellApi(phone, supportMessage)
     );
@@ -30,10 +38,13 @@ const smsNotification = async (order, supportPhones, cookPhones) => {
       clickatellApi(phone, cookMessage)
     );
 
-    promises.push(...supportPromises, ...cookPromises);
+    promises.push(...supportPromises, ...cookPromises, ...customerPromises);
   }
   try {
     await Promise.all(promises);
+    // Update order to indicate notifications were sent
+    order.notificationsSent = true;
+    await order.save();
     return true;
   } catch (err) {
     handleError(res, err);
@@ -107,26 +118,37 @@ const CancelOrderPurchase = async (req, res) => {
 const SuccessfulOrderPurchase = async (req, res) => {
   const { newOrder, supportPhones, cookPhones } = req.body;
   newOrder.status = "Process";
-  try {
-    const updatedOrder = await Order.findOneAndUpdate(
-      { orderNumber: newOrder.orderNumber },
-      newOrder,
-      { new: true }
-    );
 
-    if (!updatedOrder) {
+  try {
+    // Find order by orderNumber and check if it's already processed
+    const existingOrder = await Order.findOne({
+      orderNumber: newOrder.orderNumber
+    });
+    if (!existingOrder) {
       return sendResponse(res, 404, { message: "🚫 Order not found" });
     }
 
+    // If the status is already "Process", prevent further updates or notifications
+    if (existingOrder.status === "Process" && existingOrder.notificationsSent) {
+      return sendResponse(res, 200, {
+        success: true,
+        message: "Order already processed and notifications sent."
+      });
+    }
+
+    // Update order and send notifications
+    existingOrder.status = "Process";
+    const updatedOrder = await existingOrder.save();
     const sentNotifications = await smsNotification(
       updatedOrder,
       supportPhones,
       cookPhones
     );
+
     if (sentNotifications) {
       sendResponse(res, 200, {
         success: true,
-        message: "Order updated successfully!"
+        message: "Order updated and notifications sent successfully!"
       });
     }
   } catch (err) {
@@ -181,7 +203,7 @@ const PaymentGateWay = async (req, res) => {
         ...newOrder,
         checkoutId: checkoutsAPI.data.id,
         redirectUrl: checkoutsAPI.data.redirectUrl,
-        status: "Temp",
+        status: "Pending",
         timestamp: new Date()
       });
 

@@ -198,12 +198,12 @@ function PaymentProvider ({ children }) {
   const RedirectToCheckout = async () => {
     try {
       // Check if it's outside of operating hours
-      const notWorkingHours = operatingHours()
+      // const notWorkingHours = operatingHours()
 
-      if (notWorkingHours) {
-        alert('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
-        return
-      }
+      // if (notWorkingHours) {
+      //   alert('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
+      //   return
+      // }
 
       // Generate new order details and phone numbers
       const [newOrder, supportPhones, cookPhones] = initOrderDetails()
@@ -249,100 +249,7 @@ function PaymentProvider ({ children }) {
       console.error('Error processing payment:', error)
     }
   }
-  /**
-   * @function getStoredOrderData
-   * @description Retrieves the order data stored in localStorage under the key 'orderData'.
-   * @returns {Object|null} Returns the parsed order data object if available, otherwise returns null.
-   */
-  const getStoredOrderData = () => {
-    const storedOrderData = localStorage.getItem('orderData')
-    return storedOrderData ? JSON.parse(storedOrderData) : null
-  }
 
-  /**
-   * @function clearStoredOrderData
-   * @description Clears the stored order data from localStorage.
-   */
-  const clearStoredOrderData = () => {
-    localStorage.removeItem('orderData')
-  }
-  const SuccessfulOrderPurchase = async () => {
-    // get order detals and those phone numbers from localstorage
-    // send alert to server to update order status from "Temp" to "Process"
-    try {
-      const orderData = getStoredOrderData()
-
-      const response = await fetch(`${ServerDomain}/checkout-successful`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(orderData)
-      })
-
-      const data = await response.json()
-
-      if (data.success) {
-        clearStoredOrderData()
-        return true
-      } else {
-        throw new Error('Failed to send SMS')
-      }
-    } catch (error) {
-      console.error('Error sending SMS:', error)
-      throw error
-    }
-  }
-  const OrderCanceled = async () => {
-    try {
-      const orderData = getStoredOrderData()
-
-      const response = await fetch(`${ServerDomain}/purchase-order-canceled`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(orderData)
-      })
-
-      const data = await response.json()
-
-      if (data.success) {
-        clearStoredOrderData()
-        return true
-      } else {
-        throw new Error('Failed to send SMS')
-      }
-    } catch (error) {
-      console.error('Error sending SMS:', error)
-      throw error
-    }
-  }
-  const CheckoutFailure = async () => {
-    try {
-      const orderData = getStoredOrderData()
-
-      const response = await fetch(`${ServerDomain}/checkout-failure`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(orderData)
-      })
-
-      const data = await response.json()
-
-      if (data.success) {
-        clearStoredOrderData()
-        return true
-      } else {
-        throw new Error('Failed to send SMS')
-      }
-    } catch (error) {
-      console.error('Error sending SMS:', error)
-      throw error
-    }
-  }
   /**
    * @description sends an SMS to a given phone number.
    * @param {string} phone
@@ -596,10 +503,7 @@ function PaymentProvider ({ children }) {
         restPunchedOrder,
         resetPaymentState,
         initOrderNumber,
-        RedirectToCheckout,
-        SuccessfulOrderPurchase,
-        OrderCanceled,
-        CheckoutFailure
+        RedirectToCheckout
       }}
     >
       {children}

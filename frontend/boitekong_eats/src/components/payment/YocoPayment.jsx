@@ -21,8 +21,6 @@ const YocoPayment = () => {
     const initiatePayment = async () => {
       try {
         const res = await RedirectToCheckout()
-        console.log(res)
-
         // Check if res contains the expected 'redirectUrl'
         if (res && res.redirectUrl) {
           // Redirect to the external payment gateway URL

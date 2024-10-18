@@ -36,25 +36,21 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   const [orderId, setOrderId] = useState('')
 
   const onlinePaymentIsRequired = paymentTotal => {
-    if (paymentTotal > 200) {
-      setPopupMessage(
-        'Order total exceeds R200. You have to pay via online payment or cash transfer after clicking "Place Order".'
-      )
-      setShowPopup(true)
-      return true
-    }
-    return false
+    return paymentTotal > 200 ? true : false
   }
 
   const PaymentGateWay = () => {
+    setLoading(true)
     setShowYocoPaymentGateWay(true)
   }
-
+ 
+  
   useEffect(() => {
     handlePaymentItems(paymentItems)
     initOrderNumber()
   }, [paymentItems, paymentTotal, deliveryCharge])
 
+ 
   const validateForm = () => {
     const phoneRegex = /^0[0-9]{9}$/
     const nameRegex = /^[a-zA-Z\s]+$/
@@ -77,23 +73,25 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
   }
 
   const lastAmountCheck = (paymentTotal, paymentMethod) => {
-    const yes = onlinePaymentIsRequired(paymentTotal)
-    if (yes) {
+    const requiresOnlinePayment = onlinePaymentIsRequired(paymentTotal)
+    console.log("requires online payment ", requiresOnlinePayment)
+    if (requiresOnlinePayment) {
+      console.log(paymentMethod)
       switch (paymentMethod) {
         case 'self-collect':
         case 'cash':
           setPopupMessage(
-            `Order total is R${paymentTotal} which exceeds eligible cash payment amount (R200).
-           For this order to be successful you need to pay via online or bank transfer.`
+            `Order total is R${paymentTotal}, exceeding cash limit.`
           )
           setShowPopup(true)
-          PaymentGateWay()
+          PaymentGateWay() // After calling PaymentGateWay, return early
           return true
       }
     }
 
     return false
   }
+
   /**
    * @description Wrapper Method to handle the delayed submission of data to the backend and state reset
    */
@@ -112,12 +110,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     }, 7000)
   }
 
-  const TogglePaymentGateWay = () => {
-    setTimeout(() => {
-      setShowYocoPaymentGateWay(!showYocoPaymentGateWay)
-    }, 9000)
-  }
-
   const handleFormSubmit = async e => {
     e.preventDefault()
 
@@ -126,21 +118,14 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
       return
     }
 
+    // Set the order ID directly based on context value
     setOrderId(orderNumber)
 
-    switch (paymentMethod) {
-      case 'online':
-      case 'online-delivery':
-        PaymentGateWay()
-        break
-
-      default:
-        !lastAmountCheck(paymentTotal, paymentMethod) &&
-        !showPopup &&
-        !showYocoPaymentGateWay
-          ? delayedSubmit()
-          : null
-        break
+    if (paymentMethod === 'online' || paymentMethod === 'online-delivery') {
+      PaymentGateWay()
+    } else if (!lastAmountCheck(paymentTotal, paymentMethod)) {
+      console.log('called')
+      delayedSubmit() // Only call delayedSubmit if amount check passes
     }
   }
 
