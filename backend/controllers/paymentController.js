@@ -138,7 +138,7 @@ const CancelOrderPurchase = async (req, res) => {
  */
 const SuccessfulOrderPurchase = async (req, res) => {
   const { newOrder, supportPhones, cookPhones } = req.body;
-  newOrder.status = "Process";
+  newOrder.status = "Process"; // Set the new status
 
   try {
     // Find order by orderNumber and check if it's already processed
@@ -157,25 +157,29 @@ const SuccessfulOrderPurchase = async (req, res) => {
       });
     }
 
-    // Update order and send notifications
-    existingOrder.status = "Process";
-    const updatedOrder = await existingOrder.save();
+    // Send SMS notifications without saving the order yet
     const sentNotifications = await smsNotification(
-      updatedOrder,
+      existingOrder, // Pass the current order (not yet updated)
       supportPhones,
       cookPhones
     );
 
+    // If notifications were successfully sent, then update the order
     if (sentNotifications) {
+      existingOrder.status = "Process";
+      existingOrder.notificationsSent = true; // Mark as notifications sent
+      await existingOrder.save(); // Save the updated order after notifications are sent
+
       sendResponse(res, 200, {
         success: true,
         message: "Order updated and notifications sent successfully!"
       });
     }
   } catch (err) {
-    handleError(res, err);
+    handleError(res, err); // Handle any errors
   }
 };
+
 
 /**
  * @description Handles payment processing using the YOCO payment gateway.
