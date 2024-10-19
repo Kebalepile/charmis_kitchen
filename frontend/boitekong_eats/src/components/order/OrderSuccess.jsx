@@ -77,7 +77,6 @@ const SuccessfulOrderPurchase = async () => {
       )
       promises.push(...supportPromises, ...cookPromises)
       // Wait for all promises to resolve
-      console.log(promises)
       await Promise.all(promises)
 
       // return boolean  returned from sendsms
