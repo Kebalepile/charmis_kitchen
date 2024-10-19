@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   getStoredOrderData,
@@ -33,37 +33,40 @@ const CheckoutFailure = async () => {
     throw error
   }
 }
+
 const FailedOrder = () => {
   const navigate = useNavigate() // Initialize the navigate hook
+  const [loading, setLoading] = useState(true) // Add loading state
   const orderData = getStoredOrderData() // Get stored order data
   const image = './assets/images/qr_code.png'
 
-  // Check if orderData exists before calling CheckoutFailure
+  useEffect(() => {
+    const handleOrderFailure = async () => {
+      try {
+        if (!orderData) {
+          // No order data, navigate to 404
+          navigate('/404')
+        } else {
+          // Await the checkout failure process
+          await CheckoutFailure()
+          navigate('/')
+        }
+      } catch (error) {
+        console.error('Order failure error:', error)
+      } finally {
+        setLoading(false) // Stop loading after the process is complete
+      }
+    }
+
+    handleOrderFailure() // Call the async function
+  }, [navigate, orderData])
+
+  // If no order data, render nothing or you could redirect to a 404 or home page
   if (!orderData) {
-    // If no orderData, navigate to home after 5 seconds
-    setTimeout(() => {
-      navigate('/')
-    }, 9000)
-  } else {
-    // If orderData exists, call CheckoutFailure and then navigate
-    CheckoutFailure().then(() => {
-      navigate('/')
-    })
+    return null
   }
 
-  // If orderData doesn't exist, display a message
-  if (!orderData) {
-    return (
-      <div className='redirect-container-order'>
-        <h2>No order data available.</h2>
-        <p>You'll be redirected to the home page in a sec...</p>
-        <img alt='qr code image' src={image} className='qrcode-img' />
-        {<Spinner />}
-      </div>
-    )
-  }
-
-  // If orderData exists, show order failure details
+  // If order data exists, display failure details
   const { newOrder } = orderData
 
   return (
@@ -81,9 +84,8 @@ const FailedOrder = () => {
         <strong>{newOrder.supportPhone}</strong>
       </p>
       <p>Thank you for your patience! 💙</p>
-      <p>You'll be redirected to the home page in a sec...</p>
       <img alt='qr code image' src={image} className='qrcode-img' />
-      {<Spinner />}
+      {loading && <Spinner />} {/* Show spinner while loading */}
     </div>
   )
 }

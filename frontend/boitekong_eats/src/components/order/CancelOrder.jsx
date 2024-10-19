@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   getStoredOrderData,
@@ -33,46 +33,49 @@ const OrderCanceled = async () => {
     throw error
   }
 }
+
 const CancelOrder = () => {
-  const navigate = useNavigate() // Initialize the navigate hook
-  const orderData = getStoredOrderData() // Get stored order data
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(true)
+  const orderData = getStoredOrderData()
   const image = './assets/images/qr_code.png'
 
-  // Check if orderData exists before calling OrderCanceled
+  useEffect(() => {
+    const handleOrderCancellation = async () => {
+      try {
+        if (!orderData) {
+          // No order data, navigate back to home immediately
+          navigate('/404')
+        } else {
+          // Await the cancellation process
+          await OrderCanceled()
+          navigate('/')
+        }
+      } catch (error) {
+        console.error('Order cancellation error:', error)
+      } finally {
+        setLoading(false) // Stop loading after the process is complete
+      }
+    }
+
+    handleOrderCancellation() // Call the async function
+  }, [navigate, orderData])
+
+  // If no order data, display a message
   if (!orderData) {
-    // If no orderData, navigate to home after 5 seconds
-    setTimeout(() => {
-      navigate('/')
-    }, 10000)
-  } else {
-    // If orderData exists, call OrderCanceled and then navigate
-    OrderCanceled().then(() => {
-      navigate('/')
-    })
+    return null
   }
 
-  // If orderData doesn't exist, display a message
-  if (!orderData) {
-    return (
-      <div className='redirect-container-order'>
-        <h2>No order data available to cancel.</h2>
-        <p>You'll be redirected to the home page in a sec...</p>
-        <img alt='qr code image' src={image} className='qrcode-img' />
-        {<Spinner />}
-      </div>
-    )
-  }
-
-  // If orderData exists, show order cancellation details
+  // If order data exists, display cancellation details
   const { newOrder } = orderData
 
   return (
     <div className='redirect-container-order'>
       <h1>Order {newOrder.orderNumber} has been canceled.</h1>
       <br />
-      <p>You'll be redirected to the home page in a sec...</p>
+      <p>You'll be redirected to the home page.</p>
       <img alt='qr code image' src={image} className='qrcode-img' />
-      {<Spinner />}
+      {loading && <Spinner />}
     </div>
   )
 }

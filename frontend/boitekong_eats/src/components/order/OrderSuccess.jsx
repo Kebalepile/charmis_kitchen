@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   getStoredOrderData,
@@ -33,34 +33,40 @@ const SuccessfulOrderPurchase = async () => {
     throw error
   }
 }
+
 const OrderSuccess = () => {
-  // const { SuccessfulOrderPurchase } = useContext(OrderContext)
-  const navigate = useNavigate() // Initialize the navigate hook
-  const orderData = getStoredOrderData() // Get stored order data
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(true)
+  const orderData = getStoredOrderData()
   const image = './assets/images/qr_code.png'
 
-  if (!orderData) {
-    // If no orderData, navigate to home after 5 seconds
-    setTimeout(() => {
-      navigate('/')
-    }, 9000)
-  } else {
-    // If orderData exists, call SuccessfulOrderPurchase and then navigate
-    SuccessfulOrderPurchase().then(() => {
-      navigate('/')
-    })
-  }
+  useEffect(() => {
+    // Define an async function inside useEffect
+    const handleOrderSuccess = async () => {
+      try {
+        if (!orderData) {
+          // If no orderData, navigate back to home
+          navigate('/404')
+        } else {
+          // Await the successful order purchase before navigating
+          const done = await SuccessfulOrderPurchase()
+          if (done) {
+            navigate('/')
+          }
+        }
+      } catch (error) {
+        console.error('Order processing error:', error)
+      } finally {
+        setLoading(false) // Stop loading after the process is done
+      }
+    }
+
+    handleOrderSuccess() // Call the async function
+  }, [navigate, orderData])
 
   // If orderData doesn't exist, display a message
   if (!orderData) {
-    return (
-      <div className='redirect-container-order'>
-        <h2>No order data found</h2>
-        <p>You'll be redirected to the home page in a sec...</p>
-        <img alt='qr code image' src={image} className='qrcode-img' />
-        {<Spinner />}
-      </div>
-    )
+    return null
   }
 
   // If orderData exists, show order details
@@ -74,7 +80,7 @@ const OrderSuccess = () => {
       <br />
       <p>You'll be redirected to the home page in a sec...</p>
       <img alt='qr code image' src={image} className='qrcode-img' />
-      {<Spinner />}
+      {loading && <Spinner />}
     </div>
   )
 }

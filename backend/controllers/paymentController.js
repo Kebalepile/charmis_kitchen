@@ -16,6 +16,7 @@ const {
  */
 const smsNotification = async (order, supportPhones, cookPhones) => {
   const promises = [];
+  
   // Prevent sending multiple notifications for the same order status
   if (
     order.status.trim().toLowerCase() === "process" &&
@@ -24,24 +25,43 @@ const smsNotification = async (order, supportPhones, cookPhones) => {
     supportPhones = supportPhones.map(phone => formatCellNumber(phone));
     cookPhones = cookPhones.map(phone => formatCellNumber(phone));
     const { orderNumber, name, phone, paymentItemsDescriptions } = order;
-    const cookMessage = `new order at Boitekong Eats: ${orderNumber}, ${name}, ${phone}, ${paymentItemsDescriptions}`;
-    const supportMessage = `new order ready for process order number ${orderNumber}`;
-    const customerMessage = `Hi ${name}, your order is being processed at BoitekongEats. You'll be notified via SMS when order is ready. Track your order ${orderNumber} on the web-app.`;
+    const cookMessage = `New order at Boitekong Eats: ${orderNumber}, ${name}, ${phone}, ${paymentItemsDescriptions}`;
+    const supportMessage = `New order at Boitekong Eats ready for process order number ${orderNumber}`;
+    const customerMessage = `Hi ${name}, your order is being processed at BoitekongEats. You'll be notified via SMS when the order is ready. Track your order ${orderNumber} on the web-app.`;
 
+    // Create customer promise using new Promise
     const customerPromises = [
-      clickatellApi(formatCellNumber(phone), customerMessage)
+      new Promise((resolve, reject) => {
+        clickatellApi(formatCellNumber(phone), customerMessage)
+          .then(response => resolve(response))
+          .catch(error => reject(error));
+      })
     ];
+
+    // Create support promises using new Promise
     const supportPromises = supportPhones.map(phone =>
-      clickatellApi(phone, supportMessage)
-    );
-    const cookPromises = cookPhones.map(phone =>
-      clickatellApi(phone, cookMessage)
+      new Promise((resolve, reject) => {
+        clickatellApi(phone, supportMessage)
+          .then(response => resolve(response))
+          .catch(error => reject(error));
+      })
     );
 
-    promises.push(...supportPromises, ...cookPromises, ...customerPromises);
+    // Create cook promises using new Promise
+    const cookPromises = cookPhones.map(phone =>
+      new Promise((resolve, reject) => {
+        clickatellApi(phone, cookMessage)
+          .then(response => resolve(response))
+          .catch(error => reject(error));
+      })
+    );
+
+    // Add all promises to the promises array
+    promises.push(...cookPromises, customerPromises[0], supportPromises[0]);
   }
+
   try {
-    await Promise.all(promises);
+    await Promise.all(promises); // Wait for all promises to resolve
     // Update order to indicate notifications were sent
     order.notificationsSent = true;
     await order.save();
@@ -50,6 +70,7 @@ const smsNotification = async (order, supportPhones, cookPhones) => {
     handleError(res, err);
   }
 };
+
 
 /**
  * @description Handles the checkout failure scenario by finding and deleting the order.
@@ -130,7 +151,7 @@ const SuccessfulOrderPurchase = async (req, res) => {
 
     // If the status is already "Process", prevent further updates or notifications
     if (existingOrder.status === "Process" && existingOrder.notificationsSent) {
-      return sendResponse(res, 200, {
+      return sendResponse(res, 400, {
         success: true,
         message: "Order already processed and notifications sent."
       });
