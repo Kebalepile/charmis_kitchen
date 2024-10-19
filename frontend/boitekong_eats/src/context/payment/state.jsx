@@ -13,6 +13,7 @@ import {
   SET_STREET_ADDRESS,
   SET_HOUSENUMBER,
   RESET_PAYMENT_STATE,
+  ONLINE_PAY,
   ServerDomain
 } from '../types'
 import { generateOrderNumber, checkTime } from '../../utils/Utils'
@@ -28,7 +29,8 @@ function PaymentProvider ({ children }) {
     paymentTotal: 0,
     paymentItems: [],
     orderSubmitted: false,
-    orderNumber: 0
+    orderNumber: 0,
+    onlinePay :false
   }
 
   const [state, dispatch] = useReducer(PaymentReducer, initialState)
@@ -42,7 +44,8 @@ function PaymentProvider ({ children }) {
     paymentTotal,
     paymentItems,
     orderSubmitted,
-    orderNumber
+    orderNumber,
+    onlinePay
   } = state
 
   const resetPaymentState = () => {
@@ -109,6 +112,9 @@ function PaymentProvider ({ children }) {
     }
     return number
   }
+
+  const paymentGatewayOpen = () => { dispatch({ type: ONLINE_PAY, payload:true })}
+  const paymetGatewayClosed = () => {dispatch({ type: ONLINE_PAY, payload: false })}
 
   /**
    * @function initOrderDetails
@@ -177,46 +183,41 @@ function PaymentProvider ({ children }) {
       deliveryCharge, // Delivery fee
       paymentItemsDescriptions // Description of all items in the order
     }
+    // Combine all data into a single object
+    const orderData = {
+      newOrder,
+      supportPhones: Array.from(supportPhones), // Convert Set to array
+      cookPhones: Array.from(cookPhones) // Convert Set to array
+    }
 
+    // Store the object in local storage as a JSON string
+    localStorage.setItem('orderData', JSON.stringify(orderData))
     // Return the new order object along with the sets of support and cook phone numbers
     return [newOrder, supportPhones, cookPhones]
   }
 
+  const getStoredOrderData = () => {
+    const storedOrderData = localStorage.getItem('orderData');
+    return storedOrderData ? JSON.parse(storedOrderData) : null;
+  };
   /**
    * @function RedirectToCheckout
    * @description Initiates a payment process using the Yoco Payment Gateway. It checks the operating hours,
    *              stores the new order details, support phone numbers, and cook phone numbers in a single object
    *              in local storage to ensure persistence across tabs/windows, and then makes a payment request to the server.
    * @returns {Promise<Object>} Returns the result of the payment request from the server.
-   *
-   * @example
-   * const paymentResult = await RedirectToCheckout();
-   * if (paymentResult.success) {
-   *   console.log('Payment was successful!');
-   * }
    */
   const RedirectToCheckout = async () => {
     try {
       // Check if it's outside of operating hours
-      // const notWorkingHours = operatingHours()
+      const notWorkingHours = operatingHours()
 
-      // if (notWorkingHours) {
-      //   alert('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
-      //   return
-      // }
-
-      // Generate new order details and phone numbers
-      const [newOrder, supportPhones, cookPhones] = initOrderDetails()
-
-      // Combine all data into a single object
-      const orderData = {
-        newOrder,
-        supportPhones: Array.from(supportPhones), // Convert Set to array
-        cookPhones: Array.from(cookPhones) // Convert Set to array
+      if (notWorkingHours) {
+        alert('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
+        return
       }
 
-      // Store the object in local storage as a JSON string
-      localStorage.setItem('orderData', JSON.stringify(orderData))
+      const orderData = getStoredOrderData()
 
       // Get current base URL
       const baseUrl = window.location.origin
@@ -233,7 +234,7 @@ function PaymentProvider ({ children }) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          newOrder,
+          newOrder:orderData.newOrder,
           paths: {
             successUrl,
             cancelUrl,
@@ -503,7 +504,11 @@ function PaymentProvider ({ children }) {
         restPunchedOrder,
         resetPaymentState,
         initOrderNumber,
-        RedirectToCheckout
+        RedirectToCheckout,
+        initOrderDetails,
+        paymentGatewayOpen,
+        paymetGatewayClosed,
+        onlinePay
       }}
     >
       {children}

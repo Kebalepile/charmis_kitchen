@@ -4,6 +4,7 @@ import Slideshow from '../slideShow/Slideshow'
 import SearchOrder from '../search/SearchOrder'
 import PaymentContext from '../../context/payment/context'
 import Popup from '../popup/Popup'
+import useYocoPayment from '../../hooks/useYocoPayment'
 
 import './home.css'
 
@@ -11,9 +12,15 @@ export default function Home () {
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
 
-  const { restPunchedOrder, orderSubmitted } = useContext(PaymentContext)
-
+  const { restPunchedOrder, orderSubmitted, paymetGatewayClosed, onlinePay } =
+    useContext(PaymentContext)
+const {initiatePayment}  = useYocoPayment()
   useEffect(() => {
+    if (onlinePay) {
+      initiatePayment()
+      paymetGatewayClosed()
+      
+    }
     if (orderSubmitted) {
       setPopupMessage(
         '📋👤Your order has been placed. Please wait a few minutes for an SMS notification 📲'
@@ -22,7 +29,7 @@ export default function Home () {
       setShowPopup(true)
       restPunchedOrder()
     }
-  }, [orderSubmitted])
+  }, [orderSubmitted, onlinePay])
 
   const closePopup = () => {
     setShowPopup(false)

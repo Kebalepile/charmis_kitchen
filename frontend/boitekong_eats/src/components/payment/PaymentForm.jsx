@@ -4,7 +4,6 @@ import PaymentContext from '../../context/payment/context'
 import Loading from '../loading/Loading'
 import Popup from '../popup/Popup'
 import termsAndConditions from '../../assets/policies/termsAndConditions'
-import YocoPayment from './YocoPayment'
 
 import './payment.css'
 
@@ -26,31 +25,43 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     handleStreetAddressChange,
     handleSubmitOrder,
     resetPaymentState,
-    initOrderNumber
+    initOrderNumber,
+    initOrderDetails,
+    paymentGatewayOpen
   } = useContext(PaymentContext)
 
   const [loading, setLoading] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
-  const [showYocoPaymentGateWay, setShowYocoPaymentGateWay] = useState(false)
   const [orderId, setOrderId] = useState('')
 
   const onlinePaymentIsRequired = paymentTotal => {
     return paymentTotal > 200 ? true : false
   }
-
-  const PaymentGateWay = () => {
+  const handlePaymentGateway = () => {
+    
+    initOrderDetails()
     setLoading(true)
-    setShowYocoPaymentGateWay(true)
+    paymentGatewayOpen()
+    setTimeout(() => {
+      
+      resetOrderState()
+      const done = resetPaymentState()
+
+      if (done) {
+        setLoading(false)
+        setShowPaymentForm(false)
+      }
+    }, 7000)
   }
- 
-  
+
   useEffect(() => {
     handlePaymentItems(paymentItems)
     initOrderNumber()
   }, [paymentItems, paymentTotal, deliveryCharge])
 
- 
+  // Cleanup effect to stop processes when navigating away from the payment form
+
   const validateForm = () => {
     const phoneRegex = /^0[0-9]{9}$/
     const nameRegex = /^[a-zA-Z\s]+$/
@@ -74,9 +85,8 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
 
   const lastAmountCheck = (paymentTotal, paymentMethod) => {
     const requiresOnlinePayment = onlinePaymentIsRequired(paymentTotal)
-    console.log("requires online payment ", requiresOnlinePayment)
+
     if (requiresOnlinePayment) {
-      console.log(paymentMethod)
       switch (paymentMethod) {
         case 'self-collect':
         case 'cash':
@@ -84,7 +94,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
             `Order total is R${paymentTotal}, exceeding cash limit.`
           )
           setShowPopup(true)
-          PaymentGateWay() // After calling PaymentGateWay, return early
+          handlePaymentGateway()
           return true
       }
     }
@@ -122,7 +132,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     setOrderId(orderNumber)
 
     if (paymentMethod === 'online' || paymentMethod === 'online-delivery') {
-      PaymentGateWay()
+      handlePaymentGateway()
     } else if (!lastAmountCheck(paymentTotal, paymentMethod)) {
       console.log('called')
       delayedSubmit() // Only call delayedSubmit if amount check passes
@@ -268,8 +278,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
         </div>
       )}
       {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
-
-      {showYocoPaymentGateWay && <YocoPayment />}
     </div>
   )
 }

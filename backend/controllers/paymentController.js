@@ -4,72 +4,9 @@ const formatCellNumber = require("../utils/formatCellNumber");
 const Order = require("../models/order");
 const {
   sendResponse,
-  handleError,
-  clickatellApi
+  handleError
 } = require("../utils/helpers");
-/**
- * @description Sends SMS notifications to support and cook phone numbers about an order's status.
- * @param {Object} order - The order object containing order details.
- * @param {Array} supportPhones - Array of phone numbers for support team.
- * @param {Array} cookPhones - Array of phone numbers for the cook team.
- * @returns {Promise<Boolean>} - Returns true if all notifications are successfully sent, otherwise handles the error.
- */
-const smsNotification = async (order, supportPhones, cookPhones) => {
-  const promises = [];
-  
-  // Prevent sending multiple notifications for the same order status
-  if (
-    order.status.trim().toLowerCase() === "process" &&
-    !order.notificationsSent
-  ) {
-    supportPhones = supportPhones.map(phone => formatCellNumber(phone));
-    cookPhones = cookPhones.map(phone => formatCellNumber(phone));
-    const { orderNumber, name, phone, paymentItemsDescriptions } = order;
-    const cookMessage = `New order at Boitekong Eats: ${orderNumber}, ${name}, ${phone}, ${paymentItemsDescriptions}`;
-    const supportMessage = `New order at Boitekong Eats ready for process order number ${orderNumber}`;
-    const customerMessage = `Hi ${name}, your order is being processed at BoitekongEats. You'll be notified via SMS when the order is ready. Track your order ${orderNumber} on the web-app.`;
 
-    // Create customer promise using new Promise
-    const customerPromises = [
-      new Promise((resolve, reject) => {
-        clickatellApi(formatCellNumber(phone), customerMessage)
-          .then(response => resolve(response))
-          .catch(error => reject(error));
-      })
-    ];
-
-    // Create support promises using new Promise
-    const supportPromises = supportPhones.map(phone =>
-      new Promise((resolve, reject) => {
-        clickatellApi(phone, supportMessage)
-          .then(response => resolve(response))
-          .catch(error => reject(error));
-      })
-    );
-
-    // Create cook promises using new Promise
-    const cookPromises = cookPhones.map(phone =>
-      new Promise((resolve, reject) => {
-        clickatellApi(phone, cookMessage)
-          .then(response => resolve(response))
-          .catch(error => reject(error));
-      })
-    );
-
-    // Add all promises to the promises array
-    promises.push(...cookPromises, customerPromises[0], supportPromises[0]);
-  }
-
-  try {
-    await Promise.all(promises); // Wait for all promises to resolve
-    // Update order to indicate notifications were sent
-    order.notificationsSent = true;
-    await order.save();
-    return true;
-  } catch (err) {
-    handleError(res, err);
-  }
-};
 
 
 /**
@@ -138,7 +75,6 @@ const CancelOrderPurchase = async (req, res) => {
  */
 const SuccessfulOrderPurchase = async (req, res) => {
   const { newOrder, supportPhones, cookPhones } = req.body;
-  newOrder.status = "Process"; // Set the new status
 
   try {
     // Find order by orderNumber and check if it's already processed
@@ -157,28 +93,27 @@ const SuccessfulOrderPurchase = async (req, res) => {
       });
     }
 
-    // Send SMS notifications without saving the order yet
-    const sentNotifications = await smsNotification(
-      existingOrder, // Pass the current order (not yet updated)
-      supportPhones,
-      cookPhones
-    );
+    existingOrder.status = "Process";
+    existingOrder.notificationsSent = true; // Mark as notifications sent
+    await existingOrder.save(); // Save the updated order after notifications are sent
+    
+    const { orderNumber, name, phone, paymentItemsDescriptions } = existingOrder;
 
-    // If notifications were successfully sent, then update the order
-    if (sentNotifications) {
-      existingOrder.status = "Process";
-      existingOrder.notificationsSent = true; // Mark as notifications sent
-      await existingOrder.save(); // Save the updated order after notifications are sent
-
-      sendResponse(res, 200, {
-        success: true,
-        message: "Order updated and notifications sent successfully!"
-      });
-    }
+    sendResponse(res, 200, {
+      success: true,
+      supportPhones: supportPhones.map(phone => formatCellNumber(phone)),
+      cookPhones: cookPhones.map(phone => formatCellNumber(phone)),
+      customerPhone: formatCellNumber(phone),
+      cookMessage: `New order at Boitekong Eats: ${orderNumber}, ${name}, ${phone}, ${paymentItemsDescriptions}`,
+      supportMessage: `New order at Boitekong Eats ready for process order number ${orderNumber}`,
+      customerMessage: `Hi ${name}, your order is being processed at BoitekongEats. You'll be notified via SMS when the order is ready. Track your order ${orderNumber} on the web-app.`,
+      message: "Order updated and notifications sent successfully!"
+    });
   } catch (err) {
     handleError(res, err); // Handle any errors
   }
 };
+
 
 
 /**

@@ -26,7 +26,10 @@ const OrderCanceled = async () => {
       clearStoredOrderData()
       return true
     } else {
-      throw new Error('Failed to send SMS')
+    
+        clearStoredOrderData()
+        return false
+      
     }
   } catch (error) {
     console.error('Error sending SMS:', error)

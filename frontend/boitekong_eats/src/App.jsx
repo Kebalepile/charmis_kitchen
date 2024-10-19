@@ -38,12 +38,12 @@ function App () {
   const [popupMessage, setPopupMessage] = useState('')
 
   useEffect(() => {
-    const { startTime, endTime, currentTime } = checkTime()
+    // const { startTime, endTime, currentTime } = checkTime()
 
-    if (currentTime < startTime || currentTime > endTime) {
-      setPopupMessage('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
-      setIsPopupVisible(true)
-    }
+    // if (currentTime < startTime || currentTime > endTime) {
+    //   setPopupMessage('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
+    //   setIsPopupVisible(true)
+    // }
   }, [])
 
   const handleClosePopup = () => {

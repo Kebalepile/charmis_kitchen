@@ -9,11 +9,17 @@ import {
   SET_PAYMENT_METHOD,
   SET_DELIVERY_CHARGE,
   SET_TOTAL,
-  RESET_PAYMENT_STATE
+  RESET_PAYMENT_STATE,
+  ONLINE_PAY
 } from '../types'
 
 export default function PaymentReducer (state, action) {
   switch (action.type) {
+    case ONLINE_PAY:
+      return {
+        ...state,
+        onlinePay: action.payload
+      }
     case ORDER_NUMBER:
       return {
         ...state,
