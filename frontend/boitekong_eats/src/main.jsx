@@ -6,18 +6,18 @@ import PaymentProvider from './context/payment/state.jsx'
 import App from './App.jsx'
 import './index.css'
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    //   ./src/serviceWorker.js for development
-    // ./serviceWorker.js for Production
-    navigator.serviceWorker
-      .register('./serviceWorker.js')
-      .then(registration => {
-        console.log('service worker registered as: ', registration.scope)
-      })
-      .catch(error => console.error('service worker registration: ', error))
-  })
-}
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', () => {
+//     //   ./src/serviceWorker.js for development
+//     // ./serviceWorker.js for Production
+//     navigator.serviceWorker
+//       .register('./serviceWorker.js')
+//       .then(registration => {
+//         console.log('service worker registered as: ', registration.scope)
+//       })
+//       .catch(error => console.error('service worker registration: ', error))
+//   })
+// }
 
 let deferredPrompt
 

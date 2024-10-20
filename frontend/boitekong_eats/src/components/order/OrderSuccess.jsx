@@ -30,18 +30,20 @@ const sendSms = async (phone, message) => {
 
 const SuccessfulOrderPurchase = async () => {
   try {
-    const orderData = getStoredOrderData()
+    const orderData = getStoredOrderData();
+    console.log('order data');
+    console.log(orderData);
 
     const response = await fetch(`${ServerDomain}/checkout-successful`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(orderData)
-    })
+      body: JSON.stringify(orderData),
+    });
 
-    const data = await response.json()
-
+    const data = await response.json();
+    console.log(data);
     if (data.success) {
       const {
         customerPhone,
@@ -49,30 +51,38 @@ const SuccessfulOrderPurchase = async () => {
         cookPhones,
         cookMessage,
         supportPhones,
-        supportMessage
-      } = data
-      const promises = []
-      const customerPromise = sendSms(customerPhone, customerMessage)
+        supportMessage,
+      } = data;
 
-      const cookPromises = cookPhones.map(phone => sendSms(phone, cookMessage))
-      const supportPromises = supportPhones.map(phone =>
-        sendSms(phone, supportMessage)
-      )
-      promises.push(customerPromise, ...cookPromises, ...supportPromises)
+      // Send SMS to the customer
+      let ok = await sendSms(customerPhone, customerMessage);
+      console.log('Customer SMS sent:', ok);
 
-      await Promise.all(promises)
+      // Send SMS to all cooks
+      for (const phone of cookPhones) {
+        ok = await sendSms(phone, cookMessage);
+        console.log('Cook SMS sent:', ok);
+      }
 
-      clearStoredOrderData()
-      return true
+      // Send SMS to all support phones
+      for (const phone of supportPhones) {
+        ok = await sendSms(phone, supportMessage);
+        console.log('Support SMS sent:', ok);
+      }
+
+      // Clear the stored order data after successful SMS sending
+      clearStoredOrderData();
+      return true;
     } else {
-      clearStoredOrderData()
-      throw new Error('Failed to send SMS')
+      clearStoredOrderData();
+      throw new Error('Failed to send SMS');
     }
   } catch (error) {
-    console.error('Error sending SMS:', error)
-    throw error
+    console.error('Error sending SMS:', error);
+    throw error;
   }
-}
+};
+
 
 const OrderSuccess = () => {
   const [loading, setLoading] = useState(true)
@@ -84,18 +94,18 @@ const OrderSuccess = () => {
     setTimeout(async () => {
       try {
         if (!orderData) {
-          window.location.href = '/'
+          // window.location.href = '/'
         } else {
           const done = await SuccessfulOrderPurchase()
           if (done) {
             setOrderProcessed(true)
             localStorage.setItem('submitted', true)
-            window.location.href = '/'
+            // window.location.href = '/'
           }
         }
       } catch (error) {
         console.error('Order processing error:', error)
-      } 
+      }
     }, 7000)
   }
 
