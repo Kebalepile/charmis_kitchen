@@ -123,7 +123,7 @@ const SuccessfulOrderPurchase = async (req, res) => {
  * @returns {void} - Sends a response with payment information or an error message.
  */
 const PaymentGateWay = async (req, res) => {
-  const { newOrder, paths } = req.body;
+  const { newOrder, paths, lineitems} = req.body;
 
   if (!newOrder) {
     return sendResponse(res, 400, { message: "Order data is missing." });
@@ -134,7 +134,8 @@ const PaymentGateWay = async (req, res) => {
     currency: "ZAR",
     cancelUrl: paths.cancelUrl,
     successUrl: paths.successUrl,
-    failureUrl: paths.failureUrl
+    failureUrl: paths.failureUrl,
+    lineItems:lineitems
   };
 
   try {

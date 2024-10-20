@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-
 import { ServerDomain } from '../context/types'
 import { getStoredOrderData } from '../utils/localStorageUtils'
 import { checkTime } from '../utils/Utils'
@@ -15,8 +14,29 @@ const operatingHours = () => {
   return notWorkingHours
 }
 
+const lineItemsToObject = item => {
+  // Extract the menu name before "menu:"
+  const [, rest] = item.split(' menu: ')
+
+  // Extract the item name before "(Qty:"
+  const name = rest.split(' (Qty: ')[0].trim()
+
+  // Extract the quantity after "Qty:" and before ","
+  const quantity = parseInt(rest.match(/Qty: (\d+)/)[1])
+
+  // Extract the total price after "Total: R"
+  const total = parseFloat(rest.match(/Total: R(\d+)/)[1])
+
+  return {
+    displayName: name.trim(),
+    quantity: quantity,
+    pricingDetails: {
+      price: total * 100 // YOCO uses cents
+    }
+  }
+}
+
 const useYocoPayment = () => {
-  
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   /**
@@ -31,13 +51,22 @@ const useYocoPayment = () => {
       // Check if it's outside of operating hours
       const notWorkingHours = operatingHours()
 
-      // if (notWorkingHours) {
-      //   alert('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
-      //   return
-      // }
+      if (notWorkingHours) {
+        alert('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
+        return
+      }
 
       const orderData = getStoredOrderData()
-
+      const lineitems = orderData.lineitems.map(lineItemsToObject)
+      if (orderData.newOrder.deliveryCharge > 0) {
+        lineitems.push({
+          displayName: 'Delivery fee',
+          quantity:1,
+          pricingDetails: {
+            price: orderData.newOrder.deliveryCharge * 100 // YOCO uses cents
+          }
+        })
+      }
       // Get current base URL
       const baseUrl = window.location.origin
 
@@ -58,7 +87,8 @@ const useYocoPayment = () => {
             successUrl,
             cancelUrl,
             failureUrl
-          }
+          },
+          lineitems
         })
       })
 
@@ -73,12 +103,11 @@ const useYocoPayment = () => {
     setLoading(true)
     setError(null)
     try {
-      console.log('opening yoco payment gateway')
       const res = await RedirectToCheckout()
-  
+
       // Redirect to the external payment gateway URL
       if (res && res.redirectUrl) {
-        window.location.href = res.redirectUrl 
+        window.location.href = res.redirectUrl
       } else {
         console.error('No redirect URL found in the response')
         setError('Payment gateway URL not found')
@@ -90,7 +119,6 @@ const useYocoPayment = () => {
       setLoading(false)
     }
   }
-  
 
   return {
     initiatePayment,

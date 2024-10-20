@@ -39,12 +39,10 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     return paymentTotal > 200 ? true : false
   }
   const handlePaymentGateway = () => {
-    
     initOrderDetails()
     setLoading(true)
     paymentGatewayOpen()
     setTimeout(() => {
-      
       resetOrderState()
       const done = resetPaymentState()
 
@@ -91,10 +89,10 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
         case 'self-collect':
         case 'cash':
           setPopupMessage(
-            `Order total is R${paymentTotal}, exceeding cash limit.`
+            `${name}, your order total is R${paymentTotal}, exceeding cash limit. you can only pay cash for purchase under R200.00. Select Different Payment Method`
           )
           setShowPopup(true)
-          handlePaymentGateway()
+
           return true
       }
     }
@@ -134,7 +132,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     if (paymentMethod === 'online' || paymentMethod === 'online-delivery') {
       handlePaymentGateway()
     } else if (!lastAmountCheck(paymentTotal, paymentMethod)) {
-      console.log('called')
       delayedSubmit() // Only call delayedSubmit if amount check passes
     }
   }

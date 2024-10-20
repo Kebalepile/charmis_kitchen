@@ -168,7 +168,7 @@ function PaymentProvider ({ children }) {
           selectedSize ? `, Size: ${selectedSize}` : ''
         })`
       })
-      .join('; ') // Join all item descriptions into a single string
+    
 
     // Construct the new order object
     const newOrder = {
@@ -181,13 +181,14 @@ function PaymentProvider ({ children }) {
       paymentMethod, // Payment method (e.g., Cash, Card)
       paymentTotal, // Total payment amount
       deliveryCharge, // Delivery fee
-      paymentItemsDescriptions // Description of all items in the order
+      paymentItemsDescriptions:paymentItemsDescriptions.join("; ") // Description of all items in the order
     }
     // Combine all data into a single object
     const orderData = {
       newOrder,
       supportPhones: Array.from(supportPhones), // Convert Set to array
-      cookPhones: Array.from(cookPhones) // Convert Set to array
+      cookPhones: Array.from(cookPhones), // Convert Set to array,
+      lineitems: paymentItemsDescriptions
     }
 
     // Store the object in local storage as a JSON string
