@@ -94,13 +94,13 @@ const OrderSuccess = () => {
     setTimeout(async () => {
       try {
         if (!orderData) {
-          // window.location.href = '/'
+          window.location.href = '/'
         } else {
           const done = await SuccessfulOrderPurchase()
           if (done) {
             setOrderProcessed(true)
             localStorage.setItem('submitted', true)
-            // window.location.href = '/'
+            window.location.href = '/'
           }
         }
       } catch (error) {
