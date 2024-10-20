@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
   getStoredOrderData,
   clearStoredOrderData
@@ -76,7 +75,6 @@ const SuccessfulOrderPurchase = async () => {
 }
 
 const OrderSuccess = () => {
-  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [orderProcessed, setOrderProcessed] = useState(false)
   const orderData = getStoredOrderData()
@@ -86,20 +84,18 @@ const OrderSuccess = () => {
     setTimeout(async () => {
       try {
         if (!orderData) {
-          navigate('/404')
+          window.location.href = '/'
         } else {
           const done = await SuccessfulOrderPurchase()
           if (done) {
             setOrderProcessed(true)
             localStorage.setItem('submitted', true)
-            navigate('/')
+            window.location.href = '/'
           }
         }
       } catch (error) {
         console.error('Order processing error:', error)
-      } finally {
-        setLoading(false)
-      }
+      } 
     }, 7000)
   }
 

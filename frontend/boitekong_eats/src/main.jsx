@@ -39,7 +39,12 @@ window.addEventListener('scroll', () => {
   }
 })
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+// Ensuring that createRoot() is only called once
+const container = document.getElementById('root')
+const root = ReactDOM.createRoot(container)
+
+// Render the app
+root.render(
   <React.StrictMode>
     <MenuProvider>
       <OrderProvider>

@@ -27,17 +27,20 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     resetPaymentState,
     initOrderNumber,
     initOrderDetails,
-    paymentGatewayOpen
+    paymentGatewayOpen,
+    handleDeliveryChargeChange
   } = useContext(PaymentContext)
 
   const [loading, setLoading] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
   const [orderId, setOrderId] = useState('')
+  const [isDeliveryChecked, setIsDeliveryChecked] = useState(false) // Track checkbox state
 
   const onlinePaymentIsRequired = paymentTotal => {
     return paymentTotal > 200 ? true : false
   }
+
   const handlePaymentGateway = () => {
     initOrderDetails()
     setLoading(true)
@@ -58,7 +61,16 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     initOrderNumber()
   }, [paymentItems, paymentTotal, deliveryCharge])
 
-  // Cleanup effect to stop processes when navigating away from the payment form
+  // Handle delivery checkbox change
+  const handleDeliveryCheckboxChange = e => {
+    const isChecked = e.target.checked
+    setIsDeliveryChecked(isChecked) // Update the state
+    if (isChecked) {
+      handleDeliveryChargeChange(20) // Add delivery charge
+    } else {
+      handleDeliveryChargeChange(0) // Remove delivery charge
+    }
+  }
 
   const validateForm = () => {
     const phoneRegex = /^0[0-9]{9}$/
@@ -100,9 +112,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     return false
   }
 
-  /**
-   * @description Wrapper Method to handle the delayed submission of data to the backend and state reset
-   */
   const delayedSubmit = () => {
     setLoading(true)
 
@@ -217,7 +226,6 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
                 value={paymentMethod}
                 onChange={e => {
                   switch (e.target.value.trim()) {
-                    case 'online-delivery':
                     case 'cash':
                       setPopupMessage(
                         '🚚 Delivery is currently limited to 📍 Boitekong Ext 2, 4, 5, 6 & 8'
@@ -228,16 +236,27 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
                   handlePaymentChange(e)
                 }}
               >
-                <option value='self-collect'>Pay on Collection</option>
                 <option value='online'>Pay Online</option>
+                <option value='self-collect'>Pay on Collection</option>
                 <option value='cash'>Cash on Delivery (+R20.00)</option>
-
-                <option value='online-delivery'>
-                  Pay Online + Delivery (+R20.00)
-                </option>
               </select>
             </label>
           </div>
+
+          {paymentMethod !== 'cash' && (
+            <div className='checkbox-container'>
+              <input
+                type='checkbox'
+                id='deliveryCheckbox'
+                checked={isDeliveryChecked}
+                onChange={handleDeliveryCheckboxChange}
+              />
+              <label htmlFor='deliveryCheckbox'>
+                <strong>Add Delivery (+R20.00)</strong>
+              </label>
+            </div>
+          )}
+
           <p>
             Total Delivery Charge: <strong>R{deliveryCharge}.00</strong>
           </p>

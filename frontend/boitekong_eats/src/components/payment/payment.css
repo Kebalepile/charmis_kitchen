@@ -196,4 +196,21 @@
 #payment-form #terms button:focus {
   outline: none; /* Remove default outline */
 }
+/* Checkbox Styling */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin:10px;
+}
+
+.checkbox-container label {
+  font-size: 1rem;
+  color: #333;
+  margin-left:10px;
+}
+
+.checkbox-container label strong {
+  color: #1a1b1c; /* Optional: Highlight the delivery charge */
+}
 

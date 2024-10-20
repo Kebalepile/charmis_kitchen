@@ -30,7 +30,7 @@ function PaymentProvider ({ children }) {
     paymentItems: [],
     orderSubmitted: false,
     orderNumber: 0,
-    onlinePay :false
+    onlinePay: false
   }
 
   const [state, dispatch] = useReducer(PaymentReducer, initialState)
@@ -68,14 +68,18 @@ function PaymentProvider ({ children }) {
   const handleStreetAddressChange = e => {
     dispatch({ type: SET_STREET_ADDRESS, payload: e.target.value })
   }
-
+  const handleDeliveryChargeChange = (charge = 20) => {
+    dispatch({
+      type: SET_DELIVERY_CHARGE,
+      payload: charge
+    })
+  }
   const handlePaymentChange = e => {
     const method = e.target.value.trim()
     dispatch({ type: SET_PAYMENT_METHOD, payload: method })
-    dispatch({
-      type: SET_DELIVERY_CHARGE,
-      payload: method === 'cash' ? 20 : method === 'online-delivery' ? 20 : 0
-    })
+    method === 'cash'
+      ? handleDeliveryChargeChange(20)
+      : handleDeliveryChargeChange(0)
   }
   /**
    * @description Get sum of all items
@@ -113,8 +117,12 @@ function PaymentProvider ({ children }) {
     return number
   }
 
-  const paymentGatewayOpen = () => { dispatch({ type: ONLINE_PAY, payload:true })}
-  const paymetGatewayClosed = () => {dispatch({ type: ONLINE_PAY, payload: false })}
+  const paymentGatewayOpen = () => {
+    dispatch({ type: ONLINE_PAY, payload: true })
+  }
+  const paymetGatewayClosed = () => {
+    dispatch({ type: ONLINE_PAY, payload: false })
+  }
 
   /**
    * @function initOrderDetails
@@ -150,8 +158,8 @@ function PaymentProvider ({ children }) {
     const cookId = new Set()
 
     // Map over payment items and construct item descriptions
-    const paymentItemsDescriptions = paymentItems
-      .map(({ foodMenu, itemName, quantity, selectedSize, total, item }) => {
+    const paymentItemsDescriptions = paymentItems.map(
+      ({ foodMenu, itemName, quantity, selectedSize, total, item }) => {
         // Store cook ID from each item
         cookId.add(item.cook_id)
 
@@ -167,8 +175,8 @@ function PaymentProvider ({ children }) {
         return `${foodMenu}: ${itemName} (Qty: ${quantity}, Total: R${total}${
           selectedSize ? `, Size: ${selectedSize}` : ''
         })`
-      })
-    
+      }
+    )
 
     // Construct the new order object
     const newOrder = {
@@ -181,7 +189,7 @@ function PaymentProvider ({ children }) {
       paymentMethod, // Payment method (e.g., Cash, Card)
       paymentTotal, // Total payment amount
       deliveryCharge, // Delivery fee
-      paymentItemsDescriptions:paymentItemsDescriptions.join("; ") // Description of all items in the order
+      paymentItemsDescriptions: paymentItemsDescriptions.join('; ') // Description of all items in the order
     }
     // Combine all data into a single object
     const orderData = {
@@ -198,9 +206,9 @@ function PaymentProvider ({ children }) {
   }
 
   const getStoredOrderData = () => {
-    const storedOrderData = localStorage.getItem('orderData');
-    return storedOrderData ? JSON.parse(storedOrderData) : null;
-  };
+    const storedOrderData = localStorage.getItem('orderData')
+    return storedOrderData ? JSON.parse(storedOrderData) : null
+  }
   /**
    * @function RedirectToCheckout
    * @description Initiates a payment process using the Yoco Payment Gateway. It checks the operating hours,
@@ -235,7 +243,7 @@ function PaymentProvider ({ children }) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          newOrder:orderData.newOrder,
+          newOrder: orderData.newOrder,
           paths: {
             successUrl,
             cancelUrl,
@@ -509,6 +517,7 @@ function PaymentProvider ({ children }) {
         initOrderDetails,
         paymentGatewayOpen,
         paymetGatewayClosed,
+        handleDeliveryChargeChange,
         onlinePay
       }}
     >
