@@ -9,7 +9,7 @@ const Popup = ({ message, onClose }) => {
         <div
           dangerouslySetInnerHTML={{ __html: message }}
         />
-        {/* Add the animated dots here */}
+       
         <div className='loading-dots'>
           <span className='dot'></span>
           <span className='dot'></span>
