@@ -1,119 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Order Failed</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Failed</title>
+    <style>
+        /* General container styling */
+        .redirect-container-order {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-    <body>
-        <div class="redirect-container-order"
-            style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
-            <h1>😔 Oops! Order Failed</h1>
-            <p>Unfortunately, we could not process your order right now.</p>
-            <p>Order Number: <strong id="orderNumber">N/A</strong></p>
-            <!-- Order number will be updated dynamically -->
-            <p>Total Payment: R<span id="paymentTotal">N/A</span></p>
-            <!-- Total payment will be updated dynamically -->
-            <p>
-                Please try again later. We’re sorry for the inconvenience!
-                🙏<br />
-                If the problem persists, contact our support team at: <strong
-                    id="supportPhone">+(27) 69 848 8813</strong>
-            </p>
-            <p>Thank you for your patience! 💙</p>
-            <img alt="QR Code" src="assets/images/qr_code.png"
-                class="qrcode-img"
-                style="max-width: 150px; height: 150px; margin-top: 20px; object-fit: contain;">
-            <div id="spinner"
-                style="display: none; margin-top: 20px;">Loading...</div>
-            <!-- Spinner placeholder -->
-            <p id="redirectMessage" style="display: none;">Redirecting to home
-                page in a moment...</p> <!-- Redirect message -->
+        /* Loading dots animation */
+        .loading-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            margin: 0 4px;
+            border-radius: 50%;
+            background-color: black;
+            animation: blink 1s infinite;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Image styling */
+        .qrcode-img {
+            max-width: 150px;
+            height: 150px;
+            margin-top: 20px;
+            object-fit: contain;
+        }
+
+        /* Redirect message styling */
+        #redirectMessage {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="redirect-container-order">
+        <h1>😔 Oops! Order Failed</h1>
+        <p>Unfortunately, we could not process your order right now.</p>
+        <p>Order Number: <strong id="orderNumber">N/A</strong></p>
+        <p>Total Payment: R<span id="paymentTotal">N/A</span></p>
+        <p>
+            Please try again later. We’re sorry for the inconvenience! 🙏<br />
+            If the problem persists, contact our support team at: <strong id="supportPhone">+(27) 69 848 8813</strong>
+        </p>
+        <p>Thank you for your patience! 💙</p>
+        <img alt="QR Code" src="assets/images/qr_code.png" class="qrcode-img">
+        <div id="spinner">
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
         </div>
+        <p id="redirectMessage">Redirecting to home page in a moment...</p>
+    </div>
 
-        <script>
-    // Mocking local storage and server domain for demonstration purposes
-    const ServerDomain = "https://b-town-bites.onrender.com";
+    <script>
+        const ServerDomain = "https://b-town-bites.onrender.com";
 
-    const getStoredOrderData = (keyItem='orderData') => {
-    const storedOrderData = localStorage.getItem(keyItem);
-    return storedOrderData ? JSON.parse(storedOrderData) : null;
-    };
+        const getStoredOrderData = (keyItem = 'orderData') => {
+            const storedOrderData = localStorage.getItem(keyItem);
+            return storedOrderData ? JSON.parse(storedOrderData) : null;
+        };
 
+        const clearStoredOrderData = (keyItem = 'orderData') => {
+            localStorage.removeItem(keyItem);
+        };
 
-    const clearStoredOrderData = (keyItem='orderData') => {
-    localStorage.removeItem(keyItem);
-    };
+        const handleCheckoutFailure = async () => {
+            try {
+                const orderData = getStoredOrderData();
+                if (!orderData) {
+                    throw new Error('No order data available');
+                }
 
+                const response = await fetch(`${ServerDomain}/checkout-failure`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData),
+                });
 
-    const handleCheckoutFailure = async () => {
-      try {
-        const orderData = getStoredOrderData();
-        if (!orderData) {
-          throw new Error('No order data available');
-        }
+                const data = await response.json();
+                if (data.success) {
+                    clearStoredOrderData();
+                    return true;
+                } else {
+                    throw new Error('Failed to process checkout failure');
+                }
+            } catch (error) {
+                console.error('Error processing checkout failure:', error);
+                throw error;
+            }
+        };
 
-        const response = await fetch(`${ServerDomain}/checkout-failure`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(orderData),
-        });
+        // Process the checkout failure on page load
+        window.onload = async function () {
+            const orderData = getStoredOrderData();
+            const orderNumberElement = document.getElementById('orderNumber');
+            const paymentTotalElement = document.getElementById('paymentTotal');
+            const supportPhoneElement = document.getElementById('supportPhone');
+            const redirectMessageElement = document.getElementById('redirectMessage');
 
-        const data = await response.json();
-        if (data.success) {
-          clearStoredOrderData();
-          return true;
-        } else {
-          throw new Error('Failed to process checkout failure');
-        }
-      } catch (error) {
-        console.error('Error processing checkout failure:', error);
-        throw error;
-      }
-    };
+            // Initialize the order details
+            if (orderData && orderData.newOrder) {
+                orderNumberElement.innerText = orderData.newOrder.orderNumber;
+                paymentTotalElement.innerText = orderData.newOrder.paymentTotal;
+                supportPhoneElement.innerText = orderData.newOrder.supportPhone;
+            } else {
+                alert("No order data found. Redirecting to 404.");
+                return;
+            }
 
-   
-
-    // Process the checkout failure on page load
-    window.onload = async function () {
-      const orderData = getStoredOrderData();
-      const orderNumberElement = document.getElementById('orderNumber');
-      const paymentTotalElement = document.getElementById('paymentTotal');
-      const supportPhoneElement = document.getElementById('supportPhone');
-      const spinnerElement = document.getElementById('spinner');
-      const redirectMessageElement = document.getElementById('redirectMessage');
-
-      // Initialize the order details
-      if (orderData && orderData.newOrder) {
-        orderNumberElement.innerText = orderData.newOrder.orderNumber;
-        paymentTotalElement.innerText = orderData.newOrder.paymentTotal;
-        supportPhoneElement.innerText = orderData.newOrder.supportPhone;
-      } else {
-        // If no order data, redirect to 404 (simulated by alert for now)
-        alert("No order data found. Redirecting to 404.");
-      }
-
-      spinnerElement.style.display = 'block'; // Show spinner while loading
-
-      try {
-        const success = await handleCheckoutFailure();
-        if (success) {
-          redirectMessageElement.style.display = 'block'; // Show redirect message
-          setTimeout(() => {
-            window.location.href = "/"; // Redirect to home after 5 seconds
-          }, 5000);
-        }
-      } catch (error) {
-        window.location.href = "/"; 
-      } finally {
-        spinnerElement.style.display = 'none'; // Hide spinner after process
-      }
-    };
-  </script>
-    </body>
+            try {
+                const success = await handleCheckoutFailure();
+                if (success) {
+                    redirectMessageElement.style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = "/";
+                    }, 5000);
+                }
+            } catch (error) {
+                window.location.href = "/";
+            }
+        };
+    </script>
+</body>
 
 </html>

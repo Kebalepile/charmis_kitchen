@@ -1,42 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Success</title>
     <style>
-    /* CSS from order.css */
-    .redirect-container-order {
-      text-align: center;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-    }
-    
-    .qrcode-img {
-      width: 150px;
-      height: 150px;
-      margin: 20px 0;
-    }
+        /* CSS from order.css */
+        .redirect-container-order {
+            text-align: center;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
 
-    h1 {
-      font-size: 24px;
-      color: #333;
-    }
+        .qrcode-img {
+            width: 150px;
+            height: 150px;
+            margin: 20px 0;
+        }
 
-    p {
-      font-size: 16px;
-      color: #555;
-    }
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
 
-    #spinner {
-      display: none;
-      font-size: 18px;
-      color: #007bff;
-    }
+        p {
+            font-size: 16px;
+            color: #555;
+        }
 
-    /* You can add more styles here from the original CSS file as needed */
-  </style>
+        #spinner {
+            font-size: 18px;
+            color: #007bff;
+            margin-top: 20px;
+        }
+
+        .loading-dots {
+            display: inline-block;
+            font-size: 18px;
+            margin-left: 5px;
+            position: relative;
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% {
+                content: '';
+            }
+            40% {
+                content: '.';
+            }
+            60% {
+                content: '..';
+            }
+            80%, 100% {
+                content: '...';
+            }
+        }
+
+        /* Add more styles here if necessary */
+    </style>
   </head>
+
   <body>
     <div class="redirect-container-order">
       <h1>Order Successful</h1>
@@ -44,107 +69,107 @@
       <p id="total-payment"></p>
       <p>You will be redirected to the home page shortly...</p>
       <img alt="qr code" src="./assets/images/qr_code.png" class="qrcode-img" />
-      <div id="spinner">Loading...</div>
+      <div id="spinner">Loading<span class="loading-dots"></span></div>
     </div>
 
     <script>
-    const serverDomain = "https://b-town-bites.onrender.com"
+        const serverDomain = "https://b-town-bites.onrender.com";
 
-    const getStoredOrderData = (keyItem='orderData') => {
-    const storedOrderData = localStorage.getItem(keyItem);
-    return storedOrderData ? JSON.parse(storedOrderData) : null;
-    };
+        const getStoredOrderData = (keyItem = 'orderData') => {
+            const storedOrderData = localStorage.getItem(keyItem);
+            return storedOrderData ? JSON.parse(storedOrderData) : null;
+        };
 
+        const clearStoredOrderData = (keyItem = 'orderData') => {
+            localStorage.removeItem(keyItem);
+        };
 
-    const clearStoredOrderData = (keyItem='orderData') => {
-    localStorage.removeItem(keyItem);
-    };
+        async function sendSms(phone, message) {
+            try {
+                const response = await fetch(`${serverDomain}/send-sms`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ to: phone, message }),
+                });
 
-    async function sendSms(phone, message) {
-      try {
-        const response = await fetch(`${serverDomain}/send-sms`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ to: phone, message }),
-        });
-
-        const data = await response.json();
-        if (!response.ok || !data.success) {
-          throw new Error('Failed to send SMS');
-        }
-        return true;
-      } catch (error) {
-        console.error('Error sending SMS:', error);
-        throw error;
-      }
-    }
-
-    async function successfulOrderPurchase(orderData) {
-      try {
-        const response = await fetch(`${serverDomain}/checkout-successful`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(orderData),
-        });
-
-        const data = await response.json();
-        if (!response.ok || !data.success) {
-          throw new Error('Failed to complete order');
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    throw new Error('Failed to send SMS');
+                }
+                return true;
+            } catch (error) {
+                console.error('Error sending SMS:', error);
+                throw error;
+            }
         }
 
-        const {
-          customerPhone, customerMessage,
-          cookPhones, cookMessage,
-          supportPhones, supportMessage
-        } = data;
+        async function successfulOrderPurchase(orderData) {
+            try {
+                const response = await fetch(`${serverDomain}/checkout-successful`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData),
+                });
 
-        await sendSms(customerPhone, customerMessage);
-        for (const phone of cookPhones) {
-          await sendSms(phone, cookMessage);
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    throw new Error('Failed to complete order');
+                }
+
+                const {
+                    customerPhone, customerMessage,
+                    cookPhones, cookMessage,
+                    supportPhones, supportMessage
+                } = data;
+
+                await sendSms(customerPhone, customerMessage);
+                for (const phone of cookPhones) {
+                    await sendSms(phone, cookMessage);
+                }
+                for (const phone of supportPhones) {
+                    await sendSms(phone, supportMessage);
+                }
+
+                clearStoredOrderData();
+                return true;
+            } catch (error) {
+                console.error('Error during successful order processing:', error);
+                clearStoredOrderData();
+                return false;
+            }
         }
-        for (const phone of supportPhones) {
-          await sendSms(phone, supportMessage);
+
+        function redirectToHome() {
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 3000);
         }
 
-        clearStoredOrderData();
-        return true;
-      } catch (error) {
-        console.error('Error during successful order processing:', error);
-        clearStoredOrderData();
-        return false;
-      }
-    }
+        async function handleOrderSuccess() {
+            const orderData = getStoredOrderData();
+            if (!orderData) {
+                window.location.href = '/';
+                return;
+            }
 
-    function redirectToHome() {
-      setTimeout(() => {
-        window.location.href = '/'; 
-      }, 3000); 
-    }
+            const success = await successfulOrderPurchase(orderData);
+            if (success) {
+                localStorage.setItem('submitted', JSON.stringify(true));
 
-    async function handleOrderSuccess() {
-      const orderData = getStoredOrderData();
-      if (!orderData) {
-        window.location.href = '/';
-        return;
-      }
+                document.getElementById('order-number').innerText = `Order Number: ${orderData.newOrder.orderNumber}`;
+                document.getElementById('total-payment').innerText = `Total Payment: R${orderData.newOrder.paymentTotal}`;
+                redirectToHome();
+            } else {
+                window.location.href = '/orderfailure.html';
+            }
+        }
 
-      const success = await successfulOrderPurchase(orderData);
-      if (success) {
-        localStorage.setItem('submitted', JSON.stringify(true));
-
-        document.getElementById('order-number').innerText = `Order Number: ${orderData.newOrder.orderNumber}`;
-        document.getElementById('total-payment').innerText = `Total Payment: R${orderData.newOrder.paymentTotal}`;
-        redirectToHome();
-      } else {
-        window.location.href = '/orderfailure.html';
-      }
-    }
-
-    window.onload = handleOrderSuccess;
-  </script>
+        window.onload = handleOrderSuccess;
+    </script>
   </body>
+
 </html>
