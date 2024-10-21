@@ -134,7 +134,8 @@
 
       const success = await successfulOrderPurchase(orderData);
       if (success) {
-        localStorage.setItem('submitted', true);
+        localStorage.setItem('submitted', JSON.stringify(true));
+
         document.getElementById('order-number').innerText = `Order Number: ${orderData.newOrder.orderNumber}`;
         document.getElementById('total-payment').innerText = `Total Payment: R${orderData.newOrder.paymentTotal}`;
         redirectToHome();

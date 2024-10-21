@@ -12,15 +12,15 @@
             style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
             <h1>😔 Oops! Order Failed</h1>
             <p>Unfortunately, we could not process your order right now.</p>
-            <p>Order Number: <strong id="orderNumber">#123456</strong></p>
+            <p>Order Number: <strong id="orderNumber">N/A</strong></p>
             <!-- Order number will be updated dynamically -->
-            <p>Total Payment: R<span id="paymentTotal">250.00</span></p>
+            <p>Total Payment: R<span id="paymentTotal">N/A</span></p>
             <!-- Total payment will be updated dynamically -->
             <p>
                 Please try again later. We’re sorry for the inconvenience!
                 🙏<br />
                 If the problem persists, contact our support team at: <strong
-                    id="supportPhone">+27 82 555 5555</strong>
+                    id="supportPhone">+(27) 69 848 8813</strong>
             </p>
             <p>Thank you for your patience! 💙</p>
             <img alt="QR Code" src="assets/images/qr_code.png"
@@ -76,25 +76,27 @@
       }
     };
 
-    const orderData = getStoredOrderData();
-    const orderNumberElement = document.getElementById('orderNumber');
-    const paymentTotalElement = document.getElementById('paymentTotal');
-    const supportPhoneElement = document.getElementById('supportPhone');
-    const spinnerElement = document.getElementById('spinner');
-    const redirectMessageElement = document.getElementById('redirectMessage');
-
-    // Initialize the order details
-    if (orderData && orderData.newOrder) {
-      orderNumberElement.innerText = orderData.newOrder.orderNumber;
-      paymentTotalElement.innerText = orderData.newOrder.paymentTotal;
-      supportPhoneElement.innerText = orderData.newOrder.supportPhone;
-    } else {
-      // If no order data, redirect to 404 (simulated by alert for now)
-      alert("No order data found. Redirecting to 404.");
-    }
+   
 
     // Process the checkout failure on page load
     window.onload = async function () {
+      const orderData = getStoredOrderData();
+      const orderNumberElement = document.getElementById('orderNumber');
+      const paymentTotalElement = document.getElementById('paymentTotal');
+      const supportPhoneElement = document.getElementById('supportPhone');
+      const spinnerElement = document.getElementById('spinner');
+      const redirectMessageElement = document.getElementById('redirectMessage');
+
+      // Initialize the order details
+      if (orderData && orderData.newOrder) {
+        orderNumberElement.innerText = orderData.newOrder.orderNumber;
+        paymentTotalElement.innerText = orderData.newOrder.paymentTotal;
+        supportPhoneElement.innerText = orderData.newOrder.supportPhone;
+      } else {
+        // If no order data, redirect to 404 (simulated by alert for now)
+        alert("No order data found. Redirecting to 404.");
+      }
+
       spinnerElement.style.display = 'block'; // Show spinner while loading
 
       try {

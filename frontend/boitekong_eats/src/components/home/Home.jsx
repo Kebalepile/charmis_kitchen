@@ -23,7 +23,8 @@ export default function Home () {
     if (onlinePay) {
       initiatePayment()
       paymetGatewayClosed()
-      const message = getStoredOrderData('loadingCheckout')
+      let message = getStoredOrderData('loadingCheckout')
+   
       setPopupMessage(message)
 
       setShowPopup(true)
