@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Cancelled</title>
+  <style>
+    /* General container for the CancelOrder component */
+    .redirect-container-order {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      margin: 50px auto;
+      max-width: 600px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Text styling */
+    .redirect-container-order h1 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      text-align: justify;
+    }
+
+    .redirect-container-order p {
+      font-size: 1rem;
+      text-align: justify;
+      margin-bottom: 20px;
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+      .redirect-container-order {
+        max-width: 700px;
+      }
+
+      .redirect-container-order h1 {
+        font-size: 2rem;
+      }
+
+      .redirect-container-order p {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .redirect-container-order {
+        max-width: 800px;
+      }
+
+      .redirect-container-order h1 {
+        font-size: 2.5rem;
+      }
+
+      .redirect-container-order p {
+        font-size: 1.4rem;
+      }
+    }
+
+    .qrcode-img {
+      max-width: 150px;
+      height: 150px;
+      margin-top: 20px;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+  <div class="redirect-container-order">
+    <h1 id="order-status"></h1>
+    <p id="cancel-details">You'll be redirected to the home page.</p>
+    <img id="qrcode-img" alt="QR code image" class="qrcode-img" />
+    <div id="spinner" style="display: none;">Loading...</div> <!-- Simple spinner placeholder -->
+  </div>
+
+  <script>
+    const serverDomain = "http://localhost:5000"
+    // Fetch order data from localStorage
+    const orderData = JSON.parse(localStorage.getItem('orderDetails'));
+
+    // Display a QR code image
+    const qrImagePath = './assets/images/qr_code.png'; // Update the path if necessary
+    document.getElementById('qrcode-img').src = qrImagePath;
+
+    // Handle the order cancellation
+    const handleOrderCancellation = async () => {
+      const spinner = document.getElementById('spinner');
+      spinner.style.display = 'block'; // Show loading spinner
+      try {
+        if (!orderData) {
+          window.location.href = '/404'; // Redirect to 404 if no order data
+        } else {
+          const response = await fetch(`${serverDomain}/purchase-order-canceled`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData),
+          });
+
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const data = await response.json();
+          if (data.success) {
+            // Update UI with order status
+            document.getElementById('order-status').innerText = `Order ${orderData.newOrder.orderNumber} has been canceled.`;
+            // Redirect to home after cancellation
+            setTimeout(() => {
+              window.location.href = '/';
+            }, 3000);
+          } else {
+            window.location.href = '/orderfailure.html'; // Redirect to failure page
+          }
+        }
+      } catch (error) {
+        console.error('Error during order cancellation:', error);
+        window.location.href = '/orderfailure.html'; // Redirect on error
+      } finally {
+        spinner.style.display = 'none'; // Hide loading spinner
+        localStorage.removeItem('orderDetails'); // Clear order data
+      }
+    };
+
+    // Call the cancellation handler
+    handleOrderCancellation();
+  </script>
+</body>
+</html>
