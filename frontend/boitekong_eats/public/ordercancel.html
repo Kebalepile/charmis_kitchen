@@ -80,7 +80,17 @@
   <script>
     const serverDomain = "http://localhost:5000"
     // Fetch order data from localStorage
-    const orderData = JSON.parse(localStorage.getItem('orderDetails'));
+    const getStoredOrderData = (keyItem='orderData') => {
+    const storedOrderData = localStorage.getItem(keyItem);
+    return storedOrderData ? JSON.parse(storedOrderData) : null;
+    };
+
+
+    const clearStoredOrderData = (keyItem='orderData') => {
+    localStorage.removeItem(keyItem);
+    };
+
+    const orderData = getStoredOrderData ();
 
     // Display a QR code image
     const qrImagePath = './assets/images/qr_code.png'; // Update the path if necessary
@@ -123,7 +133,7 @@
         window.location.href = '/orderfailure.html'; // Redirect on error
       } finally {
         spinner.style.display = 'none'; // Hide loading spinner
-        localStorage.removeItem('orderDetails'); // Clear order data
+        clearStoredOrderData() // Clear order data
       }
     };
 
