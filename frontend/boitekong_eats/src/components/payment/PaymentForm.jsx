@@ -46,7 +46,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     setLoading(true)
     paymentGatewayOpen()
     const message =
-      '...Loading Yoco Payment Gateway. Do not exit or refresh page!'
+      'Loading Yoco Payment Gateway. Do Not Exit or Refresh Page!'
     localStorage.setItem('loadingCheckout', JSON.stringify(message))
     setTimeout(() => {
       resetOrderState()
