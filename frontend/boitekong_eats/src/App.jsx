@@ -3,8 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate,
-  useNavigate
+  Navigate
 } from 'react-router-dom';
 import Navbar from './components/navigation/Navbar';
 import Home from './components/home/Home';
@@ -37,7 +36,6 @@ import './App.css';
 function App() {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
-  const navigate = useNavigate(); // For programmatically navigating
 
   useEffect(() => {
     const { startTime, endTime, currentTime } = checkTime();
@@ -52,9 +50,9 @@ function App() {
     const redirectPath = params.get('redirect');
 
     if (redirectPath) {
-      navigate(redirectPath, { replace: true });
+      window.location.replace(redirectPath); // Using native DOM method for navigation
     }
-  }, [navigate]);
+  }, []);
 
   const handleClosePopup = () => {
     setIsPopupVisible(false);
