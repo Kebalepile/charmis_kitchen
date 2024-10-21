@@ -232,9 +232,9 @@ function PaymentProvider ({ children }) {
       const baseUrl = window.location.origin
 
       // Create paths for success and cancel
-      const successUrl = `${baseUrl}/order-success`
-      const cancelUrl = `${baseUrl}/cancel-order`
-      const failureUrl = `${baseUrl}/failed-checkout`
+      const successUrl = `${baseUrl}/ordersuccess.html`
+      const cancelUrl = `${baseUrl}/ordercancel.html`
+      const failureUrl = `${baseUrl}/orderfailure.html`
 
       // Send the new order to the server for processing payment
       const response = await fetch(`${ServerDomain}/process-payment`, {

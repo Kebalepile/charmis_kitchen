@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   Navigate
-} from 'react-router-dom';
-import Navbar from './components/navigation/Navbar';
-import Home from './components/home/Home';
-import About from './components/about/About';
-import Contact from './components/contacts/Contact';
-import Popup from './components/popup/Popup';
-import NotFound from './components/notFound/NotFound';
-import OrderSuccess from './components/order/OrderSuccess';
-import CancelOrder from './components/order/CancelOrder';
-import FailedOrder from './components/order/FailedOrder';
-import { checkTime } from './utils/Utils';
-import './App.css';
+} from 'react-router-dom'
+import Navbar from './components/navigation/Navbar'
+import Home from './components/home/Home'
+import About from './components/about/About'
+import Contact from './components/contacts/Contact'
+import Popup from './components/popup/Popup'
+import NotFound from './components/notFound/NotFound'
+
+import { checkTime } from './utils/Utils'
+import './App.css'
 
 /**
  * @description
@@ -33,30 +31,30 @@ import './App.css';
  * with the operating hours. If the current time is outside the specified range,
  * the popup message is set and the popup is shown to the user.
  */
-function App() {
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [popupMessage, setPopupMessage] = useState('');
+function App () {
+  const [isPopupVisible, setIsPopupVisible] = useState(false)
+  const [popupMessage, setPopupMessage] = useState('')
 
   useEffect(() => {
-    const { startTime, endTime, currentTime } = checkTime();
+    const { startTime, endTime, currentTime } = checkTime()
 
     if (currentTime < startTime || currentTime > endTime) {
-      setPopupMessage('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞');
-      setIsPopupVisible(true);
+      setPopupMessage('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
+      setIsPopupVisible(true)
     }
 
     // Handle redirect from GitHub Pages 404.html
-    const params = new URLSearchParams(window.location.search);
-    const redirectPath = params.get('redirect');
+    const params = new URLSearchParams(window.location.search)
+    const redirectPath = params.get('redirect')
 
     if (redirectPath) {
-      window.location.replace(redirectPath); // Using native DOM method for navigation
+      window.location.replace(redirectPath) // Using native DOM method for navigation
     }
-  }, []);
+  }, [])
 
   const handleClosePopup = () => {
-    setIsPopupVisible(false);
-  };
+    setIsPopupVisible(false)
+  }
 
   return (
     <Router>
@@ -75,14 +73,11 @@ function App() {
             </>
           }
         />
-        <Route path='/order-success' element={<OrderSuccess />} />
-        <Route path='/cancel-order' element={<CancelOrder />} />
-        <Route path='/failed-checkout' element={<FailedOrder />} />
         <Route path='/404' element={<NotFound />} />
         <Route path='*' element={<Navigate to='/404' replace />} />
       </Routes>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App
