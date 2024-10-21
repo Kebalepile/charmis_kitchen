@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Cancelled</title>
-  <style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Cancelled</title>
+    <style>
     /* General container for the CancelOrder component */
     .redirect-container-order {
       display: flex;
@@ -68,17 +68,18 @@
       object-fit: contain;
     }
   </style>
-</head>
-<body>
-  <div class="redirect-container-order">
-    <h1 id="order-status"></h1>
-    <p id="cancel-details">You'll be redirected to the home page.</p>
-    <img id="qrcode-img" alt="QR code image" class="qrcode-img" />
-    <div id="spinner" style="display: none;">Loading...</div> <!-- Simple spinner placeholder -->
-  </div>
+  </head>
+  <body>
+    <div class="redirect-container-order">
+      <h1 id="order-status"></h1>
+      <p id="cancel-details">You'll be redirected to the home page.</p>
+      <img id="qrcode-img" alt="QR code image" class="qrcode-img" />
+      <div id="spinner" style="display: none;">Loading...</div>
+      <!-- Simple spinner placeholder -->
+    </div>
 
-  <script>
-    const serverDomain = "http://localhost:5000"
+    <script>
+    const serverDomain = "https://b-town-bites.onrender.com"
     // Fetch order data from localStorage
     const getStoredOrderData = (keyItem='orderData') => {
     const storedOrderData = localStorage.getItem(keyItem);
@@ -140,5 +141,5 @@
     // Call the cancellation handler
     handleOrderCancellation();
   </script>
-</body>
+  </body>
 </html>

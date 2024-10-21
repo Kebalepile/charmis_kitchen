@@ -84,9 +84,10 @@
   }
 }
 #bank_account {
-  margin-top: 10px;
+  width:50%;
+  margin:auto;
   background: radial-gradient(circle at right, #ffffff, #f0f0f0);
-  border-radius: 2px;
+  border-radius: 5px;
   padding: 5px 5px 5px 30px;
   color: black; /* Change text color to black */
 }

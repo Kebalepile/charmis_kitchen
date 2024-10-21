@@ -23,6 +23,11 @@ export default function Home () {
     if (onlinePay) {
       initiatePayment()
       paymetGatewayClosed()
+      const message = getStoredOrderData('loadingCheckout')
+      setPopupMessage(message)
+
+      setShowPopup(true)
+      clearStoredOrderData('loadingCheckout')
     }
     const notifiedViaSms = getStoredOrderData('submitted')
     if (notifiedViaSms) {

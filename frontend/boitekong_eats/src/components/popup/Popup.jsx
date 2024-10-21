@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import "./popup.css"
+import './popup.css'
 
 const Popup = ({ message, onClose }) => {
   return (
@@ -9,7 +9,13 @@ const Popup = ({ message, onClose }) => {
         <div
           dangerouslySetInnerHTML={{ __html: message }}
         />
-        <button onClick={onClose}>Close</button>
+        {/* Add the animated dots here */}
+        <div className='loading-dots'>
+          <span className='dot'></span>
+          <span className='dot'></span>
+          <span className='dot'></span>
+        </div>
+        <button onClick={onClose}>ok</button>
       </div>
     </div>
   )

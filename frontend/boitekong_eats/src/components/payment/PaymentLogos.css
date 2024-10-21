@@ -1,0 +1,59 @@
+
+.payment-logos-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .payment-logos-text {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #ffffff; /* adjust color as needed */
+  }
+  
+  .payment-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+  }
+  
+  .payment-logos img {
+    max-width: 100px;
+    height: auto;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .payment-logos img:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Responsive Styling */
+  @media (max-width: 768px) {
+    .payment-logos {
+      gap: 15px;
+    }
+  
+    .payment-logos img {
+      max-width: 80px;
+    }
+  
+    .payment-logos-text {
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .payment-logos {
+      gap: 10px;
+    }
+  
+    .payment-logos img {
+      max-width: 60px;
+    }
+  
+    .payment-logos-text {
+      font-size: 0.9rem;
+    }
+  }
+  

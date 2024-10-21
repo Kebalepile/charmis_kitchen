@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Success</title>
-  <style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Success</title>
+    <style>
     /* CSS from order.css */
     .redirect-container-order {
       text-align: center;
@@ -36,19 +36,19 @@
 
     /* You can add more styles here from the original CSS file as needed */
   </style>
-</head>
-<body>
-  <div class="redirect-container-order">
-    <h1>Order Successful</h1>
-    <p id="order-number"></p>
-    <p id="total-payment"></p>
-    <p>You will be redirected to the home page shortly...</p>
-    <img alt="qr code" src="./assets/images/qr_code.png" class="qrcode-img" />
-    <div id="spinner">Loading...</div>
-  </div>
+  </head>
+  <body>
+    <div class="redirect-container-order">
+      <h1>Order Successful</h1>
+      <p id="order-number"></p>
+      <p id="total-payment"></p>
+      <p>You will be redirected to the home page shortly...</p>
+      <img alt="qr code" src="./assets/images/qr_code.png" class="qrcode-img" />
+      <div id="spinner">Loading...</div>
+    </div>
 
-  <script>
-    const serverDomain = "http://localhost:5000"
+    <script>
+    const serverDomain = "https://b-town-bites.onrender.com"
 
     const getStoredOrderData = (keyItem='orderData') => {
     const storedOrderData = localStorage.getItem(keyItem);
@@ -145,5 +145,5 @@
 
     window.onload = handleOrderSuccess;
   </script>
-</body>
+  </body>
 </html>

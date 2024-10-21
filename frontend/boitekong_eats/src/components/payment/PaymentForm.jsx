@@ -45,6 +45,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     initOrderDetails()
     setLoading(true)
     paymentGatewayOpen()
+    localStorage.setItem("loadingCheckout","...Loading Yoco Payment Gateway. Do not exit or refresh page!")
     setTimeout(() => {
       resetOrderState()
       const done = resetPaymentState()
@@ -243,7 +244,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
             </label>
           </div>
 
-          {paymentMethod !== 'cash' && (
+          {paymentMethod !== 'cash' && paymentMethod !== 'self-collect' && (
             <div className='checkbox-container'>
               <input
                 type='checkbox'

@@ -3,6 +3,7 @@ import { HiMegaphone } from 'react-icons/hi2'
 import { FaWhatsapp } from 'react-icons/fa'
 import { MdEmail } from 'react-icons/md'
 import Popup from '../popup/Popup'
+import PaymentLogos from "../payment/PaymentLogos"
 import termsAndConditions from '../../assets/policies/termsAndConditions'
 import capitecLogo from '../../assets/images/capitec-logo.svg'
 
@@ -31,7 +32,17 @@ export default function Contact () {
               fontSize: '24px'
             }}
           />
-          <strong>+(27) 69 848 8813</strong>
+         <a 
+            href='https://wa.me/0698488813'
+            style={{
+              color: '#25D366', // Match WhatsApp color
+              textDecoration: 'none', // Remove underline
+              fontWeight: 'bold',
+              fontSize: '18px'
+            }}
+          >
+           +(27) 69 848 8813
+          </a>
         </li>
         <li>
           <MdEmail
@@ -50,6 +61,7 @@ export default function Contact () {
         might have. Feel free to contact us! Want to sell food with Boitekong
         Eats? Just use the contact details above to get in touch with us.
       </p>
+      <PaymentLogos/>
       <section id='bank_account'>
         <img src={capitecLogo} alt='Capitec Bank Logo' id='capitecLogo' />
         <hr />
