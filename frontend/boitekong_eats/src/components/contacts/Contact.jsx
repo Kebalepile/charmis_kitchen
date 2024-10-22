@@ -3,7 +3,7 @@ import { HiMegaphone } from 'react-icons/hi2'
 import { FaWhatsapp } from 'react-icons/fa'
 import { MdEmail } from 'react-icons/md'
 import Popup from '../popup/Popup'
-import PaymentLogos from "../payment/PaymentLogos"
+import PaymentLogos from '../payment/PaymentLogos'
 import termsAndConditions from '../../assets/policies/termsAndConditions'
 import capitecLogo from '../../assets/images/capitec-logo.svg'
 
@@ -25,6 +25,21 @@ export default function Contact () {
       </p>
       <ul id='contact-details'>
         <li>
+          <div id='WhatsApp-chat'>
+            <a
+              className='WhatsApp-link'
+              href='https://wa.me/27698488813'
+              target='_blank'
+            >
+              <span className="icon-wrapper">
+              <FaWhatsapp className='WhatsApp-icon' />
+            
+              </span>
+         Chat with us
+            </a>
+          </div>
+        </li>
+        <li>
           <FaWhatsapp
             style={{
               color: '#25D366',
@@ -32,16 +47,8 @@ export default function Contact () {
               fontSize: '24px'
             }}
           />
-         <a 
-            href='https://wa.me/0698488813'
-            style={{
-              color: '#25D366', // Match WhatsApp color
-              textDecoration: 'none', // Remove underline
-              fontWeight: 'bold',
-              fontSize: '18px'
-            }}
-          >
-           +(27) 69 848 8813
+          <a href='https://wa.me/27698488813' target='_blank'>
+            +(27)6 9848 8813
           </a>
         </li>
         <li>
@@ -61,7 +68,7 @@ export default function Contact () {
         might have. Feel free to contact us! Want to sell food with Boitekong
         Eats? Just use the contact details above to get in touch with us.
       </p>
-      <PaymentLogos/>
+      <PaymentLogos />
       <section id='bank_account'>
         <img src={capitecLogo} alt='Capitec Bank Logo' id='capitecLogo' />
         <hr />

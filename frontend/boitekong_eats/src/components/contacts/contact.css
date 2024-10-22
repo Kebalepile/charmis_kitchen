@@ -84,8 +84,8 @@
   }
 }
 #bank_account {
-  width:65%;
-  margin:auto;
+  width: 65%;
+  margin: auto;
   background: radial-gradient(circle at right, #ffffff, #f0f0f0);
   border-radius: 5px;
   padding: 5px 5px 5px 30px;
@@ -106,4 +106,79 @@
   width: 120px;
   height: 120px;
   display: block;
+}
+
+@keyframes scalePulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+#WhatsApp-chat {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+
+#WhatsApp-chat:hover {
+  transform: scale(1.05); /* Slight scale on hover */
+}
+
+.WhatsApp-link {
+  color: black; /* "Chat with us" text color */
+  text-decoration: none;
+  text-align: center;
+
+  font-weight: bold;
+  font-size: 15px;
+  background-color: rgb(251, 251, 251);
+  border-radius: 2px 20px 20px 2px;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add a shadow for depth */
+}
+
+.WhatsApp-icon {
+  font-size: 24px;
+  animation: scalePulse 2s infinite;
+  transition: transform 0.2s ease-in-out;
+  color: rgb(7, 255, 7); /* Green for WhatsApp icon */
+}
+.icon-wrapper {
+  background-color: #222121;
+
+  height: 50px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+}
+
+@keyframes scalePulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+#contact a {
+  color: white;
+}
+#WhatsApp-chat a {
+  color: black;
 }
