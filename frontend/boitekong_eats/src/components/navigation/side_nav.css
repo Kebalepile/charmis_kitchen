@@ -56,9 +56,9 @@
   align-items: center;
 }
 .shortcut:hover {
-  border-bottom: 2px dashed black;
-  padding-bottom: 3px;
-  border-radius: 2px;
+  background-color:white;
+  padding: 8px;
+  border-radius: 5px;
 }
 
 .sidebar-list-item.install-button {
