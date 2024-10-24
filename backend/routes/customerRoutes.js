@@ -7,13 +7,15 @@ const {
   LoginCustomer,
   LogoutCustomer,
   RestCustomerPassword,
-  EditCustomerDetails
+  EditCustomerDetails,
+  upDateOrderHistory
 } = require("../controllers/customerController");
 
 router.post("/customer-register", RegisterCustomer);
 router.post("/customer-login", LoginCustomer);
 router.post("/customer-rest-password", RestCustomerPassword);
 router.post("/customer-logout", authenticate, LogoutCustomer);
+router.post("/customer-order", authenticate, upDateOrderHistory);
 router.post("/customer-update-profile", authenticate, EditCustomerDetails);
 
 module.exports = router;

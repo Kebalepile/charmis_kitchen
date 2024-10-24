@@ -201,10 +201,37 @@ const EditCustomerDetails = async (req, res) => {
   }
 };
 
+const updateOrderHistory = async (req, res) => {
+    const { phone, orderNumber } = req.body;
+    
+    try {
+        // Find the customer by phone
+        const customer = await CustomerModel.findOne({ phone });
+        
+        if (!customer) {
+            return res.status(400).json({ error: "Customer not found 🥺" });
+        }
+        
+        // Push the new order number into the orderHistory array
+        customer.orderHistory.push(orderNumber);
+        
+        // Save the updated customer document
+        await customer.save();
+        
+        // Send success response
+        res.status(200).json({ message: "🎉 Customer order history updated successfully 🎉" });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ error: "Failed to update customer order history 🥺" });
+    }
+};
+
+
 module.exports = {
   RegisterCustomer,
   LoginCustomer,
   LogoutCustomer,
   RestCustomerPassword,
-  EditCustomerDetails
+  EditCustomerDetails,
+  upDateOrderHistory
 };
