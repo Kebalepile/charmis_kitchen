@@ -5,8 +5,10 @@ const customerSchema = new mongoose.Schema({
     phone: { type: String, required: true, unique: true },
     address: { type: String, required: true, unique: false },
     password: { type: String, required: true },
-    // array of orders, updated when new orders are made or deleted
-    orderHistory: { type: [Number], default: [] } // assuming an array of order IDs or similar
+    securityAnswerOne: { type: String, required: true }, // First security answer
+    securityAnswerTwo: { type: String, required: true }, // Second security answer
+    // Array of orders, updated when new orders are made or deleted
+    orderHistory: { type: [Number], default: [] } // Assuming an array of order IDs or similar
 });
 
 const Customer = mongoose.model("Customer", customerSchema);
