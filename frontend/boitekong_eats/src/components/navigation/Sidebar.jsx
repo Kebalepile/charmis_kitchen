@@ -4,18 +4,22 @@ import {
   FaSearch,
   FaInfoCircle,
   FaPhone,
-  FaDownload
-} from 'react-icons/fa' // Import icons
+  FaDownload,
+  FaUser
+} from 'react-icons/fa'
 import Footer from '../footer/Footer.jsx'
 import PropTypes from 'prop-types'
 
 import OrderContext from '../../context/order/context.jsx'
-import { deferredPrompt } from '../../main.jsx' // Import the deferredPrompt
+import CustomerContext from '../../context/customer/context.jsx'
+
+import { deferredPrompt } from '../../main.jsx'
 
 import './side_nav.css'
 
 const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
   const { setIsSearchOrderVisible } = useContext(OrderContext)
+  const { ToggleLoginForm } = useContext(CustomerContext)
   const [prompt, setPrompt] = useState(null)
 
   const handleClickOutside = event => {
@@ -64,10 +68,22 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
     }
   }
 
+  const toggleLoginFormVisibility = () => {
+    toggleSidebar()
+    ToggleLoginForm()
+  }
+
   return (
     <>
       <nav className={`sidebar-nav ${isSidebarVisible ? 'show' : 'hide'}`}>
         <ul className='sidebar-list'>
+          <li
+            onClick={toggleLoginFormVisibility}
+            className='sidebar-list-item shortcut'
+          >
+            <FaUser className='icon' />
+            <span>Login</span>
+          </li>
           <li
             onClick={() => handleClick('#menu')}
             className='sidebar-list-item shortcut'
@@ -75,7 +91,10 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
             <FaUtensils className='icon' />
             <span>Food Menu</span>
           </li>
-          <li onClick={handleSearchOrderClick} className='sidebar-list-item shortcut'>
+          <li
+            onClick={handleSearchOrderClick}
+            className='sidebar-list-item shortcut'
+          >
             <FaSearch className='icon' />
             <span>Search Order</span>
           </li>

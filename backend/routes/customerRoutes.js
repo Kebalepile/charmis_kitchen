@@ -16,7 +16,7 @@ router.post("/customer-register", RegisterCustomer);
 router.post("/customer-login", LoginCustomer);
 router.post("/customer-rest-password", RestCustomerPassword);
 router.post("/customer-logout", authenticate, LogoutCustomer);
-router.post("/customer-order", authenticate, UpdateOrderHistory);
+router.post("/new-customer-order", authenticate, UpdateOrderHistory);
 router.post("/customer-profile-update", RequestProfileUpdate);
 router.post("/customer-update-profile", authenticate, EditCustomerDetails);
 

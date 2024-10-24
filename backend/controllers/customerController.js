@@ -39,15 +39,10 @@ const RegisterCustomer = async (req, res) => {
     // Save the new user
     await newCustomer.save();
     // Generate a JWT token
-    const token = jwt.sign({ phone }, process.env.JWT_SECRET, {
-      expiresIn: "1h"
-    });
+
     // Send response
     res.status(201).json({
-      message: "🎉 Signed up successfully 🎉",
-      phone,
-      password,
-      token
+      message: `${name} 🎉 Registered successfully 🎉. Use phone ${phone} as username and passowrd ${passowrd} to log in`
     });
   } catch (error) {
     console.error("Error:", error);

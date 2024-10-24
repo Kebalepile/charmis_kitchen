@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import MenuProvider from './context/menu/state.jsx'
 import OrderProvider from './context/order/state.jsx'
 import PaymentProvider from './context/payment/state.jsx'
+import CustomerProvider from './context/customer/state.jsx'
 import App from './App.jsx'
 import './index.css'
 
@@ -43,7 +44,9 @@ if (!container._reactRootContainer) {
       <MenuProvider>
         <OrderProvider>
           <PaymentProvider>
-            <App />
+            <CustomerProvider>
+              <App />
+            </CustomerProvider>
           </PaymentProvider>
         </OrderProvider>
       </MenuProvider>
