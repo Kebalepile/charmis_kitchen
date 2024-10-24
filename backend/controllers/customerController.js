@@ -66,7 +66,15 @@ const LoginCustomer = async (req, res) => {
     });
 
     // Send response
-    res.status(200).json({ message: "🎉 Login successful 🎉", token });
+    res.status(200).json({
+      message: "🎉 Login successful 🎉",
+      token,
+      profile: {
+        name: customer.name,
+        phone: customer.phone,
+        address: customer.address
+      }
+    });
   } catch (error) {
     console.error("Error: ", error);
     res.status(500).json({ error: "Failed to login customer" });
