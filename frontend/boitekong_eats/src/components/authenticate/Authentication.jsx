@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "./auth.css";
 
-const Authentication = ({ onClose }) => { // Accept onClose as a prop
+const Authentication = ({ onClose }) => {
     const [authMode, setAuthMode] = useState("login");
     const [formData, setFormData] = useState({
         name: "",
         phone: "",
         password: "",
+        streetAddress: "", // Add streetAddress to the state
         selectedQuestions: [],
         answers: {},
         loginPhone: "",
@@ -80,12 +81,12 @@ const Authentication = ({ onClose }) => { // Accept onClose as a prop
 
     return (
         <div className="auth-container">
-          
             {authMode === "register" && (
                 <form onSubmit={handleSubmit} className="auth-form">
                     <h2>Register</h2>
                     <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleInputChange} required />
                     <input type="text" name="phone" placeholder="Phone" value={formData.phone} onChange={handleInputChange} required />
+                    <input type="text" name="streetAddress" placeholder="Street Address" value={formData.streetAddress} onChange={handleInputChange} required /> {/* New input field */}
                     <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleInputChange} required />
 
                     <p>Select 2 security questions:</p>
@@ -181,7 +182,7 @@ const Authentication = ({ onClose }) => { // Accept onClose as a prop
                     <p onClick={() => setAuthMode("login")}>Back to Login</p>
                 </form>
             )}
-              <button className="close-button" onClick={onClose}>Close</button> 
+            <button className="close-button" onClick={onClose}>Close</button> 
         </div>
     );
 };
