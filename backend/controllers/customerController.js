@@ -5,7 +5,15 @@ const jwt = require("jsonwebtoken");
 
 const RegisterCustomer = async (req, res) => {
   try {
-    const { name, phone, address, password, answers } = req.body;
+    const {
+      name,
+      phone,
+      address,
+      password,
+      answers,
+      securityQuestionOne,
+      securityQuestionTwo
+    } = req.body;
     // check if phone number already exists
     const existingUser = await CustomerModel.findOne({ phone });
     if (existingUser) {
@@ -23,7 +31,9 @@ const RegisterCustomer = async (req, res) => {
       address,
       password: hashedPassword,
       securityAnswerOne,
-      securityAnswerTwo
+      securityAnswerTwo,
+      securityQuestionOne,
+      securityQuestionTwo
     });
 
     // Save the new user
@@ -94,6 +104,27 @@ const LogoutCustomer = async (req, res) => {
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Failed to logout user" });
+  }
+};
+
+const RequestProfileUpdate = async (req, res) => {
+  const { phone } = req.body;
+
+  try {
+    // Find the customer by phone
+    const customer = await CustomerModel.findOne({ phone });
+    if (!customer) {
+      return res.status(400).json({ error: "Customer not found 🥺" });
+    }
+    const { securityQuestionOne, securityQuestionTwo } = customer;
+    // Send success response
+    res.status(200).json({
+      securityQuestionOne,
+      securityQuestionTwo
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Failed to reset password 🥺" });
   }
 };
 
@@ -201,31 +232,34 @@ const EditCustomerDetails = async (req, res) => {
   }
 };
 
-const updateOrderHistory = async (req, res) => {
-    const { phone, orderNumber } = req.body;
-    
-    try {
-        // Find the customer by phone
-        const customer = await CustomerModel.findOne({ phone });
-        
-        if (!customer) {
-            return res.status(400).json({ error: "Customer not found 🥺" });
-        }
-        
-        // Push the new order number into the orderHistory array
-        customer.orderHistory.push(orderNumber);
-        
-        // Save the updated customer document
-        await customer.save();
-        
-        // Send success response
-        res.status(200).json({ message: "🎉 Customer order history updated successfully 🎉" });
-    } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ error: "Failed to update customer order history 🥺" });
-    }
-};
+const UpdateOrderHistory = async (req, res) => {
+  const { phone, orderNumber } = req.body;
 
+  try {
+    // Find the customer by phone
+    const customer = await CustomerModel.findOne({ phone });
+
+    if (!customer) {
+      return res.status(400).json({ error: "Customer not found 🥺" });
+    }
+
+    // Push the new order number into the orderHistory array
+    customer.orderHistory.push(orderNumber);
+
+    // Save the updated customer document
+    await customer.save();
+
+    // Send success response
+    res
+      .status(200)
+      .json({ message: "🎉 Customer order history updated successfully 🎉" });
+  } catch (error) {
+    console.error("Error:", error);
+    res
+      .status(500)
+      .json({ error: "Failed to update customer order history 🥺" });
+  }
+};
 
 module.exports = {
   RegisterCustomer,
@@ -233,5 +267,6 @@ module.exports = {
   LogoutCustomer,
   RestCustomerPassword,
   EditCustomerDetails,
-  upDateOrderHistory
+  UpdateOrderHistory,
+  RequestProfileUpdate
 };

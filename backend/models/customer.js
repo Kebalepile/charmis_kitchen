@@ -7,6 +7,8 @@ const customerSchema = new mongoose.Schema({
     password: { type: String, required: true },
     securityAnswerOne: { type: String, required: true }, // First security answer
     securityAnswerTwo: { type: String, required: true }, // Second security answer
+    securityQuestionOne: { type: String, required: true }, // First security question
+    securityQuestionTwo: { type: String, required: true }, // Second security question
     // Array of orders, updated when new orders are made or deleted
     orderHistory: { type: [Number], default: [] } // Assuming an array of order IDs or similar
 });
