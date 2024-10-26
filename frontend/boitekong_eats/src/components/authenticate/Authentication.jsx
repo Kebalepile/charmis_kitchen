@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./auth.css";
 
-const Authentication = () => {
+const Authentication = ({ onClose }) => { // Accept onClose as a prop
     const [authMode, setAuthMode] = useState("login");
     const [formData, setFormData] = useState({
         name: "",
@@ -80,6 +80,7 @@ const Authentication = () => {
 
     return (
         <div className="auth-container">
+          
             {authMode === "register" && (
                 <form onSubmit={handleSubmit} className="auth-form">
                     <h2>Register</h2>
@@ -180,6 +181,7 @@ const Authentication = () => {
                     <p onClick={() => setAuthMode("login")}>Back to Login</p>
                 </form>
             )}
+              <button className="close-button" onClick={onClose}>Close</button> 
         </div>
     );
 };

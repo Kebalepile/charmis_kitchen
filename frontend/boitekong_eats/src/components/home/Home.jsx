@@ -58,7 +58,8 @@ export default function Home () {
   return (
     <>
       <section id='home'>
-        <Authentication/>
+        <Authentication
+        onClose={() => {alert("close componet")}}/>
         <Slideshow />
 
         {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
