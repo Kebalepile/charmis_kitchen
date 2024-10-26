@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import Menu from '../menu/Menu'
 import Slideshow from '../slideShow/Slideshow'
 import SearchOrder from '../search/SearchOrder'
+import Authentication from "../authenticate/Authentication"
 import PaymentContext from '../../context/payment/context'
 import Popup from '../popup/Popup'
 import useYocoPayment from '../../hooks/useYocoPayment'
@@ -57,6 +58,7 @@ export default function Home () {
   return (
     <>
       <section id='home'>
+        <Authentication/>
         <Slideshow />
 
         {showPopup && <Popup message={popupMessage} onClose={closePopup} />}

@@ -4,20 +4,19 @@ import {
   FaSearch,
   FaInfoCircle,
   FaPhone,
-  FaDownload,
-  FaUser // Import user icon
-} from 'react-icons/fa'
+  FaDownload
+} from 'react-icons/fa' // Import icons
 import Footer from '../footer/Footer.jsx'
 import PropTypes from 'prop-types'
+
 import OrderContext from '../../context/order/context.jsx'
-import { deferredPrompt } from '../../main.jsx'
-import Authentication from "../authenticate/Authentication.jsx"
+import { deferredPrompt } from '../../main.jsx' // Import the deferredPrompt
+
 import './side_nav.css'
 
 const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
   const { setIsSearchOrderVisible } = useContext(OrderContext)
   const [prompt, setPrompt] = useState(null)
-  const [isAuthVisible, setIsAuthVisible] = useState(false)
 
   const handleClickOutside = event => {
     if (
@@ -28,7 +27,6 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
       toggleSidebar()
     }
   }
-
   useEffect(() => {
     if (sessionStorage.getItem('deferredPrompt')) {
       setPrompt(deferredPrompt)
@@ -64,10 +62,6 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
         sessionStorage.removeItem('deferredPrompt')
       })
     }
-  }
-
-  const toggleAuthVisibility = () => {
-    setIsAuthVisible(prev => !prev)
   }
 
   return (
@@ -108,18 +102,10 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
               <span>Install</span>
             </li>
           )}
-          {/* Add Login/Register button with icon */}
-          <li onClick={toggleAuthVisibility} className='sidebar-list-item shortcut'>
-            <FaUser className='icon' />
-            <span>{isAuthVisible ? 'Close' : 'Login/Register'}</span>
-          </li>
         </ul>
         <hr className='bg-hr' />
         <Footer />
       </nav>
-
-      {/* Render Authentication component based on isAuthVisible */}
-      {isAuthVisible && <Authentication />}
     </>
   )
 }

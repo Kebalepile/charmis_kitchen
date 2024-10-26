@@ -11,7 +11,10 @@ const Authentication = () => {
         answers: {},
         loginPhone: "",
         loginPassword: "",
+        resetPhone: "",
+        resetUsername: "",
         resetAnswers: {},
+        newPassword: "",
     });
 
     const securityQuestions = [
@@ -24,7 +27,7 @@ const Authentication = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
     const handleCheckboxChange = (question) => {
@@ -52,15 +55,26 @@ const Authentication = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData)
+        console.log(formData);
         if (authMode === "register") {
             // Handle registration logic
         } else if (authMode === "login") {
             // Handle login logic
         } else if (authMode === "reset") {
-            // Handle reset password logic
+            if (!formData.resetPhone || !formData.resetUsername) {
+                alert("Please enter both phone number and username.");
+                return;
+            }
+            // Simulate API call to fetch security questions based on phone and username
+            setFormData((prevData) => ({
+                ...prevData,
+                selectedQuestions: securityQuestions.slice(0, 2), // Mocked selection for testing
+            }));
+        } else if (authMode === "newPassword") {
+            // Send security answers and new password to backend
+            console.log("Submitting new password:", formData.newPassword);
         }
     };
 
@@ -115,7 +129,30 @@ const Authentication = () => {
             {authMode === "reset" && (
                 <form onSubmit={handleSubmit} className="auth-form">
                     <h2>Reset Password</h2>
-                    <p>Answer your security questions:</p>
+                    <input
+                        type="text"
+                        name="resetPhone"
+                        placeholder="Phone"
+                        value={formData.resetPhone}
+                        onChange={handleInputChange}
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="resetUsername"
+                        placeholder="Username"
+                        value={formData.resetUsername}
+                        onChange={handleInputChange}
+                        required
+                    />
+                    <button type="submit">Submit</button>
+                    <p onClick={() => setAuthMode("login")}>Back to Login</p>
+                </form>
+            )}
+
+            {authMode === "newPassword" && (
+                <form onSubmit={handleSubmit} className="auth-form">
+                    <h2>Answer Security Questions</h2>
                     {formData.selectedQuestions.map((question) => (
                         <div key={question} className="question-option">
                             <label>{question}</label>
@@ -131,7 +168,15 @@ const Authentication = () => {
                             />
                         </div>
                     ))}
-                    <button type="submit">Submit Answers</button>
+                    <input
+                        type="password"
+                        name="newPassword"
+                        placeholder="New Password"
+                        value={formData.newPassword}
+                        onChange={handleInputChange}
+                        required
+                    />
+                    <button type="submit">Submit New Password</button>
                     <p onClick={() => setAuthMode("login")}>Back to Login</p>
                 </form>
             )}

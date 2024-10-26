@@ -5,89 +5,114 @@
     min-height: 100vh;
     background: #f2f2f2;
     padding: 20px;
-}
+    position: relative; /* Ensures z-index is applied */
+    z-index: 999; /* Increase to a higher value */
+  }
+  
 
 .auth-form {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .auth-form h2 {
-    margin-bottom: 10px;
-    color: #333;
-    text-align: center;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: center;
 }
 
 .auth-form input,
 .auth-form select {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 90%;
+  margin:auto;
+}
+.question-option {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Checkbox takes minimal space; label takes the rest */
+    gap: 8px;
     width: 100%;
+    padding: 5px;
+   
 }
 
-.question-option {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.question-option input[type="checkbox"] {
+    align-self: start; /* Aligns checkbox at the top */
+   justify-self: center;
+    margin-top: 4px; /* Space from the label */
+    width:15px;
+    height:15px;
+}
+
+.question-option label {
+    text-align: left;
+    word-break: break-word; /* Wraps text to new lines as needed */
+    padding: 5px; /* Small padding to align with checkbox */
 }
 
 .question-option input[type="text"] {
-    flex: 1;
-    margin-left: 10px;
+    grid-column: 1 / -1; /* Spans the full width, starting from the first to the last column */
+    margin-top: 5px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
 }
 
+
 .auth-form button {
-    padding: 10px;
-    background: #4CAF50;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
+  padding: 10px;
+  background: #4caf50;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
 .auth-form button:hover {
-    background: #45a049;
+  background: #45a049;
 }
 
 .auth-form p {
-    text-align: center;
-    color: #555;
-    cursor: pointer;
-    margin: 5px 0;
-    font-size: 14px;
+  text-align: center;
+  color: #555;
+  cursor: pointer;
+  margin: 5px 0;
+  font-size: 14px;
 }
 
 .auth-form p:hover {
-    color: #333;
-    text-decoration: underline;
+  color: #333;
+  text-decoration: underline;
 }
 
 @media (max-width: 480px) {
-    .auth-container {
-        padding: 10px;
-    }
-    .auth-form {
-        padding: 15px;
-    }
-    .auth-form h2 {
-        font-size: 20px;
-    }
-    .auth-form input,
-    .auth-form select {
-        font-size: 14px;
-    }
-    .auth-form button {
-        font-size: 14px;
-    }
+  .auth-container {
+    padding: 10px;
+  }
+  .auth-form {
+    padding: 15px;
+  }
+  .auth-form h2 {
+    font-size: 20px;
+  }
+  .auth-form input,
+  .auth-form select {
+    font-size: 14px;
+  }
+  .auth-form button {
+    font-size: 14px;
+  }
 }

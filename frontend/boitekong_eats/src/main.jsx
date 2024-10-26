@@ -6,21 +6,10 @@ import PaymentProvider from './context/payment/state.jsx'
 import App from './App.jsx'
 import './index.css'
 
-// if ('serviceWorker' in navigator) {
-//   window.addEventListener('load', () => {
-//     //   ./src/serviceWorker.js for development
-//     // ./serviceWorker.js for Production
-//     navigator.serviceWorker
-//       .register('./serviceWorker.js')
-//       .then(registration => {
-//         console.log('service worker registered as: ', registration.scope)
-//       })
-//       .catch(error => console.error('service worker registration: ', error))
-//   })
-// }
-
+// Define the deferred prompt variable globally
 let deferredPrompt
 
+// Listen for the beforeinstallprompt event to handle PWA installation
 window.addEventListener('beforeinstallprompt', e => {
   console.log('beforeinstallprompt event fired')
   e.preventDefault()
@@ -28,8 +17,10 @@ window.addEventListener('beforeinstallprompt', e => {
   sessionStorage.setItem('deferredPrompt', 'true')
 })
 
+// Export the deferred prompt for other components to use
 export { deferredPrompt }
 
+// Add a scroll event listener to toggle the sticky class on the navbar
 window.addEventListener('scroll', () => {
   const navbar = document.querySelector('.navbar')
   if (window.scrollY > 0) {
@@ -39,19 +30,23 @@ window.addEventListener('scroll', () => {
   }
 })
 
-// Ensuring that createRoot() is only called once
+// Ensure createRoot is called only once
 const container = document.getElementById('root')
-const root = ReactDOM.createRoot(container)
+if (!container._reactRootContainer) {
+  // Initialize React Root and store it to avoid reinitialization
+  const root = ReactDOM.createRoot(container)
+  container._reactRootContainer = root
 
-// Render the app
-root.render(
-  <React.StrictMode>
-    <MenuProvider>
-      <OrderProvider>
-        <PaymentProvider>
-          <App />
-        </PaymentProvider>
-      </OrderProvider>
-    </MenuProvider>
-  </React.StrictMode>
-)
+  // Render the App component within the root
+  root.render(
+    <React.StrictMode>
+      <MenuProvider>
+        <OrderProvider>
+          <PaymentProvider>
+            <App />
+          </PaymentProvider>
+        </OrderProvider>
+      </MenuProvider>
+    </React.StrictMode>
+  )
+}
