@@ -1,10 +1,20 @@
 import React, { useState, useContext } from 'react'
 import CustomerContext from '../../context/customer/context.jsx'
-
+import Loading from '../loading/Loading'
+import Popup from '../popup/Popup'
 import './auth.css'
 
 const Authentication = () => {
-  const { ToggleLoginForm } = useContext(CustomerContext)
+  const {
+    ToggleLoginForm,
+    CustomerLogin,
+    RestCustomerPassword,
+    RegisterCustomer
+  } = useContext(CustomerContext)
+
+  const [loading, setLoading] = useState(false)
+  const [showPopup, setshowPopup] = useState(false)
+  const [popupMessage, setPopupMessage] = useState('')
   const [authMode, setAuthMode] = useState('login')
   const [formData, setFormData] = useState({
     name: '',
@@ -61,28 +71,55 @@ const Authentication = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    console.log(formData)
+
     if (authMode === 'register') {
-      // Handle registration logic
+      setLoading(true)
+      const res = await RegisterCustomer(formData)
+      if(res?.error){
+        setLoading(false)
+        setPopupMessage(res?.error)
+        setshowPopup(true)
+      }// setLoading(false)
     } else if (authMode === 'login') {
-      // Handle login logic
+      setLoading(true)
+      const res = await CustomerLogin(formData)
+      if(res?.error){
+        setLoading(false)
+        setPopupMessage(res?.error)
+        setshowPopup(true)
+      }// setLoading(false)
     } else if (authMode === 'reset') {
       if (!formData.resetPhone || !formData.resetUsername) {
-        alert('Please enter both phone number and username.')
+       
+        setPopupMessage(
+       'Please enter both phone number and username.' )
+        setshowPopup(true)
         return
       }
-      // Simulate API call to fetch security questions based on phone and username
-      setFormData(prevData => ({
-        ...prevData,
-        selectedQuestions: securityQuestions.slice(0, 2) // Mocked selection for testing
-      }))
+      setLoading(true)
+      const res = await RestCustomerPassword(formData)
+      if(res?.error){
+        setLoading(false)
+        setPopupMessage(res?.error)
+        setshowPopup(true)
+      }
+      // setLoading(false)
     } else if (authMode === 'newPassword') {
-      // Send security answers and new password to backend
-      console.log('Submitting new password:', formData.newPassword)
+      setLoading(true)
+      const res = await RestCustomerPassword(formData)
+      if(res?.error){
+        setLoading(false)
+        setPopupMessage(res?.error)
+        setshowPopup(true)
+      }// setLoading(false)
     }
   }
   const onClose = () => {
     ToggleLoginForm()
+  }
+  const closePopup = () => {
+    setshowPopup(false)
+    setPopupMessage('')
   }
   return (
     <div className='auth-container'>
@@ -113,7 +150,7 @@ const Authentication = () => {
             onChange={handleInputChange}
             required
           />{' '}
-          {/* New input field */}
+         
           <input
             type='password'
             name='password'
@@ -243,6 +280,12 @@ const Authentication = () => {
       <button className='close-button' onClick={onClose}>
         Close
       </button>
+      {loading && (
+        <div id='payment-overlay'>
+          <Loading />
+        </div>
+      )}
+      {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
     </div>
   )
 }
