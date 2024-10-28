@@ -60,12 +60,14 @@
 /* Justify name, phone, and address */
 .profile-details p {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     margin: 8px ;
     text-align: left;
     padding:5px;
 }
-
+.profile-details strong {
+    margin-right:10px;
+}
 /* Responsive Design */
 @media (max-width: 600px) {
     #customer-profile {
