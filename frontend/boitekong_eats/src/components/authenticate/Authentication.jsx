@@ -9,7 +9,8 @@ const Authentication = () => {
     ToggleLoginForm,
     CustomerLogin,
     RestCustomerPassword,
-    RegisterCustomer
+    RegisterCustomer,
+    RequestProfileUpdate
   } = useContext(CustomerContext)
 
   const [loading, setLoading] = useState(false)
@@ -75,43 +76,101 @@ const Authentication = () => {
     if (authMode === 'register') {
       setLoading(true)
       const res = await RegisterCustomer(formData)
-      if(res?.error){
+      if (res?.error) {
         setLoading(false)
         setPopupMessage(res?.error)
         setshowPopup(true)
-      }// setLoading(false)
+        resetFormData()
+        onClose()
+      }
+      if (res?.message) {
+        setLoading(false)
+        setPopupMessage(res.message)
+        setshowPopup(true)
+        resetFormData()
+      }
     } else if (authMode === 'login') {
       setLoading(true)
       const res = await CustomerLogin(formData)
-      if(res?.error){
+      if (res?.error) {
         setLoading(false)
         setPopupMessage(res?.error)
         setshowPopup(true)
-      }// setLoading(false)
+      }
+      if (res?.message) {
+        setLoading(false)
+        setPopupMessage(res.message)
+        setshowPopup(true)
+        resetFormData()
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+          onClose()
+        }, 5000)
+      }
     } else if (authMode === 'reset') {
       if (!formData.resetPhone || !formData.resetUsername) {
-       
-        setPopupMessage(
-       'Please enter both phone number and username.' )
+        setPopupMessage('Please enter both phone number and username.')
         setshowPopup(true)
         return
       }
       setLoading(true)
-      const res = await RestCustomerPassword(formData)
-      if(res?.error){
+      let res = await RequestProfileUpdate(formData)
+
+      if (res?.securityQuestionOne && res?.securityQuestionTwo) {
+        setFormData(prevData => ({
+          ...prevData,
+          selectedQuestions: [
+            res?.securityQuestionOne,
+            res?.securityQuestionTwo
+          ]
+        }))
+        setLoading(false)
+        setAuthMode('securityQuestions')
+        return
+      }
+      if (res?.error) {
         setLoading(false)
         setPopupMessage(res?.error)
         setshowPopup(true)
       }
-      // setLoading(false)
+      if (res?.message) {
+        setLoading(false)
+        setPopupMessage(res.message)
+        setshowPopup(true)
+        resetFormData()
+      }
     } else if (authMode === 'newPassword') {
       setLoading(true)
-      const res = await RestCustomerPassword(formData)
-      if(res?.error){
+
+      let res = await RequestProfileUpdate(formData)
+      console.log(res)
+      if (res?.error) {
         setLoading(false)
         setPopupMessage(res?.error)
         setshowPopup(true)
-      }// setLoading(false)
+      }
+      if (res?.message) {
+        setLoading(false)
+        setPopupMessage(res.message)
+        setshowPopup(true)
+        resetFormData()
+      }
+
+    } else if (authMode === 'securityQuestions') {
+
+      const res = await RestCustomerPassword(formData)
+      if (res?.error) {
+        setLoading(false)
+        setPopupMessage(res?.error)
+        setshowPopup(true)
+      }
+      if (res?.message) {
+        setLoading(false)
+        setPopupMessage(res.message)
+        setshowPopup(true)
+        resetFormData()
+      }
     }
   }
   const onClose = () => {
@@ -120,6 +179,24 @@ const Authentication = () => {
   const closePopup = () => {
     setshowPopup(false)
     setPopupMessage('')
+  }
+
+  const resetFormData = (mode = 'login') => {
+    setFormData({
+      name: '',
+      phone: '',
+      password: '',
+      streetAddress: '',
+      selectedQuestions: [],
+      answers: {},
+      loginPhone: '',
+      loginPassword: '',
+      resetPhone: '',
+      resetUsername: '',
+      resetAnswers: {},
+      newPassword: ''
+    })
+    setAuthMode(mode) // Reset to default mode if needed
   }
   return (
     <div className='auth-container'>
@@ -150,7 +227,6 @@ const Authentication = () => {
             onChange={handleInputChange}
             required
           />{' '}
-         
           <input
             type='password'
             name='password'
@@ -274,6 +350,44 @@ const Authentication = () => {
             required
           />
           <button type='submit'>Submit New Password</button>
+          <p onClick={() => setAuthMode('login')}>Back to Login</p>
+        </form>
+      )}
+      {authMode === 'securityQuestions' && (
+        <form onSubmit={handleSubmit} className='auth-form'>
+          <h2>Answer Security Questions</h2>
+          {formData.selectedQuestions.map(question => (
+            <div key={question} className='question-option'>
+              <label>{question}</label>
+              <input
+                type='text'
+                placeholder='Your Answer'
+                value={formData.resetAnswers[question] || ''}
+                onChange={e =>
+                  setFormData(prevData => ({
+                    ...prevData,
+                    resetAnswers: {
+                      ...prevData.resetAnswers,
+                      [question]: e.target.value
+                    }
+                  }))
+                }
+                required
+              />
+             
+            </div>
+            
+          ))}
+           <label className='question-option'>Enter new password:</label>
+              <input
+            type='password'
+            name='newPassword'
+            placeholder='Password'
+            value={formData.newPassword}
+            onChange={handleInputChange}
+            required
+          />
+          <button type='submit'>Submit</button>
           <p onClick={() => setAuthMode('login')}>Back to Login</p>
         </form>
       )}

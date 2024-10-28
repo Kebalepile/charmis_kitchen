@@ -42,7 +42,7 @@ const RegisterCustomer = async (req, res) => {
 
     // Send response
     res.status(201).json({
-      message: `${name} 🎉 Registered successfully 🎉. Use phone ${phone} as username and passowrd ${passowrd} to log in`
+      message: `${name} 🎉 Registered successfully 🎉. Use phone ${phone} as username and password ${password} to log in`
     });
   } catch (error) {
     console.error("Error:", error);

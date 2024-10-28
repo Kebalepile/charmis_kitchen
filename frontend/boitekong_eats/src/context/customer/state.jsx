@@ -18,135 +18,137 @@ function CustomerProvider ({ children }) {
     localStorage.setItem(name, JSON.stringify(data))
 
   const getLocalStorage = name => JSON.parse(localStorage.getItem(name))
- 
+
   const cleanData = (type, data) => {
     const errorObject = (message) => ({ error: message });
   
-    const isValidPhone = (phone) => /^\d{10}$/.test(phone);
-    const isValidPassword = (password) => typeof password === 'string' && password.length >= 4;
-    const sanitizeString = (str) => str.replace(/[^a-zA-Z0-9\s]/g, '').trim();
+    const isValidPhone = (phone) => /^\d{10}$/.test(phone.trim());
+    const isValidPassword = (password) =>
+      typeof password === 'string' && password.trim().length >= 4;
+    const sanitizeString = (str) => str?.replace(/[^a-zA-Z0-9\s]/g, '').trim();
+  
+    const validatePhone = (phone) =>
+      isValidPhone(phone) ? phone.trim() : errorObject('Phone number must be exactly 10 digits.');
+    const validatePassword = (password) =>
+      isValidPassword(password) ? password.trim() : errorObject('Password must be at least 4 characters long.');
+    const validateRequired = (field, fieldName) =>
+      field ? sanitizeString(field) : errorObject(`${fieldName} is required.`);
+  
+    const getAnswerArray = () =>
+      data.selectedQuestions?.map((q) => sanitizeString(data.answers[q])) || [];
   
     switch (type) {
-      case 'login':
-        if (!isValidPhone(data.loginPhone)) {
-          return errorObject("Phone number must be exactly 10 digits.");
-        }
-        if (!isValidPassword(data.loginPassword)) {
-          return errorObject("Password must be at least 4 characters long.");
-        }
-        return {
-          phone: data.loginPhone,
-          password: data.loginPassword,
-        };
+      case 'login': {
+        const phone = validatePhone(data.loginPhone);
+        const password = validatePassword(data.loginPassword);
+        if (phone.error) return phone;
+        if (password.error) return password;
+        return { phone, password };
+      }
   
-      case 'register':
-        if (!isValidPhone(data.phone)) {
-          return errorObject("Phone number must be exactly 10 digits.");
+      case 'register': {
+        const phone = validatePhone(data.phone);
+        const password = validatePassword(data.password);
+        const name = validateRequired(data.name, 'Name');
+        const address = validateRequired(data.streetAddress, 'Address');
+        
+        if (phone?.error) return phone;
+        if (password?.error) return password;
+        if (name?.error) return name;
+        if (address?.error) return address;
+  
+        const answers = getAnswerArray();
+        if (answers.length < 2) {
+          return errorObject('Two answers are required for security questions.');
         }
-        if (!isValidPassword(data.password)) {
-          return errorObject("Password must be at least 4 characters long.");
-        }
-        if (!data.name) {
-          return errorObject("Name is required.");
-        }
-        if (!data.streetAddress) {
-          return errorObject("Address is required.");
-        }
-        if (!Array.isArray(data.answers) || data.answers.length < 2) {
-          return errorObject("Two answers are required for security questions.");
-        }
-        if (data.selectedQuestions.length < 2) {
-          return errorObject("Two security questions must be selected.");
+        if (data.selectedQuestions?.length < 2) {
+          return errorObject('Two security questions must be selected.');
         }
   
         return {
-          name: sanitizeString(data.name),
-          phone: data.phone,
-          address: sanitizeString(data.streetAddress),
-          password: data.password,
-          answers: [
-            sanitizeString(data.answers[data.selectedQuestions[0]]),
-            sanitizeString(data.answers[data.selectedQuestions[1]]),
-          ],
+          name,
+          phone,
+          address,
+          password,
+          answers,
           securityQuestionOne: data.selectedQuestions[0],
-          securityQuestionTwo: data.selectedQuestions[1],
+          securityQuestionTwo: data.selectedQuestions[1]
         };
+      }
   
-      case 'requestRest':
-        if (!isValidPhone(data.resetPhone)) {
-          return errorObject("Phone number must be exactly 10 digits.");
-        }
-        if (!data.resetUsername) {
-          return errorObject("Username is required.");
-        }
-        return {
-          phone: data.resetPhone,
-          username: sanitizeString(data.resetUsername),
-        };
+      case 'requestRest': {
+        const phone = validatePhone(data.resetPhone);
+        const username = validateRequired(data.resetUsername, 'Username');
+        if (phone?.error) return phone;
+        if (username?.error) return username;
+        return { phone, username };
+      }
   
-      case 'resetPassword':
-        if (!isValidPhone(data.phone)) {
-          return errorObject("Phone number must be exactly 10 digits.");
-        }
-        if (!isValidPassword(data.newPassword)) {
-          return errorObject("New password must be at least 4 characters long.");
-        }
-        if (!Array.isArray(data.answers) || data.answers.length === 0) {
-          return errorObject("Security answers are required.");
+      case 'resetPassword': {
+        const phone = validatePhone(data.resetPhone);
+        const username = validateRequired(data.resetUsername, 'Username');
+        const password = validatePassword(data.newPassword);
+        
+        if (phone?.error) return phone;
+        if (password?.error) return password;
+
+        const resetAnswersToArray = () =>
+          data.selectedQuestions?.map((q) => sanitizeString(data.resetAnswers[q])) || [];
+      
+        const answers = resetAnswersToArray();
+        if (answers.length <= 0) {
+          return errorObject('Security answers are required.');
         }
   
-        return {
-          phone: data.phone,
-          answers: data.answers.map(sanitizeString),
-          newPassword: data.newPassword,
-        };
+        return { phone, username, answers, newPassword: password };
+      }
   
       default:
-        return errorObject("Invalid data type provided.");
+        return errorObject('Invalid data type provided.');
     }
   };
   
-  
+
   const CustomerLogin = async profile => {
     const isLoggedIn = getLocalStorage('online')
+    
     if (isLoggedIn) {
       const savedProfile = getLocalStorage('profile')
-      return `Your already logged in as ${savedProfile.name}`
+      return {error:`Your already logged in as ${savedProfile.name}`}
     }
-    console.log(profile)
+
     profile = cleanData('login', profile)
-    console.log(profile)
-    if (profile.error){
+
+    if (profile?.error) {
       return profile
     }
-    // const configure = {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(profile)
-    // }
-    // try {
-    //   const res = await fetch(`${ServerDomain}/customer-login`, configure)
-    //   const data = await res.json()
-    //   if (res.ok) {
-    //     addToLocalStorage('profile', data.profile)
-    //     addToLocalStorage('token', data.token)
-    //     addToLocalStorage('online', true)
+    const configure = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(profile)
+    }
+    try {
+      const res = await fetch(`${ServerDomain}/customer-login`, configure)
+      const data = await res.json()
+      if (res.ok) {
+        addToLocalStorage('profile', data.profile)
+        addToLocalStorage('token', data.token)
+        addToLocalStorage('online', true)
 
-    //     return data.message
-    //   }
-    //   throw new Error(data.error || 'Failed to login')
-    // } catch (error) {
-    //   console.error('Error: ', error)
-    //   return 'Error while loggin... try again.'
-    // }
+        return data
+      }
+      return data
+    } catch (error) {
+      return { error: 'Error while loggin... try again.' }
+    }
   }
 
   const CustomerLogout = async () => {
     const isLoggedIn = getLocalStorage('online')
     if (!isLoggedIn) {
-      return `Your not even logged in`
+      return {error:`Your not even logged in`}
     }
     const token = getLocalStorage('token')
     const configure = {
@@ -164,12 +166,11 @@ function CustomerProvider ({ children }) {
         addToLocalStorage('token', null)
         addToLocalStorage('online', false)
 
-        return data.message
+        return data
       }
-      throw new Error(data.error || 'Failed to log out')
+      return data
     } catch (error) {
-      console.error('Error: ', error)
-      return 'Error while loggin out... try again.'
+      return { error: 'Error while loggin out... try again.' }
     }
   }
 
@@ -177,64 +178,65 @@ function CustomerProvider ({ children }) {
     const isLoggedIn = getLocalStorage('online')
     if (isLoggedIn) {
       const savedProfile = getLocalStorage('profile')
-      return `Your already logged in as ${savedProfile.name}`
+      return {error:`Your already logged in as ${savedProfile.name}`}
     }
-    console.log(profile)
+
     profile = cleanData('register', profile)
-    console.log(profile)
-    if (profile.error){
+
+    if (profile?.error) {
       return profile
     }
-    // const configure = {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(profile)
-    // }
-    // try {
-    //   const res = await fetch(`${ServerDomain}/customer-register`, configure)
-    //   const data = await res.json()
-    //   if (res.ok) {
-    //     return data.message
-    //   }
-    //   throw new Error(data.error || 'Failed to register')
-    // } catch (error) {
-    //   console.error('Error: ', error)
-    //   return 'Error during registration... try again.'
-    // }
+    const configure = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(profile)
+    }
+    try {
+      const res = await fetch(`${ServerDomain}/customer-register`, configure)
+      const data = await res.json()
+      if (res.ok) {
+        return data
+      }
+      return data
+    } catch (error) {
+      return { error: 'Error during registration... try again.' }
+    }
   }
 
   const RestCustomerPassword = async profile => {
-    console.log(profile)
-    profile = cleanData('requestRest', profile)
-    console.log(profile)
-    if (profile.error){
+    
+    profile = cleanData('resetPassword', profile)
+
+    if (profile?.error) {
       return profile
     }
-    // const configure = {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(profile)
-    // }
-    // try {
-    //   const res = await fetch(
-    //     `${ServerDomain}/customer-rest-password`,
-    //     configure
-    //   )
-    //   const data = await res.json()
-    //   if (res.ok) {
-    //     return data.message
-    //   }
-    //   throw new Error(data.error || 'Failed to reset password')
-    // } catch (error) {
-    //   console.error('Error: ', error)
-    //   return 'Error during password rest... try again.'
-    // }
+   
+    const configure = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(profile)
+    }
+    try {
+      const res = await fetch(
+        `${ServerDomain}/customer-rest-password`,
+        configure
+      )
+      const data = await res.json()
+      if (res.ok) {
+        return data
+      }
+      return data
+    } catch (error) {
+      return { error: 'Error during password rest... try again.' }
+    }
   }
   const RequestProfileUpdate = async profile => {
+    profile = cleanData('requestRest', profile)
+
     const configure = {
       method: 'POST',
       headers: {
@@ -248,16 +250,13 @@ function CustomerProvider ({ children }) {
         configure
       )
       const data = await res.json()
+      
       if (res.ok) {
-        // get answers for
-        // data.securityQuestionOne,
-        // data.securityQuestionTwo
         return data
       }
-      throw new Error(data.error || 'Failed to register')
+      return data
     } catch (error) {
-      console.error('Error: ', error)
-      return 'Error during registration... try again.'
+      return { error: 'Error during registration... try again.' }
     }
   }
 
@@ -266,7 +265,7 @@ function CustomerProvider ({ children }) {
   const UpdateOrderHistory = async orderDetails => {
     const isLoggedIn = getLocalStorage('online')
     if (!isLoggedIn) {
-      return `Your not even logged in`
+      return {error:`Your not even logged in`}
     }
     const token = getLocalStorage('token')
     const configure = {
@@ -281,20 +280,17 @@ function CustomerProvider ({ children }) {
       const res = await fetch(`${ServerDomain}/new-customer-order`, configure)
       const data = await res.json()
       if (res.ok) {
-        return data.message
+        return data
       }
-      throw new Error(
-        data.error || 'Failed to update customer order history 🥺'
-      )
+      return data
     } catch (error) {
-      console.error('Error: ', error)
-      return 'Failed to update customer order history 🥺'
+      return { error: 'Failed to update customer order history 🥺' }
     }
   }
   const UpdateCustomerProfile = async updates => {
     const isLoggedIn = getLocalStorage('online')
     if (!isLoggedIn) {
-      return `Your not even logged in`
+      return {error:`Your not even logged in`}
     }
     const profile = getLocalStorage('profile')
     const token = getLocalStorage('token')
@@ -316,14 +312,11 @@ function CustomerProvider ({ children }) {
       )
       const data = await res.json()
       if (res.ok) {
-        return data.message
+        return data
       }
-      throw new Error(
-        data.error || 'Failed to update customer order history 🥺'
-      )
+      return data
     } catch (error) {
-      console.error('Error: ', error)
-      return 'Failed to update customer order history 🥺'
+      return { error: 'Failed to update customer order history 🥺' }
     }
   }
 
