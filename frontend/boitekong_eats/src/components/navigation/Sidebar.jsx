@@ -5,9 +5,12 @@ import {
   FaInfoCircle,
   FaPhone,
   FaDownload,
-  FaUser
+  FaUser,
+  FaSignOutAlt
 } from 'react-icons/fa'
 import Footer from '../footer/Footer.jsx'
+import Loading from '../loading/Loading'
+import Popup from '../popup/Popup'
 import PropTypes from 'prop-types'
 
 import OrderContext from '../../context/order/context.jsx'
@@ -19,7 +22,16 @@ import './side_nav.css'
 
 const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
   const { setIsSearchOrderVisible } = useContext(OrderContext)
-  const { ToggleLoginForm } = useContext(CustomerContext)
+  const {
+    ToggleLoginForm,
+    showCustomerProfile,
+    LoadEndUserProfile,
+    CustomerLogout
+  } = useContext(CustomerContext)
+
+  const [loading, setLoading] = useState(false)
+  const [showPopup, setshowPopup] = useState(false)
+  const [popupMessage, setPopupMessage] = useState('')
   const [prompt, setPrompt] = useState(null)
 
   const handleClickOutside = event => {
@@ -32,6 +44,7 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
     }
   }
   useEffect(() => {
+    LoadEndUserProfile()
     if (sessionStorage.getItem('deferredPrompt')) {
       setPrompt(deferredPrompt)
     }
@@ -72,18 +85,63 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
     toggleSidebar()
     ToggleLoginForm()
   }
+  const handleLogout = async () => {
+    
+    setLoading(true)
 
+      let res = await CustomerLogout()
+      
+      if (res?.error) {
+        setLoading(false)
+        setPopupMessage(res?.error)
+        setshowPopup(true)
+      }
+      if (res?.message) {
+        setLoading(false)
+        setPopupMessage(res.message)
+        setshowPopup(true)
+       
+      }
+  }
+  const handleViewProfile = async () => {
+    alert("view profile")
+  }
+
+  const closePopup = () => {
+    setshowPopup(false)
+    setPopupMessage('')
+  }
   return (
     <>
       <nav className={`sidebar-nav ${isSidebarVisible ? 'show' : 'hide'}`}>
         <ul className='sidebar-list'>
-          <li
-            onClick={toggleLoginFormVisibility}
-            className='sidebar-list-item shortcut'
-          >
-            <FaUser className='icon' />
-            <span>Login</span>
-          </li>
+          {!showCustomerProfile && (
+            <li
+              onClick={toggleLoginFormVisibility}
+              className='sidebar-list-item shortcut'
+            >
+              <FaUser className='icon' />
+              <span>Login</span>
+            </li>
+          )}
+
+          {showCustomerProfile && (
+            <li onClick={handleLogout} className='sidebar-list-item shortcut'>
+              <FaSignOutAlt className='icon' />
+              <span>Logout</span>
+            </li>
+          )}
+
+          {showCustomerProfile && (
+            <li
+              onClick={handleViewProfile}
+              className='sidebar-list-item shortcut'
+            >
+              <FaUser className='icon' />
+              <span>Profile</span>
+            </li>
+          )}
+
           <li
             onClick={() => handleClick('#menu')}
             className='sidebar-list-item shortcut'
@@ -124,6 +182,13 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
         </ul>
         <hr className='bg-hr' />
         <Footer />
+        {loading && (
+        <div id='payment-overlay'>
+          <Loading />
+        </div>
+      )}
+      {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
+    
       </nav>
     </>
   )

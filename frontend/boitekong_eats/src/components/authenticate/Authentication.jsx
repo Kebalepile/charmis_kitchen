@@ -10,7 +10,8 @@ const Authentication = () => {
     CustomerLogin,
     RestCustomerPassword,
     RegisterCustomer,
-    RequestProfileUpdate
+    RequestProfileUpdate,
+    LoadEndUserProfile
   } = useContext(CustomerContext)
 
   const [loading, setLoading] = useState(false)
@@ -102,6 +103,7 @@ const Authentication = () => {
         setPopupMessage(res.message)
         setshowPopup(true)
         resetFormData()
+        LoadEndUserProfile()
         setLoading(true)
         setTimeout(() => {
           setLoading(false)
@@ -138,13 +140,14 @@ const Authentication = () => {
         setLoading(false)
         setPopupMessage(res.message)
         setshowPopup(true)
+        LoadEndUserProfile()
         resetFormData()
       }
     } else if (authMode === 'newPassword') {
       setLoading(true)
 
       let res = await RequestProfileUpdate(formData)
-      console.log(res)
+      
       if (res?.error) {
         setLoading(false)
         setPopupMessage(res?.error)
@@ -154,6 +157,7 @@ const Authentication = () => {
         setLoading(false)
         setPopupMessage(res.message)
         setshowPopup(true)
+        LoadEndUserProfile()
         resetFormData()
       }
 
@@ -169,6 +173,7 @@ const Authentication = () => {
         setLoading(false)
         setPopupMessage(res.message)
         setshowPopup(true)
+        LoadEndUserProfile()
         resetFormData()
       }
     }

@@ -35,6 +35,7 @@ export const ONLINE_PAY = "ONLINE_PAY";
 
 // customer context
 export const LOGIN_FORM = "LOGIN_FORM";
+export const SHOW_CUSTOMER_PROFILE = "SHOW_CUSTOMER_PROFILE";
 export const WebSocketURL = "ws://localhost:5000";
 export const ServerDomain = "http://localhost:5000";
 // export const WebSocketURL = "ws://b-town-bites.onrender.com";

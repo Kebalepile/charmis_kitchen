@@ -3,14 +3,15 @@ import CustomerContext from './context'
 import CustomerReducer from './reducer'
 import PropTypes from 'prop-types'
 
-import { ServerDomain, LOGIN_FORM } from '../types'
+import { ServerDomain, LOGIN_FORM,SHOW_CUSTOMER_PROFILE } from '../types'
 
 function CustomerProvider ({ children }) {
   const initialState = {
-    showLoginForm: false
+    showLoginForm: false,
+    showCustomerProfile: false
   }
   const [state, dispatch] = useReducer(CustomerReducer, initialState)
-  const { showLoginForm } = state
+  const { showLoginForm, showCustomerProfile } = state
   const ToggleLoginForm = () => {
     dispatch({ type: LOGIN_FORM, payload: !showLoginForm })
   }
@@ -320,10 +321,18 @@ function CustomerProvider ({ children }) {
     }
   }
 
+  const LoadEndUserProfile = ( ) => {
+    const bool = getLocalStorage('online')
+    dispatch({ type: SHOW_CUSTOMER_PROFILE, payload: bool })
+  }
+
+  
+
   return (
     <CustomerContext.Provider
       value={{
         showLoginForm,
+        showCustomerProfile,
         ToggleLoginForm,
         CustomerLogin,
         CustomerLogout,
@@ -332,7 +341,8 @@ function CustomerProvider ({ children }) {
         RequestProfileUpdate,
         CancelCustomerOrder,
         UpdateOrderHistory,
-        UpdateCustomerProfile
+        UpdateCustomerProfile,
+        LoadEndUserProfile
       }}
     >
       {children}

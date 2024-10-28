@@ -17,7 +17,7 @@ import {
 import './home.css'
 
 export default function Home () {
-  const { showLoginForm } = useContext(CustomerContext)
+  const { showLoginForm} = useContext(CustomerContext)
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
 
@@ -58,6 +58,8 @@ export default function Home () {
     setShowPopup(false)
     setPopupMessage('')
   }
+
+ 
   return (
     <>
       <section id='home'>
