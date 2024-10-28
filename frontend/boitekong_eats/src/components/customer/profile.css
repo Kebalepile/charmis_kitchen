@@ -11,16 +11,19 @@
     justify-content: center;
     align-items: center;
     z-index: 999;
+    overflow-y: auto; /* Enables scrolling for the overlay */
 }
 
 /* Profile container */
 #customer-profile {
     max-width: 400px;
     width: 85%;
+    max-height: 90vh; /* Restricts height to 90% of the viewport */
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Enables internal scrolling if content exceeds container height */
 }
 
 /* Profile Header */
@@ -55,45 +58,33 @@
 .profile-details {
     font-size: 1rem;
     color: #555;
+    text-align: left; /* Ensures text is left-aligned */
 }
 
 /* Justify name, phone, and address */
 .profile-details p {
     display: flex;
     justify-content: flex-start;
-    margin: 8px ;
-    text-align: left;
-    padding:5px;
+    margin: 8px;
+    padding: 5px;
 }
+
 .profile-details strong {
-    margin-right:10px;
+    margin-right: 10px;
 }
-/* Responsive Design */
-@media (max-width: 600px) {
-    #customer-profile {
-        padding: 15px;
-    }
-    
-    .profile-header h1 {
-        font-size: 1.2rem;
-    }
-    
-    .close-button {
-        padding: 6px 10px;
-        font-size: 0.8rem;
-    }
-}
-/* Edit Button */
-.edit-button {
-    background-color: #4CAF50; /* Green */
-    color: white;
-    border: none;
+
+/* Edit and Cancel Buttons */
+.edit-button, .save-button, .cancel-button {
     padding: 8px 12px;
-    cursor: pointer;
-    border-radius: 4px;
     font-size: 0.9rem;
-    margin-left: 8px;
+    border-radius: 4px;
     transition: background 0.3s;
+    margin-left: 8px;
+}
+
+.edit-button {
+    background-color: #4CAF50;
+    color: white;
 }
 
 .edit-button:hover {
@@ -101,24 +92,27 @@
 }
 
 .save-button {
-    background-color: #2196F3; /* Blue */
+    background-color: #2196F3;
     color: white;
-    border: none;
-    padding: 8px 12px;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    transition: background 0.3s;
-    margin-left: 8px;
 }
 
 .save-button:hover {
     background-color: #1e88e5;
 }
 
+.cancel-button {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+.cancel-button:hover {
+    background-color: #e05757;
+}
+
 /* Form fields for edit mode */
-.profile-details input[type="text"] {
-    width: 80%;
+.profile-details input[type="text"],
+.profile-details input[type="password"] {
+    width: 100%; /* Takes full width of container */
     padding: 8px;
     margin: 8px 0;
     box-sizing: border-box;
@@ -127,34 +121,16 @@
     font-size: 1rem;
 }
 
-/* Security Question Section */
-.profile-details div {
-    margin-top: 10px;
+/* Responsive Design */
+@media (max-width: 600px) {
+    #customer-profile {
+        padding: 15px;
+    }
+    .profile-header h1 {
+        font-size: 1.2rem;
+    }
+    .close-button, .edit-button, .save-button, .cancel-button {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
 }
-
-.profile-details p {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
-}
-
-/* Input field for security question answers */
-.profile-details input[type="text"]::placeholder {
-    color: #999;
-    font-style: italic;
-}
-
-/* Loading and popup overlay positioning
-#payment-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(255, 255, 255, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-} */
-

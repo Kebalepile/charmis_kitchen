@@ -18,6 +18,7 @@ const Profile = ({ onClose }) => {
     phone: userProfile.phone || '',
     address: userProfile.address || '',
     password: '',
+    newPassword:'',
     confirmPassword: '',
     answers: ['', ''], // For security question answers
     securityQuestions: []
@@ -101,7 +102,7 @@ const Profile = ({ onClose }) => {
         answers: answers.map(answer => answer.trim())
       }
       if (password) {
-        updateData.password = password
+        updateData.newPassword = password
       }
 
       if (phone !== userProfile.phone) {
@@ -112,17 +113,18 @@ const Profile = ({ onClose }) => {
 
       if (res?.error) {
         setPopupMessage(`${res.error}`)
+        setShowPopup(true)
       } else {
         setPopupMessage(
-          res.message ||
-            'Profile updated successfully. Please log in again with your phone and password.'
+          `${res.message }. Please log in again with your phone and password.`
         )
-
+        setShowPopup(true)
         await CustomerLogout()
         localStorage.clear()
         setIsEditing(false)
+        setTimeout(() => onClose(), 5000)
       }
-      setShowPopup(true)
+      
     } catch (error) {
       setPopupMessage(`${error.message || 'Unexpected error occurred'}`)
       setShowPopup(true)
