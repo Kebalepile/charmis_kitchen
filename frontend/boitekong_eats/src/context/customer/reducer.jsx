@@ -1,7 +1,15 @@
-import { LOGIN_FORM, SHOW_CUSTOMER_PROFILE } from '../types'
+import { 
+  LOGIN_FORM,
+   SHOW_CUSTOMER_PROFILE,
+   VIEW_PROFILE } from '../types'
 
 export default function CustomerReducer (state, action) {
   switch (action.type) {
+    case VIEW_PROFILE:
+      return {
+        ...state,
+        profile:action.payload
+      }
     case LOGIN_FORM:
       return {
         ...state,

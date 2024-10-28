@@ -26,7 +26,8 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
     ToggleLoginForm,
     showCustomerProfile,
     LoadEndUserProfile,
-    CustomerLogout
+    CustomerLogout,
+    ToggleProfile
   } = useContext(CustomerContext)
 
   const [loading, setLoading] = useState(false)
@@ -104,7 +105,8 @@ const Sidebar = ({ toggleSidebar, isSidebarVisible }) => {
       }
   }
   const handleViewProfile = async () => {
-    alert("view profile")
+    toggleSidebar()
+    ToggleProfile()
   }
 
   const closePopup = () => {

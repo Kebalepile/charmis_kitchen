@@ -5,9 +5,10 @@ import SearchOrder from '../search/SearchOrder'
 import LoginForm from '../authenticate/Authentication'
 import PaymentContext from '../../context/payment/context'
 import Popup from '../popup/Popup'
+import Profile from "../customer/Profile"
 import useYocoPayment from '../../hooks/useYocoPayment'
 
-import CustomerContext from '../../context/customer/context.jsx'
+import CustomerContext from '../../context/customer/context'
 
 import {
   getStoredOrderData,
@@ -17,7 +18,7 @@ import {
 import './home.css'
 
 export default function Home () {
-  const { showLoginForm} = useContext(CustomerContext)
+  const { showLoginForm, profile, ToggleProfile} = useContext(CustomerContext)
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
 
@@ -58,13 +59,16 @@ export default function Home () {
     setShowPopup(false)
     setPopupMessage('')
   }
-
+const handleCloseProfile = () => {
+  ToggleProfile()
+}
  
   return (
     <>
       <section id='home'>
         {showLoginForm && <LoginForm />}
         {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
+        {profile && <Profile onClose={handleCloseProfile} />}
         <Slideshow />
       </section>
       <SearchOrder />

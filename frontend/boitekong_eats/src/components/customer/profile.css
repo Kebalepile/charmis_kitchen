@@ -1,0 +1,83 @@
+/* Full-screen overlay */
+.profile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* Profile container */
+#customer-profile {
+    max-width: 400px;
+    width: 90%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Header */
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.profile-header h1 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.close-button {
+    background: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+}
+
+.close-button:hover {
+    background: #e04343;
+}
+
+/* Profile Details */
+.profile-details {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Justify name, phone, and address */
+.profile-details p {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px ;
+    text-align: left;
+    padding:5px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    #customer-profile {
+        padding: 15px;
+    }
+    
+    .profile-header h1 {
+        font-size: 1.2rem;
+    }
+    
+    .close-button {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+}
