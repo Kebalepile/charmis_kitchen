@@ -29,24 +29,24 @@ function CustomerProvider ({ children }) {
   const cleanData = (type, data) => {
     const errorObject = message => ({ error: message })
 
-    const isValidPhone = phone => /^\d{10}$/.test(phone.trim())
+    const isValidPhone = phone => /^\d{10}$/.test(phone?.trim())
     const isValidPassword = password =>
-      typeof password === 'string' && password.trim().length >= 4
-    const sanitizeString = str => str?.replace(/[^a-zA-Z0-9\s]/g, '').trim()
+      typeof password === 'string' && password?.trim().length >= 4
+    const sanitizeString = str => str?.replace(/[^a-zA-Z0-9\s]/g, '')?.trim()
 
     const validatePhone = phone =>
       isValidPhone(phone)
-        ? phone.trim()
+        ? phone?.trim()
         : errorObject('Phone number must be exactly 10 digits.')
     const validatePassword = password =>
       isValidPassword(password)
-        ? password.trim()
+        ? password?.trim()
         : errorObject('Password must be at least 4 characters long.')
     const validateRequired = (field, fieldName) =>
       field ? sanitizeString(field) : errorObject(`${fieldName} is required.`)
 
     const getAnswerArray = () =>
-      data.selectedQuestions?.map(q => sanitizeString(data.answers[q])) || []
+      data?.selectedQuestions?.map(q => sanitizeString(data.answers[q])) || []
 
     switch (type) {
       case 'login': {
@@ -89,6 +89,7 @@ function CustomerProvider ({ children }) {
 
       case 'requestRest': {
         const phone = validatePhone(data.resetPhone)
+        
         const username = validateRequired(data.resetUsername, 'Username')
         if (phone?.error) return phone
         if (username?.error) return username
@@ -246,8 +247,9 @@ function CustomerProvider ({ children }) {
     }
   }
   const RequestProfileUpdate = async profile => {
+    console.log(profile)
     profile = cleanData('requestRest', profile)
-
+console.log(profile)
     const configure = {
       method: 'POST',
       headers: {
@@ -298,12 +300,12 @@ function CustomerProvider ({ children }) {
       return { error: 'Failed to update customer order history 🥺' }
     }
   }
-  const UpdateCustomerProfile = async updates => {
+  const UpdateCustomerProfile = async profile => {
     const isLoggedIn = getLocalStorage('online')
     if (!isLoggedIn) {
       return { error: `Your not even logged in` }
     }
-    const profile = getLocalStorage('profile')
+    
     const token = getLocalStorage('token')
     const configure = {
       method: 'POST',
@@ -311,10 +313,7 @@ function CustomerProvider ({ children }) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({
-        ...profile,
-        ...updates
-      })
+      body: JSON.stringify(profile)
     }
     try {
       const res = await fetch(

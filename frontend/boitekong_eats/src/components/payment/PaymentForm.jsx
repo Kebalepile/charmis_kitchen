@@ -8,14 +8,15 @@ import termsAndConditions from '../../assets/policies/termsAndConditions'
 import './payment.css'
 
 const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
+  const userProfile = JSON.parse(localStorage.getItem('profile')) || {};
   const {
-    name = '',
-    phone = '',
+    name = userProfile?.name || '',
+    phone = userProfile?.phone ||'',
     paymentMethod,
     deliveryCharge,
     paymentTotal,
     orderNumber,
-    streetAddress = '',
+    streetAddress = userProfile?.address || '',
     houseNumber = '',
     handleNameChange,
     handlePhoneChange,

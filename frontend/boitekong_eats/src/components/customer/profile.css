@@ -16,7 +16,7 @@
 /* Profile container */
 #customer-profile {
     max-width: 400px;
-    width: 90%;
+    width: 85%;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -83,3 +83,78 @@
         font-size: 0.8rem;
     }
 }
+/* Edit Button */
+.edit-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin-left: 8px;
+    transition: background 0.3s;
+}
+
+.edit-button:hover {
+    background-color: #45a049;
+}
+
+.save-button {
+    background-color: #2196F3; /* Blue */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+    margin-left: 8px;
+}
+
+.save-button:hover {
+    background-color: #1e88e5;
+}
+
+/* Form fields for edit mode */
+.profile-details input[type="text"] {
+    width: 80%;
+    padding: 8px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Security Question Section */
+.profile-details div {
+    margin-top: 10px;
+}
+
+.profile-details p {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Input field for security question answers */
+.profile-details input[type="text"]::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+/* Loading and popup overlay positioning
+#payment-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+} */
+

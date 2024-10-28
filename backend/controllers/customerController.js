@@ -170,37 +170,35 @@ const RestCustomerPassword = async (req, res) => {
 };
 
 const EditCustomerDetails = async (req, res) => {
-  const { phone, name, address, newPassword, newAnswers, answers } = req.body;
+  const { phone, oldPhone, name, address, answers, newPassword } = req.body;
+
+  // Determine the phone number to use for finding the customer
+  const searchPhone = oldPhone || phone;
 
   try {
-    // Find the customer by phone
-    const customer = await CustomerModel.findOne({ phone });
+    // Find the customer by the appropriate phone number
+    const customer = await CustomerModel.findOne({ phone: searchPhone });
     if (!customer) {
       return res.status(400).json({ error: "Customer not found 🥺" });
     }
+
     // Check if answers array contains exactly two answers
     if (answers.length !== 2) {
-      return res
-        .status(400)
-        .json({ error: "Security answers are required 😕" });
+      return res.status(400).json({ error: "Security answers are required 😕" });
     }
 
     // Compare the hashed security answers
-    const isAnswerOneValid = await comparePassword(
-      answers[0],
-      customer.securityAnswerOne
-    );
-    const isAnswerTwoValid = await comparePassword(
-      answers[1],
-      customer.securityAnswerTwo
-    );
+    const isAnswerOneValid = await comparePassword(answers[0], customer.securityAnswerOne);
+    const isAnswerTwoValid = await comparePassword(answers[1], customer.securityAnswerTwo);
 
     if (!isAnswerOneValid || !isAnswerTwoValid) {
       return res.status(400).json({ error: "Incorrect security answers 😕" });
     }
+
     // Update basic details
     if (name) customer.name = name;
     if (address) customer.address = address;
+    if (phone && phone !== oldPhone) customer.phone = phone; // Update phone if changed
 
     // Hash and update the password if provided
     if (newPassword) {
@@ -208,24 +206,17 @@ const EditCustomerDetails = async (req, res) => {
       customer.password = hashedPassword;
     }
 
-    // Hash and update the security answers if provided
-    if (newAnswers && newAnswers.length === 2) {
-      customer.securityAnswerOne = await hashPassword(newAnswers[0]);
-      customer.securityAnswerTwo = await hashPassword(newAnswers[1]);
-    }
-
     // Save the updated customer
     await customer.save();
 
     // Send success response
-    res
-      .status(200)
-      .json({ message: "🎉 Customer details updated successfully 🎉" });
+    res.status(200).json({ message: "🎉 Customer details updated successfully 🎉" });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Failed to edit customer details 🥺" });
   }
 };
+
 
 const UpdateOrderHistory = async (req, res) => {
   const { phone, orderNumber } = req.body;
