@@ -247,6 +247,29 @@ const UpdateOrderHistory = async (req, res) => {
   }
 };
 
+const CustomerOrderHistory = async (req, res) => {
+  const { phone} = req.body;
+
+  try {
+    // Find the customer by phone
+    const customer = await CustomerModel.findOne({ phone });
+
+    if (!customer) {
+      return res.status(400).json({ error: "Customer not found 🥺" });
+    }
+
+    // Send success response
+    res
+      .status(200)
+      .json({orderNUmbers:customer.orderHistory });
+  } catch (error) {
+    console.error("Error:", error);
+    res
+      .status(500)
+      .json({ error: "Failed to update customer order history 🥺" });
+  }
+};
+
 module.exports = {
   RegisterCustomer,
   LoginCustomer,
@@ -254,5 +277,6 @@ module.exports = {
   RestCustomerPassword,
   EditCustomerDetails,
   UpdateOrderHistory,
-  RequestProfileUpdate
+  RequestProfileUpdate,
+  CustomerOrderHistory 
 };

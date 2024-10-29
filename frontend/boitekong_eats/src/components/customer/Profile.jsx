@@ -6,9 +6,15 @@ import PropTypes from 'prop-types'
 import './profile.css'
 
 const Profile = ({ onClose }) => {
-  const { RequestProfileUpdate, UpdateCustomerProfile, CustomerLogout } =
-    useContext(CustomerContext)
+  const {
+    RequestProfileUpdate,
+    UpdateCustomerProfile,
+    CustomerLogout,
+    CustomerOrderHistory
+  } = useContext(CustomerContext)
+
   const userProfile = JSON.parse(localStorage.getItem('profile')) || {}
+
   const [loading, setLoading] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
@@ -18,7 +24,7 @@ const Profile = ({ onClose }) => {
     phone: userProfile.phone || '',
     address: userProfile.address || '',
     password: '',
-    newPassword:'',
+    newPassword: '',
     confirmPassword: '',
     answers: ['', ''], // For security question answers
     securityQuestions: []
@@ -116,7 +122,7 @@ const Profile = ({ onClose }) => {
         setShowPopup(true)
       } else {
         setPopupMessage(
-          `${res.message }. Please log in again with your phone and password.`
+          `${res.message}. Please log in again with your phone and password.`
         )
         setShowPopup(true)
         await CustomerLogout()
@@ -124,7 +130,6 @@ const Profile = ({ onClose }) => {
         setIsEditing(false)
         setTimeout(() => onClose(), 5000)
       }
-      
     } catch (error) {
       setPopupMessage(`${error.message || 'Unexpected error occurred'}`)
       setShowPopup(true)
@@ -174,6 +179,36 @@ const Profile = ({ onClose }) => {
       password: '',
       confirmPassword: ''
     })
+  }
+  const customerOrders = async () => {
+    if (userProfile?.phone) {
+      const res = await CustomerOrderHistory({ phone: userProfile.phone })
+      return (
+        <section id='order-history'>
+          {res.orderNUmbers.map((orderNumber, index) => (
+            <div key={index} className='order'>
+              {orderNumber}{' '}
+              <button
+                onClick={() => {
+                  console.log(
+                    'call search order componet with order: ',
+                    orderNumber
+                  )
+                }}
+              >
+                track
+              </button>
+            </div>
+          ))}
+        </section>
+      )
+    }
+
+    return (
+      <section id='order-history'>
+        <h2>No order(s) placed yet</h2>
+      </section>
+    )
   }
 
   return (
@@ -294,6 +329,7 @@ const Profile = ({ onClose }) => {
               <p>
                 <strong>Address:</strong> {userProfile?.address || 'N/A'}
               </p>
+              {customerOrders()}
             </>
           )}
         </div>

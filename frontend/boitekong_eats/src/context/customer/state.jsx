@@ -339,6 +339,31 @@ console.log(profile)
     dispatch({ type: VIEW_PROFILE, payload: !profile })
   }
 
+  const CustomerOrderHistory = async customerDetails => {
+    const isLoggedIn = getLocalStorage('online')
+    if (!isLoggedIn) {
+      return { error: `Your not even logged in` }
+    }
+    const token = getLocalStorage('token')
+    const configure = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(customerDetails)
+    }
+    try {
+      const res = await fetch(`${ServerDomain}/customer-order-history`, configure)
+      const data = await res.json()
+      if (res.ok) {
+        return data
+      }
+      return data
+    } catch (error) {
+      return { error: 'Failed to update customer order history 🥺' }
+    }
+  }
   return (
     <CustomerContext.Provider
       value={{
@@ -355,7 +380,8 @@ console.log(profile)
         CancelCustomerOrder,
         UpdateOrderHistory,
         UpdateCustomerProfile,
-        LoadEndUserProfile
+        LoadEndUserProfile,
+        CustomerOrderHistory
       }}
     >
       {children}

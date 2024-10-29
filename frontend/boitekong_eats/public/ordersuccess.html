@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Success</title>
-    <style>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Order Success</title>
+        <style>
         /* CSS from order.css */
         .redirect-container-order {
             text-align: center;
@@ -75,25 +75,26 @@
         }
    
     </style>
-  </head>
+    </head>
 
-  <body>
-    <div class="redirect-container-order">
-      <h1>Order Successful</h1>
-      <p id="order-number"></p>
-      <p id="total-payment"></p>
-      <p>You will be redirected to the home page shortly...</p>
-      <img alt="qr code" src="./assets/images/qr_code.png" class="qrcode-img" />
-      <div id="spinner">
-        <div class="loading-dots">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+    <body>
+        <div class="redirect-container-order">
+            <h1>Order Successful</h1>
+            <p id="order-number"></p>
+            <p id="total-payment"></p>
+            <p>You will be redirected to the home page shortly...</p>
+            <img alt="qr code" src="./assets/images/qr_code.png"
+                class="qrcode-img" />
+            <div id="spinner">
+                <div class="loading-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <script>
+        <script>
         const serverDomain = "https://b-town-bites.onrender.com";
 
         const getStoredOrderData = (keyItem = 'orderData') => {
@@ -104,6 +105,42 @@
         const clearStoredOrderData = (keyItem = 'orderData') => {
             localStorage.removeItem(keyItem);
         };
+
+        async function updateCustomerOrderHistory() {
+           
+            const isLoggedIn = getStoredOrderData('online')
+
+            if (!isLoggedIn) {
+            return { error: `Your not even logged in` }
+            }
+
+            const orderData = getStoredOrderData();
+            const userProfile = getStoredOrderData('profile')
+            const orderDetails = {
+            phone: userProfile.phone,
+            orderNumber: orderData.newOrder.orderNumber}
+
+            const token = getStoredOrderData('token')
+
+            const configure = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(orderDetails) 
+            }
+            try {
+            const res = await fetch(`${ServerDomain}/new-customer-order`, configure)
+            const data = await res.json()
+            if (res.ok) {
+                return data
+            }
+            return data
+            } catch (error) {
+            return { error: 'Failed to update customer order history 🥺' }
+            }
+        }
 
         async function sendSms(phone, message) {
             try {
@@ -155,7 +192,9 @@
                     await sendSms(phone, supportMessage);
                 }
 
-                clearStoredOrderData();
+               await updateCustomerOrderHistory()
+                // only removes item of key 'orderData' by default
+                clearStoredOrderData(); 
                 return true;
             } catch (error) {
                 console.error('Error during successful order processing:', error);
@@ -191,6 +230,6 @@
 
         window.onload = handleOrderSuccess;
     </script>
-  </body>
+    </body>
 
 </html>
