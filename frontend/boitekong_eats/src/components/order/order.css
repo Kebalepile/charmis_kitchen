@@ -88,42 +88,12 @@
   }
 }
 
-/* Order display styling */
-.order-dialog {
-  border: none;
-  border-radius: 3px;
-  background: radial-gradient(circle at top, #f4f5d4, #d7dc70, #edf0a9);
-}
-.order-display-close-button {
-  border: none;
-  font-size: 15px;
-  cursor: pointer;
-  color: white;
-  background-color: rgb(243, 88, 88);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  margin: 5px;
-  text-align: center;
-  font-weight: bold;
-}
+
+
 .order-display-container {
   margin-top: 20px;
 }
-.order-display-details {
-  margin-bottom: 15px;
-  border-radius: 3px;
-  background-color: white;
-  color: black;
-  padding: 15px;
-  display: flex;
-  flex-flow: column wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-.order-display-details p {
-  margin-bottom: 5px;
-}
+
 /* Overlay styling */
 .overlay {
   position: fixed;
@@ -358,3 +328,99 @@ form .buttons {
   }
 }
 
+/* General dialog styling */
+.order-dialog {
+  width: 90%;
+  max-width: 600px;
+  padding: 25px;
+  background: linear-gradient(to bottom right, #f4f5d4, #d7dc70);
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  max-height: 80vh;
+  text-align:justify;
+}
+
+/* Close button styling */
+.order-display-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  font-size: 20px;
+  color: #ffffff;
+  background-color: #f25a5a;
+  border-radius: 5px;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.order-display-close-button:hover {
+  background-color: #d94444;
+}
+
+/* Container for order details */
+.order-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Individual order detail box */
+.order-display-details {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-display-details p {
+  font-size: 16px;
+  color: #333;
+  margin: 4px 0;
+}
+
+.order-display-details strong {
+  font-weight: bolder;
+  color: #555;
+  margin-right:5px;
+}
+
+/* Add smooth scrolling */
+.order-dialog::-webkit-scrollbar {
+  width: 6px;
+}
+.order-dialog::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.order-dialog::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .order-dialog {
+    padding: 15px;
+  }
+
+  .order-display-details p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 425px) {
+  .order-dialog {
+    width: 95%;
+  }
+
+  .order-display-close-button {
+    font-size: 18px;
+    width: 30px;
+    height: 30px;
+  }
+}

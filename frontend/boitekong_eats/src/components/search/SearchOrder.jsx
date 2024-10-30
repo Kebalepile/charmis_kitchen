@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import OrderContext from '../../context/order/context'
 import Loading from '../loading/Loading'
 import Popup from '../popup/Popup'
-import OrderDisplay from '../order/OrderDisplay'; 
+import OrderDisplay from '../order/OrderDisplay'
 
 import "./search.css"
 
@@ -21,7 +21,6 @@ export default function SearchOrder () {
 
   const handleSearch = async e => {
     e.preventDefault()
-    
 
     try {
       const isNum = Number(orderNumber)
@@ -29,17 +28,16 @@ export default function SearchOrder () {
       if (isNum) {
         setLoading(true)
         const [ok, message] = await getOrder(orderNumber)
-        
+
         if (ok) {
           setLoading(false)
-         
         } else {
           setLoading(false)
           setPopupMessage(message)
           setShowPopup(true)
         }
       } else {
-        setPopupMessage('order number incorrect')
+        setPopupMessage('Order number is incorrect')
         setShowPopup(true)
       }
       setOrderNumber('')
@@ -59,10 +57,12 @@ export default function SearchOrder () {
     <>
       {searchOrderFormVisible && (
         <div id='search-order' className='search-order-container'>
-        
           <div className='overlay show' onClick={closeSearchForm}></div>
 
-          <form onSubmit={handleSearch}>
+          <form onSubmit={handleSearch} className='search-form'>
+            <button type='button' className='close-button' onClick={closeSearchForm}>
+              &times;
+            </button>
             <input
               type='text'
               placeholder='Enter Order Number'

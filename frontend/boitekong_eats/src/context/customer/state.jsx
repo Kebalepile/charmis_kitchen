@@ -247,9 +247,9 @@ function CustomerProvider ({ children }) {
     }
   }
   const RequestProfileUpdate = async profile => {
-    console.log(profile)
+   
     profile = cleanData('requestRest', profile)
-console.log(profile)
+
     const configure = {
       method: 'POST',
       headers: {
