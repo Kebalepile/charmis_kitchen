@@ -1,7 +1,10 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext,useEffect } from 'react'
 import Loading from '../loading/Loading'
 import Popup from '../popup/Popup'
+import OrderDisplay from '../order/OrderDisplay'; 
 import CustomerContext from '../../context/customer/context.jsx'
+import OrderContext from '../../context/order/context'
+
 import PropTypes from 'prop-types'
 import './profile.css'
 
@@ -12,9 +15,11 @@ const Profile = ({ onClose }) => {
     CustomerLogout,
     CustomerOrderHistory
   } = useContext(CustomerContext)
-
+  const { getOrder,orders } = useContext(OrderContext)
+ 
   const userProfile = JSON.parse(localStorage.getItem('profile')) || {}
 
+  const [customerOrderHistory, setCustomerOrderHistory] = useState([]);
   const [loading, setLoading] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
@@ -180,37 +185,43 @@ const Profile = ({ onClose }) => {
       confirmPassword: ''
     })
   }
-  const customerOrders = async () => {
-    if (userProfile?.phone) {
-      const res = await CustomerOrderHistory({ phone: userProfile.phone })
-      return (
-        <section id='order-history'>
-          {res.orderNUmbers.map((orderNumber, index) => (
-            <div key={index} className='order'>
-              {orderNumber}{' '}
-              <button
-                onClick={() => {
-                  console.log(
-                    'call search order componet with order: ',
-                    orderNumber
-                  )
-                }}
-              >
-                track
-              </button>
-            </div>
-          ))}
-        </section>
-      )
+
+  const handleOrderSearch = async (orderNumber) => {
+   
+    const isNum = Number(orderNumber)
+
+    if (isNum) {
+      setLoading(true)
+      const [ok, message] = await getOrder(orderNumber)
+     
+      if (ok) {
+        setLoading(false)
+       
+      } else {
+        setLoading(false)
+        setPopupMessage(message)
+        setShowPopup(true)
+      }
+    } else {
+      setPopupMessage('order number incorrect')
+      setShowPopup(true)
     }
 
-    return (
-      <section id='order-history'>
-        <h2>No order(s) placed yet</h2>
-      </section>
-    )
   }
+   // Fetch customer orders on component mount
+   useEffect(() => {
+    const fetchOrderHistory = async () => {
+      if (userProfile?.phone) {
+        setLoading(true);
+        const res = await CustomerOrderHistory({ phone: userProfile.phone });
+        setCustomerOrderHistory(res.orderNumbers || ["928"]);
+        setLoading(false);
+      }
+    };
+    fetchOrderHistory();
+  }, [CustomerOrderHistory, userProfile?.phone]);
 
+  
   return (
     <div className='profile-overlay'>
       <section id='customer-profile'>
@@ -329,7 +340,21 @@ const Profile = ({ onClose }) => {
               <p>
                 <strong>Address:</strong> {userProfile?.address || 'N/A'}
               </p>
-              {customerOrders()}
+              <section id="order-history">
+        <h2>Order History</h2>
+        {loading ? (
+          <p>Loading...</p>
+        ) : customerOrderHistory.length ? (
+          customerOrderHistory.map((orderNumber, index) => (
+            <div key={index} className="order">
+              {orderNumber}
+              <button className="track-order"onClick={() => handleOrderSearch(orderNumber)}>Track</button>
+            </div>
+          ))
+        ) : (
+          <p>No orders placed yet.</p>
+        )}
+      </section>
             </>
           )}
         </div>
@@ -339,6 +364,7 @@ const Profile = ({ onClose }) => {
           <Loading />
         </div>
       )}
+      {orders.length && <OrderDisplay />}
       {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
     </div>
   )

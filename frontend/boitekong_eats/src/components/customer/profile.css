@@ -134,3 +134,33 @@
         font-size: 0.8rem;
     }
 }
+
+.order{
+    padding:0px 0px 0px 20px;
+    background-color: gray;
+    border-radius: 3px;
+    color:white;
+    height:50px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: large;
+    margin:5px;
+}
+
+.track-order{
+    margin:10px;
+    height:35px;
+    width:60px;
+    background-color:rgb(0, 102, 255);
+    color:white;
+    border:none;
+    border-radius:4px;
+    cursor: pointer;
+
+}
+/*
+  <div key={index} className="order">
+              {orderNumber}
+              <button className="track-order"onClick={() => handleOrderSearch(orderNumber)}>Track</button>
+            </div>**/
