@@ -217,7 +217,6 @@ const EditCustomerDetails = async (req, res) => {
   }
 };
 
-
 const UpdateOrderHistory = async (req, res) => {
   const { phone, orderNumber } = req.body;
 
@@ -229,21 +228,31 @@ const UpdateOrderHistory = async (req, res) => {
       return res.status(400).json({ error: "Customer not found 🥺" });
     }
 
-    // Push the new order number into the orderHistory array
-    customer.orderHistory.push(orderNumber);
+    // Convert orderNumber to string if it is not already
+    const orderNumberStr = typeof orderNumber === "string" ? orderNumber : String(orderNumber);
 
-    // Save the updated customer document
-    await customer.save();
+    // Check for duplicate order number before adding
+    if (!customer.orderHistory.includes(orderNumberStr)) {
+      customer.orderHistory.push(orderNumberStr);
+      
+      // Save the updated customer document
+      await customer.save();
+    
+      // Send success response
+      return res
+        .status(200)
+        .json({ message: "🎉 Customer order history updated successfully 🎉" });
+    } else {
+      return res
+        .status(200)
+        .json({ message: "Order number already exists in history 🎉" });
+    }
 
-    // Send success response
-    res
-      .status(200)
-      .json({ message: "🎉 Customer order history updated successfully 🎉" });
   } catch (error) {
-    console.error("Error:", error);
+    console.log("Error:", error);
     res
       .status(500)
-      .json({ error: "Failed to update customer order history 🥺" });
+      .json({ error: "Failed to update customer order history 🥺", err: error });
   }
 };
 
@@ -261,7 +270,7 @@ const CustomerOrderHistory = async (req, res) => {
     // Send success response
     res
       .status(200)
-      .json({orderNUmbers:customer.orderHistory });
+      .json({orderNumbers: customer.orderHistory });
   } catch (error) {
     console.error("Error:", error);
     res

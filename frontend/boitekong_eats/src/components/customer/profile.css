@@ -159,8 +159,3 @@
     cursor: pointer;
 
 }
-/*
-  <div key={index} className="order">
-              {orderNumber}
-              <button className="track-order"onClick={() => handleOrderSearch(orderNumber)}>Track</button>
-            </div>**/

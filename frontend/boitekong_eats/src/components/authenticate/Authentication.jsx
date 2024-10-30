@@ -396,7 +396,7 @@ const Authentication = () => {
           <p onClick={() => setAuthMode('login')}>Back to Login</p>
         </form>
       )}
-      <button className='close-button' onClick={onClose}>
+      <button className='login-close-button' onClick={onClose}>
         Close
       </button>
       {loading && (

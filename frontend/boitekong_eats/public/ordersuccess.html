@@ -95,7 +95,7 @@
         </div>
 
         <script>
-        const serverDomain = "https://b-town-bites.onrender.com";
+        const ServerDomain = "https://b-town-bites.onrender.com";
 
         const getStoredOrderData = (keyItem = 'orderData') => {
             const storedOrderData = localStorage.getItem(keyItem);
@@ -109,16 +109,18 @@
         async function updateCustomerOrderHistory() {
            
             const isLoggedIn = getStoredOrderData('online')
-
             if (!isLoggedIn) {
             return { error: `Your not even logged in` }
             }
 
             const orderData = getStoredOrderData();
+           
             const userProfile = getStoredOrderData('profile')
+           
             const orderDetails = {
-            phone: userProfile.phone,
-            orderNumber: orderData.newOrder.orderNumber}
+                phone: userProfile.phone,
+                orderNumber: orderData.newOrder.orderNumber
+            }
 
             const token = getStoredOrderData('token')
 
@@ -133,18 +135,20 @@
             try {
             const res = await fetch(`${ServerDomain}/new-customer-order`, configure)
             const data = await res.json()
+            
             if (res.ok) {
                 return data
             }
             return data
             } catch (error) {
+                // console.log(error)
             return { error: 'Failed to update customer order history 🥺' }
             }
         }
 
         async function sendSms(phone, message) {
             try {
-                const response = await fetch(`${serverDomain}/send-sms`, {
+                const response = await fetch(`${ServerDomain}/send-sms`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -165,7 +169,7 @@
 
         async function successfulOrderPurchase(orderData) {
             try {
-                const response = await fetch(`${serverDomain}/checkout-successful`, {
+                const response = await fetch(`${ServerDomain}/checkout-successful`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -192,7 +196,8 @@
                     await sendSms(phone, supportMessage);
                 }
 
-               await updateCustomerOrderHistory()
+             await updateCustomerOrderHistory()
+          
                 // only removes item of key 'orderData' by default
                 clearStoredOrderData(); 
                 return true;

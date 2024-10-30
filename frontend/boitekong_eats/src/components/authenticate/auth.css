@@ -27,7 +27,7 @@
     overflow-y: auto; 
 }
 
-.close-button {
+.login-close-button {
     background: #f44336; 
     color: white;
     border: none;
@@ -37,7 +37,7 @@
     margin: 10px;
 }
 
-.close-button:hover {
+.login-close-button:hover {
     background: #d32f2f; /* Darker red on hover */
 }
 

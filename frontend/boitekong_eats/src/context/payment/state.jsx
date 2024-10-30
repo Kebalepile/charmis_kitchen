@@ -19,10 +19,12 @@ import {
 import { generateOrderNumber, checkTime } from '../../utils/Utils'
 
 function PaymentProvider ({ children }) {
+  const userProfile = JSON.parse(localStorage.getItem('profile')) || {};
+  
   const initialState = {
-    name: '',
-    phone: '',
-    streetAdress: '',
+    name : userProfile?.name || '',
+    phone : userProfile?.phone ||'',
+    streetAddress : userProfile?.address || '',
     houseNumber: '',
     paymentMethod: 'self-collect',
     deliveryCharge: 0,

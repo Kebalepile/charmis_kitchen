@@ -19,7 +19,7 @@ const Profile = ({ onClose }) => {
  
   const userProfile = JSON.parse(localStorage.getItem('profile')) || {}
 
-  const [customerOrderHistory, setCustomerOrderHistory] = useState([]);
+  const [trackCustomerOrders, setTrackCustomerOrders] = useState([]);
   const [loading, setLoading] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState('')
@@ -214,7 +214,8 @@ const Profile = ({ onClose }) => {
       if (userProfile?.phone) {
         setLoading(true);
         const res = await CustomerOrderHistory({ phone: userProfile.phone });
-        setCustomerOrderHistory(res.orderNumbers || ["928"]);
+        
+        setTrackCustomerOrders(res.orderNumbers || []);
         setLoading(false);
       }
     };
@@ -344,13 +345,13 @@ const Profile = ({ onClose }) => {
         <h2>Order History</h2>
         {loading ? (
           <p>Loading...</p>
-        ) : customerOrderHistory.length ? (
-          customerOrderHistory.map((orderNumber, index) => (
+        ) : trackCustomerOrders.length ? (
+          trackCustomerOrders.map((orderNumber, index) => (
             <div key={index} className="order">
               {orderNumber}
               <button className="track-order"onClick={() => handleOrderSearch(orderNumber)}>Track</button>
             </div>
-          ))
+          )).reverse()
         ) : (
           <p>No orders placed yet.</p>
         )}

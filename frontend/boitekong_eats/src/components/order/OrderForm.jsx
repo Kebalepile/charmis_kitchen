@@ -23,6 +23,11 @@ const OrderForm = ({ item, onClose, menuName }) => {
   const [selectedImage, setSelectedImage] = useState(null)
 
   useEffect(() => {
+    // Check if 'checkoutAlert' exists in localStorage
+if (localStorage.getItem("checkoutAlert") === null) {
+  // If it doesn't exist, set it as JSON.stringify(false) initially
+  localStorage.setItem("checkoutAlert", JSON.stringify(false));
+}
     if (item && (item.price || (item.prices && selectedSize))) {
       calculateTotal(item);
     }
@@ -46,14 +51,28 @@ const OrderForm = ({ item, onClose, menuName }) => {
       return; // Prevent submission
     }
 
-    setPopupMessage(
-      "🛒 Order added to cart!\n checkout pending orders when done here"
-    );
-    setShowPopup(true);
+    
+// Read 'checkoutAlert' value and parse it back to a boolean
+const checkoutAlert = JSON.parse(localStorage.getItem("checkoutAlert"));
 
-    setTimeout(() => {
-      handleSubmit(e, menuName, item, onClose);
-    }, 3000);
+// If 'checkoutAlert' is false, show the alert
+if (!checkoutAlert) {
+  setPopupMessage(
+    "🛒 Order added to cart!\n checkout pending orders when done here"
+  );
+  setShowPopup(true);
+  
+  // After showing the alert, set 'checkoutAlert' to JSON.stringify(true)
+  localStorage.setItem("checkoutAlert", JSON.stringify(true));
+  setTimeout(() => {
+    handleSubmit(e, menuName, item, onClose);
+  }, 3000);
+}else{
+  
+    handleSubmit(e, menuName, item, onClose);
+  
+}
+   
   };
 
   const handleQuantityInputChange = (e) => {
@@ -138,7 +157,7 @@ const OrderForm = ({ item, onClose, menuName }) => {
           Add to Cart
           </button>
           <button type='button' className='cancel' onClick={handleClose}>
-            Cancel
+            Close
           </button>
           </section>
         </form>

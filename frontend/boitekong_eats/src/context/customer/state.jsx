@@ -174,13 +174,13 @@ function CustomerProvider ({ children }) {
     try {
       const res = await fetch(`${ServerDomain}/customer-logout`, configure)
       const data = await res.json()
-      if (res.ok) {
+      
         addToLocalStorage('profile', null)
         addToLocalStorage('token', null)
         addToLocalStorage('online', false)
+        addToLocalStorage('checkoutAlert',false)
 
-        return data
-      }
+        
       return data
     } catch (error) {
       return { error: 'Error while loggin out... try again.' }
@@ -361,7 +361,7 @@ function CustomerProvider ({ children }) {
       }
       return data
     } catch (error) {
-      return { error: 'Failed to update customer order history 🥺' }
+      return { error: 'Failed to get customer order history 🥺' }
     }
   }
   return (

@@ -8,16 +8,16 @@ import termsAndConditions from '../../assets/policies/termsAndConditions'
 import './payment.css'
 
 const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
-  const userProfile = JSON.parse(localStorage.getItem('profile')) || {};
+
   const {
-    name = userProfile?.name || '',
-    phone = userProfile?.phone ||'',
     paymentMethod,
     deliveryCharge,
     paymentTotal,
     orderNumber,
-    streetAddress = userProfile?.address || '',
-    houseNumber = '',
+    name,
+    phone,
+    streetAddress,
+    houseNumber ,
     handleNameChange,
     handlePhoneChange,
     handlePaymentChange,
@@ -47,7 +47,7 @@ const PaymentForm = ({ setShowPaymentForm, paymentItems, resetOrderState }) => {
     setLoading(true)
     paymentGatewayOpen()
     const message =
-      'Loading Yoco Payment Gateway. Do Not Exit or Refresh Page!'
+      'Loading Yoco Payment Gateway.\n Do Not Exit or Refresh Page!'
     localStorage.setItem('loadingCheckout', JSON.stringify(message))
     setTimeout(() => {
       resetOrderState()
