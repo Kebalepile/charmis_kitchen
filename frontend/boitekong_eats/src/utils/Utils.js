@@ -17,7 +17,7 @@ export const checkTime = () => {
 
   // Define time range in minutes since midnight
   const startTime = 9 * 60;  // 9:00 AM
-  const endTime = 20 * 60; // 8:00 PM
+  const endTime = 19 * 60; // 19:00 PM
   return { startTime, endTime, currentTime };
 };
 

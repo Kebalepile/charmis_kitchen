@@ -41,7 +41,7 @@ function App() {
     const { startTime, endTime, currentTime } = checkTime();
 
     if (currentTime < startTime || currentTime > endTime) {
-      setPopupMessage('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞');
+      setPopupMessage('⚠️ Operating hours between 09:00 am to 19:00 pm. 🌞');
       setIsPopupVisible(true);
     }
 

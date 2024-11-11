@@ -348,7 +348,7 @@ function PaymentProvider ({ children }) {
 
     switch (notWorkingHours) {
       case true:
-        alert('⚠️ Operating hours between 09:00 am to 20:00 pm. 🌞')
+        alert('⚠️ Operating hours between 09:00 am to 19:00 pm. 🌞')
         return false
       case false:
         updateOrderBoard(orderNumber)
