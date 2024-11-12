@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
+import InfoTour from "../about/InfoTour"
 import Menu from '../menu/Menu'
 import Slideshow from '../slideShow/Slideshow'
 import SearchOrder from '../search/SearchOrder'
@@ -71,6 +72,7 @@ const handleCloseProfile = () => {
         {profile && <Profile onClose={handleCloseProfile} />}
         <Slideshow />
       </section>
+      <InfoTour/>
       <SearchOrder />
       <Menu />
     </>

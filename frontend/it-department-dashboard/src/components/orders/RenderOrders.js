@@ -9,7 +9,7 @@ import "./orderFilter.css";
  */
 export const displayOrders = (orders, orderListElement) => {
   orderListElement.innerHTML = "";
-  orders.forEach(order => {
+  orders.reverse().forEach(order => {
     const orderItemElement = renderOrderItem(order);
     orderListElement.appendChild(orderItemElement);
   });
@@ -68,7 +68,7 @@ export const OrderFilter = (orders, orderListElement) => {
         const filteredOrders =
           status === "All"
             ? orders
-            : orders.filter(order => order.status.toLowerCase() === status.toLowerCase());
+            : orders.reverse().filter(order => order.status.toLowerCase() === status.toLowerCase());
         displayOrders(filteredOrders, orderListElement);
         toggleLoadingSpinner(false);
       }, 2000);
