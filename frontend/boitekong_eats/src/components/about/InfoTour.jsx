@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./InfoTour.css";
 
-
-
-
 const InfoTour = () => {
-
-    const yocoLogo ="/assets/images/yoco.svg" ,
-          eftLogo ="/assets/images/eft.svg",         
-           visaLogo ="/assets/images/visa.svg",
-          masterCardLogo ="/assets/images/mastercard.svg",
-          boitekongEatsLogo='/assets/images/boitekong-eats-logo.png',
-          deliveryIcon ="/assets/images/bike_icon.jpg" ,
-          communityIcon = "/assets/images/community_icon.png"
+  const yocoLogo = "/assets/images/yoco.svg",
+    eftLogo = "/assets/images/eft.svg",
+    visaLogo = "/assets/images/visa.svg",
+    masterCardLogo = "/assets/images/mastercard.svg",
+    boitekongEatsLogo = "/assets/images/boitekong-eats-logo.png",
+    deliveryIcon = "/assets/images/bike_icon.jpg",
+    communityIcon = "/assets/images/community_icon.png";
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showTour, setShowTour] = useState(false);
@@ -37,7 +33,7 @@ const InfoTour = () => {
     },
     {
       text: "💳 Pay safely online with Yoco. We accept Visa, MasterCard & more!",
-      image: [yocoLogo, masterCardLogo,visaLogo, eftLogo],
+      image: [yocoLogo, masterCardLogo, visaLogo, eftLogo],
     },
     {
       text: "🌍 Every order helps support local businesses in Boitekong. Feel good, eat good!",
@@ -53,6 +49,13 @@ const InfoTour = () => {
   const handleNext = () => {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
+    }
+  };
+
+  // Handle previous button click
+  const handlePrevious = () => {
+    if (currentSlide > 0) {
+      setCurrentSlide(currentSlide - 1);
     }
   };
 
@@ -76,7 +79,14 @@ const InfoTour = () => {
   return (
     showTour && (
       <div className="info-tour">
+        <div className="info-tour-background"></div>
         <div className="info-tour-content">
+          {/* Left Arrow for Traversal */}
+          {currentSlide > 0 && (
+            <button className="arrow-btn left-arrow" onClick={handlePrevious}>
+              &#8249;
+            </button>
+          )}
           {/* Slide Image */}
           <img
             src={
@@ -101,13 +111,25 @@ const InfoTour = () => {
           <div className="info-tour-buttons">
             {currentSlide < slides.length - 1 ? (
               <>
-                <button className="skip-btn" onClick={handleSkip}>Skip</button>
-                <button className="next-btn" onClick={handleNext}>Next</button>
+                <button className="skip-btn" onClick={handleSkip}>
+                  Skip
+                </button>
+                <button className="next-btn" onClick={handleNext}>
+                  Next
+                </button>
               </>
             ) : (
-              <button className="done-btn" onClick={handleDone}>Done</button>
+              <button className="done-btn" onClick={handleDone}>
+                Done
+              </button>
             )}
           </div>
+          {/* Right Arrow for Traversal */}
+          {currentSlide < slides.length - 1 && (
+            <button className="arrow-btn right-arrow" onClick={handleNext}>
+              &#8250;
+            </button>
+          )}
         </div>
       </div>
     )
