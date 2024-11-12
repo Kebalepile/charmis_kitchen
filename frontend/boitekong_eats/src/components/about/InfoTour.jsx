@@ -78,6 +78,7 @@ const InfoTour = () => {
 
   return (
     showTour && (
+        <div className='popup-overlay'>
       <div className="info-tour">
         <div className="info-tour-background"></div>
         <div className="info-tour-content">
@@ -131,6 +132,7 @@ const InfoTour = () => {
           </button>
           )}
         </div>
+      </div>
       </div>
     )
   );
