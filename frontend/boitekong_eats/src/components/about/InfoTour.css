@@ -3,7 +3,8 @@
     position: fixed;
     bottom: 20px;
     left: 50%;
-    transform: translateX(-50%);
+ 
+    transform: translate(-50%, -50%);
     width: 90%;
     max-width: 400px;
     background-color: #ffffff;
@@ -39,6 +40,7 @@ body.modal-open {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding:20px;
 }
 
 /* Slide Navigation Arrows */
@@ -53,6 +55,7 @@ body.modal-open {
     font-weight: bold;
     width: 30px;
     height: 30px;
+   
     display: flex;
     align-items: center;
     justify-content: center;
@@ -63,6 +66,7 @@ body.modal-open {
 /* Left and Right Buttons */
 .slide-nav-left {
     left: 10px;
+    
 }
 
 .slide-nav-right {
@@ -78,6 +82,7 @@ body.modal-open {
     width: 60px;
     height: auto;
     margin-bottom: 15px;
+    border-radius: 4px;
 }
 
 .tour-logos {
@@ -97,6 +102,8 @@ body.modal-open {
     font-size: 14px;
     color: #333;
     margin: 10px 0;
+    text-align: center;
+    margin:5px;
 }
 
 /* Buttons */

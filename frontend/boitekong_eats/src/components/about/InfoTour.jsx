@@ -83,9 +83,9 @@ const InfoTour = () => {
         <div className="info-tour-content">
           {/* Left Arrow for Traversal */}
           {currentSlide > 0 && (
-            <button className="arrow-btn left-arrow" onClick={handlePrevious}>
-              &#8249;
-            </button>
+            <button className="slide-nav slide-nav-left" onClick={handlePrevious}>
+            &#8249;
+          </button>
           )}
           {/* Slide Image */}
           <img
@@ -126,9 +126,9 @@ const InfoTour = () => {
           </div>
           {/* Right Arrow for Traversal */}
           {currentSlide < slides.length - 1 && (
-            <button className="arrow-btn right-arrow" onClick={handleNext}>
-              &#8250;
-            </button>
+            <button className="slide-nav slide-nav-right" onClick={handleNext}>
+            &#8250;
+          </button>
           )}
         </div>
       </div>
