@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -14,7 +14,8 @@ import NotFound from './components/notFound/NotFound';
 import OrderSuccessRedirect from './components/order/OrderSuccessRedirect';
 import OrderCancelRedirect from './components/order/OrderCancelRedirect';
 import FailedOrderRediract from './components/order/FailedOrderRediract';
-import { checkTime } from './utils/Utils';
+// import HolidayShutdown from "./components/sitedown/HolidayShutdown";
+import { checkTime } from '/utils/Utils';
 import './App.css';
 
 /**
@@ -65,19 +66,20 @@ function App() {
           path='/'
           element={
             <>
+             {/* <HolidayShutdown /> */}
               <Navbar />
               <Home />
               <About />
               <Contact />
               {isPopupVisible && (
                 <Popup message={popupMessage} onClose={handleClosePopup} />
-              )}
+              )} 
             </>
           }
         />
         <Route path='/order-success' element={<OrderSuccessRedirect />} />
         <Route path='/cancel-order' element={<OrderCancelRedirect />} />
-        <Route path='/failed-checkout' element={<FailedOrderRediract />} />
+        <Route path='/failed-checkout' element={<FailedOrderRediract />} /> 
         <Route path='/404' element={<NotFound />} />
         <Route path='*' element={<Navigate to='/404' replace />} />
       </Routes>

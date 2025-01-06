@@ -1,0 +1,48 @@
+.holiday-shutdown {
+    text-align: center;
+    padding: 2rem;
+    background-color: #f7f9fc;
+    color: #2b2b2b;
+    font-family: "Arial", sans-serif;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .holiday-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    color: #d35400;
+  }
+  
+  .holiday-message {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+  
+  .see-you {
+    font-weight: bold;
+    margin-top: 1rem;
+    color: #27ae60;
+  }
+  
+  .icon {
+    font-size: 2rem;
+    margin: 0.5rem;
+  }
+  
+  .icon.tree {
+    color: #27ae60;
+  }
+  
+  .icon.snowflake {
+    color: #3498db;
+  }
+  
+  .icon.smile {
+    color: #f1c40f;
+  }
+  
