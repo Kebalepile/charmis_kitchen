@@ -454,15 +454,13 @@ function PaymentProvider ({ children }) {
     const cookMessage = [
       `Boitekong Eats, order received! Order: ${orderNumber}`,
       `Name: ${name}`,
-      phone ? `Phone: ${phone}` : null,
-      streetAddress ? `Address: ${streetAddress}, House: ${houseNumber}` : null,
       `Delivery: ${
         paymentMethod === 'cash' || paymentMethod === 'online-delivery'
           ? 'yes'
           : 'self-collect'
       }`,
       `Total: R${paymentTotal}`,
-      `Notify ${name} at ${phone} when the order is ready for ${
+      `Notify ${name} when the order is ready for ${
         paymentMethod === 'cash' || paymentMethod === 'online-delivery'
           ? 'delivery'
           : 'self-collect'

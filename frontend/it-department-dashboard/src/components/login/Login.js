@@ -1,5 +1,5 @@
 import "./login.css";
-import { login, signup } from "../../hooks/OrderService";
+import { login, signup } from "../../hooks/Authentication";
 import { renderLoadingSpinner } from "../loading/LoadingSpinner";
 import { refresh } from "../../utils/helper";
 /***
@@ -163,12 +163,12 @@ export const renderLoginForm = () => {
 
     const username = usernameInput.value;
     const pin = pinInput.value;
-
+    let data;
     try {
-      // const data = isLoginMode
-      //   ? await login(username, pin)
-      //   : await signup(username);
-      const data = isLoginMode
+      // comment in production
+      // data = isLoginMode ? await login(username, pin) : await signup(username);
+      // comment above code in production
+      data = isLoginMode
         ? await login(username, pin)
         : (() => {
             alert("You're not authorized!");

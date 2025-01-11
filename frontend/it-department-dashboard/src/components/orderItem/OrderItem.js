@@ -49,7 +49,7 @@ export const renderOrderItem = order => {
   const details = [
     { label: "Order", value: order.orderNumber, className: "order-detail-order-number" },
     { label: "Name", value: order.name, className: "order-detail-name" },
-    { label: "Phone", value: order.phone, className: "order-detail-phone" },
+    { label: "Phone", value:`###-###-${order.phone.slice(-4)}`},// Show last 4 digits, obfuscate the rest, 
     {
       label: "Street Address",
       value: order.streetAddress,

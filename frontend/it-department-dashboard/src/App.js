@@ -4,6 +4,7 @@ import { OrderFilter } from "./components/orders/RenderOrders.js";
 import { refresh } from "./utils/helper.js";
 import { fetchOrders } from "./hooks/OrderService.js";
 import { WEBSOCKET_URL } from "./hooks/types.js";
+import { hasSpecialPrivilege } from "./hooks/Authentication.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const appContainer = document.body;
@@ -111,6 +112,25 @@ document.addEventListener("DOMContentLoaded", async () => {
       orders = result;
       OrderFilter(orders, orderListElement);
       // updateOrderStats(orders, orderStatsElement);
+    }
+
+    const hasPrivilege = await hasSpecialPrivilege();
+    if (hasPrivilege) {
+      // Remove the #order-stats element from the DOM
+      const orderStats = document.querySelector(".card");
+      if (orderStats) {
+        orderStats.remove();
+      }
+      const searchButton = document.querySelector(".search-button");
+
+      if (searchButton) {
+        searchButton.remove();
+      }
+      const element = document.querySelector("p.error-message");
+
+      if (element.textContent.trim() === "🍽️, No orders found for this cook") {
+        element.remove();
+      }
     }
   } catch (error) {
     console.error("Error fetching orders:", error);
