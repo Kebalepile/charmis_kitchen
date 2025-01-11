@@ -16,6 +16,8 @@ const authRoutes = require("./routes/authRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const smsRoutes = require("./routes/smsRoutes");
 const customerRoutes = require("./routes/customerRoutes");
+const foodMenuRoutes = require("./routes/foodMenuRoutes");
+const vendorRoutes = require("./routes/vendorRoutes");
 
 // webhooks
 const paymentsWebhook = require("./webhooks/paymentsWebhook");
@@ -69,6 +71,8 @@ app.use(authRoutes);
 app.use(paymentRoutes);
 app.use(smsRoutes);
 app.use(customerRoutes);
+app.use(foodMenuRoutes);
+app.use(vendorRoutes);
 
 // Webhooks setup
 app.use(paymentsWebhook);

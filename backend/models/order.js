@@ -6,9 +6,9 @@ const orderSchema = new mongoose.Schema(
     orderNumber: { type: String, unique: true, required: true },
     name: { type: String, required: true },
     phone: { type: String, required: true, match: /^\d{10}$/ },
-    checkoutId:{type:String},
-    redirectUrl:{type:String},
-    notificationsSent:{type:Boolean},
+    checkoutId: { type: String },
+    redirectUrl: { type: String },
+    notificationsSent: { type: Boolean },
     streetAddress: { type: String },
     houseNumber: { type: String },
     paymentMethod: {
@@ -22,12 +22,14 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       default: "Pending",
-      enum: ["Pending", "Process","Ready", "Cancelled"]
-    }
+      enum: ["Pending", "Process", "Ready", "Cancelled"]
+    },
+    timeEstimation: { type: String, default: "" } // New field added
   },
   { timestamps: true }
 );
 
+// Indexes
 orderSchema.index({ orderNumber: 1 });
 orderSchema.index({ phone: 1 });
 orderSchema.index({ status: 1 });
