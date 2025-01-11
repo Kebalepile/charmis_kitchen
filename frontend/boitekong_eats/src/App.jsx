@@ -15,7 +15,7 @@ import OrderSuccessRedirect from './components/order/OrderSuccessRedirect';
 import OrderCancelRedirect from './components/order/OrderCancelRedirect';
 import FailedOrderRediract from './components/order/FailedOrderRediract';
 // import HolidayShutdown from "./components/sitedown/HolidayShutdown";
-import { checkTime } from '/utils/Utils';
+import { checkTime } from './utils/Utils';
 import './App.css';
 
 /**
