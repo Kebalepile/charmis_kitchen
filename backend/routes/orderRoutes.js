@@ -11,7 +11,7 @@ const {
   updateOrder,
   deleteOrder
 } = require("../controllers/orderController");
-const authenticate = require("../middleware/auth");
+const {authenticate} = require("../middleware/auth");
 
 router.post("/orders", createOrder);
 router.get("/orders", getOrders);

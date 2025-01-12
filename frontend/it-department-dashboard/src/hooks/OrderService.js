@@ -1,4 +1,4 @@
-import { SERVER_DOMAIN } from "./types.js";
+import { DEVELOPMENT_SERVER_DOMAIN } from "../config";
 
 /**
  * Fetch all orders from the server with a specified cookId.
@@ -11,7 +11,7 @@ export const fetchOrders = async (
 ) => {
   const token = sessionStorage.getItem("token");
 
-  const response = await fetch(`${SERVER_DOMAIN}/orders/by-cook`, {
+  const response = await fetch(`${DEVELOPMENT_SERVER_DOMAIN}/orders/by-cook`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export const fetchOrders = async (
 export const fetchOrderByOrderNumber = async orderNumber => {
   const token = sessionStorage.getItem("token");
   const response = await fetch(
-    `${SERVER_DOMAIN}/orders/cooks_order/${orderNumber}`,
+    `${DEVELOPMENT_SERVER_DOMAIN}/orders/cooks_order/${orderNumber}`,
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -62,7 +62,7 @@ export const fetchOrderByOrderNumber = async orderNumber => {
  */
 export const updateOrder = async (id, updates) => {
   const token = sessionStorage.getItem("token");
-  const response = await fetch(`${SERVER_DOMAIN}/orders/${id}`, {
+  const response = await fetch(`${DEVELOPMENT_SERVER_DOMAIN}/orders/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export const updateOrder = async (id, updates) => {
  */
 export const deleteOrder = async id => {
   const token = sessionStorage.getItem("token");
-  const response = await fetch(`${SERVER_DOMAIN}/orders/${id}`, {
+  const response = await fetch(`${DEVELOPMENT_SERVER_DOMAIN}/orders/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`
@@ -96,15 +96,4 @@ export const deleteOrder = async id => {
   }
 };
 
-export const populateDatabase = async () => {
-  const token = sessionStorage.getItem("token");
-  const response = await fetch(`${SERVER_DOMAIN}/menus/populate`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-  if (!response.ok) {
-    throw new Error("Failed to populate database");
-  }
-};
+

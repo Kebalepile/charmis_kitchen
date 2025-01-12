@@ -3,7 +3,7 @@ import { renderLoginForm } from "./components/login/Login.js";
 import { OrderFilter } from "./components/orders/RenderOrders.js";
 import { refresh } from "./utils/helper.js";
 import { fetchOrders } from "./hooks/OrderService.js";
-import { WEBSOCKET_URL } from "./hooks/types.js";
+import { DEVELOPEMT_WEBSOCKET_URL  } from "./config.js";
 import { hasSpecialPrivilege } from "./hooks/Authentication.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     OrderFilter(orders, orderListElement);
   };
 
-  createWebSocket(WEBSOCKET_URL, handleWebSocketMessage);
+  createWebSocket(DEVELOPEMT_WEBSOCKET_URL , handleWebSocketMessage);
 
   const showError = message => {
     let messageElement = document.querySelector(".error-message");

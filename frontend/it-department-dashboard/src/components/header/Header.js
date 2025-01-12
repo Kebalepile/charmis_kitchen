@@ -1,57 +1,10 @@
 import "./header.css";
-import { logout, hasSpecialPrivilege } from "../../hooks/Authentication";
+import { logout } from "../../hooks/Authentication";
 import { createSearchComponent } from "../search/SearchOrder";
-import { createButton } from "../../utils/buttonUtils";
-import { populateDatabase } from "../../hooks/OrderService";
-import { renderLoadingSpinner } from "../loading/LoadingSpinner";
+import {checkPrivilages} from "../../utils/features";
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const hasPrivilege = await hasSpecialPrivilege();
-  if (hasPrivilege) {
-    const header = document.querySelector(".header-nav");
-    const specialSection = document.createElement("div");
-    specialSection.className = "special-section";
 
-    const buttons = [
-      "Populate Database",
-      "Vendor List",
-      "Create New Account",
-      "Search Order",
-      "Make Order for Customer",
-      "Edit Order"
-    ];
-
-    buttons.forEach(buttonText => {
-      const button = createButton(buttonText);
-      switch (buttonText) {
-        case "Populate Database":
-          button.onclick = () => {
-            console.log("populating database");
-            const { toggleLoadingSpinner } = renderLoadingSpinner();
-            toggleLoadingSpinner(true);
-            populateDatabase();
-            setTimeout(() => {
-              toggleLoadingSpinner(false);
-            }, 2000);
-          };
-          break;
-        case "Vendor List":
-        case "Create New Account":
-        case "Search Order":
-        case "Make Order for Customer":
-        case "Edit Order":
-          button.onclick = () => console.log(`${buttonText} button clicked`);
-          break;
-        default:
-          break;
-      }
-
-      specialSection.appendChild(button);
-    });
-
-    header.appendChild(specialSection);
-  }
-});
+document.addEventListener("DOMContentLoaded", checkPrivilages);
 /***
  * @description Creates a header component for the Orders Dashboard, which includes a logo, title, logout button, and a search toggle button.
  * 

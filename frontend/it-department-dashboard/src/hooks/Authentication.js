@@ -1,4 +1,4 @@
-import { SERVER_DOMAIN } from "./types.js";
+import { DEVELOPMENT_SERVER_DOMAIN } from "../config";
 // Use the browser's crypto API
 const crypto = window.crypto || window.msCrypto; // for IE11
 /**
@@ -11,7 +11,7 @@ const crypto = window.crypto || window.msCrypto; // for IE11
 export const login = async (username, pin) => {
   username = username.toLocaleLowerCase();
   try {
-    const response = await fetch(`${SERVER_DOMAIN}/login`, {
+    const response = await fetch(`${DEVELOPMENT_SERVER_DOMAIN}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -45,7 +45,7 @@ export const login = async (username, pin) => {
 export const logout = async () => {
   try {
     const token = sessionStorage.getItem("token");
-    const response = await fetch(`${SERVER_DOMAIN}/logout`, {
+    const response = await fetch(`${DEVELOPMENT_SERVER_DOMAIN}/logout`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`
@@ -73,7 +73,7 @@ export const logout = async () => {
 export const signup = async username => {
   username = username.toLowerCase();
   try {
-    let response = await fetch(`${SERVER_DOMAIN}/signup`, {
+    let response = await fetch(`${DEVELOPMENT_SERVER_DOMAIN}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
