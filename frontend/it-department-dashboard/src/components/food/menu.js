@@ -176,15 +176,19 @@ const openEditDialog = (menuId, item) => {
     }
     document.body.removeChild(dialog);
     console.log("Updated item:", item);
+
     const { toggleLoadingSpinner } = renderLoadingSpinner();
     toggleLoadingSpinner(true);
+
     const url = `${DEVELOPMENT_SERVER_DOMAIN}/menus/${menuId}/items/${item._id}`;
     const token = sessionStorage.getItem("token");
+    const username = sessionStorage.getItem("cookId");
     const response = await fetch(url, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "X-Username": username
       },
       body: JSON.stringify(item)
     });

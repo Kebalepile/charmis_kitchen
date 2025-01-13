@@ -1,21 +1,41 @@
 const express = require("express");
-const { authenticate, specialPrivileges } = require("../middleware/auth");
+const {
+  authenticate,
+  specialPrivileges,
+  specialVendorPrivileges
+} = require("../middleware/auth");
 const router = express.Router();
 const {
   populateMenuDatabase,
   getAllMenus,
-  updateMenuItem
+  updateMenuItem,
+  getVendorMenus,
+  updateMenuItemForVendor
 } = require("../controllers/menuController");
 
 router.get("/menus", getAllMenus);
-// for the below routers you have to be autheniticated
-//  and have special previlages
+
+router.get(
+  "/vendor/menus/:cookId",
+  authenticate,
+  specialVendorPrivileges,
+  getVendorMenus
+);
+
+router.put(
+  "/vendor/menus/:menuId/items/:itemId",
+  authenticate,
+  specialVendorPrivileges,
+  updateMenuItemForVendor
+);
+
 router.post(
   "/menus/populate",
   authenticate,
   specialPrivileges,
   populateMenuDatabase
 );
+
 router.put(
   "/menus/:menuId/items/:itemId",
   authenticate,

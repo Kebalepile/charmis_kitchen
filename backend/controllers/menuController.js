@@ -40,6 +40,26 @@ const getAllMenus = async (req, res) => {
   }
 };
 
+// Get menus for a specific vendor
+const getVendorMenus = async (req, res) => {
+  const { cookId } = req.params;
+
+  try {
+    const menus = await Menu.find();
+    const filteredMenus = menus.map(menu => {
+      const filteredItems = menu.items.filter(item => item.cook_id === cookId);
+      return {
+        ...menu._doc,
+        items: filteredItems
+      };
+    }).filter(menu => menu.items.length > 0);
+
+    res.status(200).json(filteredMenus);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch vendor menus" });
+  }
+};
+
 // Update an item in the menu
 const updateMenuItem = async (req, res) => {
   const { menuId, itemId } = req.params;
@@ -61,8 +81,37 @@ const updateMenuItem = async (req, res) => {
   }
 };
 
+// Update an item in the menu for a vendor
+const updateMenuItemForVendor = async (req, res) => {
+  const { menuId, itemId } = req.params;
+  const updatedItem = req.body;
+  const cookId = req.headers["x-username"]; // Assuming cookId is passed in the headers
+
+  try {
+    const menu = await Menu.findById(menuId);
+    if (!menu) return res.status(404).json({ error: "Menu not found" });
+
+    const item = menu.items.id(itemId);
+    if (!item) return res.status(404).json({ error: "Item not found" });
+
+    // Check if the item belongs to the vendor
+    if (item.cook_id !== cookId) {
+      return res.status(403).json({ error: "Forbidden: You do not have permission to update this item" });
+    }
+
+    // Replace the old item with the updated item
+    item.set(updatedItem);
+    await menu.save();
+    res.status(200).json({ message: "Item updated successfully", item });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update item" });
+  }
+};
+
 module.exports = {
   populateMenuDatabase,
   getAllMenus,
-  updateMenuItem
+  getVendorMenus,
+  updateMenuItem,
+  updateMenuItemForVendor
 };

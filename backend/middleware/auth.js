@@ -1,16 +1,31 @@
 const jwt = require("jsonwebtoken");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
+const dotenv = require("dotenv");
 const TokenBlacklist = require("../models/tokenBlacklist"); // Import the token blacklist model
 
+// Load environment variables from .env file
+dotenv.config();
 
 const specialPrivileges = async (req, res, next) => {
   try {
-    // replace string with actual hashed username
-    const hash = "$2b$10$ciE5peL1LAIsNSHqhURhxOdPNk1um8WLyjmqFltPgP5Bu/yQPFyay"; // hashed username
+    const hash = process.env.SPECIAL_PRIVILAGE_HASH;
     const username = req.headers["x-username"];
     (await bcrypt.compare(username, hash))
       ? next()
       : res.status(401).json({ error: "Unauthorized" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to authenticate token" });
+  }
+};
+const specialVendorPrivileges = async (req, res, next) => {
+  try {
+    const hashs = process.env.VENDOR_HASHES.split(",");
+
+    const username = req.headers["x-username"];
+    const match = await Promise.any(
+      hashs.map(hash => bcrypt.compare(username, hash))
+    );
+    match ? next() : res.status(401).json({ error: "Unauthorized" });
   } catch (error) {
     res.status(500).json({ error: "Failed to authenticate token" });
   }
@@ -46,5 +61,6 @@ const authenticate = async (req, res, next) => {
 
 module.exports = {
   authenticate,
-  specialPrivileges
+  specialPrivileges,
+  specialVendorPrivileges
 };
