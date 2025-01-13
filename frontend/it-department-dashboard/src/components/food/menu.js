@@ -2,7 +2,8 @@ import { DEVELOPMENT_SERVER_DOMAIN } from "../../config";
 import { renderLoadingSpinner } from "../loading/LoadingSpinner";
 import "./menu.css";
 
-const basket = [];
+const basket = JSON.parse(sessionStorage.getItem("basket")) || [];
+
 
 const createMenuElement = menu => {
   const menuElement = document.createElement("div");
@@ -89,30 +90,57 @@ const toggleMenu = (menuElement, menu) => {
     itemsContainer.style.display === "none" ? "flex" : "none";
 };
 
+
 const addToBasket = (item, quantity) => {
+  const price = item.price ? parseFloat(item.price.replace("R", "")) : parseFloat(item.prices.small.replace("R", ""));
   const itemInBasket = {
     ...item,
     quantity: parseInt(quantity, 10),
-    totalPrice: (item.price || item.prices.small) * parseInt(quantity, 10)
+    totalPrice: price * parseInt(quantity, 10)
   };
   basket.push(itemInBasket);
-  console.log(basket);
+  sessionStorage.setItem("basket", JSON.stringify(basket));
   renderBasket();
 };
 
 const renderBasket = () => {
-  const basketContainer = document.getElementById("basket");
+  let basketContainer = document.getElementById("basket");
+  if (!basketContainer) {
+    basketContainer = document.createElement("div");
+    basketContainer.id = "basket";
+    document.body.appendChild(basketContainer);
+  }
   basketContainer.innerHTML = "";
+  let totalPrice = 0;
   basket.forEach((item, index) => {
     const basketItem = document.createElement("div");
     basketItem.className = "basket-item";
     basketItem.innerHTML = `
-                <h3>${item.name}</h3>
-                <p>Quantity: ${item.quantity}</p>
-                <p>Total Price: ${item.totalPrice}</p>
-            `;
+      <h3>${item.name}</h3>
+      <p>Quantity: ${item.quantity}</p>
+      <p>Total Price: ${item.totalPrice}</p>
+      <button class="remove-button">Remove</button>
+    `;
     basketContainer.appendChild(basketItem);
+
+    const removeButton = basketItem.querySelector(".remove-button");
+    removeButton.addEventListener("click", () => {
+      basket.splice(index, 1);
+      sessionStorage.setItem("basket", JSON.stringify(basket));
+      renderBasket();
+    });
+
+    totalPrice += item.totalPrice;
   });
+
+  if (basket.length === 0) {
+    document.body.removeChild(basketContainer);
+  } else {
+    const totalPriceElement = document.createElement("div");
+    totalPriceElement.className = "total-price";
+    totalPriceElement.textContent = `Total Price: ${totalPrice}`;
+    basketContainer.appendChild(totalPriceElement);
+  }
 };
 
 const openEditDialog = (menuId, item) => {
