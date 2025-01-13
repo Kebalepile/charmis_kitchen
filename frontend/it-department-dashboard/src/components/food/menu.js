@@ -4,7 +4,6 @@ import "./menu.css";
 
 const basket = JSON.parse(sessionStorage.getItem("basket")) || [];
 
-
 const createMenuElement = menu => {
   const menuElement = document.createElement("div");
   menuElement.className = "menu-element";
@@ -41,10 +40,13 @@ const createMenuElement = menu => {
       const itemPrices = document.createElement("div");
       itemPrices.className = "item-prices";
       itemPrices.innerHTML = `
-                    <p>Large: ${item.prices.large}</p>
-                    <p>Medium: ${item.prices.medium}</p>
-                    <p>Small: ${item.prices.small}</p>
-                `;
+    <p><input type="checkbox" name="size" value="large"> Large: ${item.prices
+      .large}</p>
+    <p><input type="checkbox" name="size" value="medium"> Medium: ${item.prices
+      .medium}</p>
+    <p><input type="checkbox" name="size" value="small"> Small: ${item.prices
+      .small}</p>
+  `;
       itemElement.appendChild(itemPrices);
     } else {
       const itemPrice = document.createElement("p");
@@ -66,9 +68,16 @@ const createMenuElement = menu => {
     const addButton = document.createElement("button");
     addButton.className = "add-button";
     addButton.textContent = "Add to Basket";
-    addButton.addEventListener("click", () =>
-      addToBasket(item, quantityInput.value)
-    );
+    addButton.addEventListener("click", () => {
+      const selectedSize = itemElement.querySelector(
+        'input[name="size"]:checked'
+      );
+      if (selectedSize) {
+        addToBasket(item, quantityInput.value, selectedSize.value);
+      } else {
+        addToBasket(item, quantityInput.value);
+      }
+    });
     itemElement.appendChild(addButton);
 
     const editButton = document.createElement("button");
@@ -90,12 +99,17 @@ const toggleMenu = (menuElement, menu) => {
     itemsContainer.style.display === "none" ? "flex" : "none";
 };
 
-
-const addToBasket = (item, quantity) => {
-  const price = item.price ? parseFloat(item.price.replace("R", "")) : parseFloat(item.prices.small.replace("R", ""));
+const addToBasket = (item, quantity, size) => {
+  let price;
+  if (size) {
+    price = parseFloat(item.prices[size].replace("R", ""));
+  } else {
+    price = parseFloat(item.price.replace("R", ""));
+  }
   const itemInBasket = {
     ...item,
     quantity: parseInt(quantity, 10),
+    size: size || "default",
     totalPrice: price * parseInt(quantity, 10)
   };
   basket.push(itemInBasket);
