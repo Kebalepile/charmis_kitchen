@@ -25,6 +25,12 @@ async function getVendorById(req, res) {
 async function getAllVendors(req, res) {
   try {
     const vendors = await Vendor.find({});
+   
+    if(!vendors.length){
+      res.json({message:"no vendors listed"})
+      return
+    }
+    
     res.json(vendors);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -1,0 +1,128 @@
+.menu-element {
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.menu-title {
+    cursor: pointer;
+    color: #333;
+}
+
+.items-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.item-element {
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    flex: 1 1 calc(33.333% - 20px);
+    box-sizing: border-box;
+}
+
+.item-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.item-name, .item-stock, .item-prices, .item-price {
+    margin: 5px 0;
+}
+.quantity-input {
+    width: 50px;
+    margin-left: 10px;
+    text-align: center;
+  }
+
+.add-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.add-button:hover {
+    background-color: #0056b3;
+}
+
+.basket-item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.edit-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .edit-form label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .edit-form input[type="text"],
+  .edit-form input[type="number"] {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+  }
+  
+  .edit-form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  .edit-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .edit-form .cancel-button {
+    background-color: #dc3545;
+  }
+  
+  .edit-form .cancel-button:hover {
+    background-color: #c82333;
+  }
+/* Responsive styles */
+@media (max-width: 768px) {
+    .item-element {
+        flex: 1 1 calc(50% - 20px);
+    }
+    .item-image {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .item-element {
+        flex: 1 1 100%;
+    }
+    .item-image {
+        width: 100px;
+        height: 100px;
+    }
+}

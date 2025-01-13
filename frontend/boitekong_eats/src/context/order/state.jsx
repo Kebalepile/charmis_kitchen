@@ -85,9 +85,12 @@ const OrderProvider = ({ children }) => {
   }
   const updateOrder = async (id, updateData) => {
     try {
+      const token = JSON.parse(localStorage.getItem('token'))
       const response = await fetch(`${ServerDomain}/orders/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+         },
         body: JSON.stringify(updateData)
       })
       const data = await response.json()

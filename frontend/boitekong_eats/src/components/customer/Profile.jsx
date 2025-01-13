@@ -350,6 +350,10 @@ const Profile = ({ onClose }) => {
             <div key={index} className="order">
               {orderNumber}
               <button className="track-order"onClick={() => handleOrderSearch(orderNumber)}>Track</button>
+              {/* add button to cancel order when clicked call the updateOrder method
+              from the orderCntext and load spinner while calling updateOrder with relevant 
+              arguments. but for orders not cancelled show current status. and for those cancelled
+              or have status of ready ,disable the cancel order button. */}
             </div>
           )).reverse()
         ) : (

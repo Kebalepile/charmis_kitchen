@@ -1,16 +1,16 @@
 import { renderLoadingSpinner } from "../components/loading/LoadingSpinner";
-import { DEVELOPEMT_SERVER_DOMAIN } from "../config";
+import { DEVELOPMENT_SERVER_DOMAIN } from "../config";
 import { createButton } from "./buttonUtils";
 import { hasSpecialPrivilege, signup } from "../hooks/Authentication";
 import {
-  fetchOrders,
-  fetchOrderByOrderNumber,
   updateOrder
 } from "../hooks/OrderService";
 
+import {createMenuElement, toggleMenu } from "../components/food/menu"
+
 const getMenus = async () => {
   const token = sessionStorage.getItem("token");
-  const response = await fetch(`${DEVELOPEMT_SERVER_DOMAIN}/menus`, {
+  const response = await fetch(`${DEVELOPMENT_SERVER_DOMAIN}/menus`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`
@@ -26,21 +26,43 @@ const searchOrder = async argument => {
   if (!argument) {
     return "No argument provided";
   }
+  const cookId = sessionStorage.getItem("cookId")
+  const token = sessionStorage.getItem("token");
+  const url = new URL(`${DEVELOPMENT_SERVER_DOMAIN}/orders`);
+
+  url.searchParams.append("cookId", cookId);
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    return { error: errorData.message || "An error occurred" };
+  }
+
+  
+  let orders = await response.json()
+  orders = orders.reverse();
 
   if (argument === "all") {
-    const orders = await fetchOrders();
-    return orders.reverse();
+    
+    return orders;
   }
 
   if (/^\d{10}$/.test(argument)) {
-    const orders = await fetchOrders();
+   
     const filteredOrders = orders.filter(order => order.phone === argument);
     if (filteredOrders.length > 0) {
       return filteredOrders;
     }
   }
 
-  const order = await fetchOrderByOrderNumber(argument);
+  const order = orders.filter(order => order.orderNumber === argument);
+  // filter using ordernumber as argument
   if (order) {
     return order;
   }
@@ -50,8 +72,8 @@ const searchOrder = async argument => {
 
 const getVendorList = async () => {
   const token = sessionStorage.getItem("token");
-  const username = sessionStorage.getItem("username");
-  const response = await fetch(`${DEVELOPEMT_SERVER_DOMAIN}/vendors`, {
+  const username = sessionStorage.getItem("cookId");
+  const response = await fetch(`${DEVELOPMENT_SERVER_DOMAIN}/vendors`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -66,7 +88,7 @@ const getVendorList = async () => {
 
 const populateDatabase = async () => {
   const token = sessionStorage.getItem("token");
-  const response = await fetch(`${DEVELOPEMT_SERVER_DOMAIN}/menus/populate`, {
+  const response = await fetch(`${DEVELOPMENT_SERVER_DOMAIN}/menus/populate`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`
@@ -146,10 +168,33 @@ export async function checkPrivilages() {
           break;
 
         case "Get Menus":
-          button.onclick = async () => {
+            button.onclick = async () => {
             console.log(`${buttonText} button clicked`);
+            const existingMenuContainer = document.querySelector(".food-menu-container");
+            if (existingMenuContainer) {
+              console.log("Menu container already exists");
+              return;
+            }
             const res = await functionWrapper(getMenus, true);
             console.log(res);
+            if (Array.isArray(res) && res.length > 0) {
+              const menuContainer = document.createElement("div");
+              menuContainer.className = "food-menu-container";
+              res.forEach(menu => {
+              const menuElement = createMenuElement(menu);
+              menuContainer.appendChild(menuElement);
+              });
+              document.body.appendChild(menuContainer);
+              toggleMenu(menuContainer);
+            } else {
+              console.log("No menus available");
+            }
+            
+            // create html componet that is toggelable to display these menus and add assets folder where
+            // images of relevant menus will be found.
+            // these menus should have be selectable and there must be a checkout basket
+            // and payment form that will be used to generate payment link form payfast
+            // or yoco payment gateway.
           };
 
           break;

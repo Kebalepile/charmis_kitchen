@@ -4,7 +4,7 @@ const router = express.Router();
 const {
   populateMenuDatabase,
   getAllMenus,
-  updateStockStatus
+  updateMenuItem
 } = require("../controllers/menuController");
 
 router.get("/menus", getAllMenus);
@@ -20,7 +20,7 @@ router.put(
   "/menus/:menuId/items/:itemId",
   authenticate,
   specialPrivileges,
-  updateStockStatus
+  updateMenuItem
 );
 
 module.exports = router;

@@ -40,10 +40,10 @@ const getAllMenus = async (req, res) => {
   }
 };
 
-// Update stock status of an item
-const updateStockStatus = async (req, res) => {
+// Update an item in the menu
+const updateMenuItem = async (req, res) => {
   const { menuId, itemId } = req.params;
-  const { in_stock } = req.body;
+  const updatedItem = req.body;
 
   try {
     const menu = await Menu.findById(menuId);
@@ -52,16 +52,17 @@ const updateStockStatus = async (req, res) => {
     const item = menu.items.id(itemId);
     if (!item) return res.status(404).json({ error: "Item not found" });
 
-    item.in_stock = in_stock;
+    // Replace the old item with the updated item
+    item.set(updatedItem);
     await menu.save();
-    res.status(200).json({ message: "Stock status updated", item });
+    res.status(200).json({ message: "Item updated successfully", item });
   } catch (error) {
-    res.status(500).json({ error: "Failed to update stock status" });
+    res.status(500).json({ error: "Failed to update item" });
   }
 };
 
 module.exports = {
   populateMenuDatabase,
   getAllMenus,
-  updateStockStatus
+  updateMenuItem
 };
