@@ -4,6 +4,15 @@ import "./menu.css";
 
 const basket = JSON.parse(sessionStorage.getItem("basket")) || [];
 
+/**
+ * Creates a menu element with items and their details.
+ *
+ * @param {Object} menu - The menu object containing menu details.
+ * @param {string} menu.name - The name of the menu.
+ * @param {Array} menu.items - The list of items in the menu.
+ * @param {string} menu._id - The unique identifier for the menu.
+ * @returns {HTMLElement} The created menu element.
+ */
 const createMenuElement = menu => {
   const menuElement = document.createElement("div");
   menuElement.className = "menu-element";
@@ -93,12 +102,25 @@ const createMenuElement = menu => {
   return menuElement;
 };
 
+/**
+ * Toggles the display of the menu items container between "none" and "flex".
+ *
+ * @param {HTMLElement} menuElement - The DOM element representing the menu.
+ * @param {Object} menu - An object representing the menu (not used in the function).
+ */
 const toggleMenu = (menuElement, menu) => {
   const itemsContainer = menuElement.querySelector(".items-container");
   itemsContainer.style.display =
     itemsContainer.style.display === "none" ? "flex" : "none";
 };
 
+/**
+ * Adds an item to the basket with the specified quantity and size.
+ *
+ * @param {Object} item - The item to be added to the basket.
+ * @param {number} quantity - The quantity of the item to be added.
+ * @param {string} [size] - The size of the item (optional).
+ */
 const addToBasket = (item, quantity, size) => {
   let price;
   if (size) {
@@ -117,6 +139,16 @@ const addToBasket = (item, quantity, size) => {
   renderBasket();
 };
 
+/**
+ * Renders the basket contents to the DOM.
+ * - If the basket container does not exist, it creates one and appends it to the body.
+ * - Clears the basket container's inner HTML.
+ * - Iterates over the basket items and creates a div for each item with its details.
+ * - Adds a remove button to each item that allows the user to remove the item from the basket.
+ * - Updates the total price of the items in the basket.
+ * - If the basket is empty, removes the basket container from the DOM.
+ * - If the basket is not empty, appends the total price element to the basket container.
+ */
 const renderBasket = () => {
   let basketContainer = document.getElementById("basket");
   if (!basketContainer) {
@@ -157,6 +189,19 @@ const renderBasket = () => {
   }
 };
 
+/**
+ * Opens a dialog to edit a menu item.
+ *
+ * @param {string} menuId - The ID of the menu.
+ * @param {Object} item - The item to be edited.
+ * @param {boolean} item.in_stock - Indicates if the item is in stock.
+ * @param {Object} [item.prices] - The prices of the item, if applicable.
+ * @param {string} item.prices.large - The large size price of the item.
+ * @param {string} item.prices.medium - The medium size price of the item.
+ * @param {string} item.prices.small - The small size price of the item.
+ * @param {string} [item.price] - The price of the item, if applicable.
+ * @param {string} item._id - The ID of the item.
+ */
 const openEditDialog = (menuId, item) => {
   const dialog = document.createElement("div");
   dialog.className = "edit-dialog";

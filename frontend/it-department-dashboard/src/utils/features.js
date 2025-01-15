@@ -2,11 +2,10 @@ import { renderLoadingSpinner } from "../components/loading/LoadingSpinner";
 import { DEVELOPMENT_SERVER_DOMAIN } from "../config";
 import { createButton } from "./buttonUtils";
 import { hasSpecialPrivilege, signup } from "../hooks/Authentication";
-import {
-  updateOrder
-} from "../hooks/OrderService";
+// import { updateOrder } from "../hooks/OrderService";
 
-import {createMenuElement, toggleMenu } from "../components/food/menu"
+import { createMenuElement, toggleMenu } from "../components/food/menu";
+import { RenderOrders } from "../components/orders/orderDetails";
 
 const getMenus = async () => {
   const token = sessionStorage.getItem("token");
@@ -22,11 +21,8 @@ const getMenus = async () => {
   return response.json();
 };
 
-const searchOrder = async argument => {
-  if (!argument) {
-    return "No argument provided";
-  }
-  const cookId = sessionStorage.getItem("cookId")
+const fetchOrders = async () => {
+  const cookId = sessionStorage.getItem("cookId");
   const token = sessionStorage.getItem("token");
   const url = new URL(`${DEVELOPMENT_SERVER_DOMAIN}/orders`);
 
@@ -44,17 +40,21 @@ const searchOrder = async argument => {
     return { error: errorData.message || "An error occurred" };
   }
 
-  
-  let orders = await response.json()
+  let orders = await response.json();
   orders = orders.reverse();
+  return orders;
+};
+const searchOrder = async argument => {
+  if (!argument) {
+    return "No argument provided";
+  }
+  let orders = await fetchOrders();
 
   if (argument === "all") {
-    
     return orders;
   }
 
   if (/^\d{10}$/.test(argument)) {
-   
     const filteredOrders = orders.filter(order => order.phone === argument);
     if (filteredOrders.length > 0) {
       return filteredOrders;
@@ -130,7 +130,7 @@ export async function checkPrivilages() {
       "Create New Vendor Acc",
       "Search Order",
       "Get Menus",
-      "Edit Order"
+      "Read Orders"
     ];
 
     buttons.forEach(buttonText => {
@@ -168,9 +168,11 @@ export async function checkPrivilages() {
           break;
 
         case "Get Menus":
-            button.onclick = async () => {
+          button.onclick = async () => {
             console.log(`${buttonText} button clicked`);
-            const existingMenuContainer = document.querySelector(".food-menu-container");
+            const existingMenuContainer = document.querySelector(
+              ".food-menu-container"
+            );
             if (existingMenuContainer) {
               console.log("Menu container already exists");
               return;
@@ -181,15 +183,15 @@ export async function checkPrivilages() {
               const menuContainer = document.createElement("div");
               menuContainer.className = "food-menu-container";
               res.forEach(menu => {
-              const menuElement = createMenuElement(menu);
-              menuContainer.appendChild(menuElement);
+                const menuElement = createMenuElement(menu);
+                menuContainer.appendChild(menuElement);
               });
               document.body.appendChild(menuContainer);
               toggleMenu(menuContainer);
             } else {
               console.log("No menus available");
             }
-            
+
             // create html componet that is toggelable to display these menus and add assets folder where
             // images of relevant menus will be found.
             // these menus should have be selectable and there must be a checkout basket
@@ -257,8 +259,12 @@ export async function checkPrivilages() {
 
             document.body.appendChild(form);
           };
-        case "Edit Order":
-          button.onclick = () => console.log(`${buttonText} button clicked`);
+        case "Read Orders":
+          button.onclick = async () => {
+            console.log(`${buttonText} button clicked`);
+            const orders = await fetchOrders();
+            orders.length ? RenderOrders(orders) : alert("No orders found");
+          };
           break;
         default:
           break;
