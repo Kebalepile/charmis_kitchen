@@ -1,40 +1,18 @@
-/**
- * Component for editing an order.
- * 
- * @param {Object} order - The order object to be edited.
- * @param {string} order._id - The unique identifier of the order.
- * @param {string} order.paymentItemsDescriptions - Descriptions of payment items.
- * @param {string} order.paymentMethod - The payment method used.
- * @param {number} order.paymentTotal - The total payment amount.
- * @param {string} order.phone - The phone number associated with the order.
- * @param {string} order.status - The current status of the order.
- * @param {string} order.streetAddress - The street address for delivery.
- * @param {string} order.houseNumber - The house number for delivery.
- * @param {string} order.timeEstimation - The estimated time for delivery.
- * @param {number} order.deliveryCharge - The delivery charge amount.
- * @param {Array<string>} order.cookId - The IDs of the cooks assigned to the order.
- * 
- * @returns {void}
- */
-
 import { updateOrder } from "../../hooks/OrderService";
 import { renderLoadingSpinner } from "../loading/LoadingSpinner";
-// import { DEVELOPMENT_SERVER_DOMAIN } from "../config";
 import "./editorder.css";
 
-
-export const EditOrder = (order) => {
+export const EditOrder = order => {
     const formData = { ...order, cookId: order.cookId.join(", ") };
 
-    const handleChange = (e) => {
+    const handleChange = e => {
         const { name, value } = e.target;
         formData[name] = value;
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async e => {
         e.preventDefault();
         try {
-            // Assuming renderLoadingSpinner and updateOrder are defined elsewhere
             const { toggleLoadingSpinner } = renderLoadingSpinner();
             toggleLoadingSpinner(true);
             await updateOrder(order._id, formData);
@@ -50,14 +28,26 @@ export const EditOrder = (order) => {
     };
 
     const onClose = () => {
-        document.querySelector(".edit-order-dialog").remove();
+        const dialog = document.querySelector(".editorder-container");
+        if (dialog) {
+            dialog.remove();
+        }
     };
 
+    // Remove existing dialog if it exists
+    onClose();
+
     const form = document.createElement("form");
+    form.className = "editorder-form"; // Applied CSS class
+
     form.addEventListener("submit", handleSubmit);
 
     const fields = [
-        { label: "Payment Items Descriptions", name: "paymentItemsDescriptions", type: "text" },
+        {
+            label: "Payment Items Descriptions",
+            name: "paymentItemsDescriptions",
+            type: "text"
+        },
         { label: "Payment Method", name: "paymentMethod", type: "text" },
         { label: "Payment Total", name: "paymentTotal", type: "number" },
         { label: "Phone", name: "phone", type: "text" },
@@ -70,30 +60,40 @@ export const EditOrder = (order) => {
     ];
 
     fields.forEach(({ label, name, type }) => {
+        const formGroup = document.createElement("div");
+        formGroup.className = "editorder-form-group"; // Applied CSS class
+
         const fieldLabel = document.createElement("label");
+        fieldLabel.className = "editorder-form-label"; // Applied CSS class
         fieldLabel.textContent = `${label}:`;
+
         const input = document.createElement("input");
+        input.className = "editorder-form-input"; // Applied CSS class
         input.type = type;
         input.name = name;
         input.value = formData[name];
         input.addEventListener("input", handleChange);
-        fieldLabel.appendChild(input);
-        form.appendChild(fieldLabel);
+
+        formGroup.appendChild(fieldLabel);
+        formGroup.appendChild(input);
+        form.appendChild(formGroup);
     });
 
     const updateButton = document.createElement("button");
+    updateButton.className = "editorder-form-button"; // Applied CSS class
     updateButton.type = "submit";
     updateButton.textContent = "Update Order";
     form.appendChild(updateButton);
 
     const cancelButton = document.createElement("button");
+    cancelButton.className = "editorder-form-button"; // Applied CSS class
     cancelButton.type = "button";
     cancelButton.textContent = "Cancel";
     cancelButton.addEventListener("click", onClose);
     form.appendChild(cancelButton);
 
     const dialog = document.createElement("div");
-    dialog.className = "edit-order-dialog";
+    dialog.className = "editorder-container"; // Applied CSS class
     dialog.appendChild(form);
 
     document.body.appendChild(dialog);

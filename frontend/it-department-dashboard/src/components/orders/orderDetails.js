@@ -35,24 +35,28 @@ const OrderDetails = order => {
 
   const handleEditClick = () => {
     isEditing = true;
-    render();
+    const container = render();
     return container;
   };
 
-  const handleCloseClick = () => {
-    const container = document.querySelector(".order-details");
+  const handleCloseClick = container => {
     if (container) {
       container.remove();
+    }
+    const ordersContainer = document.querySelector(".orders-container");
+    if (ordersContainer && ordersContainer.children.length === 1) {
+      ordersContainer.remove();
     }
   };
 
   const render = () => {
+    // 8355
     const container = document.createElement("div");
     container.className = "order-details";
 
     if (isEditing) {
-      const editOrderComponent = EditOrder(order);
-      container.appendChild(editOrderComponent);
+      EditOrder(order);
+      // container.appendChild(editOrderComponent);
     } else {
       const orderInfo = document.createElement("div");
       orderInfo.className = "order-info";
@@ -81,12 +85,14 @@ const OrderDetails = order => {
       houseNumber.innerHTML = `<strong>House Number:</strong> ${order.houseNumber}`;
       orderInfo.appendChild(houseNumber);
 
-      const status = document.createElement("p");
-      status.innerHTML = `<strong>Status:</strong> ${order.status}`;
-      orderInfo.appendChild(status);
-
       const orderDate = document.createElement("p");
-      orderDate.innerHTML = `<strong>Order Date:</strong> ${order.createdAt}`;
+      const date = new Date(order.createdAt);
+      const formattedDate = date.toISOString().split("T")[0];
+      const hours = date.getHours();
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+      const ampm = hours >= 12 ? "PM" : "AM";
+      const formattedTime = `${hours % 12 || 12}:${minutes} ${ampm}`;
+      orderDate.innerHTML = `<strong>Order Date:</strong> ${formattedDate} <strong>Time:</strong> ${formattedTime}`;
       orderInfo.appendChild(orderDate);
 
       const paymentItemsDescriptions = document.createElement("p");
@@ -109,22 +115,26 @@ const OrderDetails = order => {
       paymentTotal.innerHTML = `<strong>Payment Total:</strong> R${order.paymentTotal}`;
       orderInfo.appendChild(paymentTotal);
 
-    const buttonsContainer = document.createElement("div");
-    buttonsContainer.className = "order-details-buttons-container";
+      const status = document.createElement("p");
+      status.innerHTML = `<strong>Status:</strong> ${order.status}`;
+      orderInfo.appendChild(status);
 
-    const editButton = document.createElement("button");
-    editButton.className = "edit-order-button";
-    editButton.textContent = "Edit";
-    editButton.onclick = handleEditClick;
-    buttonsContainer.appendChild(editButton);
+      const buttonsContainer = document.createElement("div");
+      buttonsContainer.className = "order-details-buttons-container";
 
-    const closeButton = document.createElement("button");
-    closeButton.className = "order-close-button";
-    closeButton.textContent = "Close";
-    closeButton.onclick = handleCloseClick;
-    buttonsContainer.appendChild(closeButton);
+      const editButton = document.createElement("button");
+      editButton.className = "edit-order-button";
+      editButton.textContent = "Edit";
+      editButton.onclick = handleEditClick;
+      buttonsContainer.appendChild(editButton);
 
-    orderInfo.appendChild(buttonsContainer);
+      const closeButton = document.createElement("button");
+      closeButton.className = "order-close-button";
+      closeButton.textContent = "Close";
+      closeButton.onclick = () => handleCloseClick(container);
+      buttonsContainer.appendChild(closeButton);
+
+      orderInfo.appendChild(buttonsContainer);
 
       container.appendChild(orderInfo);
     }

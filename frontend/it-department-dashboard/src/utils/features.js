@@ -50,9 +50,9 @@ const searchOrder = async argument => {
   }
   let orders = await fetchOrders();
 
-  if (argument === "all") {
-    return orders;
-  }
+  // if (argument === "all") {
+  //   return orders;
+  // }
 
   if (/^\d{10}$/.test(argument)) {
     const filteredOrders = orders.filter(order => order.phone === argument);
@@ -152,15 +152,15 @@ export async function checkPrivilages() {
         case "Search Order":
           button.onclick = async () => {
             let argument = prompt(
-              "Enter 'all' to fetch all orders, a 10-digit phone number, or an order number:"
+              "Enter a 10-digit phone number, or an order number:"
             ).trim();
             if (argument) {
-              console.log(`searching order with argument: ${argument}`);
-              const result = await functionWrapper(
+              const results = await functionWrapper(
                 () => searchOrder(argument),
                 true
               );
-              console.log(result);
+
+              results.length ? RenderOrders(results) : alert("Order not found");
             } else {
               console.log("No valid argument provided");
             }
