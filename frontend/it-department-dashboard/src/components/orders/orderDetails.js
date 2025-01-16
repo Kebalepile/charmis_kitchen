@@ -18,7 +18,7 @@ export const RenderOrders = async orders => {
   }
 
   container = document.createElement("div");
-  container.className = "orders-container";
+  container.className = "orders-container component";
   container.appendChild(closeOrdersButton);
 
   orders.forEach(order => {
@@ -87,7 +87,8 @@ const OrderDetails = order => {
 
       const orderDate = document.createElement("p");
       const date = new Date(order.createdAt);
-      const formattedDate = date.toISOString().split("T")[0];
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      const formattedDate = date.toLocaleDateString('en-US', options);
       const hours = date.getHours();
       const minutes = date.getMinutes().toString().padStart(2, "0");
       const ampm = hours >= 12 ? "PM" : "AM";

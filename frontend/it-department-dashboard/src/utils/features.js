@@ -1,11 +1,10 @@
 import { renderLoadingSpinner } from "../components/loading/LoadingSpinner";
 import { DEVELOPMENT_SERVER_DOMAIN } from "../config";
 import { createButton } from "./buttonUtils";
-import { hasSpecialPrivilege, signup } from "../hooks/Authentication";
-// import { updateOrder } from "../hooks/OrderService";
-
+import { hasSpecialPrivilege } from "../hooks/Authentication";
 import { createMenuElement, toggleMenu } from "../components/food/menu";
 import { RenderOrders } from "../components/orders/orderDetails";
+import { CreateVendorAccount } from "../components/accounts/vendorAccount";
 
 const getMenus = async () => {
   const token = sessionStorage.getItem("token");
@@ -112,11 +111,77 @@ const functionWrapper = async (func, isAsync = false) => {
   } finally {
     setTimeout(() => {
       toggleLoadingSpinner(false);
-    }, 5000);
+    }, 2000);
   }
   return result;
 };
 
+const handleSearchOrder = async () => {
+  cleanUIUX();
+  let argument = prompt(
+    "Enter a 10-digit phone number, or an order number:"
+  ).trim();
+  if (argument) {
+    const results = await functionWrapper(() => searchOrder(argument), true);
+
+    results.length ? RenderOrders(results) : alert("Order not found");
+  } else {
+    console.log("No valid argument provided");
+  }
+};
+
+const handlePopulateDatabase = () => {
+  functionWrapper(populateDatabase, true);
+};
+
+const handleVendorList = async () => {
+  const res = await functionWrapper(getVendorList, true);
+  console.log(res);
+};
+
+const handleGetMenus = async () => {
+  cleanUIUX();
+  const existingMenuContainer = document.querySelector(".food-menu-container");
+  if (existingMenuContainer) {
+    // console.log("Menu container already exists");
+    return;
+  }
+  const res = await functionWrapper(getMenus, true);
+  // console.log(res);
+  if (Array.isArray(res) && res.length > 0) {
+    const menuContainer = document.createElement("div");
+    menuContainer.className = "food-menu-container component";
+    res.forEach(menu => {
+      const menuElement = createMenuElement(menu);
+      menuContainer.appendChild(menuElement);
+    });
+    document.body.appendChild(menuContainer);
+    toggleMenu(menuContainer);
+  } else {
+    alert("No menus available");
+  }
+
+  // create html componet that is toggelable to display these menus and add assets folder where
+  // images of relevant menus will be found.
+  // these menus should have be selectable and there must be a checkout basket
+  // and payment form that will be used to generate payment link form payfast
+  // or yoco payment gateway.
+};
+const handleCreateVendorAccount = () => {
+  cleanUIUX();
+  CreateVendorAccount();
+};
+
+const handleReadAllOrders = async () => {
+  cleanUIUX();
+  const orders = await fetchOrders();
+  orders.length ? RenderOrders(orders) : alert("No orders found");
+};
+
+const cleanUIUX = () => {
+  const components = document.querySelectorAll(".component");
+  components.forEach(component => component.remove());
+};
 export async function checkPrivilages() {
   const hasPrivilege = await hasSpecialPrivilege();
   if (hasPrivilege) {
@@ -137,134 +202,22 @@ export async function checkPrivilages() {
       const button = createButton(buttonText);
       switch (buttonText) {
         case "Populate Database":
-          button.onclick = () => {
-            console.log("populating database");
-            functionWrapper(populateDatabase, true);
-          };
+          button.onclick = handlePopulateDatabase;
           break;
         case "Vendor List":
-          button.onclick = async () => {
-            console.log("getting vendor list");
-            const res = await functionWrapper(getVendorList, true);
-            console.log(res);
-          };
+          button.onclick = handleVendorList;
           break;
         case "Search Order":
-          button.onclick = async () => {
-            let argument = prompt(
-              "Enter a 10-digit phone number, or an order number:"
-            ).trim();
-            if (argument) {
-              const results = await functionWrapper(
-                () => searchOrder(argument),
-                true
-              );
-
-              results.length ? RenderOrders(results) : alert("Order not found");
-            } else {
-              console.log("No valid argument provided");
-            }
-          };
+          button.onclick = handleSearchOrder;
           break;
-
         case "Get Menus":
-          button.onclick = async () => {
-            console.log(`${buttonText} button clicked`);
-            const existingMenuContainer = document.querySelector(
-              ".food-menu-container"
-            );
-            if (existingMenuContainer) {
-              console.log("Menu container already exists");
-              return;
-            }
-            const res = await functionWrapper(getMenus, true);
-            console.log(res);
-            if (Array.isArray(res) && res.length > 0) {
-              const menuContainer = document.createElement("div");
-              menuContainer.className = "food-menu-container";
-              res.forEach(menu => {
-                const menuElement = createMenuElement(menu);
-                menuContainer.appendChild(menuElement);
-              });
-              document.body.appendChild(menuContainer);
-              toggleMenu(menuContainer);
-            } else {
-              console.log("No menus available");
-            }
-
-            // create html componet that is toggelable to display these menus and add assets folder where
-            // images of relevant menus will be found.
-            // these menus should have be selectable and there must be a checkout basket
-            // and payment form that will be used to generate payment link form payfast
-            // or yoco payment gateway.
-          };
-
+          button.onclick = handleGetMenus;
           break;
         case "Create New Vendor Acc":
-          button.onclick = () => {
-            const form = document.createElement("form");
-            form.className = "vendor-form";
-
-            const usernameLabel = document.createElement("label");
-            usernameLabel.textContent = "Enter Username:";
-            form.appendChild(usernameLabel);
-
-            const usernameInput = document.createElement("input");
-            usernameInput.type = "text";
-            usernameInput.name = "username";
-            form.appendChild(usernameInput);
-
-            const createButton = document.createElement("button");
-            createButton.type = "button";
-            createButton.textContent = "Create Acc";
-            form.appendChild(createButton);
-
-            const cancelButton = document.createElement("button");
-            cancelButton.type = "button";
-            cancelButton.textContent = "Cancel";
-            form.appendChild(cancelButton);
-
-            const messageDiv = document.createElement("div");
-            messageDiv.className = "message";
-            form.appendChild(messageDiv);
-
-            createButton.onclick = async () => {
-              const username = usernameInput.value.trim();
-              if (username) {
-                const { toggleLoadingSpinner } = renderLoadingSpinner();
-                toggleLoadingSpinner(true);
-                const response = await signup(username);
-                setTimeout(() => {
-                  toggleLoadingSpinner(false);
-                }, 5000);
-                messageDiv.innerHTML = `
-                  <p>New vendor account created</p>
-                  <p>Login details:</p>
-                  <p>Username: <span id="username">${response.username}</span> <button id="copy-username">Copy</button></p>
-                  <p>PIN: <span id="pin">${response.pin}</span> <button id="copy-pin">Copy</button></p>
-                `;
-
-                document.getElementById("copy-username").onclick = () => {
-                  navigator.clipboard.writeText(response.username);
-                };
-                document.getElementById("copy-pin").onclick = () => {
-                  navigator.clipboard.writeText(response.pin);
-                };
-              }
-            };
-
-            cancelButton.onclick = () => {
-              form.remove();
-            };
-
-            document.body.appendChild(form);
-          };
+          button.onclick = handleCreateVendorAccount;
+          break;
         case "Read Orders":
-          button.onclick = async () => {
-            console.log(`${buttonText} button clicked`);
-            const orders = await fetchOrders();
-            orders.length ? RenderOrders(orders) : alert("No orders found");
-          };
+          button.onclick = handleReadAllOrders;
           break;
         default:
           break;

@@ -2,7 +2,7 @@ import "./header.css";
 import { logout } from "../../hooks/Authentication";
 import { createSearchComponent } from "../search/SearchOrder";
 import {checkPrivilages} from "../../utils/features";
-
+import { renderLoadingSpinner } from "../loading/LoadingSpinner";
 
 document.addEventListener("DOMContentLoaded", checkPrivilages);
 /***
@@ -37,12 +37,16 @@ export const createHeaderComponent = () => {
   logoutButton.textContent = "Logout";
   logoutButton.className = "logout-button";
   logoutButton.onclick = async () => {
+    const { toggleLoadingSpinner } = renderLoadingSpinner();
+    toggleLoadingSpinner(true);
     logoutButton.disabled = true;
     try {
       const data = await logout();
+     
       setTimeout(() => {
         logoutButton.disabled = false;
         location.reload();
+        toggleLoadingSpinner(false);
       }, 2000);
     } catch (error) {
       console.error("Logout failed:", error);

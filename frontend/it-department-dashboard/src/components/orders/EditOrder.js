@@ -19,7 +19,7 @@ export const EditOrder = order => {
             alert("Order updated successfully");
             setTimeout(() => {
                 toggleLoadingSpinner(false);
-            }, 5000);
+            }, 2000);
             onClose();
         } catch (error) {
             console.error("Failed to update order", error);
@@ -83,17 +83,22 @@ export const EditOrder = order => {
     updateButton.className = "editorder-form-button"; // Applied CSS class
     updateButton.type = "submit";
     updateButton.textContent = "Update Order";
-    form.appendChild(updateButton);
+    
 
     const cancelButton = document.createElement("button");
     cancelButton.className = "editorder-form-button"; // Applied CSS class
     cancelButton.type = "button";
     cancelButton.textContent = "Cancel";
     cancelButton.addEventListener("click", onClose);
-    form.appendChild(cancelButton);
+   
+    const footer = document.createElement("div");
+    footer.className = "editorder-footer"; // Applied CSS class
+    footer.appendChild(updateButton);
+    footer.appendChild(cancelButton);
+    form.appendChild(footer);
 
     const dialog = document.createElement("div");
-    dialog.className = "editorder-container"; // Applied CSS class
+    dialog.className = "editorder-container component"; // Applied CSS class
     dialog.appendChild(form);
 
     document.body.appendChild(dialog);

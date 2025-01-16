@@ -71,12 +71,17 @@ export const logout = async () => {
    * @param {string} username
    */
 export const signup = async username => {
-  username = username.toLowerCase();
+  username = username.toLowerCase().trim();
   try {
+    const token = sessionStorage.getItem("token");
+    const cookId = sessionStorage.getItem("cookId");
+   
     let response = await fetch(`${DEVELOPMENT_SERVER_DOMAIN}/signup`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "X-Username": cookId
       },
       body: JSON.stringify({ username })
     });

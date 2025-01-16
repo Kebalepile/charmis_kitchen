@@ -82,6 +82,7 @@
     cursor: pointer;
     flex-grow: 1; /* Make buttons fill the available space equally */
     text-align: center;
+    width:200px;
 }
 
 .editorder-form-button:hover {
