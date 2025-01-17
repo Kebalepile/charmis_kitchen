@@ -5,6 +5,7 @@ import { hasSpecialPrivilege } from "../hooks/Authentication";
 import { createMenuElement, toggleMenu } from "../components/food/menu";
 import { RenderOrders } from "../components/orders/orderDetails";
 import { CreateVendorAccount } from "../components/accounts/vendorAccount";
+import { vendorDetailsContainer } from "../components/accounts/vendorDetails";
 
 const getMenus = async () => {
   const token = sessionStorage.getItem("token");
@@ -48,20 +49,13 @@ const searchOrder = async argument => {
     return "No argument provided";
   }
   let orders = await fetchOrders();
-
-  // if (argument === "all") {
-  //   return orders;
-  // }
-
   if (/^\d{10}$/.test(argument)) {
     const filteredOrders = orders.filter(order => order.phone === argument);
     if (filteredOrders.length > 0) {
       return filteredOrders;
     }
   }
-
   const order = orders.filter(order => order.orderNumber === argument);
-  // filter using ordernumber as argument
   if (order) {
     return order;
   }
@@ -135,8 +129,9 @@ const handlePopulateDatabase = () => {
 };
 
 const handleVendorList = async () => {
+  cleanUIUX();
   const res = await functionWrapper(getVendorList, true);
-  console.log(res);
+  vendorDetailsContainer(res);
 };
 
 const handleGetMenus = async () => {

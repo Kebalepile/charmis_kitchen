@@ -80,9 +80,10 @@
   
   .edit-form input[type="text"],
   .edit-form input[type="number"] {
-    width: 100%;
+    width: 100px;
     padding: 5px;
     margin-top: 5px;
+  
   }
   
   .edit-form button {

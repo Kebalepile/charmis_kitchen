@@ -203,11 +203,14 @@ const renderBasket = () => {
  * @param {string} item._id - The ID of the item.
  */
 const openEditDialog = (menuId, item) => {
+ 
   const dialog = document.createElement("div");
   dialog.className = "edit-dialog";
   dialog.innerHTML = `
     <form class="edit-form">
-      <h2>Edit Item</h2>
+      <h3>Edit ${item.name} Item</h3>
+      <br/>
+      <hr/>
       <label>
         In Stock:
         <input type="checkbox" name="in_stock" ${item.in_stock
